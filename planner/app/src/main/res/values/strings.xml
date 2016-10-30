@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">planner</string>
     <string name="action_settings">Settings</string>
+    <string name="action_logOut">Log Out</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="facebook_app_id">1818422565104298</string>
 </resources>
