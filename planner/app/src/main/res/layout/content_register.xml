@@ -14,7 +14,7 @@
     tools:showIn="@layout/activity_register">
 
     <Button
-        android:text="Submit"
+        android:text="@string/register_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -23,18 +23,18 @@
         android:id="@+id/registerSubmitButton" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
         android:ems="10"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="78dp"
         android:id="@+id/registerEmail"
-        android:hint="Email" />
+        android:hint="@string/enter_email"
+        android:inputType="textEmailAddress" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
@@ -43,10 +43,10 @@
         android:layout_alignStart="@+id/registerEmail"
         android:layout_marginTop="32dp"
         android:id="@+id/registerPassword"
-        android:hint="Passwort" />
+        android:hint="@string/enter_password" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
@@ -55,5 +55,6 @@
         android:layout_alignEnd="@+id/registerPassword"
         android:layout_marginTop="34dp"
         android:id="@+id/registerPasswordAgain"
-        android:hint="Passwort wiederholen" />
+        android:hint="@string/repeat_password" />
+
 </RelativeLayout>

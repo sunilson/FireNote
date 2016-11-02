@@ -14,18 +14,7 @@
     tools:showIn="@layout/activity_login">
 
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
-        android:ems="10"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="104dp"
-        android:id="@+id/loginEmail"
-        android:hint="Email eingeben" />
-
-    <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
@@ -34,10 +23,10 @@
         android:layout_alignEnd="@+id/loginEmail"
         android:layout_marginTop="25dp"
         android:id="@+id/loginPassword"
-        android:hint="Passwort eingeben" />
+        android:hint="@string/enter_password" />
 
     <Button
-        android:text="Login"
+        android:text="@string/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/loginPassword"
@@ -46,21 +35,31 @@
         android:id="@+id/loginButton" />
 
     <TextView
-        android:text="Register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/loginButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="28dp"
-        android:id="@+id/loginRegisterText" />
+        android:layout_marginTop="10dp"
+        android:id="@+id/loginRegisterText"
+        android:text="Register" />
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/sign_in_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="31dp"
         android:layout_below="@+id/loginRegisterText"
-        android:layout_alignLeft="@+id/loginButton"
-        android:layout_alignStart="@+id/loginButton"
-        android:layout_marginTop="29dp" />
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:layout_marginTop="83dp"
+        android:id="@+id/loginEmail"
+        android:hint="@string/enter_email"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
