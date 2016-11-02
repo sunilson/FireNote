@@ -1,8 +1,22 @@
 <resources>
-    <string name="app_name">planner</string>
+    <string name="app_name">Everyday Planner</string>
     <string name="action_settings">Settings</string>
     <string name="action_logOut">Log Out</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="title_activity_register">RegisterActivity</string>
-    <string name="facebook_app_id">1818422565104298</string>
+    <string name="title_activity_login">Login to your account</string>
+    <string name="title_activity_register">Register a new account</string>
+    <string name="add_Note_Title">Add a note</string>
+    <string name="verification_error">"Account not verfied yet. Please click verification link"</string>
+    <string name="error_register_empty">Please fill out all fields!</string>
+    <string name="error_register_invalid_characters">Register failed! One or more inputs contain invalid characters</string>
+    <string name="error_register_user_already_exists">Register failed! User already exists</string>
+    <string name="error_register_invalid_email">Register failed! Invalid E-Mail address</string>
+    <string name="error_register_password_weak">Register failed! Password too weak</string>
+    <string name="error_password_security">Password is not secure. Guidelines: 8 Characters, Lower- and Uppercase Letters, Number</string>
+    <string name="error_password_match">Passwords don\'t match!</string>
+    <string name="login_register_text">No account yet? <![CDATA[<font color=#0000EE>Register here!]]></string>
+    <string name="enter_password">Enter password</string>
+    <string name="enter_email">Enter e-Mail address</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="register_button">Register</string>
+    <string name="login_button">Login</string>
 </resources>

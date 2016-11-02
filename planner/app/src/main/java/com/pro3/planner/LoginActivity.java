@@ -5,13 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -53,6 +53,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginButton = (Button) findViewById(R.id.loginButton);
         loginRegisterText = (TextView) findViewById(R.id.loginRegisterText);
 
+        //Used to make part of the text blue
+        loginRegisterText.setText(Html.fromHtml(getResources().getString(R.string.login_register_text)));
+
         //Login Submit Click Handler
         loginButton.setOnClickListener(this);
         loginRegisterText.setOnClickListener(this);
@@ -67,12 +70,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
-                    Toast.makeText(LoginActivity.this, "Sign in success" + user.getUid(), Toast.LENGTH_LONG).show();
-                    Log.d("Auth", "onAuthStateChanged:signed_in:" + user.getUid());
                     finish();
                 } else {
                     // User is signed out
-                    Log.d("Auth", "onAuthStateChanged:signed_out");
                 }
             }
         };

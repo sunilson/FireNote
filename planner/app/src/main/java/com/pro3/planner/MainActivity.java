@@ -1,19 +1,20 @@
 package com.pro3.planner;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -33,41 +34,59 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        toolbar.setTitle(R.string.app_name);
 
         //Check if logged in, if not, go to Login Activity
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener(){
+            //Called whenever the state of the user changes
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
-                    Toast.makeText(MainActivity.this, "Sign in success" + user.getUid(), Toast.LENGTH_LONG).show();
-                    Log.d("Auth", "onAuthStateChanged:signed_in:" + user.getUid());
+                    //Check if user has verified his email
+                    if(user.isEmailVerified()) {
+                        //User is signed in and verified. Load data from server
+                        mReference = FirebaseDatabase.getInstance().getReference();
+                    } else {
+                        //If not verified, sign user out and switch to login activity
+                        mAuth.signOut();
+                        Toast.makeText(MainActivity.this, R.string.verification_error, Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(i);
+                    }
                 } else {
-                    //User is signed out
+                    //User is signed out. Switch to Login Activity
                     Intent i = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(i);
                 }
             }
         };
 
-        mReference = FirebaseDatabase.getInstance().getReference();
-        testButton = (Button) findViewById(R.id.testButton);
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mReference.child("users").child(mAuth.getCurrentUser().getUid()).setValue("Test");
-            }
-        });
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                AlertDialog.Builder builderSingle = new AlertDialog.Builder(MainActivity.this);
+                builderSingle.setTitle(R.string.add_Note_Title);
+
+                final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+                        MainActivity.this,
+                        android.R.layout.select_dialog_item);
+                arrayAdapter.add("Notiz");
+                arrayAdapter.add("Checkliste");
+
+                builderSingle.setAdapter(
+                        arrayAdapter,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                String strName = arrayAdapter.getItem(which);
+                                Log.i("Dialog", strName);
+                            }
+                        });
+                builderSingle.show();
             }
         });
     }
