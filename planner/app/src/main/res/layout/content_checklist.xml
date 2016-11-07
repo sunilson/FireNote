@@ -2,23 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/content_main"
+    android:id="@+id/content_checklist"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/element_list_horizontal_margin"
-    android:paddingLeft="@dimen/element_list_horizontal_margin"
-    android:paddingRight="@dimen/element_list_horizontal_margin"
-    android:paddingTop="@dimen/element_list_horizontal_margin"
+    android:paddingBottom="@dimen/checklist_list_horizontal_margin"
+    android:paddingLeft="@dimen/checklist_list_horizontal_margin"
+    android:paddingRight="@dimen/checklist_list_horizontal_margin"
+    android:paddingTop="@dimen/checklist_list_horizontal_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.pro3.planner.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context="com.pro3.planner.ChecklistActivity"
+    tools:showIn="@layout/activity_checklist">
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:divider="@drawable/list_divider"
-        android:id="@+id/elementList"
-        android:animateLayoutChanges="true" />
+        android:choiceMode="multipleChoice"
+        android:id="@+id/checkListView" />
+
 </RelativeLayout>

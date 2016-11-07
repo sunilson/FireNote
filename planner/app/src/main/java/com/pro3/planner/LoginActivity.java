@@ -40,6 +40,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button loginButton;
     private GoogleApiClient mGoogleApiClient;
     private int googleSignInRequestCode = 1;
+    private FirebaseUser user;
+
+    /*
+    ------------------------
+    ---- Android Events ----
+    ------------------------
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,18 +71,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //Auth Listener is used to detect any change in the authentication state of the user
         //like logged in and logged out
         mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener(){
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    finish();
-                } else {
-                    // User is signed out
-                }
-            }
-        };
+        initializeAuthListener();
 
         //Google Sign In
         findViewById(R.id.sign_in_button).setOnClickListener(this);
@@ -108,28 +104,111 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    /*
+    -----------------------------
+    --- Listener Initializing ---
+    -----------------------------
+     */
+
+    private void initializeAuthListener() {
+        mAuthListener = new FirebaseAuth.AuthStateListener(){
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    //Check if user has verified his email
+                    if(user.isEmailVerified()) {
+                        //User is signed in and verified. Continue
+                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(i);
+                        /*
+                        mReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
+                        mSettingsReference = mReference.child("settings");
+                        */
+                    } else {
+                        //If not verified, sign user out and switch to login activity
+                        mAuth.signOut();
+                        Toast.makeText(getApplicationContext(), R.string.verification_error, Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(i);
+                    }
+                } else {
+                    //User is signed out. Do nothing
+                }
+            }
+        };
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.loginButton){
+            String email = loginEmail.getText().toString();
+            String password = loginPassword.getText().toString();
+
+            //Überprüfen von Username und Passwort
+            //TODO: genauere Überprüfung und Stripping von unerwünschten Zeichen
+            if(email.length() != 0 && password.length() != 0) {
+                signInEmail(email, password);
+                loginButton.setText(getResources().getString(R.string.login_loading));
+            } else {
+                Toast.makeText(LoginActivity.this, R.string.error_register_empty, Toast.LENGTH_LONG).show();
+            }
+        } else if (v.getId() == R.id.loginRegisterText) {
+            //Start register activity
+            Intent i = new Intent(this, RegisterActivity.class);
+            startActivity(i);
+        } else if (v.getId() == R.id.sign_in_button) {
+            //Start the google sign in proccess
+            googleSignIn();
+        }
+    }
+
+    /**
+     * Google Connection Failed Listener
+     *
+     * @param connectionResult
+     */
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    /*
+    ---------------------------
+    ---- sign in functions ----
+    ---------------------------
+     */
+
     private void signInEmail(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-
                 //On success, listener is called
-
                 if(!task.isSuccessful()) {
                     //Sign in failed
                     Toast.makeText(LoginActivity.this, "Sign in Failed", Toast.LENGTH_LONG).show();
+                    loginButton.setText(getResources().getString(R.string.login_button));
                 }
             }
         });
     }
 
-    //Sign in with Google and start Google Activity
+    /**
+     * Sign in with Google and start Google Activity
+     */
     private void googleSignIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, googleSignInRequestCode);
     }
 
-    //Handles results from started Activities
+    /**
+     *Handles results from started Activities. In our case it's the Google Sign In Activity
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -141,7 +220,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    //Handle the result from the Google Sign In
+    /**
+     * Handle the result from the Google Sign In
+     *
+     * @param result
+     */
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d("Google", "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
@@ -155,7 +238,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    //Connect signed in Google User with Firebase
+    /**
+     * Connect signed in Google User with a Firebase user
+     *
+     * @param acct
+     */
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
@@ -169,30 +256,4 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
     }
 
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.loginButton){
-            String email = loginEmail.getText().toString();
-            String password = loginPassword.getText().toString();
-
-            //Überprüfen von Username und Passwort
-            //TODO: genauere Überprüfung und Stripping von unerwünschten Zeichen
-            if(email != null && password != null) {
-                signInEmail(email, password);
-            }
-        } else if (v.getId() == R.id.loginRegisterText) {
-            //Start register activity
-            Intent i = new Intent(this, RegisterActivity.class);
-            startActivity(i);
-        } else if (v.getId() == R.id.sign_in_button) {
-            //Start the google sign in proccess
-            googleSignIn();
-        }
-    }
-
-    //Google Connection Failed Listener
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
 }

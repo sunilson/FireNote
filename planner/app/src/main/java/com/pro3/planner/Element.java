@@ -1,6 +1,7 @@
 package com.pro3.planner;
 
-import android.graphics.Color;
+import android.content.Context;
+
 import java.util.Date;
 
 /**
@@ -8,29 +9,64 @@ import java.util.Date;
  */
 
 public class Element {
+    private String title;
     private String noteID;
     private String noteType;
     private String category;
-    private int color;
+    private String color;
+    private int icon;
     private Date creationDate;
 
-    public Element(String noteID, String noteType) {
-        this.noteID = noteID;
+    public Element(String noteType, Context context) {
         this.noteType = noteType;
+
+        if(noteType.equals(context.getResources().getString(R.string.element_checklist))) {
+            this.title = "New Checklist";
+            icon = R.drawable.ic_done_all_black_24dp;
+        } else if (noteType.equals(context.getResources().getString(R.string.element_note))) {
+            this.title = "New Note";
+            icon = R.drawable.ic_note_black_24dp;
+        } else {
+            this.title = "New Element";
+            icon = R.drawable.ic_toc_black_24dp;
+        }
         this.creationDate = new Date();
         this.category = "Default";
-        this.color = Color.YELLOW;
+    }
+
+    public Element() {
+
+    }
+
+    public int getIcon() {
+        return icon;
+    }
+
+    public void setIcon(int icon) {
+        this.icon = icon;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getNoteID() {
         return noteID;
     }
 
-    public int getColor() {
+    public void setNoteID(String noteID) {
+        this.noteID = noteID;
+    }
+
+    public String getColor() {
         return color;
     }
 
-    public void setColor(int color) {
+    public void setColor(String color) {
         this.color = color;
     }
 

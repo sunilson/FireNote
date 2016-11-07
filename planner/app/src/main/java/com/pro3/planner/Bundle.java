@@ -1,5 +1,7 @@
 package com.pro3.planner;
 
+import android.content.Context;
+
 import java.util.List;
 
 /**
@@ -10,7 +12,7 @@ public class Bundle extends Element {
 
     private List elements;
 
-    public Bundle(String noteID, String noteType) {
-        super(noteID, noteType);
+    public Bundle(String noteType, Context context) {
+        super(noteType, context);
     }
 }

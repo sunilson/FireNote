@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetLeft="15dp"
+    android:insetRight="15dp" >
+
+    <shape
+        android:shape="line" >
+        <stroke
+            android:width="1dp"
+            android:color="@color/main_background_color" />
+
+        <size android:height="@dimen/element_list_divider_margin" />
+
+    </shape>
+
+</inset>

@@ -5,6 +5,7 @@
     <string name="title_activity_login">Login to your account</string>
     <string name="title_activity_register">Register a new account</string>
     <string name="add_Note_Title">Add a note</string>
+    <string name="edit_Note_Title">Edit note</string>
     <string name="verification_error">"Account not verfied yet. Please click verification link"</string>
     <string name="error_register_empty">Please fill out all fields!</string>
     <string name="error_register_invalid_characters">Register failed! One or more inputs contain invalid characters</string>
@@ -19,4 +20,11 @@
     <string name="repeat_password">Repeat password</string>
     <string name="register_button">Register</string>
     <string name="login_button">Login</string>
+    <string name="title_activity_checklist">ChecklistActivity</string>
+    <string name="element_note">Note</string>
+    <string name="element_checklist">Checklist</string>
+    <string name="element_sync_success">Successfully added and synced Element</string>
+    <string name="menu_log_out">Log out</string>
+    <string name="menu_sort">Sort by Date Ascending</string>
+    <string name="login_loading">Logging in</string>
 </resources>
