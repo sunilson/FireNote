@@ -25,6 +25,14 @@
     <string name="element_checklist">Checklist</string>
     <string name="element_sync_success">Successfully added and synced Element</string>
     <string name="menu_log_out">Log out</string>
-    <string name="menu_sort">Sort by Date Ascending</string>
+    <string name="menu_sort">Sort elements</string>
+    <string name="menu_sort_ascending_date">Sort by Date Ascending</string>
+    <string name="menu_sort_descending_date">Sort by Date Descending</string>
     <string name="login_loading">Logging in</string>
+    <string name="add_checklist_item_title">Add new Element</string>
+    <string name="confirm_add_dialog">Done</string>
+    <string name="cancel_add_dialog">Cancel</string>
+    <string name="edit_checklist_title">Edit checklist</string>
+    <string name="title_activity_edit_checklist">EditChecklistActivity</string>
+    <string name="delete_checklist_title">Delete Checklist</string>
 </resources>

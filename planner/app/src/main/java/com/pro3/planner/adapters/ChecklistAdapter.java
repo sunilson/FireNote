@@ -1,4 +1,4 @@
-package com.pro3.planner;
+package com.pro3.planner.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -8,6 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.pro3.planner.baseClasses.ChecklistElement;
+import com.pro3.planner.views.ChecklistView;
+import com.pro3.planner.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +55,10 @@ public class ChecklistAdapter extends ArrayAdapter {
         }
 
         notifyDataSetChanged();
+    }
+
+    public void editList() {
+
     }
 
     public void update(int position, ChecklistElement element) {

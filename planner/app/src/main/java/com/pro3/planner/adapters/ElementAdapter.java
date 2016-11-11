@@ -1,4 +1,4 @@
-package com.pro3.planner;
+package com.pro3.planner.adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,6 +11,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.pro3.planner.baseClasses.Element;
+import com.pro3.planner.activities.MainActivity;
+import com.pro3.planner.R;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

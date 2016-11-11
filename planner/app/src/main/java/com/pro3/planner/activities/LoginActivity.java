@@ -1,4 +1,4 @@
-package com.pro3.planner;
+package com.pro3.planner.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,6 +25,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.pro3.planner.R;
 
 /**
  * @author Linus Weiss

@@ -1,7 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.pro3.planner.activities.MainActivity">
+    <item
+        android:title="Edit Checklist"
+        android:id="@+id/checklist_menu_edit"
+        android:icon="@drawable/checklist_menu_edit_icon"
+        app:showAsAction="ifRoom"
+        />
+    <item
+        android:title="Edit Checklist"
+        android:id="@+id/checklist_menu_delete"
+        android:icon="@drawable/checklist_menu_delete_icon"
+        app:showAsAction="ifRoom"
+        />
     <item
         android:id="@+id/action_logOut"
         android:orderInCategory="100"

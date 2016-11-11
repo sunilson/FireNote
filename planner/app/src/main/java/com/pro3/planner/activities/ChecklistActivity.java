@@ -1,16 +1,20 @@
-package com.pro3.planner;
+package com.pro3.planner.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,6 +24,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.pro3.planner.baseClasses.ChecklistElement;
+import com.pro3.planner.R;
+import com.pro3.planner.adapters.ChecklistAdapter;
 
 public class ChecklistActivity extends BaseActivity {
 
@@ -27,8 +35,9 @@ public class ChecklistActivity extends BaseActivity {
     private ChecklistAdapter checklistAdapter;
     private String elementID;
 
-    private DatabaseReference mElementReference, mChecklistElementsReference, mSettingsReference;
+    private DatabaseReference mElementReference, mChecklistElementsReference, mSettingsReference, mTitleReference;
     private ChildEventListener mChecklistElementsListener, mSettingsListener;
+    private ValueEventListener mTitleListener;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private FirebaseAuth mAuth;
@@ -41,23 +50,24 @@ public class ChecklistActivity extends BaseActivity {
         setContentView(R.layout.activity_checklist);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Firebase Authentication
         mAuth = FirebaseAuth.getInstance();
         initializeAuthListener();
         user = mAuth.getCurrentUser();
 
-        //Get Element ID from clicked element
+        //Get Element ID from clicked element and set Title
         Intent i = getIntent();
         elementID = i.getStringExtra("elementID");
+        setTitle(i.getStringExtra("elementTitle"));
 
+        //Firebase Reference to the Checklist element we are currently in
         if(user != null) {
             mElementReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("elements").child(elementID);
         }
 
-        //Initialize the Listview and it's adapter
+        //Initialize the Listview and it's adapter and it's onClick Handler
         checkListView = (ListView) findViewById(R.id.checkListView);
         checklistAdapter = new ChecklistAdapter(this, R.layout.checklist_list_layout);
         checkListView.setAdapter(checklistAdapter);
@@ -77,6 +87,7 @@ public class ChecklistActivity extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                initializeAddChecklistElementDialog();
             }
         });
     }
@@ -92,6 +103,10 @@ public class ChecklistActivity extends BaseActivity {
         if(mChecklistElementsListener != null) {
             mChecklistElementsReference.removeEventListener(mChecklistElementsListener);
         }
+
+        if(mTitleListener != null) {
+            mElementReference.child("title").removeEventListener(mTitleListener);
+        }
     }
 
     @Override
@@ -101,10 +116,14 @@ public class ChecklistActivity extends BaseActivity {
         mAuth.addAuthStateListener(mAuthListener);
 
         initializeChecklistElementListener();
+        initializeTitleListener();
+
         if(mElementReference != null) {
             checklistAdapter.clear();
             mChecklistElementsReference = mElementReference.child("elements");
+            mTitleReference = mElementReference.child("title");
             mChecklistElementsReference.addChildEventListener(mChecklistElementsListener);
+            mTitleReference.addValueEventListener(mTitleListener);
         }
     }
 
@@ -178,6 +197,21 @@ public class ChecklistActivity extends BaseActivity {
         };
     }
 
+    private void initializeTitleListener() {
+        mTitleListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String newTitle = dataSnapshot.getValue(String.class);
+                setTitle(newTitle);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -189,7 +223,102 @@ public class ChecklistActivity extends BaseActivity {
         if (id == android.R.id.home) {
             this.finish();
             return true;
+        } else if (id == R.id.checklist_menu_edit) {
+            initializeEditChecklistDialog();
+        } else if (id == R.id.checklist_menu_delete) {
+            initializeDeleteDialog();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_checklist, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void initializeEditChecklistDialog() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        LayoutInflater inflater = getLayoutInflater();
+        View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
+        View content = inflater.inflate(R.layout.alertdialog_body_checklist_edit, null);
+        final TextView elementTitleTextView = (TextView) content.findViewById(R.id.checklist_edit_element_title);
+        ((TextView)title.findViewById(R.id.dialog_title)).setText(getResources().getString(R.string.edit_checklist_title));
+        elementTitleTextView.setText(getTitle());
+        alert.setCustomTitle(title);
+        alert.setView(content);
+
+        alert.setPositiveButton(R.string.confirm_add_dialog, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String entry = elementTitleTextView.getText().toString();
+                mElementReference.child("title").setValue(entry);
+            }
+        });
+
+        alert.setNegativeButton(R.string.cancel_add_dialog, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+            }
+        });
+
+        alert.show();
+    }
+
+    private void initializeAddChecklistElementDialog() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        LayoutInflater inflater = getLayoutInflater();
+        View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
+        View content = inflater.inflate(R.layout.alertdialog_body_checklist_add, null);
+        ((TextView)title.findViewById(R.id.dialog_title)).setText(getResources().getString(R.string.add_checklist_item_title));
+        final TextView elementTitleTextView = (TextView) content.findViewById(R.id.checklist_add_element_title);
+        alert.setCustomTitle(title);
+
+        alert.setView(content);
+        alert.setPositiveButton(R.string.confirm_add_dialog, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String entry = elementTitleTextView.getText().toString();
+                DatabaseReference dRef = mChecklistElementsReference.push();
+                String elementID = dRef.getKey();
+                ChecklistElement checklistElement = new ChecklistElement(entry, elementID);
+                dRef.setValue(checklistElement);
+            }
+        });
+
+        alert.setNegativeButton(R.string.cancel_add_dialog, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+            }
+        });
+
+        alert.show();
+    }
+
+    private void initializeDeleteDialog() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        LayoutInflater inflater = getLayoutInflater();
+        View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
+        ((TextView)title.findViewById(R.id.dialog_title)).setText(getResources().getString(R.string.delete_checklist_title));
+        alert.setCustomTitle(title);
+
+        alert.setPositiveButton(R.string.confirm_add_dialog, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                mElementReference.removeValue(new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                        Toast.makeText(getApplicationContext(), "Successfully deleted and synced Element", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                finish();
+            }
+        });
+
+        alert.setNegativeButton(R.string.cancel_add_dialog, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+            }
+        });
+
+        alert.show();
     }
 }

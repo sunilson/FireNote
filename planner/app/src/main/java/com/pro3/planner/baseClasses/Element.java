@@ -1,6 +1,8 @@
-package com.pro3.planner;
+package com.pro3.planner.baseClasses;
 
 import android.content.Context;
+
+import com.pro3.planner.R;
 
 import java.util.Date;
 
