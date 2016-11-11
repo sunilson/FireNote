@@ -28,6 +28,8 @@
     <string name="menu_sort">Sort elements</string>
     <string name="menu_sort_ascending_date">Sort by Date Ascending</string>
     <string name="menu_sort_descending_date">Sort by Date Descending</string>
+    <string name="menu_sort_ascending_name">Sort by Name Ascending</string>
+    <string name="menu_sort_descending_name">Sort by Name Descending</string>
     <string name="login_loading">Logging in</string>
     <string name="add_checklist_item_title">Add new Element</string>
     <string name="confirm_add_dialog">Done</string>

@@ -48,8 +48,10 @@ public class MenuAlertDialog extends DialogFragment {
         contentListView.setAdapter(dialogAdapter);
 
         if(type.equals("sort")) {
-            dialogAdapter.add(getResources().getString(R.string.menu_sort_ascending_date), R.drawable.ic_done_all_black_24dp);
-            dialogAdapter.add(getResources().getString(R.string.menu_sort_descending_date), R.drawable.ic_note_black_24dp);
+            dialogAdapter.add(getResources().getString(R.string.menu_sort_ascending_date), R.drawable.ic_date_range_black_24dp);
+            dialogAdapter.add(getResources().getString(R.string.menu_sort_descending_date), R.drawable.ic_date_range_black_24dp);
+            dialogAdapter.add(getResources().getString(R.string.menu_sort_ascending_name), R.drawable.ic_text_fields_black_24dp);
+            dialogAdapter.add(getResources().getString(R.string.menu_sort_descending_name), R.drawable.ic_text_fields_black_24dp);
         } else if (type.equals("addElement")) {
             dialogAdapter.add(getResources().getString(R.string.element_checklist), R.drawable.ic_done_all_black_24dp);
             dialogAdapter.add(getResources().getString(R.string.element_note), R.drawable.ic_note_black_24dp);
@@ -95,6 +97,10 @@ public class MenuAlertDialog extends DialogFragment {
                     shortName = "dateAscending";
                 } else if (strName.equals(getString(R.string.menu_sort_descending_date))){
                     shortName = "dateDescending";
+                } else if (strName.equals(getResources().getString(R.string.menu_sort_descending_name))) {
+                    shortName = "nameDescending";
+                } else if (strName.equals(getResources().getString(R.string.menu_sort_ascending_name))) {
+                    shortName = "nameAscending";
                 }
 
                 hasSortingAdapter.getElementAdapter().sort(shortName);
