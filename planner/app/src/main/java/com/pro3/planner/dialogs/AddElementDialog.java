@@ -11,18 +11,15 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.pro3.planner.HasSortableList;
+import com.pro3.planner.Interfaces.HasSortableList;
 import com.pro3.planner.R;
 import com.pro3.planner.adapters.DialogMenuAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by linus_000 on 11.11.2016.
  */
 
-public class SortingAlertDialog extends DialogFragment {
+public class AddElementDialog extends DialogFragment {
 
     private DialogMenuAdapter sortingDialogAdapter;
     private AlertDialog dialog;
@@ -30,8 +27,6 @@ public class SortingAlertDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        List<String> bundleElements = new ArrayList<>();
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
@@ -78,11 +73,12 @@ public class SortingAlertDialog extends DialogFragment {
         return dialog;
     }
 
-    public static SortingAlertDialog newInstance(String title) {
-        SortingAlertDialog dialog = new SortingAlertDialog();
+    public static AddElementDialog newInstance(String title) {
+        AddElementDialog dialog = new AddElementDialog();
         Bundle args = new Bundle();
         args.putString("title", title);
         dialog.setArguments(args);
         return dialog;
     }
+
 }
