@@ -1,4 +1,4 @@
-package com.pro3.planner;
+package com.pro3.planner.baseClasses;
 
 /**
  * Created by linus_000 on 05.11.2016.

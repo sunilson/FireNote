@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="70dp" android:background="@color/defaultElementColor">
-
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="70dp"
+    android:padding="@dimen/checklist_list_vertical_margin"
+    android:background="@color/defaultElementColor"
+    android:foreground="?attr/selectableItemBackground"
+    >
     <TextView
-        style="@style/element_List_TextView"
+        style="@style/element_CheckList_TextView"
         android:layout_weight="3"
         android:text="Default"
         android:gravity="center"
         android:id="@+id/checkList_element_text"
         android:focusable="false"
-        />
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:fontFamily="sans-serif" />
     <LinearLayout
         style="@style/element_List_element"
         android:layout_weight="1"
@@ -19,10 +25,10 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:focusable="false"
+            android:background="@android:color/transparent"
             android:clickable="false"
             android:focusableInTouchMode="false"
+            android:visibility="visible"
             />
     </LinearLayout>
-
-
 </LinearLayout>

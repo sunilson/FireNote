@@ -1,4 +1,4 @@
-package com.pro3.planner;
+package com.pro3.planner.activities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
+import com.pro3.planner.baseClasses.Settings;
 
 /**
  * Created by linus_000 on 05.11.2016.
@@ -28,6 +29,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         //Initialize the Auth system and the Listener, which detects changes to the user state
         mAuth = FirebaseAuth.getInstance();
         initializeAuthListener();
+
+
     }
 
     private void initializeAuthListener() {

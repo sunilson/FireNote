@@ -1,6 +1,6 @@
-package com.pro3.planner;
+package com.pro3.planner.activities;
 
-import android.content.Context;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,12 +9,14 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,15 +26,25 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.pro3.planner.HasSortableList;
+import com.pro3.planner.R;
+import com.pro3.planner.dialogs.SortingAlertDialog;
+import com.pro3.planner.adapters.DialogMenuAdapter;
+import com.pro3.planner.adapters.ElementAdapter;
+import com.pro3.planner.baseClasses.Checklist;
+import com.pro3.planner.baseClasses.Element;
+import com.pro3.planner.baseClasses.Note;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements HasSortableList {
 
     private DatabaseReference mReference, mElementsReference, mSettingsReference;
     private ChildEventListener mChildEventListener, mSettingsListener;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private ElementAdapter elementAdapter;
+    private DialogMenuAdapter addElementDialogAdapter;
     private ListView listView;
+    private AlertDialog addElementDialog;
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
@@ -52,6 +64,14 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.app_name);
 
+        //Set up the Adapter for the ListView Display
+        elementAdapter = new ElementAdapter(this, R.layout.element_list_layout);
+        listView = (ListView) findViewById(R.id.elementList);
+        listView.setAdapter(elementAdapter);
+
+        //Initialize all Click listeners for Listview
+        setUpListView();
+
         //Initialize the Firebase Auth System and the User
         mAuth = FirebaseAuth.getInstance();
         initializeAuthListener();
@@ -61,15 +81,15 @@ public class MainActivity extends BaseActivity {
         if(user != null) {
             mReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
             initializeUserSettings();
+            if(mReference != null) {
+                //Initialize the Listener which detects changes in the note data
+                initializeElementsListener();
+
+                //Register ChildEventListener here so it's not added every time we switch Activity
+                mElementsReference = mReference.child("elements");
+                mElementsReference.addChildEventListener(mChildEventListener);
+            }
         }
-
-        //Set up the Adapter for the ListView Display
-        elementAdapter = new ElementAdapter(this, R.layout.element_list_layout);
-        listView = (ListView) findViewById(R.id.elementList);
-        listView.setAdapter(elementAdapter);
-
-        //Initialize all Click listeners for Listview
-        setUpListView();
 
         //The Button used to add a new Element
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -88,15 +108,7 @@ public class MainActivity extends BaseActivity {
         //Add the authStateListener
         mAuth.addAuthStateListener(mAuthListener);
 
-        //Initialize the Listener which detects changes in the note data
-        initializeElementsListener();
-
-        //Getting the Reference to the users elements
-        //Adding Child Listener to the Database reference of the users elements
         if(mReference != null) {
-            elementAdapter.clear();
-            mElementsReference = mReference.child("elements");
-            mElementsReference.addChildEventListener(mChildEventListener);
             mSettingsReference.addChildEventListener(mSettingsListener);
         }
     }
@@ -107,10 +119,6 @@ public class MainActivity extends BaseActivity {
 
         if(mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
-        }
-
-        if(mChildEventListener != null) {
-            mElementsReference.removeEventListener(mChildEventListener);
         }
 
         if(mSettingsListener != null) {
@@ -144,7 +152,8 @@ public class MainActivity extends BaseActivity {
             mAuth.signOut();
             return true;
         } else if (id == R.id.action_sort) {
-            mSettingsReference.child("mainElementSorting").setValue("dateAscending");
+            DialogFragment dialog = SortingAlertDialog.newInstance(getResources().getString(R.string.menu_sort));
+            dialog.show(getFragmentManager(), "dialog");
         }
         return super.onOptionsItemSelected(item);
     }
@@ -229,10 +238,6 @@ public class MainActivity extends BaseActivity {
                 SharedPreferences.Editor editor = prefs.edit();
                 editor.putString(dataSnapshot.getKey(), value);
                 editor.commit();
-
-                if (dataSnapshot.getKey().equals("mainElementSorting")) {
-                    elementAdapter.sort(value);
-                }
             }
 
             @Override
@@ -258,61 +263,59 @@ public class MainActivity extends BaseActivity {
     -----------------------------
      */
 
-    /**
-     * Dialog used to let the user choose which type of Element he wants to add
-     */
     private void initializeAddNoteDialogue() {
-        AlertDialog.Builder builderSingle = new AlertDialog.Builder(MainActivity.this);
-        builderSingle.setTitle(R.string.add_Note_Title);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-                MainActivity.this,
-                android.R.layout.select_dialog_item);
-        arrayAdapter.add(getString(R.string.element_note));
-        arrayAdapter.add(getString(R.string.element_checklist));
+        LayoutInflater inflater = getLayoutInflater();
+        View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
+        View content = inflater.inflate(R.layout.alertdialog_menu_listview, null);
 
-        builderSingle.setAdapter(
-                arrayAdapter,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Get the user input
-                        String strName = arrayAdapter.getItem(which);
-                        Element element = null;
-                        String defaultColor = prefs.getString("defaultColor", "empty");
+        ((TextView)title.findViewById(R.id.dialog_title)).setText(getResources().getString(R.string.add_Note_Title));
+        builder.setCustomTitle(title);
 
-                        //Initialize the correct element type
-                        if(strName.equals(getString(R.string.element_checklist))) {
-                            element = new Checklist(strName, getApplicationContext());
-                        } else if (strName.equals(getString(R.string.element_note))){
-                            element = new Note(strName, getApplicationContext());
+        ListView contentListView = (ListView) content.findViewById(R.id.dialog_menu_listview);
+        addElementDialogAdapter = new DialogMenuAdapter(this, R.layout.alertdialog_menu_list_layout);
+        contentListView.setAdapter(addElementDialogAdapter);
+        addElementDialogAdapter.add(getResources().getString(R.string.element_checklist), R.drawable.ic_done_all_black_24dp);
+        addElementDialogAdapter.add(getResources().getString(R.string.element_note), R.drawable.ic_note_black_24dp);
+
+        builder.setView(content);
+        addElementDialog = builder.show();
+
+        contentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String strName = addElementDialogAdapter.getName(position);
+                Element element = null;
+                String defaultColor = prefs.getString("defaultColor", "empty");
+
+                //Initialize the correct element type
+                if(strName.equals(getString(R.string.element_checklist))) {
+                    element = new Checklist(strName, getApplicationContext());
+                } else if (strName.equals(getString(R.string.element_note))){
+                    element = new Note(strName, getApplicationContext());
+                }
+
+                element.setColor(defaultColor);
+
+                if(element != null) {
+                    //Store the new element in the database
+                    addElementDialog.dismiss();
+                    DatabaseReference dRef = mElementsReference.push();
+                    element.setNoteID(dRef.getKey());
+                    dRef.setValue(element, new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                            if(databaseError == null) {
+                                Toast.makeText(getApplicationContext(), R.string.element_sync_success, Toast.LENGTH_SHORT).show();
+                            }
                         }
-
-                        element.setColor(defaultColor);
-
-                        if(element != null) {
-                            //Store the new element in the database
-                            DatabaseReference dRef = mElementsReference.push();
-                            element.setNoteID(dRef.getKey());
-                            dRef.setValue(element, new DatabaseReference.CompletionListener() {
-                                @Override
-                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                    if(databaseError == null) {
-                                        Toast.makeText(getApplicationContext(), R.string.element_sync_success, Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
-        builderSingle.show();
+                    });
+                }
+            }
+        });
     }
 
-    /**
-     * Dialog used to edit Element on long click
-     *
-     * @param position
-     */
     private void initializeEditElementDialog(final int position) {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(MainActivity.this);
         builderSingle.setTitle(R.string.edit_Note_Title);
@@ -347,15 +350,14 @@ public class MainActivity extends BaseActivity {
     -------------------------------
      */
 
-    /**
-     * initializes the listeners for the listview
-     */
     private void setUpListView() {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(MainActivity.this, ChecklistActivity.class);
-                i.putExtra("elementID", ((Element) elementAdapter.getItem(position)).getNoteID());
+                Element element = (Element) elementAdapter.getItem(position);
+                i.putExtra("elementID", element.getNoteID());
+                i.putExtra("elementTitle", element.getTitle());
                 startActivity(i);
             }
         });
@@ -375,13 +377,9 @@ public class MainActivity extends BaseActivity {
     ---------------------------
      */
 
-    /**
-     * Adds the listener to the settings of the firebase database
-     * Checks if all preferences are set and if not, replaces them with default values
-     */
     private void initializeUserSettings() {
         initializeSettingsListener();
-        prefs = this.getSharedPreferences(user.getUid(), Context.MODE_PRIVATE);
+        prefs = this.getSharedPreferences(user.getUid(), MODE_PRIVATE);
 
         mSettingsReference = mReference.child("settings");
         mSettingsReference.addChildEventListener(mSettingsListener);
@@ -402,11 +400,20 @@ public class MainActivity extends BaseActivity {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putString("mainElementSorting", "dateDescending");
             editor.commit();
-            mSettingsReference.child("mainElementSorting").setValue("dateDescending");
         }
     }
 
     public FirebaseUser getUser() {
         return this.user;
+    }
+
+    @Override
+    public ElementAdapter getElementAdapter() {
+        return elementAdapter;
+    }
+
+    @Override
+    public SharedPreferences getSharedPrefs() {
+        return prefs;
     }
 }

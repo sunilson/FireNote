@@ -5,7 +5,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorTertiary">@color/text_color</item>
+        <item name="android:textColorPrimary">@color/primary_text_color</item>
         <item name="android:windowBackground">@color/main_background_color</item>
     </style>
 
@@ -23,8 +23,21 @@
         <item name="android:layout_height">match_parent</item>
     </style>
 
-    <style name="element_List_TextView" parent ="element_List_element">
+    <style name="element_List_TextView" parent="element_List_element">
         <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="element_CheckList_TextView" parent="element_List_element">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="dialog_title_textview">
+     <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+
     </style>
 
 </resources>

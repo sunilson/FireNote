@@ -1,4 +1,4 @@
-package com.pro3.planner;
+package com.pro3.planner.baseClasses;
 
 import android.content.Context;
 

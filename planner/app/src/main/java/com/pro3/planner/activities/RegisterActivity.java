@@ -1,4 +1,4 @@
-package com.pro3.planner;
+package com.pro3.planner.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.pro3.planner.R;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 

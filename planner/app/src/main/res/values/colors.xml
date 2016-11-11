@@ -5,6 +5,8 @@
     <color name="colorAccent">#FF4081</color>
     <color name="defaultElementColor">#FFFFA5</color>
     <color name="main_background_color">#ecf0f1</color>
-    <color name="text_crossed_out">#50474747</color>
-    <color name="text_color">#8a000000</color>
+    <color name="text_crossed_out">#61000000</color>
+    <color name="primary_text_color">#dd000000</color>
+    <color name="secondary_text_color">#8a000000</color>
+    <color name="tint_white">#FFFFFF</color>
 </resources>

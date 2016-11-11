@@ -1,4 +1,4 @@
-package com.pro3.planner;
+package com.pro3.planner.views;
 
 import android.content.Context;
 import android.graphics.Paint;
@@ -8,6 +8,8 @@ import android.widget.CheckBox;
 import android.widget.Checkable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.pro3.planner.R;
 
 /**
  * Created by linus_000 on 07.11.2016.
@@ -39,7 +41,7 @@ public class ChecklistView extends LinearLayout implements Checkable {
             checkBox.setChecked(true);
         } else {
             textView.setPaintFlags(textView.getPaintFlags() & ~(Paint.STRIKE_THRU_TEXT_FLAG));
-            textView.setTextColor(getResources().getColor(R.color.text_color));
+            textView.setTextColor(getResources().getColor(R.color.primary_text_color));
             checkBox.setChecked(false);
         }
     }
