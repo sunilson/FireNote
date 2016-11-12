@@ -32,7 +32,7 @@
     </style>
 
     <style name="dialog_title_textview">
-     <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
+        <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>
         <item name="android:textSize">20sp</item>
     </style>
 

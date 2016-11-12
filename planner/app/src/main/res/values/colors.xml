@@ -9,4 +9,5 @@
     <color name="primary_text_color">#dd000000</color>
     <color name="secondary_text_color">#8a000000</color>
     <color name="tint_white">#FFFFFF</color>
+    <color name="notepad_underline">#ededed</color>
 </resources>

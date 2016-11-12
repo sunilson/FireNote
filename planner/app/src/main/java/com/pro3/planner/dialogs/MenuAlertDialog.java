@@ -125,9 +125,9 @@ public class MenuAlertDialog extends DialogFragment {
 
                 //Initialize the correct element type
                 if(strName.equals(getString(R.string.element_checklist))) {
-                    element = new Checklist(strName, getActivity());
+                    element = new Checklist("checklist", getActivity());
                 } else if (strName.equals(getString(R.string.element_note))){
-                    element = new Note(strName, getActivity());
+                    element = new Note("note", getActivity());
                 }
 
                 element.setColor(defaultColor);

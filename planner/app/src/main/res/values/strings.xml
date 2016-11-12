@@ -39,4 +39,5 @@
     <string name="delete_checklist_title">Delete Checklist</string>
     <string name="edit_element_title">Edit Element</string>
     <string name="delete_element">Delete</string>
+    <string name="title_activity_note">NoteActivity</string>
 </resources>

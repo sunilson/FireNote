@@ -263,8 +263,14 @@ public class MainActivity extends BaseActivity implements CanAddElement {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(MainActivity.this, ChecklistActivity.class);
                 Element element = (Element) elementAdapter.getItem(position);
+                Intent i = null;
+                if (element.getNoteType().equals("checklist")) {
+                    i = new Intent(MainActivity.this, ChecklistActivity.class);
+                } else if (element.getNoteType().equals("note")) {
+                    i = new Intent(MainActivity.this, NoteActivity.class);
+                }
+
                 i.putExtra("elementID", element.getNoteID());
                 i.putExtra("elementTitle", element.getTitle());
                 startActivity(i);
