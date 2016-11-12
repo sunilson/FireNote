@@ -1,5 +1,6 @@
 package com.pro3.planner.activities;
 
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,11 +26,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.pro3.planner.baseClasses.ChecklistElement;
+import com.pro3.planner.Interfaces.CanBeEdited;
 import com.pro3.planner.R;
 import com.pro3.planner.adapters.ChecklistAdapter;
+import com.pro3.planner.baseClasses.ChecklistElement;
+import com.pro3.planner.dialogs.EditElementDialog;
 
-public class ChecklistActivity extends BaseActivity {
+public class ChecklistActivity extends BaseActivity implements CanBeEdited{
 
     private ListView checkListView;
     private ChecklistAdapter checklistAdapter;
@@ -224,7 +227,8 @@ public class ChecklistActivity extends BaseActivity {
             this.finish();
             return true;
         } else if (id == R.id.checklist_menu_edit) {
-            initializeEditChecklistDialog();
+            DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_checklist_title), "checklist");
+            dialog.show(getFragmentManager(), "dialog");
         } else if (id == R.id.checklist_menu_delete) {
             initializeDeleteDialog();
         }
@@ -235,33 +239,6 @@ public class ChecklistActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_checklist, menu);
         return super.onCreateOptionsMenu(menu);
-    }
-
-    private void initializeEditChecklistDialog() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-        LayoutInflater inflater = getLayoutInflater();
-        View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
-        View content = inflater.inflate(R.layout.alertdialog_body_checklist_edit, null);
-        final TextView elementTitleTextView = (TextView) content.findViewById(R.id.checklist_edit_element_title);
-        ((TextView)title.findViewById(R.id.dialog_title)).setText(getResources().getString(R.string.edit_checklist_title));
-        elementTitleTextView.setText(getTitle());
-        alert.setCustomTitle(title);
-        alert.setView(content);
-
-        alert.setPositiveButton(R.string.confirm_add_dialog, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                String entry = elementTitleTextView.getText().toString();
-                mElementReference.child("title").setValue(entry);
-            }
-        });
-
-        alert.setNegativeButton(R.string.cancel_add_dialog, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-            }
-        });
-
-        alert.show();
     }
 
     private void initializeAddChecklistElementDialog() {
@@ -320,5 +297,10 @@ public class ChecklistActivity extends BaseActivity {
         });
 
         alert.show();
+    }
+
+    @Override
+    public DatabaseReference getElementReference() {
+        return mElementReference;
     }
 }
