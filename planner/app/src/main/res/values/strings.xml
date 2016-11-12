@@ -4,7 +4,7 @@
     <string name="action_logOut">Log Out</string>
     <string name="title_activity_login">Login to your account</string>
     <string name="title_activity_register">Register a new account</string>
-    <string name="add_Note_Title">Add a note</string>
+    <string name="add_Element_Title">Add a new Element</string>
     <string name="edit_Note_Title">Edit note</string>
     <string name="verification_error">"Account not verfied yet. Please click verification link"</string>
     <string name="error_register_empty">Please fill out all fields!</string>
@@ -28,6 +28,8 @@
     <string name="menu_sort">Sort elements</string>
     <string name="menu_sort_ascending_date">Sort by Date Ascending</string>
     <string name="menu_sort_descending_date">Sort by Date Descending</string>
+    <string name="menu_sort_ascending_name">Sort by Name Ascending</string>
+    <string name="menu_sort_descending_name">Sort by Name Descending</string>
     <string name="login_loading">Logging in</string>
     <string name="add_checklist_item_title">Add new Element</string>
     <string name="confirm_add_dialog">Done</string>
@@ -35,4 +37,7 @@
     <string name="edit_checklist_title">Edit checklist</string>
     <string name="title_activity_edit_checklist">EditChecklistActivity</string>
     <string name="delete_checklist_title">Delete Checklist</string>
+    <string name="edit_element_title">Edit Element</string>
+    <string name="delete_element">Delete</string>
+    <string name="title_activity_note">NoteActivity</string>
 </resources>

@@ -70,6 +70,10 @@ public class ElementAdapter extends ArrayAdapter {
             sortByDateDescending();
         } else if (sortMethod.equals("dateAscending")) {
             sortByDateAscending();
+        } else if (sortMethod.equals("nameDescending")) {
+            sortByNameDescending();
+        } else if (sortMethod.equals("nameAscending")) {
+            sortByNameAscending();
         }
     }
 
@@ -100,6 +104,42 @@ public class ElementAdapter extends ArrayAdapter {
                     return 1;
                 } else if (o1.getCreationDate().before(o2.getCreationDate())) {
                     return -1;
+                }
+                return 0;
+            }
+        };
+
+        Collections.sort(list, comp);
+        notifyDataSetChanged();
+    }
+
+    private void sortByNameDescending() {
+        Comparator<Element> comp = new Comparator<Element>() {
+            @Override
+            public int compare(Element o1, Element o2) {
+
+                if(o1.getTitle().compareTo(o2.getTitle()) < 0) {
+                    return 1;
+                } else if (o1.getTitle().compareTo(o2.getTitle()) > 0) {
+                    return -1;
+                }
+                return 0;
+            }
+        };
+
+        Collections.sort(list, comp);
+        notifyDataSetChanged();
+    }
+
+    private void sortByNameAscending() {
+        Comparator<Element> comp = new Comparator<Element>() {
+            @Override
+            public int compare(Element o1, Element o2) {
+
+                if(o1.getTitle().compareTo(o2.getTitle()) < 0) {
+                    return -1;
+                } else if (o1.getTitle().compareTo(o2.getTitle()) > 0) {
+                    return 1;
                 }
                 return 0;
             }

@@ -22,10 +22,10 @@ public class Element {
     public Element(String noteType, Context context) {
         this.noteType = noteType;
 
-        if(noteType.equals(context.getResources().getString(R.string.element_checklist))) {
+        if(noteType.equals("checklist")) {
             this.title = "New Checklist";
             icon = R.drawable.ic_done_all_black_24dp;
-        } else if (noteType.equals(context.getResources().getString(R.string.element_note))) {
+        } else if (noteType.equals("note")) {
             this.title = "New Note";
             icon = R.drawable.ic_note_black_24dp;
         } else {

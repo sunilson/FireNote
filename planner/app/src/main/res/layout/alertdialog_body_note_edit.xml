@@ -13,7 +13,7 @@
         android:inputType="textPersonName"
         android:text="Test"
         android:ems="10"
-        android:id="@+id/checklist_edit_element_title"
+        android:id="@+id/note_edit_element_title"
         />
 
 </LinearLayout>
