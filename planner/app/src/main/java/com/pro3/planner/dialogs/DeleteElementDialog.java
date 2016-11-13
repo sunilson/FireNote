@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
+
 import com.pro3.planner.Interfaces.CanBeEdited;
 import com.pro3.planner.R;
 
@@ -16,11 +16,11 @@ import com.pro3.planner.R;
  * Created by linus_000 on 12.11.2016.
  */
 
-public class EditElementDialog extends DialogFragment {
+public class DeleteElementDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        String type = getArguments().getString("type");
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -30,26 +30,16 @@ public class EditElementDialog extends DialogFragment {
         titleText.setText(getArguments().getString("title"));
         builder.setCustomTitle(title);
 
-        View content = null;
-        int editTitleResource = 0;
-
-        if (type.equals("checklist")) {
-            content = inflater.inflate(R.layout.alertdialog_body_checklist_edit, null);
-            editTitleResource = R.id.checklist_edit_element_title;
-        } else if (type.equals("note")) {
-            content = inflater.inflate(R.layout.alertdialog_body_note_edit, null);
-            editTitleResource = R.id.note_edit_element_title;
-        }
-
-        final EditText editTitleText = (EditText) content.findViewById(editTitleResource);
-        editTitleText.setText(getActivity().getTitle());
+        View content = inflater.inflate(R.layout.alertdialog_body_element_delete, null);
+        ((TextView) content.findViewById(R.id.dialog_delete_element_text)).setText(getActivity().getResources().getString(R.string.delete_dialog_confirm_text) + " '" + getArguments().getString("elementTitle") + "'");
         builder.setView(content);
 
-        builder.setPositiveButton(R.string.confirm_add_dialog, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.confirm_delete_dialog, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 CanBeEdited canBeEdited = (CanBeEdited) getActivity();
-                String entry = editTitleText.getText().toString();
-                canBeEdited.getElementReference().child("title").setValue(entry);
+                canBeEdited.getElementReference().removeValue();
+                dialog.dismiss();
+                getActivity().finish();
             }
         });
 
@@ -61,12 +51,14 @@ public class EditElementDialog extends DialogFragment {
         return builder.create();
     }
 
-    public static EditElementDialog newInstance(String title, String type) {
-        EditElementDialog dialog = new EditElementDialog();
+    public static DeleteElementDialog newInstance(String title, String elementTitle) {
+        DeleteElementDialog dialog = new DeleteElementDialog();
         Bundle args = new Bundle();
         args.putString("title", title);
-        args.putString("type", type);
+        args.putString("elementTitle", elementTitle);
         dialog.setArguments(args);
         return dialog;
     }
+
+
 }

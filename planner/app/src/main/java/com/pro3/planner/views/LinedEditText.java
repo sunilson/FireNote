@@ -1,4 +1,4 @@
-package com.pro3.planner;
+package com.pro3.planner.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,6 +7,8 @@ import android.graphics.Rect;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.widget.EditText;
+
+import com.pro3.planner.R;
 
 public class LinedEditText extends EditText {
     private Rect mRect;

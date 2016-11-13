@@ -17,7 +17,7 @@
     tools:context="com.pro3.planner.activities.NoteActivity"
     tools:showIn="@layout/activity_note">
 
-    <com.pro3.planner.LinedEditText
+    <com.pro3.planner.views.LinedEditText
         android:paddingBottom="@dimen/notePad_padding_vertical"
         android:paddingLeft="@dimen/notePad_padding_horizontal"
         android:paddingRight="@dimen/notePad_padding_horizontal"

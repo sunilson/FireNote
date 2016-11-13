@@ -30,6 +30,7 @@ import com.pro3.planner.Interfaces.CanBeEdited;
 import com.pro3.planner.R;
 import com.pro3.planner.adapters.ChecklistAdapter;
 import com.pro3.planner.baseClasses.ChecklistElement;
+import com.pro3.planner.dialogs.DeleteElementDialog;
 import com.pro3.planner.dialogs.EditElementDialog;
 
 public class ChecklistActivity extends BaseActivity implements CanBeEdited{
@@ -230,7 +231,8 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
             DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_checklist_title), "checklist");
             dialog.show(getFragmentManager(), "dialog");
         } else if (id == R.id.checklist_menu_delete) {
-            initializeDeleteDialog();
+            DialogFragment dialogFragment = DeleteElementDialog.newInstance(getResources().getString(R.string.delete_checklist_title), getTitle().toString());
+            dialogFragment.show(getFragmentManager(), "dialog");
         }
         return super.onOptionsItemSelected(item);
     }
@@ -259,35 +261,6 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
                 String elementID = dRef.getKey();
                 ChecklistElement checklistElement = new ChecklistElement(entry, elementID);
                 dRef.setValue(checklistElement);
-            }
-        });
-
-        alert.setNegativeButton(R.string.cancel_add_dialog, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-            }
-        });
-
-        alert.show();
-    }
-
-    private void initializeDeleteDialog() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-        LayoutInflater inflater = getLayoutInflater();
-        View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
-        ((TextView)title.findViewById(R.id.dialog_title)).setText(getResources().getString(R.string.delete_checklist_title));
-        alert.setCustomTitle(title);
-
-        alert.setPositiveButton(R.string.confirm_add_dialog, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                mElementReference.removeValue(new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                        Toast.makeText(getApplicationContext(), "Successfully deleted and synced Element", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                finish();
             }
         });
 
