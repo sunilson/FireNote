@@ -191,6 +191,7 @@ public class ElementAdapter extends ArrayAdapter {
             row = layoutInflater.inflate(resource, parent, false);
             elementHolder = new ElementHolder();
             elementHolder.elementDate = (TextView) row.findViewById(R.id.elementList_date);
+            elementHolder.elementCategory = (TextView) row.findViewById(R.id.elementList_category);
             elementHolder.elementIcon = (ImageView) row.findViewById(R.id.elementList_icon);
             elementHolder.elementTitle = (TextView) row.findViewById(R.id.elementList_title);
             row.setTag(elementHolder);
@@ -203,6 +204,7 @@ public class ElementAdapter extends ArrayAdapter {
         elementHolder.elementIcon.setImageResource(element.getIcon());
         DateFormat df = new SimpleDateFormat("dd. MMM.", Locale.getDefault());
         elementHolder.elementDate.setText(df.format(element.getCreationDate()));
+        elementHolder.elementCategory.setText(element.getCategory());
 
 
         String elementColor = element.getColor();
@@ -216,7 +218,7 @@ public class ElementAdapter extends ArrayAdapter {
     }
 
     static class ElementHolder {
-        TextView elementTitle, elementDate;
+        TextView elementTitle, elementDate, elementCategory;
         ImageView elementIcon;
     }
 }

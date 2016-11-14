@@ -33,7 +33,7 @@ public class Element {
             icon = R.drawable.ic_toc_black_24dp;
         }
         this.creationDate = new Date();
-        this.category = "Default";
+        this.category = context.getResources().getString(R.string.default_category);
     }
 
     public Element() {

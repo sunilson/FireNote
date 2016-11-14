@@ -10,14 +10,18 @@ import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Scroller;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.pro3.planner.Interfaces.CanBeEdited;
 import com.pro3.planner.R;
 import com.pro3.planner.dialogs.DeleteElementDialog;
@@ -27,9 +31,10 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
 
     private EditText notePad;
     private String noteTitle;
+    private String noteText;
 
-    private DatabaseReference mElementReference;
-
+    private DatabaseReference mElementReference, mTextReference;
+    private ValueEventListener mTextValueListener;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -44,6 +49,8 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         Intent i = getIntent();
         noteTitle = i.getStringExtra("elementTitle");
@@ -64,6 +71,7 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
         notePad.setScroller(new Scroller(this));
         notePad.setVerticalScrollBarEnabled(true);
         notePad.setMovementMethod(new ScrollingMovementMethod());
+
     }
 
     @Override
@@ -71,6 +79,13 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
         super.onStart();
 
         mAuth.addAuthStateListener(mAuthListener);
+
+        initializeTextListener();
+
+        if (mElementReference != null) {
+            mTextReference = mElementReference.child("text");
+            mTextReference.addValueEventListener(mTextValueListener);
+        }
     }
 
     @Override
@@ -80,11 +95,14 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
         if(mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
+
+        if (mTextValueListener != null && mTextReference != null) {
+            mTextReference.removeEventListener(mTextValueListener);
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
@@ -99,6 +117,22 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void initializeTextListener() {
+        mTextValueListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String text = dataSnapshot.getValue(String.class);
+                noteText = text;
+                notePad.setText(text);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
     }
 
     private void initializeAuthListener() {

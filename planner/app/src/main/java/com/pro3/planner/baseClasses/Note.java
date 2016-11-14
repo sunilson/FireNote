@@ -13,6 +13,8 @@ public class Note extends Element{
 
     public Note(String noteType, Context context) {
         super(noteType, context);
+
+        this.text = "Enter text here";
     }
 
     public void setText(String text) {

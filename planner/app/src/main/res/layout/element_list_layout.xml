@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="wrap_content"
+    android:minHeight="70dp"
     android:background="@color/defaultElementColor"
     android:foreground="?attr/selectableItemBackground">
 
@@ -16,13 +16,43 @@
         android:id="@+id/elementList_icon"
         />
 
-    <TextView
-        style="@style/element_List_TextView"
+    <LinearLayout
+        android:layout_width="0px"
+        android:layout_height="match_parent"
         android:layout_weight="3"
-        android:gravity="center_vertical"
-        android:id="@+id/elementList_title"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:fontFamily="sans-serif" />
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:gravity="bottom"
+            android:layout_marginTop="6dp"
+            android:id="@+id/elementList_title"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:fontFamily="sans-serif"
+            android:textSize="18sp"
+            android:text="bla"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="1"
+            android:gravity="top"
+            android:id="@+id/elementList_category"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:fontFamily="sans-serif"
+            android:textSize="12sp"
+            android:text="bla"
+            android:textColor="@color/text_crossed_out"
+            />
+
+    </LinearLayout>
+
+
 
     <TextView
         style="@style/element_List_TextView"

@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.pro3.planner.Interfaces.CanAddElement;
 import com.pro3.planner.R;
-import com.pro3.planner.adapters.DialogMenuAdapter;
 import com.pro3.planner.adapters.ElementAdapter;
 import com.pro3.planner.baseClasses.Element;
 import com.pro3.planner.dialogs.MenuAlertDialog;
@@ -36,9 +34,7 @@ public class MainActivity extends BaseActivity implements CanAddElement {
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private ElementAdapter elementAdapter;
-    private DialogMenuAdapter addElementDialogAdapter;
     private ListView listView;
-    private AlertDialog addElementDialog;
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
@@ -155,6 +151,9 @@ public class MainActivity extends BaseActivity implements CanAddElement {
             mAuth.signOut();
             return true;
         } else if (id == R.id.action_sort) {
+            DialogFragment dialog = MenuAlertDialog.newInstance(getResources().getString(R.string.menu_sort), "sort", 0);
+            dialog.show(getFragmentManager(), "dialog");
+        } else if (id == R.id.main_element_sort) {
             DialogFragment dialog = MenuAlertDialog.newInstance(getResources().getString(R.string.menu_sort), "sort", 0);
             dialog.show(getFragmentManager(), "dialog");
         }

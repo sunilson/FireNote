@@ -43,4 +43,5 @@
     <string name="title_activity_note">NoteActivity</string>
     <string name="confirm_delete_dialog">Delete</string>
     <string name="delete_dialog_confirm_text">Do you really want to delete </string>
+    <string name="default_category">Default Category</string>
 </resources>
