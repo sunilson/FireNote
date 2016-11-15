@@ -4,6 +4,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -38,6 +39,7 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
     private ListView checkListView;
     private ChecklistAdapter checklistAdapter;
     private String elementID;
+    private int elementColor;
 
     private DatabaseReference mElementReference, mChecklistElementsReference, mSettingsReference, mTitleReference;
     private ChildEventListener mChecklistElementsListener, mSettingsListener;
@@ -56,6 +58,7 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         //Firebase Authentication
         mAuth = FirebaseAuth.getInstance();
         initializeAuthListener();
@@ -64,7 +67,10 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
         //Get Element ID from clicked element and set Title
         Intent i = getIntent();
         elementID = i.getStringExtra("elementID");
+        elementColor = i.getIntExtra("elementColor", 1);
         setTitle(i.getStringExtra("elementTitle"));
+
+        setColors();
 
         //Firebase Reference to the Checklist element we are currently in
         if(user != null) {
@@ -275,5 +281,11 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
     @Override
     public DatabaseReference getElementReference() {
         return mElementReference;
+    }
+
+    private void setColors() {
+        ColorDrawable colorDrawable = new ColorDrawable();
+        colorDrawable.setColor(elementColor);
+        getSupportActionBar().setBackgroundDrawable(colorDrawable);
     }
 }

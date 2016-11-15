@@ -1,8 +1,6 @@
 package com.pro3.planner.adapters;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -12,9 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.pro3.planner.baseClasses.Element;
-import com.pro3.planner.activities.MainActivity;
 import com.pro3.planner.R;
+import com.pro3.planner.baseClasses.Element;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -206,14 +203,9 @@ public class ElementAdapter extends ArrayAdapter {
         elementHolder.elementDate.setText(df.format(element.getCreationDate()));
         elementHolder.elementCategory.setText(element.getCategory());
 
+        int elementColor = element.getColor();
+        row.setBackgroundColor(elementColor);
 
-        String elementColor = element.getColor();
-        if(elementColor != null) {
-            row.setBackgroundColor(Color.parseColor(element.getColor()));
-        } else {
-            SharedPreferences prefs = getContext().getSharedPreferences(((MainActivity) getContext()).getUser().getUid(), Context.MODE_PRIVATE);
-            row.setBackgroundColor(Color.parseColor(prefs.getString("defaultColor", "#FFFFA5")));
-        }
         return row;
     }
 

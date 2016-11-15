@@ -3,6 +3,7 @@ package com.pro3.planner.activities;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +33,7 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
     private EditText notePad;
     private String noteTitle;
     private String noteText;
+    private int elementColor;
 
     private DatabaseReference mElementReference, mTextReference;
     private ValueEventListener mTextValueListener;
@@ -56,6 +58,9 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
         noteTitle = i.getStringExtra("elementTitle");
         setTitle(noteTitle);
         elementID = i.getStringExtra("elementID");
+        elementColor = i.getIntExtra("elementColor", 1);
+
+        setColors();
 
         //Firebase Authentication
         mAuth = FirebaseAuth.getInstance();
@@ -171,5 +176,11 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
     @Override
     public DatabaseReference getElementReference() {
         return mElementReference;
+    }
+
+    private void setColors() {
+        ColorDrawable colorDrawable = new ColorDrawable();
+        colorDrawable.setColor(elementColor);
+        getSupportActionBar().setBackgroundDrawable(colorDrawable);
     }
 }

@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -27,18 +28,23 @@ import com.pro3.planner.adapters.ElementAdapter;
 import com.pro3.planner.baseClasses.Element;
 import com.pro3.planner.dialogs.MenuAlertDialog;
 
+import java.util.HashMap;
+
 public class MainActivity extends BaseActivity implements CanAddElement {
 
-    private DatabaseReference mReference, mElementsReference, mSettingsReference;
-    private ChildEventListener mChildEventListener, mSettingsListener;
+    private DatabaseReference mReference, mElementsReference, mSettingsReference, mCategoryReference;
+    private ChildEventListener mChildEventListener, mSettingsListener, mCategoryListener;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private ElementAdapter elementAdapter;
+    private ArrayAdapter<CharSequence> categoryAdapter;
     private ListView listView;
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private SharedPreferences prefs;
+
+    private HashMap<String, String> categories = new HashMap<>();
 
     /*
     ------------------------
@@ -72,12 +78,20 @@ public class MainActivity extends BaseActivity implements CanAddElement {
             mReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
             initializeUserSettings();
             if(mReference != null) {
+
                 //Initialize the Listener which detects changes in the note data
                 initializeElementsListener();
 
                 //Register ChildEventListener here so it's not added every time we switch Activity
                 mElementsReference = mReference.child("elements");
                 mElementsReference.addChildEventListener(mChildEventListener);
+
+                initializeCategoryListener();
+
+                //Category Reference
+                mCategoryReference = mReference.child("categories");
+                mCategoryReference.addChildEventListener(mCategoryListener);
+
             }
         }
 
@@ -259,6 +273,42 @@ public class MainActivity extends BaseActivity implements CanAddElement {
         };
     }
 
+    private void initializeCategoryListener() {
+
+        mCategoryListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String category = dataSnapshot.getValue(String.class);
+                categoryAdapter.add(category);
+                categoryAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                String category = dataSnapshot.getValue(String.class);
+                categoryAdapter.remove(category);
+                categoryAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+
+        categoryAdapter = new ArrayAdapter<>(this, R.layout.spinner_item);
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+    }
 
     /*
     -------------------------------
@@ -280,6 +330,7 @@ public class MainActivity extends BaseActivity implements CanAddElement {
 
                 i.putExtra("elementID", element.getNoteID());
                 i.putExtra("elementTitle", element.getTitle());
+                i.putExtra("elementColor", element.getColor());
                 startActivity(i);
             }
         });
@@ -326,10 +377,6 @@ public class MainActivity extends BaseActivity implements CanAddElement {
         }
     }
 
-    public FirebaseUser getUser() {
-        return this.user;
-    }
-
     /*
     ---------------------------
     ---- Interface methods ----
@@ -349,5 +396,10 @@ public class MainActivity extends BaseActivity implements CanAddElement {
     @Override
     public DatabaseReference getElementsReference() {
         return mElementsReference;
+    }
+
+    @Override
+    public ArrayAdapter<CharSequence> getCategoryAdapter() {
+        return categoryAdapter;
     }
 }

@@ -11,8 +11,8 @@ public class Note extends Element{
     private String text;
     private Reminder reminder;
 
-    public Note(String noteType, Context context) {
-        super(noteType, context);
+    public Note(String noteType, String title, Context context) {
+        super(noteType, title, context);
 
         this.text = "Enter text here";
     }

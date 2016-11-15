@@ -10,4 +10,14 @@
     <color name="secondary_text_color">#8a000000</color>
     <color name="tint_white">#FFFFFF</color>
     <color name="notepad_underline">#ededed</color>
+
+    <color name="note_color_1">#e74c3c</color>
+    <color name="note_color_2">#e67e22</color>
+    <color name="note_color_3">#f39c12</color>
+    <color name="note_color_4">#f1c40f</color>
+    <color name="note_color_5">#FFFFA5</color>
+    <color name="note_color_6">#9b59b6</color>
+    <color name="note_color_7">#3498db</color>
+    <color name="note_color_8">#2ecc71</color>
+    <color name="note_color_9">#1abc9c</color>
 </resources>
