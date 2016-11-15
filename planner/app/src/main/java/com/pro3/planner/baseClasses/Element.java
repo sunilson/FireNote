@@ -15,25 +15,29 @@ public class Element {
     private String noteID;
     private String noteType;
     private String category;
-    private String color;
+    private int color;
     private int icon;
     private Date creationDate;
 
-    public Element(String noteType, Context context) {
+    public Element(String noteType, String title, Context context) {
         this.noteType = noteType;
 
-        if(noteType.equals("checklist")) {
-            this.title = "New Checklist";
-            icon = R.drawable.ic_done_all_black_24dp;
-        } else if (noteType.equals("note")) {
-            this.title = "New Note";
-            icon = R.drawable.ic_note_black_24dp;
+        if(title != null) {
+            this.title = title;
         } else {
             this.title = "New Element";
+        }
+
+        if(noteType.equals("checklist")) {
+            icon = R.drawable.ic_done_all_black_24dp;
+        } else if (noteType.equals("note")) {
+            icon = R.drawable.ic_note_black_24dp;
+        } else {
             icon = R.drawable.ic_toc_black_24dp;
         }
+
         this.creationDate = new Date();
-        this.category = "Default";
+        this.category = context.getResources().getString(R.string.default_category);
     }
 
     public Element() {
@@ -64,11 +68,11 @@ public class Element {
         this.noteID = noteID;
     }
 
-    public String getColor() {
+    public int getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(int color) {
         this.color = color;
     }
 

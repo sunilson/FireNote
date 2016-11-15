@@ -28,16 +28,21 @@
         <activity
             android:name=".activities.RegisterActivity"
             android:label="@string/title_activity_register"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".activities.LoginActivity"
+            />
         <activity
             android:name=".activities.ChecklistActivity"
             android:label="@string/title_activity_checklist"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".activities.MainActivity"
+            />
         <activity
             android:name=".activities.NoteActivity"
             android:label="@string/title_activity_note"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateVisible|adjustResize"
+            android:parentActivityName=".activities.MainActivity"
             ></activity>
     </application>
 

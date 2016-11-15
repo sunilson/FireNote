@@ -3,6 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.pro3.planner.activities.MainActivity">
     <item
+        android:title="Sort Elements"
+        android:id="@+id/main_element_sort"
+        android:icon="@drawable/ic_swap_vert_white_24dp"
+        app:showAsAction="ifRoom"
+        />
+    <item
+        android:title="Visibility"
+        android:id="@+id/main_element_visibility"
+        android:icon="@drawable/ic_visibility_white_24dp"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
         android:id="@+id/action_logOut"
         android:orderInCategory="100"
         android:title="@string/menu_log_out"

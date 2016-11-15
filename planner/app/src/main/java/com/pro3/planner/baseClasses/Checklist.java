@@ -14,8 +14,8 @@ public class Checklist extends Element{
     private List checklistElements;
     private Reminder reminder;
 
-    public Checklist(String noteType, Context context) {
-        super(noteType, context);
+    public Checklist(String noteType, String title, Context context) {
+        super(noteType, title, context);
         checklistElements = new ArrayList();
     }
 

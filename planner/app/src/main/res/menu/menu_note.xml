@@ -10,7 +10,7 @@
         app:showAsAction="ifRoom"
         />
     <item
-        android:title="Edit Checklist"
+        android:title="Delete Checklist"
         android:id="@+id/note_menu_delete"
         android:icon="@drawable/checklist_menu_delete_icon"
         app:showAsAction="ifRoom"

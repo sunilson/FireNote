@@ -12,7 +12,7 @@ public class Bundle extends Element {
 
     private List elements;
 
-    public Bundle(String noteType, Context context) {
-        super(noteType, context);
+    public Bundle(String noteType, String title, Context context) {
+        super(noteType, title, context);
     }
 }

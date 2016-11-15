@@ -37,7 +37,13 @@
     <string name="edit_checklist_title">Edit checklist</string>
     <string name="title_activity_edit_checklist">EditChecklistActivity</string>
     <string name="delete_checklist_title">Delete Checklist</string>
+    <string name="delete_note_title">Delete Note</string>
     <string name="edit_element_title">Edit Element</string>
     <string name="delete_element">Delete</string>
     <string name="title_activity_note">NoteActivity</string>
+    <string name="confirm_delete_dialog">Delete</string>
+    <string name="delete_dialog_confirm_text">Do you really want to delete </string>
+    <string name="default_category">Default Category</string>
+    <string name="dialog_enter_title">Enter title here</string>
+    <string name="dialog_enter_category">Enter category here</string>
 </resources>

@@ -4,6 +4,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -30,6 +31,7 @@ import com.pro3.planner.Interfaces.CanBeEdited;
 import com.pro3.planner.R;
 import com.pro3.planner.adapters.ChecklistAdapter;
 import com.pro3.planner.baseClasses.ChecklistElement;
+import com.pro3.planner.dialogs.DeleteElementDialog;
 import com.pro3.planner.dialogs.EditElementDialog;
 
 public class ChecklistActivity extends BaseActivity implements CanBeEdited{
@@ -37,6 +39,7 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
     private ListView checkListView;
     private ChecklistAdapter checklistAdapter;
     private String elementID;
+    private int elementColor;
 
     private DatabaseReference mElementReference, mChecklistElementsReference, mSettingsReference, mTitleReference;
     private ChildEventListener mChecklistElementsListener, mSettingsListener;
@@ -55,6 +58,7 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
         //Firebase Authentication
         mAuth = FirebaseAuth.getInstance();
         initializeAuthListener();
@@ -63,7 +67,10 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
         //Get Element ID from clicked element and set Title
         Intent i = getIntent();
         elementID = i.getStringExtra("elementID");
+        elementColor = i.getIntExtra("elementColor", 1);
         setTitle(i.getStringExtra("elementTitle"));
+
+        setColors();
 
         //Firebase Reference to the Checklist element we are currently in
         if(user != null) {
@@ -230,7 +237,8 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
             DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_checklist_title), "checklist");
             dialog.show(getFragmentManager(), "dialog");
         } else if (id == R.id.checklist_menu_delete) {
-            initializeDeleteDialog();
+            DialogFragment dialogFragment = DeleteElementDialog.newInstance(getResources().getString(R.string.delete_checklist_title), getTitle().toString());
+            dialogFragment.show(getFragmentManager(), "dialog");
         }
         return super.onOptionsItemSelected(item);
     }
@@ -270,37 +278,14 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
         alert.show();
     }
 
-    private void initializeDeleteDialog() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-        LayoutInflater inflater = getLayoutInflater();
-        View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
-        ((TextView)title.findViewById(R.id.dialog_title)).setText(getResources().getString(R.string.delete_checklist_title));
-        alert.setCustomTitle(title);
-
-        alert.setPositiveButton(R.string.confirm_add_dialog, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                mElementReference.removeValue(new DatabaseReference.CompletionListener() {
-                    @Override
-                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                        Toast.makeText(getApplicationContext(), "Successfully deleted and synced Element", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                finish();
-            }
-        });
-
-        alert.setNegativeButton(R.string.cancel_add_dialog, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-            }
-        });
-
-        alert.show();
-    }
-
     @Override
     public DatabaseReference getElementReference() {
         return mElementReference;
+    }
+
+    private void setColors() {
+        ColorDrawable colorDrawable = new ColorDrawable();
+        colorDrawable.setColor(elementColor);
+        getSupportActionBar().setBackgroundDrawable(colorDrawable);
     }
 }

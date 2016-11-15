@@ -1,5 +1,7 @@
 package com.pro3.planner.Interfaces;
 
+import android.widget.ArrayAdapter;
+
 import com.google.firebase.database.DatabaseReference;
 
 /**
@@ -9,5 +11,7 @@ import com.google.firebase.database.DatabaseReference;
 public interface CanAddElement extends HasSortableList {
 
     public DatabaseReference getElementsReference();
+
+    public ArrayAdapter<CharSequence> getCategoryAdapter();
 
 }
