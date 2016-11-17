@@ -8,6 +8,8 @@
     <color name="text_crossed_out">#61000000</color>
     <color name="primary_text_color">#dd000000</color>
     <color name="secondary_text_color">#8a000000</color>
+    <color name="white_text_color">#FFFFFF</color>
+    <color name="white_text_color_sub">#99FFFFFF</color>
     <color name="tint_white">#FFFFFF</color>
     <color name="notepad_underline">#ededed</color>
 

@@ -10,6 +10,12 @@
         app:showAsAction="ifRoom"
         />
     <item
+        android:title="Checklist Settings"
+        android:id="@+id/checklist_menu_settings"
+        android:icon="@drawable/checklist_menu_settings_icon"
+        app:showAsAction="ifRoom"
+        android:visible="false" />
+    <item
         android:title="Edit Checklist"
         android:id="@+id/checklist_menu_delete"
         android:icon="@drawable/checklist_menu_delete_icon"

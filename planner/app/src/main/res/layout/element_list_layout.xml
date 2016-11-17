@@ -33,6 +33,7 @@
             android:layout_marginTop="6dp"
             android:id="@+id/elementList_title"
             android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textColor="@color/white_text_color"
             android:fontFamily="sans-serif"
             android:textSize="18sp"
             android:text="bla"
@@ -47,12 +48,10 @@
             android:fontFamily="sans-serif"
             android:textSize="12sp"
             android:text="bla"
-            android:textColor="@color/text_crossed_out"
+            android:textColor="@color/white_text_color_sub"
             />
 
     </LinearLayout>
-
-
 
     <TextView
         style="@style/element_List_TextView"
@@ -60,6 +59,7 @@
         android:gravity="center"
         android:textSize="14sp"
         android:id="@+id/elementList_date"
+        android:textColor="@color/white_text_color"
         android:fontFamily="sans-serif" />
 
 </LinearLayout>

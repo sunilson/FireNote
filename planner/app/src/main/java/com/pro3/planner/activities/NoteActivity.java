@@ -1,6 +1,7 @@
 package com.pro3.planner.activities;
 
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
@@ -9,9 +10,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Scroller;
 import android.widget.Toast;
@@ -34,6 +37,8 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
     private String noteTitle;
     private String noteText;
     private int elementColor;
+    private boolean editMode;
+    private MenuItem editButton, settingsButton, doneButton;
 
     private DatabaseReference mElementReference, mTextReference;
     private ValueEventListener mTextValueListener;
@@ -104,6 +109,8 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
         if (mTextValueListener != null && mTextReference != null) {
             mTextReference.removeEventListener(mTextValueListener);
         }
+
+        stopEditMode();
     }
 
     @Override
@@ -111,17 +118,64 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
-            this.finish();
+            if (editMode) {
+                stopEditMode();
+            } else {
+                this.finish();
+            }
             return true;
         } else if (id == R.id.note_menu_edit) {
-            DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_checklist_title), "note");
-            dialog.show(getFragmentManager(), "dialog");
+            startEditMode();
         } else if (id == R.id.note_menu_delete) {
             DialogFragment dialogFragment = DeleteElementDialog.newInstance(getResources().getString(R.string.delete_note_title), getTitle().toString());
             dialogFragment.show(getFragmentManager(), "dialog");
+        } else if (id == R.id.note_menu_settings) {
+            DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_checklist_title), "note");
+            dialog.show(getFragmentManager(), "dialog");
+        } else if (id == R.id.note_menu_done) {
+            stopEditMode();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startEditMode() {
+        if (!editMode) {
+            editMode = true;
+            editButton.setVisible(false);
+            settingsButton.setVisible(true);
+            doneButton.setVisible(true);
+            notePad.setEnabled(true);
+            notePad.setFocusableInTouchMode(true);
+            notePad.setFocusable(true);
+            notePad.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(notePad, InputMethodManager.SHOW_IMPLICIT);
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+    }
+
+    private void stopEditMode() {
+        if (editMode) {
+            editMode = false;
+            editButton.setVisible(true);
+            settingsButton.setVisible(false);
+            doneButton.setVisible(false);
+            notePad.setEnabled(false);
+            mTextReference.setValue(notePad.getText().toString());
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (editMode) {
+                stopEditMode();
+                return true;
+            }
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
     private void initializeTextListener() {
@@ -170,6 +224,10 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_note, menu);
+
+        editButton = menu.findItem(R.id.note_menu_edit);
+        settingsButton = menu.findItem(R.id.note_menu_settings);
+        doneButton = menu.findItem(R.id.note_menu_done);
         return super.onCreateOptionsMenu(menu);
     }
 

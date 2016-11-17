@@ -32,13 +32,13 @@ import com.pro3.planner.R;
 import com.pro3.planner.adapters.ChecklistAdapter;
 import com.pro3.planner.baseClasses.ChecklistElement;
 import com.pro3.planner.dialogs.DeleteElementDialog;
-import com.pro3.planner.dialogs.EditElementDialog;
 
 public class ChecklistActivity extends BaseActivity implements CanBeEdited{
 
     private ListView checkListView;
     private ChecklistAdapter checklistAdapter;
     private String elementID;
+    private boolean editMode = false;
     private int elementColor;
 
     private DatabaseReference mElementReference, mChecklistElementsReference, mSettingsReference, mTitleReference;
@@ -234,8 +234,10 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
             this.finish();
             return true;
         } else if (id == R.id.checklist_menu_edit) {
-            DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_checklist_title), "checklist");
-            dialog.show(getFragmentManager(), "dialog");
+            editMode = true;
+            ((MenuItem) findViewById(R.id.checklist_menu_edit)).setVisible(false);
+            //DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_checklist_title), "checklist");
+            //dialog.show(getFragmentManager(), "dialog");
         } else if (id == R.id.checklist_menu_delete) {
             DialogFragment dialogFragment = DeleteElementDialog.newInstance(getResources().getString(R.string.delete_checklist_title), getTitle().toString());
             dialogFragment.show(getFragmentManager(), "dialog");
