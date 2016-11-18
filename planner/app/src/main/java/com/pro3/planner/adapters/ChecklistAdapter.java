@@ -3,15 +3,14 @@ package com.pro3.planner.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.pro3.planner.R;
 import com.pro3.planner.baseClasses.ChecklistElement;
 import com.pro3.planner.views.ChecklistView;
-import com.pro3.planner.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,6 @@ import java.util.ListIterator;
 public class ChecklistAdapter extends ArrayAdapter {
 
     List<ChecklistElement> list = new ArrayList<>();
-    int resource;
 
     @Override
     public void clear() {
@@ -34,31 +32,11 @@ public class ChecklistAdapter extends ArrayAdapter {
 
     public ChecklistAdapter(Context context, int resource) {
         super(context, resource);
-        this.resource = resource;
     }
 
     public void add(ChecklistElement element) {
         list.add(element);
         notifyDataSetChanged();
-        Log.i("Linus", "added " + element.getElementID());
-    }
-
-    public void update(ChecklistElement element, String elementID) {
-        ListIterator<ChecklistElement> it = list.listIterator();
-
-        while (it.hasNext()) {
-            ChecklistElement nextElement = it.next();
-            if (nextElement.getElementID().equals(elementID)) {
-                it.set(element);
-                break;
-            }
-        }
-
-        notifyDataSetChanged();
-    }
-
-    public void editList() {
-
     }
 
     public void update(int position, ChecklistElement element) {

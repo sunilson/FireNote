@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <inset xmlns:android="http://schemas.android.com/apk/res/android"
-    android:insetLeft="15dp"
-    android:insetRight="15dp" >
+    android:insetLeft="16dp"
+    android:insetRight="16dp" >
 
     <shape
         android:shape="line" >
@@ -9,7 +9,7 @@
             android:width="1dp"
             android:color="@color/main_background_color" />
 
-        <size android:height="@dimen/element_list_divider_margin" />
+        <size android:height="0px" />
 
     </shape>
 

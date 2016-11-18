@@ -15,4 +15,5 @@
     <dimen name="notePad_padding_horizontal">8dp</dimen>
     <dimen name="notePad_padding_vertical">16dp</dimen>
     <dimen name="dialog_element_margin_top">16dp</dimen>
+    <dimen name="element_list_text_padding_left">16dp</dimen>
 </resources>

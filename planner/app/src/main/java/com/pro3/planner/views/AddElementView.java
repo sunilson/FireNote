@@ -39,10 +39,10 @@ public class AddElementView extends LinearLayout{
         LayoutInflater inflater = LayoutInflater.from(context);
         v = inflater.inflate(R.layout.alertdialog_body_add_element, this, true);
 
+
         title = (EditText) findViewById(R.id.add_element_title);
         tableLayout = (TableLayout) findViewById(R.id.add_element_tableLayout);
         category = (Spinner) findViewById(R.id.add_element_category);
-
         category.setAdapter(categoryAdapter);
 
         int countTableRows = tableLayout.getChildCount();

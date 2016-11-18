@@ -10,8 +10,10 @@ import com.google.firebase.database.DatabaseReference;
 
 public interface CanAddElement extends HasSortableList {
 
-    public DatabaseReference getElementsReference();
+    DatabaseReference getElementsReference();
 
-    public ArrayAdapter<CharSequence> getCategoryAdapter();
+    ArrayAdapter<CharSequence> getSpinnerCategoryAdapter();
+
+    ArrayAdapter<String> getListCategoryAdapter();
 
 }

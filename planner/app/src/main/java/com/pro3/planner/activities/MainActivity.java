@@ -23,10 +23,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.pro3.planner.Interfaces.CanAddElement;
+import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
+import com.pro3.planner.adapters.CategoryAdapter;
 import com.pro3.planner.adapters.ElementAdapter;
 import com.pro3.planner.baseClasses.Element;
 import com.pro3.planner.dialogs.MenuAlertDialog;
+import com.pro3.planner.dialogs.VisibilityDialog;
 
 import java.util.HashMap;
 
@@ -37,7 +40,8 @@ public class MainActivity extends BaseActivity implements CanAddElement {
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private ElementAdapter elementAdapter;
-    private ArrayAdapter<CharSequence> categoryAdapter;
+    private ArrayAdapter<CharSequence> spinnerCategoryAdapter;
+    private CategoryAdapter<String> listCategoryAdapter;
     private ListView listView;
 
     private FirebaseAuth mAuth;
@@ -170,6 +174,9 @@ public class MainActivity extends BaseActivity implements CanAddElement {
         } else if (id == R.id.main_element_sort) {
             DialogFragment dialog = MenuAlertDialog.newInstance(getResources().getString(R.string.menu_sort), "sort", 0);
             dialog.show(getFragmentManager(), "dialog");
+        } else if (id == R.id.main_element_visibility) {
+            VisibilityDialog visibilityDialog = new VisibilityDialog();
+            visibilityDialog.show(getSupportFragmentManager(), "dialog");
         }
         return super.onOptionsItemSelected(item);
     }
@@ -274,13 +281,21 @@ public class MainActivity extends BaseActivity implements CanAddElement {
     }
 
     private void initializeCategoryListener() {
+        LocalSettingsManager.getInstance();
+        LocalSettingsManager.getInstance().setPrefs(prefs);
+
+        spinnerCategoryAdapter = new ArrayAdapter<>(this, R.layout.spinner_item);
+        spinnerCategoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        listCategoryAdapter = new CategoryAdapter<>(this, R.layout.category_list_layout);
 
         mCategoryListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 String category = dataSnapshot.getValue(String.class);
-                categoryAdapter.add(category);
-                categoryAdapter.notifyDataSetChanged();
+                spinnerCategoryAdapter.add(category);
+                listCategoryAdapter.add(category);
+                LocalSettingsManager.getInstance().addCategory(category);
             }
 
             @Override
@@ -290,8 +305,9 @@ public class MainActivity extends BaseActivity implements CanAddElement {
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 String category = dataSnapshot.getValue(String.class);
-                categoryAdapter.remove(category);
-                categoryAdapter.notifyDataSetChanged();
+                spinnerCategoryAdapter.remove(category);
+                listCategoryAdapter.remove(category);
+                LocalSettingsManager.getInstance().removeCategory(category);
             }
 
             @Override
@@ -304,10 +320,6 @@ public class MainActivity extends BaseActivity implements CanAddElement {
 
             }
         };
-
-        categoryAdapter = new ArrayAdapter<>(this, R.layout.spinner_item);
-        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
     }
 
     /*
@@ -358,7 +370,6 @@ public class MainActivity extends BaseActivity implements CanAddElement {
         mSettingsReference = mReference.child("settings");
         mSettingsReference.addChildEventListener(mSettingsListener);
 
-
         //Default Color
         String defaultColor = prefs.getString("defaultColor", "empty");
         if (defaultColor == "empty") {
@@ -366,14 +377,6 @@ public class MainActivity extends BaseActivity implements CanAddElement {
             editor.putString("defaultColor", "#FFFFA5");
             editor.commit();
             mSettingsReference.child("defaultColor").setValue("#FFFFA5");
-        }
-
-        //Main List Element sorting
-        String mainElementSorting = prefs.getString("mainElementSorting", "empty");
-        if(mainElementSorting == "empty") {
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("mainElementSorting", "dateDescending");
-            editor.commit();
         }
     }
 
@@ -398,8 +401,12 @@ public class MainActivity extends BaseActivity implements CanAddElement {
         return mElementsReference;
     }
 
+    public ArrayAdapter<CharSequence> getSpinnerCategoryAdapter() {
+        return spinnerCategoryAdapter;
+    }
+
     @Override
-    public ArrayAdapter<CharSequence> getCategoryAdapter() {
-        return categoryAdapter;
+    public ArrayAdapter<String> getListCategoryAdapter() {
+        return listCategoryAdapter;
     }
 }

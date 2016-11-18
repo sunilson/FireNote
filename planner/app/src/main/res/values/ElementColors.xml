@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="planets_array">
-        <item>Mercury</item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
-        <item>Jupiter</item>
-        <item>Saturn</item>
-        <item>Uranus</item>
-        <item>Neptune</item>
+    <string-array name="colors">
+        <item>note_color_1</item>
+        <item>note_color_2</item>
+        <item>note_color_3</item>
+        <item>note_color_4</item>
+        <item>note_color_5</item>
+        <item>note_color_6</item>
+        <item>note_color_7</item>
+        <item>note_color_8</item>
+        <item>note_color_9</item>
     </string-array>
 </resources>

@@ -127,7 +127,7 @@ public class MenuAlertDialog extends DialogFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 final CanAddElement canAddElement = (CanAddElement) getActivity();
-                final AddElementView content = new AddElementView(getActivity(), canAddElement.getCategoryAdapter());
+                final AddElementView content = new AddElementView(getActivity(), canAddElement.getSpinnerCategoryAdapter());
 
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 final Activity activity = getActivity();

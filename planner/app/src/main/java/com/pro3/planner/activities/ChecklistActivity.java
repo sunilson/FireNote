@@ -4,6 +4,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -289,5 +290,7 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
         ColorDrawable colorDrawable = new ColorDrawable();
         colorDrawable.setColor(elementColor);
         getSupportActionBar().setBackgroundDrawable(colorDrawable);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setBackgroundTintList(ColorStateList.valueOf(elementColor));
     }
 }
