@@ -4,7 +4,9 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -40,8 +43,8 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
     private boolean editMode;
     private MenuItem editButton, settingsButton, doneButton;
 
-    private DatabaseReference mElementReference, mTextReference;
-    private ValueEventListener mTextValueListener;
+    private DatabaseReference mElementReference, mTextReference, mTitleReference;
+    private ValueEventListener mTextValueListener, mTitleValueListener;
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -73,7 +76,7 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
         user = mAuth.getCurrentUser();
 
         //Firebase Reference to the Checklist element we are currently in
-        if(user != null) {
+        if (user != null) {
             mElementReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("elements").child(elementID);
         }
 
@@ -91,10 +94,14 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
         mAuth.addAuthStateListener(mAuthListener);
 
         initializeTextListener();
+        initializeTitleListener();
 
         if (mElementReference != null) {
             mTextReference = mElementReference.child("text");
             mTextReference.addValueEventListener(mTextValueListener);
+
+            mTitleReference = mElementReference.child("title");
+            mTitleReference.addValueEventListener(mTitleValueListener);
         }
     }
 
@@ -102,12 +109,16 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
     protected void onStop() {
         super.onStop();
 
-        if(mAuthListener != null) {
+        if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
 
         if (mTextValueListener != null && mTextReference != null) {
             mTextReference.removeEventListener(mTextValueListener);
+        }
+
+        if (mTitleValueListener != null && mTitleReference != null) {
+            mTitleReference.removeEventListener(mTitleValueListener);
         }
 
         stopEditMode();
@@ -178,6 +189,22 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
         return super.onKeyDown(keyCode, event);
     }
 
+    private void initializeTitleListener() {
+        mTitleValueListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String title = dataSnapshot.getValue(String.class);
+                noteTitle = title;
+                setTitle(title);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+    }
+
     private void initializeTextListener() {
         mTextValueListener = new ValueEventListener() {
             @Override
@@ -195,14 +222,14 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
     }
 
     private void initializeAuthListener() {
-        mAuthListener = new FirebaseAuth.AuthStateListener(){
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
                     //Check if user has verified his email
-                    if(user.isEmailVerified()) {
+                    if (user.isEmailVerified()) {
                         //User is signed in and verified. Do nothing
                     } else {
                         //If not verified, sign user out and switch to login activity
@@ -240,5 +267,18 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
         ColorDrawable colorDrawable = new ColorDrawable();
         colorDrawable.setColor(elementColor);
         getSupportActionBar().setBackgroundDrawable(colorDrawable);
+
+        //Darken notification bar color and set it to status bar. Only works in Lollipop and above
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            float[] hsv = new float[3];
+            Color.colorToHSV(elementColor, hsv);
+            hsv[2] *= 0.6f;
+            int darkenedColor = Color.HSVToColor(hsv);
+
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(darkenedColor);
+        }
     }
 }

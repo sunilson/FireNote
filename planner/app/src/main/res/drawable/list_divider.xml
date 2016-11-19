@@ -9,7 +9,7 @@
             android:width="1dp"
             android:color="@color/main_background_color" />
 
-        <size android:height="0px" />
+        <size android:height="@dimen/element_list_divider_margin" />
 
     </shape>
 

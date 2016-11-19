@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -177,6 +178,10 @@ public class MainActivity extends BaseActivity implements CanAddElement {
         } else if (id == R.id.main_element_visibility) {
             VisibilityDialog visibilityDialog = new VisibilityDialog();
             visibilityDialog.show(getSupportFragmentManager(), "dialog");
+        } else if (id == R.id.action_delete_all) {
+            if (mReference != null) {
+                mReference.child("elements").removeValue();
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -194,7 +199,8 @@ public class MainActivity extends BaseActivity implements CanAddElement {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Element element = dataSnapshot.getValue(Element.class);
                 elementAdapter.add(element);
-                elementAdapter.sort(prefs.getString("mainElementSorting", "dateDescending"));
+                elementAdapter.sort(LocalSettingsManager.getInstance().getSortingMethod());
+                Log.i("Linus", LocalSettingsManager.getInstance().getSortingMethod());
             }
 
             @Override

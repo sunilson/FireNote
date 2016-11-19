@@ -12,7 +12,7 @@ public class LocalSettingsManager {
 
     private HashMap<String, Integer> categories = new HashMap<>();
     private HashMap<Integer, Integer> colors = new HashMap<>();
-    private String sortingMethod = "nameAscending";
+    private String sortingMethod;
     private static LocalSettingsManager instance;
     private SharedPreferences prefs;
 
@@ -84,9 +84,18 @@ public class LocalSettingsManager {
         return visibility;
     }
 
-
+    public void setSortingMethod(String sortingMethod) {
+        SharedPreferences.Editor editor =  prefs.edit();
+        editor.putString("mainElementSorting", sortingMethod);
+        this.sortingMethod = sortingMethod;
+        editor.commit();
+    }
 
     public String getSortingMethod() {
-        return this.sortingMethod;
+        if (this.sortingMethod != null) {
+            return this.sortingMethod;
+        } else {
+            return prefs.getString("mainElementSorting", "nameAscending");
+        }
     }
 }

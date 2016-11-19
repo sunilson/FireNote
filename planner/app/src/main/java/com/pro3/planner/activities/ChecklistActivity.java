@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +34,7 @@ import com.pro3.planner.R;
 import com.pro3.planner.adapters.ChecklistAdapter;
 import com.pro3.planner.baseClasses.ChecklistElement;
 import com.pro3.planner.dialogs.DeleteElementDialog;
+import com.pro3.planner.dialogs.EditElementDialog;
 
 public class ChecklistActivity extends BaseActivity implements CanBeEdited{
 
@@ -41,6 +43,7 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
     private String elementID;
     private boolean editMode = false;
     private int elementColor;
+    private MenuItem editButton, settingsButton, doneButton;
 
     private DatabaseReference mElementReference, mChecklistElementsReference, mSettingsReference, mTitleReference;
     private ChildEventListener mChecklistElementsListener, mSettingsListener;
@@ -79,20 +82,7 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
         }
 
         //Initialize the Listview and it's adapter and it's onClick Handler
-        checkListView = (ListView) findViewById(R.id.checkListView);
-        checklistAdapter = new ChecklistAdapter(this, R.layout.checklist_list_layout);
-        checkListView.setAdapter(checklistAdapter);
-
-        checkListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ChecklistElement checklistElement = (ChecklistElement) checklistAdapter.getItem(position);
-                boolean finished = checklistElement.isFinished();
-                finished = !finished;
-                mChecklistElementsReference.child(checklistElement.getElementID()).child("finished").setValue(finished);
-                checklistElement.setFinished(finished);
-            }
-        });
+        setUpListView();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +108,20 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
         if(mTitleListener != null) {
             mElementReference.child("title").removeEventListener(mTitleListener);
         }
+
+        stopEditMode();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (editMode) {
+                stopEditMode();
+                return true;
+            }
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -193,7 +197,8 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                String elementKey = dataSnapshot.getKey();
+                checklistAdapter.remove(elementKey);
             }
 
             @Override
@@ -223,6 +228,28 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
         };
     }
 
+    private void setUpListView() {
+        checkListView = (ListView) findViewById(R.id.checkListView);
+        checklistAdapter = new ChecklistAdapter(this, R.layout.checklist_list_layout);
+        checkListView.setAdapter(checklistAdapter);
+
+        checkListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ChecklistElement checklistElement = (ChecklistElement) checklistAdapter.getItem(position);
+                if (!editMode) {
+                    boolean finished = checklistElement.isFinished();
+                    finished = !finished;
+                    mChecklistElementsReference.child(checklistElement.getElementID()).child("finished").setValue(finished);
+                    checklistElement.setFinished(finished);
+                } else {
+                    mChecklistElementsReference.child(checklistElement.getElementID()).removeValue();
+                    checkListView.setItemChecked(position, checklistElement.isFinished());
+                }
+            }
+        });
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -232,23 +259,54 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
 
         //noinspection SimplifiableIfStatement
         if (id == android.R.id.home) {
+            if (editMode) {
+                stopEditMode();
+                return true;
+            }
             this.finish();
             return true;
         } else if (id == R.id.checklist_menu_edit) {
-            editMode = true;
-            ((MenuItem) findViewById(R.id.checklist_menu_edit)).setVisible(false);
-            //DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_checklist_title), "checklist");
-            //dialog.show(getFragmentManager(), "dialog");
+            startEditMode();
         } else if (id == R.id.checklist_menu_delete) {
             DialogFragment dialogFragment = DeleteElementDialog.newInstance(getResources().getString(R.string.delete_checklist_title), getTitle().toString());
             dialogFragment.show(getFragmentManager(), "dialog");
+        } else if (id == R.id.checklist_menu_done) {
+            stopEditMode();
+        } else if (id == R.id.checklist_menu_settings) {
+            DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_checklist_title), "checklist");
+            dialog.show(getFragmentManager(), "dialog");
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startEditMode() {
+        if (!editMode) {
+            editMode = true;
+            editButton.setVisible(false);
+            settingsButton.setVisible(true);
+            doneButton.setVisible(true);
+            checklistAdapter.toggleEditMode();
+        }
+    }
+
+    private void stopEditMode() {
+        if (editMode) {
+            editMode = false;
+            editButton.setVisible(true);
+            settingsButton.setVisible(false);
+            doneButton.setVisible(false);
+            checklistAdapter.toggleEditMode();
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_checklist, menu);
+
+        editButton = menu.findItem(R.id.checklist_menu_edit);
+        settingsButton = menu.findItem(R.id.checklist_menu_settings);
+        doneButton = menu.findItem(R.id.checklist_menu_done);
+
         return super.onCreateOptionsMenu(menu);
     }
 

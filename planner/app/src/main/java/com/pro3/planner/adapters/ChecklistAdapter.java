@@ -13,6 +13,7 @@ import com.pro3.planner.baseClasses.ChecklistElement;
 import com.pro3.planner.views.ChecklistView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -23,11 +24,17 @@ import java.util.ListIterator;
 public class ChecklistAdapter extends ArrayAdapter {
 
     List<ChecklistElement> list = new ArrayList<>();
+    private boolean editMode;
 
     @Override
     public void clear() {
         super.clear();
         list.clear();
+    }
+
+    public void toggleEditMode() {
+        editMode = !editMode;
+        notifyDataSetChanged();
     }
 
     public ChecklistAdapter(Context context, int resource) {
@@ -63,9 +70,18 @@ public class ChecklistAdapter extends ArrayAdapter {
         return list.get(position);
     }
 
-    @Override
-    public void remove(Object object) {
-        super.remove(object);
+    public void remove(String elementID) {
+        Iterator<ChecklistElement> it = list.iterator();
+
+        while (it.hasNext()) {
+            ChecklistElement element = it.next();
+            if (element.getElementID().equals(elementID)) {
+                it.remove();
+                break;
+            }
+        }
+
+        notifyDataSetChanged();
     }
 
     @Override
@@ -76,7 +92,7 @@ public class ChecklistAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
+        ChecklistView row = (ChecklistView) convertView;
 
         ElementHolder elementHolder;
         if(row == null) {
@@ -89,7 +105,16 @@ public class ChecklistAdapter extends ArrayAdapter {
         }
 
         ChecklistElement element = (ChecklistElement) getItem(position);
+
         elementHolder.elementText.setText(element.getText());
+
+        if (editMode) {
+            row.findViewById(R.id.checkList_element_clear).setVisibility(View.VISIBLE);
+            row.findViewById(R.id.checkList_element_checkBox).setVisibility(View.GONE);
+        } else {
+            row.findViewById(R.id.checkList_element_clear).setVisibility(View.GONE);
+            row.findViewById(R.id.checkList_element_checkBox).setVisibility(View.VISIBLE);
+        }
 
         return row;
     }
