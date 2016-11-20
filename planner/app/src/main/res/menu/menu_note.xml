@@ -10,6 +10,18 @@
         app:showAsAction="ifRoom"
         />
     <item
+        android:title="Done"
+        android:id="@+id/note_menu_done"
+        android:icon="@drawable/checklist_menu_done_icon"
+        app:showAsAction="ifRoom"
+        android:visible="false" />
+    <item
+        android:title="Note Settings"
+        android:id="@+id/note_menu_settings"
+        android:icon="@drawable/checklist_menu_settings_icon"
+        app:showAsAction="ifRoom"
+        android:visible="false" />
+    <item
         android:title="Delete Checklist"
         android:id="@+id/note_menu_delete"
         android:icon="@drawable/checklist_menu_delete_icon"

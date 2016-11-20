@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.pro3.planner.Interfaces.CanAddElement;
 import com.pro3.planner.Interfaces.HasSortableList;
+import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
 import com.pro3.planner.adapters.DialogMenuAdapter;
 import com.pro3.planner.baseClasses.Checklist;
@@ -112,10 +114,7 @@ public class MenuAlertDialog extends DialogFragment {
                 }
 
                 hasSortingAdapter.getElementAdapter().sort(shortName);
-
-                editor.putString("mainElementSorting", shortName);
-                editor.commit();
-
+                LocalSettingsManager.getInstance().setSortingMethod(shortName);
                 dialog.dismiss();
             }
         });
@@ -127,7 +126,7 @@ public class MenuAlertDialog extends DialogFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 final CanAddElement canAddElement = (CanAddElement) getActivity();
-                final AddElementView content = new AddElementView(getActivity(), canAddElement.getCategoryAdapter());
+                final AddElementView content = new AddElementView(getActivity(), canAddElement.getSpinnerCategoryAdapter());
 
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 final Activity activity = getActivity();
@@ -188,9 +187,24 @@ public class MenuAlertDialog extends DialogFragment {
                     }
                 });
 
-                builder.show();
+                final AlertDialog dialog = builder.create();
+
+                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface arg) {
+                        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_negative_button));
+                    }
+                });
+
+                dialog.show();
             }
         });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_negative_button));
     }
 
     private void initializeEditElementItemListener(ListView contentListView, final int elementPosition) {

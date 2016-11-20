@@ -14,15 +14,16 @@
         android:icon="@drawable/ic_visibility_white_24dp"
         app:showAsAction="ifRoom"
         />
-
     <item
         android:id="@+id/action_logOut"
-        android:orderInCategory="100"
+        android:orderInCategory="200"
         android:title="@string/menu_log_out"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_sort"
+        android:id="@+id/action_delete_all"
         android:orderInCategory="100"
-        android:title="@string/menu_sort"
-        app:showAsAction="never" />
+        android:title="@string/menu_delete_all"
+        app:showAsAction="never"
+        />
+
 </menu>

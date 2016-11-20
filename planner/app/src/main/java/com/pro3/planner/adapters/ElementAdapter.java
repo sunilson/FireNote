@@ -3,13 +3,17 @@ package com.pro3.planner.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.graphics.ColorUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
 import com.pro3.planner.baseClasses.Element;
 
@@ -30,6 +34,7 @@ import java.util.Locale;
 public class ElementAdapter extends ArrayAdapter {
 
     List<Element> list = new ArrayList<>();
+    List<Integer> hidden = new ArrayList<>();
     int resource;
 
     public ElementAdapter(Context context, int resource) {
@@ -62,6 +67,12 @@ public class ElementAdapter extends ArrayAdapter {
         notifyDataSetChanged();
     }
 
+
+    @Override
+    public int getCount() {
+        return list.size();
+    }
+
     public void sort(String sortMethod) {
         if (sortMethod.equals("dateDescending")) {
             sortByDateDescending();
@@ -79,7 +90,7 @@ public class ElementAdapter extends ArrayAdapter {
             @Override
             public int compare(Element o1, Element o2) {
 
-                if(o1.getCreationDate().after(o2.getCreationDate())) {
+                if (o1.getCreationDate().after(o2.getCreationDate())) {
                     return -1;
                 } else if (o1.getCreationDate().before(o2.getCreationDate())) {
                     return 1;
@@ -92,12 +103,13 @@ public class ElementAdapter extends ArrayAdapter {
         Collections.sort(list, comp);
         notifyDataSetChanged();
     }
+
     private void sortByDateAscending() {
         Comparator<Element> comp = new Comparator<Element>() {
             @Override
             public int compare(Element o1, Element o2) {
 
-                if(o1.getCreationDate().after(o2.getCreationDate())) {
+                if (o1.getCreationDate().after(o2.getCreationDate())) {
                     return 1;
                 } else if (o1.getCreationDate().before(o2.getCreationDate())) {
                     return -1;
@@ -115,7 +127,7 @@ public class ElementAdapter extends ArrayAdapter {
             @Override
             public int compare(Element o1, Element o2) {
 
-                if(o1.getTitle().compareTo(o2.getTitle()) < 0) {
+                if (o1.getTitle().compareTo(o2.getTitle()) < 0) {
                     return 1;
                 } else if (o1.getTitle().compareTo(o2.getTitle()) > 0) {
                     return -1;
@@ -133,7 +145,7 @@ public class ElementAdapter extends ArrayAdapter {
             @Override
             public int compare(Element o1, Element o2) {
 
-                if(o1.getTitle().compareTo(o2.getTitle()) < 0) {
+                if (o1.getTitle().compareTo(o2.getTitle()) < 0) {
                     return -1;
                 } else if (o1.getTitle().compareTo(o2.getTitle()) > 0) {
                     return 1;
@@ -147,20 +159,10 @@ public class ElementAdapter extends ArrayAdapter {
     }
 
 
-    @Override
-    public int getCount() {
-        return list.size();
-    }
-
     @Nullable
     @Override
     public Object getItem(int position) {
         return list.get(position);
-    }
-
-    public void remove(int position) {
-        list.remove(position);
-        notifyDataSetChanged();
     }
 
     public void remove(String noteID) {
@@ -180,11 +182,21 @@ public class ElementAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        View row = convertView;
+        Log.i("Linus", "getview");
 
+        Element element = (Element) getItem(position);
+        LayoutInflater layoutInflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        if (LocalSettingsManager.getInstance().getCategoryVisibility(element.getCategory()) == -1 || LocalSettingsManager.getInstance().getColorVisibility(element.getColor()) == -1) {
+            return layoutInflater.inflate(R.layout.null_item, parent, false);
+        }
+
+        View row = convertView;
         ElementHolder elementHolder;
-        if(row == null) {
-            LayoutInflater layoutInflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        if (row instanceof LinearLayout) {
+            elementHolder = (ElementHolder) row.getTag();
+        } else {
             row = layoutInflater.inflate(resource, parent, false);
             elementHolder = new ElementHolder();
             elementHolder.elementDate = (TextView) row.findViewById(R.id.elementList_date);
@@ -192,11 +204,8 @@ public class ElementAdapter extends ArrayAdapter {
             elementHolder.elementIcon = (ImageView) row.findViewById(R.id.elementList_icon);
             elementHolder.elementTitle = (TextView) row.findViewById(R.id.elementList_title);
             row.setTag(elementHolder);
-        } else {
-            elementHolder = (ElementHolder) row.getTag();
         }
 
-        Element element = (Element) getItem(position);
         elementHolder.elementTitle.setText(element.getTitle());
         elementHolder.elementIcon.setImageResource(element.getIcon());
         DateFormat df = new SimpleDateFormat("dd. MMM.", Locale.getDefault());
@@ -204,10 +213,12 @@ public class ElementAdapter extends ArrayAdapter {
         elementHolder.elementCategory.setText(element.getCategory());
 
         int elementColor = element.getColor();
-        row.setBackgroundColor(elementColor);
+        row.findViewById(R.id.elementList_icon_holder).setBackgroundColor(elementColor);
+        row.setBackgroundColor(ColorUtils.setAlphaComponent(elementColor, 80));
 
         return row;
     }
+
 
     static class ElementHolder {
         TextView elementTitle, elementDate, elementCategory;

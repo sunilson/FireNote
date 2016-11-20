@@ -17,7 +17,7 @@ import com.pro3.planner.R;
 
 public class ChecklistView extends LinearLayout implements Checkable {
 
-    private View v;
+    public View v;
     private TextView textView;
     private CheckBox checkBox;
     private boolean checked = false;
@@ -53,6 +53,5 @@ public class ChecklistView extends LinearLayout implements Checkable {
 
     @Override
     public void toggle() {
-        checked = !checked;
     }
 }

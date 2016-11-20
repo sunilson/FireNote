@@ -29,9 +29,9 @@ public class Element {
         }
 
         if(noteType.equals("checklist")) {
-            icon = R.drawable.ic_done_all_black_24dp;
+            icon = R.drawable.element_checklist_icon;
         } else if (noteType.equals("note")) {
-            icon = R.drawable.ic_note_black_24dp;
+            icon = R.drawable.element_note_icon;
         } else {
             icon = R.drawable.ic_toc_black_24dp;
         }

@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,7 +27,7 @@ public class DeleteElementDialog extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
 
-        TextView titleText = (TextView)title.findViewById(R.id.dialog_title);
+        TextView titleText = (TextView) title.findViewById(R.id.dialog_title);
         titleText.setText(getArguments().getString("title"));
         builder.setCustomTitle(title);
 
@@ -49,6 +50,12 @@ public class DeleteElementDialog extends DialogFragment {
         });
 
         return builder.create();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_negative_button));
     }
 
     public static DeleteElementDialog newInstance(String title, String elementTitle) {
