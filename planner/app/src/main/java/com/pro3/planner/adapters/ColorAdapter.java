@@ -6,9 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
-import com.pro3.planner.R;
 import com.pro3.planner.baseClasses.NoteColor;
 import com.pro3.planner.views.ColorElementView;
 
@@ -55,21 +53,16 @@ public class ColorAdapter extends ArrayAdapter<NoteColor> {
         if(row == null) {
             row = new ColorElementView(getContext());
             elementHolder = new ColorAdapter.ElementHolder();
-            elementHolder.elementText = (TextView) row.findViewById(R.id.color_element_text);
             row.setTag(elementHolder);
-        } else {
-            elementHolder = (ColorAdapter.ElementHolder) row.getTag();
         }
 
         NoteColor noteColor = getItem(position);
-        elementHolder.elementText.setText(noteColor.getColorName());
-
         row.setBackgroundColor(noteColor.getColor());
 
         return row;
     }
 
     static class ElementHolder {
-        TextView elementText;
+
     }
 }

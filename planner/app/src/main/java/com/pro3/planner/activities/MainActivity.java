@@ -32,8 +32,6 @@ import com.pro3.planner.baseClasses.Element;
 import com.pro3.planner.dialogs.MenuAlertDialog;
 import com.pro3.planner.dialogs.VisibilityDialog;
 
-import java.util.HashMap;
-
 public class MainActivity extends BaseActivity implements CanAddElement {
 
     private DatabaseReference mReference, mElementsReference, mSettingsReference, mCategoryReference;
@@ -48,9 +46,6 @@ public class MainActivity extends BaseActivity implements CanAddElement {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private SharedPreferences prefs;
-
-    private HashMap<String, String> categories = new HashMap<>();
-
     /*
     ------------------------
     ---- Android Events ----
@@ -64,6 +59,14 @@ public class MainActivity extends BaseActivity implements CanAddElement {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.app_name);
+
+        /*
+        //Recent Apps Color
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            ActivityManager.TaskDescription taskDescription = new ActivityManager.TaskDescription(getString(R.string.app_name), BitmapFactory.decodeResource(getResources(), R.drawable.checklist_menu_delete_icon), ContextCompat.getColor(this, R.color.recent_apps_color));
+            this.setTaskDescription(taskDescription);
+        }
+        */
 
         //Set up the Adapter for the ListView Display
         elementAdapter = new ElementAdapter(this, R.layout.element_list_layout);

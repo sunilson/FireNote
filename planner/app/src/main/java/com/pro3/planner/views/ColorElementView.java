@@ -1,13 +1,11 @@
 package com.pro3.planner.views;
 
 import android.content.Context;
-import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.Checkable;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.pro3.planner.R;
 
@@ -18,7 +16,6 @@ import com.pro3.planner.R;
 public class ColorElementView extends LinearLayout implements Checkable {
 
     private View v;
-    private TextView textView;
     private CheckBox checkBox;
     private boolean checked = false;
 
@@ -27,7 +24,6 @@ public class ColorElementView extends LinearLayout implements Checkable {
 
         LayoutInflater inflater = LayoutInflater.from(context);
         v = inflater.inflate(R.layout.color_list_layout, this, true);
-        textView = (TextView) v.findViewById(R.id.color_element_text);
         checkBox = (CheckBox) v.findViewById(R.id.color_element_checkBox);
     }
 
@@ -36,12 +32,8 @@ public class ColorElementView extends LinearLayout implements Checkable {
         this.checked = checked;
 
         if (isChecked()) {
-            textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            textView.setTextColor(getResources().getColor(R.color.text_crossed_out));
             checkBox.setChecked(true);
         } else {
-            textView.setPaintFlags(textView.getPaintFlags() & ~(Paint.STRIKE_THRU_TEXT_FLAG));
-            textView.setTextColor(getResources().getColor(R.color.primary_text_color));
             checkBox.setChecked(false);
         }
     }
