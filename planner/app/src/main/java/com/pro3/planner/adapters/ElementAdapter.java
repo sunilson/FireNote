@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.graphics.ColorUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -182,8 +181,6 @@ public class ElementAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Log.i("Linus", "getview");
-
         Element element = (Element) getItem(position);
         LayoutInflater layoutInflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -214,7 +211,7 @@ public class ElementAdapter extends ArrayAdapter {
 
         int elementColor = element.getColor();
         row.findViewById(R.id.elementList_icon_holder).setBackgroundColor(elementColor);
-        row.setBackgroundColor(ColorUtils.setAlphaComponent(elementColor, 80));
+        row.findViewById(R.id.elementList_content).setBackgroundColor(ColorUtils.setAlphaComponent(elementColor, 80));
 
         return row;
     }
