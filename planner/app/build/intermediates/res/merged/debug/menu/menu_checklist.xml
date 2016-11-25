@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.pro3.planner.activities.ChecklistActivity">
+    <item
+        android:title="Edit Checklist"
+        android:id="@+id/checklist_menu_edit"
+        android:icon="@drawable/checklist_menu_edit_icon"
+        app:showAsAction="ifRoom"
+        />
+    <item
+        android:title="Done"
+        android:id="@+id/checklist_menu_done"
+        android:icon="@drawable/checklist_menu_done_icon"
+        app:showAsAction="ifRoom"
+        android:visible="false" />
+    <item
+        android:title="Checklist Settings"
+        android:id="@+id/checklist_menu_settings"
+        android:icon="@drawable/checklist_menu_settings_icon"
+        app:showAsAction="ifRoom"
+        android:visible="false" />
+    <item
+        android:title="Edit Checklist"
+        android:id="@+id/checklist_menu_delete"
+        android:icon="@drawable/checklist_menu_delete_icon"
+        app:showAsAction="ifRoom"
+        />
+    <item
+        android:id="@+id/action_logOut"
+        android:orderInCategory="100"
+        android:title="@string/menu_log_out"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_sort"
+        android:orderInCategory="100"
+        android:title="@string/menu_sort"
+        app:showAsAction="never" />
+</menu>

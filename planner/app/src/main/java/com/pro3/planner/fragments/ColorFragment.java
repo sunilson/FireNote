@@ -70,7 +70,7 @@ public class ColorFragment extends android.support.v4.app.Fragment {
                     LocalSettingsManager.getInstance().setColorVisibility(colorAdapter.getItem(position).getColor(), -1);
                 }
 
-                canAddElement.getElementAdapter().sort(LocalSettingsManager.getInstance().getSortingMethod());
+                canAddElement.getElementAdapter().hideElements();
             }
         });
 

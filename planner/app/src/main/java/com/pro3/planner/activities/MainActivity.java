@@ -6,14 +6,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,29 +24,35 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.pro3.planner.Interfaces.CanAddElement;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
+import com.pro3.planner.ItemTouchHelper.SimpleItemTouchHelperCallbackMain;
 import com.pro3.planner.adapters.CategoryAdapter;
-import com.pro3.planner.adapters.ElementAdapter;
+import com.pro3.planner.adapters.ElementRecyclerAdapter;
 import com.pro3.planner.baseClasses.Element;
 import com.pro3.planner.dialogs.MenuAlertDialog;
 import com.pro3.planner.dialogs.VisibilityDialog;
 
 public class MainActivity extends BaseActivity implements CanAddElement {
 
-    private DatabaseReference mReference, mElementsReference, mSettingsReference, mCategoryReference;
+    private DatabaseReference mReference, mConnectedRef, mElementsReference, mSettingsReference, mCategoryReference;
     private ChildEventListener mChildEventListener, mSettingsListener, mCategoryListener;
+    private ValueEventListener mConnectedRefListener;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    private ElementAdapter elementAdapter;
+    private ElementRecyclerAdapter elementRecyclerAdapter;
     private ArrayAdapter<CharSequence> spinnerCategoryAdapter;
     private CategoryAdapter<String> listCategoryAdapter;
-    private ListView listView;
+    private RecyclerView recyclerView;
+    private View.OnClickListener recycleOnClickListener;
+    private View.OnLongClickListener recycleOnLongClickListener;
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private SharedPreferences prefs;
+
     /*
     ------------------------
     ---- Android Events ----
@@ -68,13 +75,21 @@ public class MainActivity extends BaseActivity implements CanAddElement {
         }
         */
 
-        //Set up the Adapter for the ListView Display
-        elementAdapter = new ElementAdapter(this, R.layout.element_list_layout);
-        listView = (ListView) findViewById(R.id.elementList);
-        listView.setAdapter(elementAdapter);
+        //RecyclerView Initialization
+        recyclerView = (RecyclerView) findViewById(R.id.elementList);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        initializeRecyclerOnClickListener();
+        initializeRecyclerOnLongClickListener();
 
-        //Initialize all Click listeners for Listview
-        setUpListView();
+        elementRecyclerAdapter = new ElementRecyclerAdapter(this, recycleOnClickListener, recycleOnLongClickListener);
+
+        recyclerView.setAdapter(elementRecyclerAdapter);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallbackMain(elementRecyclerAdapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
 
         //Initialize the Firebase Auth System and the User
         mAuth = FirebaseAuth.getInstance();
@@ -84,6 +99,11 @@ public class MainActivity extends BaseActivity implements CanAddElement {
         //Get the users Database Reference, if user exists
         if(user != null) {
             mReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
+
+            //Handle online/offline status
+            mConnectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+            initializeOnlineListener();
+
             initializeUserSettings();
             if(mReference != null) {
 
@@ -124,6 +144,8 @@ public class MainActivity extends BaseActivity implements CanAddElement {
         if(mReference != null) {
             mSettingsReference.addChildEventListener(mSettingsListener);
         }
+
+        mConnectedRef.addValueEventListener(mConnectedRefListener);
     }
 
     @Override
@@ -136,6 +158,10 @@ public class MainActivity extends BaseActivity implements CanAddElement {
 
         if(mSettingsListener != null) {
             mSettingsReference.removeEventListener(mSettingsListener);
+        }
+
+        if (mConnectedRefListener != null) {
+            mConnectedRef.removeEventListener(mConnectedRefListener);
         }
     }
 
@@ -196,26 +222,76 @@ public class MainActivity extends BaseActivity implements CanAddElement {
     -----------------------------
      */
 
+    private void initializeRecyclerOnClickListener() {
+        recycleOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int itemPosition = recyclerView.getChildLayoutPosition(v);
+                Element element = elementRecyclerAdapter.getItem(itemPosition);
+                Intent i = null;
+                if (element.getNoteType().equals("checklist")) {
+                    i = new Intent(MainActivity.this, ChecklistActivity.class);
+                } else if (element.getNoteType().equals("note")) {
+                    i = new Intent(MainActivity.this, NoteActivity.class);
+                }
+
+                i.putExtra("elementID", element.getNoteID());
+                i.putExtra("elementTitle", element.getTitle());
+                i.putExtra("elementColor", element.getColor());
+                startActivity(i);
+            }
+        };
+    }
+
+    private void initializeRecyclerOnLongClickListener() {
+        recycleOnLongClickListener = new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                int itemPosition = recyclerView.getChildLayoutPosition(v);
+                DialogFragment dialog = MenuAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", itemPosition);
+                dialog.show(getFragmentManager(), "dialog");
+                return true;
+            }
+        };
+    }
+
+    private void initializeOnlineListener() {
+        mConnectedRefListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                boolean connected = snapshot.getValue(Boolean.class);
+                if (connected) {
+                    Log.i("Linus", "connected");
+                } else {
+                    Log.i("Linus", "disconnected");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                System.err.println("Listener was cancelled");
+            }
+        };
+    }
+
     private void initializeElementsListener() {
         mChildEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Element element = dataSnapshot.getValue(Element.class);
-                elementAdapter.add(element);
-                elementAdapter.sort(LocalSettingsManager.getInstance().getSortingMethod());
-                Log.i("Linus", LocalSettingsManager.getInstance().getSortingMethod());
+                elementRecyclerAdapter.add(element);
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Element element = dataSnapshot.getValue(Element.class);
-                elementAdapter.update(element, element.getNoteID());
+                elementRecyclerAdapter.update(element, element.getNoteID());
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 Element element = dataSnapshot.getValue(Element.class);
-                elementAdapter.remove(element.getNoteID());
+                elementRecyclerAdapter.remove(element.getNoteID());
             }
 
             @Override
@@ -337,34 +413,7 @@ public class MainActivity extends BaseActivity implements CanAddElement {
     -------------------------------
      */
 
-    private void setUpListView() {
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Element element = (Element) elementAdapter.getItem(position);
-                Intent i = null;
-                if (element.getNoteType().equals("checklist")) {
-                    i = new Intent(MainActivity.this, ChecklistActivity.class);
-                } else if (element.getNoteType().equals("note")) {
-                    i = new Intent(MainActivity.this, NoteActivity.class);
-                }
 
-                i.putExtra("elementID", element.getNoteID());
-                i.putExtra("elementTitle", element.getTitle());
-                i.putExtra("elementColor", element.getColor());
-                startActivity(i);
-            }
-        });
-
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                DialogFragment dialog = MenuAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", position);
-                dialog.show(getFragmentManager(), "dialog");
-                return true;
-            }
-        });
-    }
 
     /*
     ---------------------------
@@ -396,8 +445,8 @@ public class MainActivity extends BaseActivity implements CanAddElement {
      */
 
     @Override
-    public ElementAdapter getElementAdapter() {
-        return elementAdapter;
+    public ElementRecyclerAdapter getElementAdapter() {
+        return elementRecyclerAdapter;
     }
 
     @Override

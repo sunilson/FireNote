@@ -63,7 +63,7 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
                     LocalSettingsManager.getInstance().setCategoryVisibility(canAddElement.getListCategoryAdapter().getItem(position), -1);
                 }
 
-                canAddElement.getElementAdapter().sort(LocalSettingsManager.getInstance().getSortingMethod());
+                canAddElement.getElementAdapter().hideElements();
             }
         });
 

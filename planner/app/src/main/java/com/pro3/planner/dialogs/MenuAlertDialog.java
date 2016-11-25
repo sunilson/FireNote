@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.pro3.planner.Interfaces.CanAddElement;
+import com.pro3.planner.Interfaces.CanDeleteChecklistElement;
 import com.pro3.planner.Interfaces.HasSortableList;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
@@ -67,6 +68,8 @@ public class MenuAlertDialog extends DialogFragment {
             dialogAdapter.add(getResources().getString(R.string.element_note), R.drawable.ic_note_black_24dp);
         } else if (type.equals("editElement")) {
             dialogAdapter.add(getResources().getString(R.string.delete_element), R.drawable.ic_delete_black_24dp);
+        } else if (type.equals("editChecklistElement")) {
+            dialogAdapter.add(getResources().getString(R.string.delete_checklist_element), R.drawable.ic_delete_black_24dp);
         }
 
         builder.setView(content);
@@ -78,6 +81,8 @@ public class MenuAlertDialog extends DialogFragment {
             initializeAddElementItemListener(contentListView);
         } else if (type.equals("editElement")) {
             initializeEditElementItemListener(contentListView, getArguments().getInt("extra"));
+        } else if (type.equals("editChecklistElement")) {
+            initializeEditChecklistElementItemListener(contentListView, getArguments().getInt("extra"));
         }
 
         return dialog;
@@ -216,7 +221,24 @@ public class MenuAlertDialog extends DialogFragment {
                 String strName = dialogAdapter.getName(position);
 
                 if (strName.equals(getResources().getString(R.string.delete_element))) {
-                    canAddElement.getElementsReference().child(((Element) canAddElement.getElementAdapter().getItem(elementPosition)).getNoteID()).removeValue();
+                    canAddElement.getElementsReference().child((canAddElement.getElementAdapter().getItem(elementPosition)).getNoteID()).removeValue();
+                }
+
+                dialog.dismiss();
+            }
+        });
+    }
+
+    private void initializeEditChecklistElementItemListener(ListView contentListView, final int elementPosition) {
+        contentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                CanDeleteChecklistElement canDeleteChecklistElement = (CanDeleteChecklistElement) getActivity();
+
+                String strName = dialogAdapter.getName(position);
+
+                if (strName.equals(getResources().getString(R.string.delete_checklist_element))) {
+                    canDeleteChecklistElement.getElementsReference().child((canDeleteChecklistElement.getCheckListRecyclerAdapter().getItem(elementPosition)).getElementID()).removeValue();
                 }
 
                 dialog.dismiss();

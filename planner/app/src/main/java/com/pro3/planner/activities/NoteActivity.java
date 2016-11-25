@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
+import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,6 +43,7 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
     private int elementColor;
     private boolean editMode;
     private MenuItem editButton, settingsButton, doneButton;
+    private GestureDetector gd;
 
     private DatabaseReference mElementReference, mTextReference, mTitleReference;
     private ValueEventListener mTextValueListener, mTitleValueListener;
@@ -84,6 +86,26 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
         notePad.setScroller(new Scroller(this));
         notePad.setVerticalScrollBarEnabled(true);
         notePad.setMovementMethod(new ScrollingMovementMethod());
+
+        //Double Tap
+        /*
+        initializeDoulbeTapListener();
+
+        findViewById(R.id.content_note).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("Linus", "bla");
+            }
+        });
+
+        findViewById(R.id.double_tap).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                gd.onTouchEvent(event);
+                return false;
+            }
+        });
+        */
 
     }
 
@@ -163,6 +185,7 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(notePad, InputMethodManager.SHOW_IMPLICIT);
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+            Toast.makeText(this, R.string.start_edit_mode, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -174,6 +197,7 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
             doneButton.setVisible(false);
             notePad.setEnabled(false);
             mTextReference.setValue(notePad.getText().toString());
+            Toast.makeText(this, R.string.stop_edit_mode, Toast.LENGTH_SHORT).show();
         }
     }
 

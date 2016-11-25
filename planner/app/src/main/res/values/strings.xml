@@ -47,4 +47,8 @@
     <string name="dialog_enter_title">Enter title here</string>
     <string name="dialog_enter_category">Enter category here</string>
     <string name="menu_delete_all">Delete all</string>
+    <string name="new_checklist_item">New checklist item</string>
+    <string name="delete_checklist_element">Delete</string>
+    <string name="start_edit_mode">Editing element</string>
+    <string name="stop_edit_mode">Finished editing element</string>
 </resources>

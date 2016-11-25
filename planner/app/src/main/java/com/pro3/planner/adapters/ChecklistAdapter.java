@@ -96,7 +96,7 @@ public class ChecklistAdapter extends ArrayAdapter {
 
         ElementHolder elementHolder;
         if(row == null) {
-            row = new ChecklistView(getContext());
+            //row = new ChecklistView(getContext());
             elementHolder = new ElementHolder();
             elementHolder.elementText = (TextView) row.findViewById(R.id.checkList_element_text);
             row.setTag(elementHolder);
@@ -107,14 +107,6 @@ public class ChecklistAdapter extends ArrayAdapter {
         ChecklistElement element = (ChecklistElement) getItem(position);
 
         elementHolder.elementText.setText(element.getText());
-
-        if (editMode) {
-            row.findViewById(R.id.checkList_element_clear).setVisibility(View.VISIBLE);
-            row.findViewById(R.id.checkList_element_checkBox).setVisibility(View.GONE);
-        } else {
-            row.findViewById(R.id.checkList_element_clear).setVisibility(View.GONE);
-            row.findViewById(R.id.checkList_element_checkBox).setVisibility(View.VISIBLE);
-        }
 
         return row;
     }
