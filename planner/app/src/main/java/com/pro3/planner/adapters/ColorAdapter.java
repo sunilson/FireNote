@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.baseClasses.NoteColor;
 import com.pro3.planner.views.ColorElementView;
 
@@ -46,7 +47,7 @@ public class ColorAdapter extends ArrayAdapter<NoteColor> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        View row = convertView;
+        ColorElementView row = (ColorElementView) convertView;
 
         ColorAdapter.ElementHolder elementHolder;
 
@@ -58,6 +59,12 @@ public class ColorAdapter extends ArrayAdapter<NoteColor> {
 
         NoteColor noteColor = getItem(position);
         row.setBackgroundColor(noteColor.getColor());
+
+        if (LocalSettingsManager.getInstance().getColorVisibility(noteColor.getColor()) == -1) {
+            row.setChecked(true);
+        } else {
+            row.setChecked(false);
+        }
 
         return row;
     }

@@ -12,7 +12,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,8 +23,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,29 +35,43 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.pro3.planner.Interfaces.CanBeEdited;
+import com.pro3.planner.Interfaces.CanDeleteChecklistElement;
+import com.pro3.planner.Interfaces.OnStartDragListener;
+import com.pro3.planner.ItemTouchHelper.SimpleItemTouchHelperCallbackChecklist;
 import com.pro3.planner.R;
-import com.pro3.planner.adapters.ChecklistAdapter;
+import com.pro3.planner.adapters.ChecklistRecyclerAdapter;
 import com.pro3.planner.baseClasses.ChecklistElement;
 import com.pro3.planner.dialogs.DeleteElementDialog;
 import com.pro3.planner.dialogs.EditElementDialog;
+import com.pro3.planner.dialogs.MenuAlertDialog;
 
-public class ChecklistActivity extends BaseActivity implements CanBeEdited{
+import static com.pro3.planner.R.id.checkListView;
 
-    private ListView checkListView;
-    private ChecklistAdapter checklistAdapter;
+public class ChecklistActivity extends BaseActivity implements CanBeEdited, CanDeleteChecklistElement, OnStartDragListener {
+
     private String elementID;
     private boolean editMode = false;
     private int elementColor;
     private MenuItem editButton, settingsButton, doneButton;
-
     private DatabaseReference mElementReference, mChecklistElementsReference, mSettingsReference, mTitleReference;
     private ChildEventListener mChecklistElementsListener, mSettingsListener;
     private ValueEventListener mTitleListener;
     private FirebaseAuth.AuthStateListener mAuthListener;
-
     private FirebaseAuth mAuth;
     private FirebaseUser user;
     private SharedPreferences prefs;
+    private RecyclerView recyclerView;
+    private View.OnClickListener recycleOnClickListener;
+    private View.OnLongClickListener recycleOnLongClickListener;
+    private ChecklistRecyclerAdapter checklistRecyclerAdapter;
+    private LinearLayoutManager linearLayoutManager;
+    private ItemTouchHelper itemTouchHelper;
+
+    /*
+    ------------------------
+    ---- Android Events ----
+    ------------------------
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +96,18 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
         setColors();
 
         //Firebase Reference to the Checklist element we are currently in
-        if(user != null) {
+        if (user != null) {
             mElementReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("elements").child(elementID);
+        }
+
+        if (mElementReference != null) {
+            initializeChecklistElementListener();
+            initializeTitleListener();
+            mChecklistElementsReference = mElementReference.child("elements");
+            mTitleReference = mElementReference.child("title");
+            mChecklistElementsReference.addChildEventListener(mChecklistElementsListener);
+            mTitleReference.addValueEventListener(mTitleListener);
+            //checklistRecyclerAdapter.clear();
         }
 
         //Initialize the Listview and it's adapter and it's onClick Handler
@@ -97,24 +122,6 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
         });
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        if(mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
-
-        if(mChecklistElementsListener != null) {
-            mChecklistElementsReference.removeEventListener(mChecklistElementsListener);
-        }
-
-        if(mTitleListener != null) {
-            mElementReference.child("title").removeEventListener(mTitleListener);
-        }
-
-        stopEditMode();
-    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -133,126 +140,37 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
         super.onStart();
 
         mAuth.addAuthStateListener(mAuthListener);
+    }
 
-        initializeChecklistElementListener();
-        initializeTitleListener();
+    @Override
+    protected void onStop() {
+        super.onStop();
 
-        if(mElementReference != null) {
-            checklistAdapter.clear();
-            mChecklistElementsReference = mElementReference.child("elements");
-            mTitleReference = mElementReference.child("title");
-            mChecklistElementsReference.addChildEventListener(mChecklistElementsListener);
-            mTitleReference.addValueEventListener(mTitleListener);
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+
+        stopEditMode();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (mChecklistElementsListener != null) {
+            mChecklistElementsReference.removeEventListener(mChecklistElementsListener);
+        }
+
+        if (mTitleListener != null) {
+            mElementReference.child("title").removeEventListener(mTitleListener);
         }
     }
 
-    private void initializeAuthListener() {
-        mAuthListener = new FirebaseAuth.AuthStateListener(){
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    //Check if user has verified his email
-                    if(user.isEmailVerified()) {
-                        //User is signed in and verified. Do nothing
-                    } else {
-                        //If not verified, sign user out and switch to login activity
-                        mAuth.signOut();
-                        Toast.makeText(getApplicationContext(), R.string.verification_error, Toast.LENGTH_LONG).show();
-                        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(i);
-                    }
-                } else {
-                    //User is signed out. Go to login
-                    Toast.makeText(getApplicationContext(), R.string.action_logOut, Toast.LENGTH_LONG).show();
-                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(i);
-                }
-            }
-        };
-    }
-
-    private void initializeChecklistElementListener() {
-        mChecklistElementsListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                ChecklistElement element = dataSnapshot.getValue(ChecklistElement.class);
-                checklistAdapter.add(element);
-                int position = checklistAdapter.getPosition(element.getElementID());
-                if (element.isFinished()) {
-                    checkListView.setItemChecked(position, true);
-                } else {
-                    checkListView.setItemChecked(position, false);
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                ChecklistElement element = dataSnapshot.getValue(ChecklistElement.class);
-                int position = checklistAdapter.getPosition(element.getElementID());
-                checklistAdapter.update(position, element);
-                if (element.isFinished()) {
-                    checkListView.setItemChecked(position, true);
-                } else {
-                    checkListView.setItemChecked(position, false);
-                }
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                String elementKey = dataSnapshot.getKey();
-                checklistAdapter.remove(elementKey);
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-    }
-
-    private void initializeTitleListener() {
-        mTitleListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                String newTitle = dataSnapshot.getValue(String.class);
-                setTitle(newTitle);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-    }
-
-    private void setUpListView() {
-        checkListView = (ListView) findViewById(R.id.checkListView);
-        checklistAdapter = new ChecklistAdapter(this, R.layout.checklist_list_layout);
-        checkListView.setAdapter(checklistAdapter);
-
-        checkListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ChecklistElement checklistElement = (ChecklistElement) checklistAdapter.getItem(position);
-                if (!editMode) {
-                    boolean finished = checklistElement.isFinished();
-                    finished = !finished;
-                    mChecklistElementsReference.child(checklistElement.getElementID()).child("finished").setValue(finished);
-                    checklistElement.setFinished(finished);
-                } else {
-                    mChecklistElementsReference.child(checklistElement.getElementID()).removeValue();
-                    checkListView.setItemChecked(position, checklistElement.isFinished());
-                }
-            }
-        });
-    }
+    /*
+    ----------------------
+    ---- Options Menu ----
+    ----------------------
+     */
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -283,26 +201,6 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
         return super.onOptionsItemSelected(item);
     }
 
-    private void startEditMode() {
-        if (!editMode) {
-            editMode = true;
-            editButton.setVisible(false);
-            settingsButton.setVisible(true);
-            doneButton.setVisible(true);
-            checklistAdapter.toggleEditMode();
-        }
-    }
-
-    private void stopEditMode() {
-        if (editMode) {
-            editMode = false;
-            editButton.setVisible(true);
-            settingsButton.setVisible(false);
-            doneButton.setVisible(false);
-            checklistAdapter.toggleEditMode();
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_checklist, menu);
@@ -314,13 +212,118 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
         return super.onCreateOptionsMenu(menu);
     }
 
+    /*
+    -----------------------------
+    --- Listener Initializing ---
+    -----------------------------
+     */
+
+    private void initializeAuthListener() {
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    //Check if user has verified his email
+                    if (user.isEmailVerified()) {
+                        //User is signed in and verified. Do nothing
+                    } else {
+                        //If not verified, sign user out and switch to login activity
+                        mAuth.signOut();
+                        Toast.makeText(getApplicationContext(), R.string.verification_error, Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(i);
+                    }
+                } else {
+                    //User is signed out. Go to login
+                    Toast.makeText(getApplicationContext(), R.string.action_logOut, Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                    startActivity(i);
+                }
+            }
+        };
+    }
+
+    private void initializeChecklistElementListener() {
+        mChecklistElementsListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                ChecklistElement element = dataSnapshot.getValue(ChecklistElement.class);
+                checklistRecyclerAdapter.add(element);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                ChecklistElement element = dataSnapshot.getValue(ChecklistElement.class);
+                checklistRecyclerAdapter.update(element);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                String elementKey = dataSnapshot.getKey();
+                checklistRecyclerAdapter.remove(elementKey);
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+    }
+
+    private void initializeTitleListener() {
+        mTitleListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String newTitle = dataSnapshot.getValue(String.class);
+                setTitle(newTitle);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+    }
+
+    private void initializeRecyclerOnClickListener() {
+        recycleOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int itemPosition = recyclerView.getChildLayoutPosition(v);
+                ChecklistElement checklistElement = checklistRecyclerAdapter.getItem(itemPosition);
+                boolean finished = checklistElement.isFinished();
+                finished = !finished;
+                mChecklistElementsReference.child(checklistElement.getElementID()).child("finished").setValue(finished);
+            }
+        };
+    }
+
+    private void initializeRecyclerOnLongClickListener() {
+        recycleOnLongClickListener = new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                int itemPosition = recyclerView.getChildLayoutPosition(v);
+                DialogFragment dialog = MenuAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editChecklistElement", itemPosition);
+                dialog.show(getFragmentManager(), "dialog");
+                return true;
+            }
+        };
+    }
+
     private void initializeAddChecklistElementDialog() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
         LayoutInflater inflater = getLayoutInflater();
         View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
         View content = inflater.inflate(R.layout.alertdialog_body_checklist_add, null);
-        ((TextView)title.findViewById(R.id.dialog_title)).setText(getResources().getString(R.string.add_checklist_item_title));
+        ((TextView) title.findViewById(R.id.dialog_title)).setText(getResources().getString(R.string.add_checklist_item_title));
         final TextView elementTitleTextView = (TextView) content.findViewById(R.id.checklist_add_element_title);
         alert.setCustomTitle(title);
 
@@ -330,7 +333,7 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
                 String entry = elementTitleTextView.getText().toString();
                 DatabaseReference dRef = mChecklistElementsReference.push();
                 String elementID = dRef.getKey();
-                ChecklistElement checklistElement = new ChecklistElement(entry, elementID);
+                ChecklistElement checklistElement = new ChecklistElement(entry, elementID, checklistRecyclerAdapter.getItemCount());
                 dRef.setValue(checklistElement);
             }
         });
@@ -343,9 +346,79 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
         alert.show();
     }
 
+    /*
+    -------------------------------
+    ---- Listview Initializing ----
+    -------------------------------
+     */
+
+    private void setUpListView() {
+
+        //RecyclerView Initialization
+        recyclerView = (RecyclerView) findViewById(checkListView);
+        recyclerView.setHasFixedSize(true);
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        initializeRecyclerOnClickListener();
+        initializeRecyclerOnLongClickListener();
+        checklistRecyclerAdapter = new ChecklistRecyclerAdapter(this, this, recycleOnClickListener, recycleOnLongClickListener);
+        recyclerView.setAdapter(checklistRecyclerAdapter);
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallbackChecklist(checklistRecyclerAdapter);
+        itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
+
+    /*
+    ---------------------------
+    ---- Interface methods ----
+    ---------------------------
+     */
+
+    @Override
+    public DatabaseReference getElementsReference() {
+        return mChecklistElementsReference;
+    }
+
+    @Override
+    public ChecklistRecyclerAdapter getCheckListRecyclerAdapter() {
+        return checklistRecyclerAdapter;
+    }
+
     @Override
     public DatabaseReference getElementReference() {
         return mElementReference;
+    }
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        itemTouchHelper.startDrag(viewHolder);
+    }
+
+    /*
+    ---------------------
+    ---- Own methods ----
+    ---------------------
+     */
+
+    private void startEditMode() {
+        if (!editMode) {
+            editMode = true;
+            editButton.setVisible(false);
+            settingsButton.setVisible(true);
+            doneButton.setVisible(true);
+            Toast.makeText(this, R.string.start_edit_mode, Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void stopEditMode() {
+        if (editMode) {
+            editMode = false;
+            editButton.setVisible(true);
+            settingsButton.setVisible(false);
+            doneButton.setVisible(false);
+            Toast.makeText(this, R.string.stop_edit_mode, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setColors() {
@@ -368,4 +441,5 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited{
             window.setStatusBarColor(darkenedColor);
         }
     }
+
 }

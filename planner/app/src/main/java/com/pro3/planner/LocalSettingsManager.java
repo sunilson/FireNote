@@ -2,16 +2,12 @@ package com.pro3.planner;
 
 import android.content.SharedPreferences;
 
-import java.util.HashMap;
-
 /**
  * Created by linus_000 on 18.11.2016.
  */
 
 public class LocalSettingsManager {
 
-    private HashMap<String, Integer> categories = new HashMap<>();
-    private HashMap<Integer, Integer> colors = new HashMap<>();
     private String sortingMethod;
     private static LocalSettingsManager instance;
     private SharedPreferences prefs;
@@ -20,7 +16,6 @@ public class LocalSettingsManager {
         if (instance == null) {
             instance = new LocalSettingsManager();
         }
-
         return instance;
     }
 
@@ -35,32 +30,21 @@ public class LocalSettingsManager {
         if (category == 0) {
             SharedPreferences.Editor editor = prefs.edit();
             editor.putInt(categoryName, 1);
-            categories.put(categoryName, 1);
             editor.commit();
-        } else {
-            categories.put(categoryName, category);
         }
     }
 
     public void setCategoryVisibility(String categoryName, int visibility) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(categoryName, visibility);
-        categories.put(categoryName, visibility);
         editor.commit();
     }
 
     public int getCategoryVisibility(String categoryName) {
-        Integer visibility = categories.get(categoryName);
-
-        if (visibility == null) {
-            return 0;
-        }
-
-        return visibility;
+        return prefs.getInt(categoryName, 1);
     }
 
     public void removeCategory(String categoryName) {
-        categories.remove(categoryName);
         SharedPreferences.Editor editor = prefs.edit();
         editor.remove(categoryName);
         editor.apply();
@@ -69,19 +53,12 @@ public class LocalSettingsManager {
     public void setColorVisibility(int color, int visibility) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(Integer.toString(color), visibility);
-        colors.put(color, visibility);
         editor.commit();
     }
 
 
     public int getColorVisibility(int color) {
-        Integer visibility = colors.get(color);
-
-        if (visibility == null) {
-            return 1;
-        }
-
-        return visibility;
+        return prefs.getInt(Integer.toString(color), 1);
     }
 
     public void setSortingMethod(String sortingMethod) {

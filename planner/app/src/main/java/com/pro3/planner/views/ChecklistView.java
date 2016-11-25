@@ -21,14 +21,18 @@ public class ChecklistView extends LinearLayout implements Checkable {
     private TextView textView;
     private CheckBox checkBox;
     private boolean checked = false;
+    private LayoutInflater inflater;
 
     public ChecklistView(Context context) {
         super(context);
-
-        LayoutInflater inflater = LayoutInflater.from(context);
-        v = inflater.inflate(R.layout.checklist_list_layout, this, true);
+        this.inflater = LayoutInflater.from(context);
+        v = inflater.inflate(R.layout.checklist_list_layout, this, false);
         textView = (TextView) v.findViewById(R.id.checkList_element_text);
         checkBox = (CheckBox) v.findViewById(R.id.checkList_element_checkBox);
+    }
+
+    public TextView getTextView() {
+        return textView;
     }
 
     @Override
