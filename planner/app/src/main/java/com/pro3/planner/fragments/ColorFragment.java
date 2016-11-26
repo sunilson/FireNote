@@ -11,7 +11,7 @@ import android.widget.ListView;
 import com.pro3.planner.Interfaces.CanAddElement;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
-import com.pro3.planner.adapters.ColorAdapter;
+import com.pro3.planner.adapters.ColorVisibilityAdapter;
 import com.pro3.planner.baseClasses.NoteColor;
 import com.pro3.planner.views.ColorElementView;
 
@@ -43,20 +43,20 @@ public class ColorFragment extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_color, container, false);
         ListView colorListView = (ListView) view.findViewById(R.id.fragment_color_listview);
-        final ColorAdapter colorAdapter = new ColorAdapter(getContext(), R.layout.color_list_layout);
-        colorListView.setAdapter(colorAdapter);
-
-        colorAdapter.add(new NoteColor("note_color_1", ContextCompat.getColor(getContext(), R.color.note_color_1)));
-        colorAdapter.add(new NoteColor("note_color_2", ContextCompat.getColor(getContext(), R.color.note_color_2)));
-        colorAdapter.add(new NoteColor("note_color_3", ContextCompat.getColor(getContext(), R.color.note_color_3)));
-        colorAdapter.add(new NoteColor("note_color_4", ContextCompat.getColor(getContext(), R.color.note_color_4)));
-        colorAdapter.add(new NoteColor("note_color_5", ContextCompat.getColor(getContext(), R.color.note_color_5)));
-        colorAdapter.add(new NoteColor("note_color_6", ContextCompat.getColor(getContext(), R.color.note_color_6)));
-        colorAdapter.add(new NoteColor("note_color_7", ContextCompat.getColor(getContext(), R.color.note_color_7)));
-        colorAdapter.add(new NoteColor("note_color_8", ContextCompat.getColor(getContext(), R.color.note_color_8)));
-        colorAdapter.add(new NoteColor("note_color_9", ContextCompat.getColor(getContext(), R.color.note_color_9)));
-
         final CanAddElement canAddElement = (CanAddElement) getActivity();
+
+        final ColorVisibilityAdapter colorVisibilityAdapter = new ColorVisibilityAdapter(getContext(), R.layout.color_list_layout);
+
+        colorVisibilityAdapter.add(new NoteColor("note_color_1", ContextCompat.getColor(getContext(), R.color.note_color_1)));
+        colorVisibilityAdapter.add(new NoteColor("note_color_2", ContextCompat.getColor(getContext(), R.color.note_color_2)));
+        colorVisibilityAdapter.add(new NoteColor("note_color_3", ContextCompat.getColor(getContext(), R.color.note_color_3)));
+        colorVisibilityAdapter.add(new NoteColor("note_color_4", ContextCompat.getColor(getContext(), R.color.note_color_4)));
+        colorVisibilityAdapter.add(new NoteColor("note_color_5", ContextCompat.getColor(getContext(), R.color.note_color_5)));
+        colorVisibilityAdapter.add(new NoteColor("note_color_6", ContextCompat.getColor(getContext(), R.color.note_color_6)));
+        colorVisibilityAdapter.add(new NoteColor("note_color_7", ContextCompat.getColor(getContext(), R.color.note_color_7)));
+        colorVisibilityAdapter.add(new NoteColor("note_color_8", ContextCompat.getColor(getContext(), R.color.note_color_8)));
+        colorVisibilityAdapter.add(new NoteColor("note_color_9", ContextCompat.getColor(getContext(), R.color.note_color_9)));
+        colorListView.setAdapter(colorVisibilityAdapter);
 
         colorListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -64,10 +64,10 @@ public class ColorFragment extends android.support.v4.app.Fragment {
                 ColorElementView colorElementView = (ColorElementView) view;
                 if (colorElementView.isChecked()) {
                     colorElementView.setChecked(false);
-                    LocalSettingsManager.getInstance().setColorVisibility(colorAdapter.getItem(position).getColor(), 1);
+                    LocalSettingsManager.getInstance().setColorVisibility(colorVisibilityAdapter.getItem(position).getColor(), 1);
                 } else {
                     colorElementView.setChecked(true);
-                    LocalSettingsManager.getInstance().setColorVisibility(colorAdapter.getItem(position).getColor(), -1);
+                    LocalSettingsManager.getInstance().setColorVisibility(colorVisibilityAdapter.getItem(position).getColor(), -1);
                 }
 
                 canAddElement.getElementAdapter().hideElements();

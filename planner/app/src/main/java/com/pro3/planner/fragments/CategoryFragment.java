@@ -57,10 +57,10 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
                 CategoryElementView categoryElementView = (CategoryElementView) view;
                 if (categoryElementView.isChecked()) {
                     categoryElementView.setChecked(false);
-                    LocalSettingsManager.getInstance().setCategoryVisibility(canAddElement.getListCategoryAdapter().getItem(position), 1);
+                    LocalSettingsManager.getInstance().setCategoryVisibility(canAddElement.getListCategoryAdapter().getItem(position).getCategoryID(), 1);
                 } else {
                     categoryElementView.setChecked(true);
-                    LocalSettingsManager.getInstance().setCategoryVisibility(canAddElement.getListCategoryAdapter().getItem(position), -1);
+                    LocalSettingsManager.getInstance().setCategoryVisibility(canAddElement.getListCategoryAdapter().getItem(position).getCategoryID(), -1);
                 }
 
                 canAddElement.getElementAdapter().hideElements();

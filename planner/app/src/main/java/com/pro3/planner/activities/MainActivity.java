@@ -26,11 +26,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.pro3.planner.Interfaces.CanAddElement;
+import com.pro3.planner.ItemTouchHelper.SimpleItemTouchHelperCallbackMain;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
-import com.pro3.planner.ItemTouchHelper.SimpleItemTouchHelperCallbackMain;
 import com.pro3.planner.adapters.CategoryAdapter;
 import com.pro3.planner.adapters.ElementRecyclerAdapter;
+import com.pro3.planner.adapters.SpinnerAdapter;
+import com.pro3.planner.baseClasses.Category;
 import com.pro3.planner.baseClasses.Element;
 import com.pro3.planner.dialogs.MenuAlertDialog;
 import com.pro3.planner.dialogs.VisibilityDialog;
@@ -43,8 +45,8 @@ public class MainActivity extends BaseActivity implements CanAddElement {
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     private ElementRecyclerAdapter elementRecyclerAdapter;
-    private ArrayAdapter<CharSequence> spinnerCategoryAdapter;
-    private CategoryAdapter<String> listCategoryAdapter;
+    private SpinnerAdapter spinnerCategoryAdapter;
+    private CategoryAdapter listCategoryAdapter;
     private RecyclerView recyclerView;
     private View.OnClickListener recycleOnClickListener;
     private View.OnLongClickListener recycleOnLongClickListener;
@@ -75,22 +77,6 @@ public class MainActivity extends BaseActivity implements CanAddElement {
         }
         */
 
-        //RecyclerView Initialization
-        recyclerView = (RecyclerView) findViewById(R.id.elementList);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        initializeRecyclerOnClickListener();
-        initializeRecyclerOnLongClickListener();
-
-        elementRecyclerAdapter = new ElementRecyclerAdapter(this, recycleOnClickListener, recycleOnLongClickListener);
-
-        recyclerView.setAdapter(elementRecyclerAdapter);
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallbackMain(elementRecyclerAdapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-
-
         //Initialize the Firebase Auth System and the User
         mAuth = FirebaseAuth.getInstance();
         initializeAuthListener();
@@ -120,6 +106,20 @@ public class MainActivity extends BaseActivity implements CanAddElement {
                 mCategoryReference = mReference.child("categories");
                 mCategoryReference.addChildEventListener(mCategoryListener);
 
+                //RecyclerView Initialization
+                recyclerView = (RecyclerView) findViewById(R.id.elementList);
+                recyclerView.setHasFixedSize(true);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+                recyclerView.setLayoutManager(linearLayoutManager);
+                initializeRecyclerOnClickListener();
+                initializeRecyclerOnLongClickListener();
+
+                elementRecyclerAdapter = new ElementRecyclerAdapter(this, recycleOnClickListener, recycleOnLongClickListener);
+
+                recyclerView.setAdapter(elementRecyclerAdapter);
+                ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallbackMain(elementRecyclerAdapter);
+                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+                itemTouchHelper.attachToRecyclerView(recyclerView);
             }
         }
 
@@ -369,30 +369,33 @@ public class MainActivity extends BaseActivity implements CanAddElement {
         LocalSettingsManager.getInstance();
         LocalSettingsManager.getInstance().setPrefs(prefs);
 
-        spinnerCategoryAdapter = new ArrayAdapter<>(this, R.layout.spinner_item);
+        spinnerCategoryAdapter = new SpinnerAdapter(this, R.layout.spinner_item);
         spinnerCategoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        listCategoryAdapter = new CategoryAdapter<>(this, R.layout.category_list_layout);
+        listCategoryAdapter = new CategoryAdapter(this, R.layout.category_list_layout);
 
         mCategoryListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String category = dataSnapshot.getValue(String.class);
+                Category category = dataSnapshot.getValue(Category.class);
                 spinnerCategoryAdapter.add(category);
                 listCategoryAdapter.add(category);
-                LocalSettingsManager.getInstance().addCategory(category);
+                LocalSettingsManager.getInstance().addCategory(category.getCategoryName());
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Category category = dataSnapshot.getValue(Category.class);
+                spinnerCategoryAdapter.update(category);
+                listCategoryAdapter.update(category);
+                LocalSettingsManager.getInstance().addCategory(category.getCategoryName());
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                String category = dataSnapshot.getValue(String.class);
+                Category category = dataSnapshot.getValue(Category.class);
                 spinnerCategoryAdapter.remove(category);
                 listCategoryAdapter.remove(category);
-                LocalSettingsManager.getInstance().removeCategory(category);
+                LocalSettingsManager.getInstance().removeCategory(category.getCategoryName());
             }
 
             @Override
@@ -406,14 +409,6 @@ public class MainActivity extends BaseActivity implements CanAddElement {
             }
         };
     }
-
-    /*
-    -------------------------------
-    ---- Listview Initializing ----
-    -------------------------------
-     */
-
-
 
     /*
     ---------------------------
@@ -464,7 +459,12 @@ public class MainActivity extends BaseActivity implements CanAddElement {
     }
 
     @Override
-    public ArrayAdapter<String> getListCategoryAdapter() {
+    public ArrayAdapter<Category> getListCategoryAdapter() {
         return listCategoryAdapter;
+    }
+
+    @Override
+    public DatabaseReference getCategoryReference() {
+        return mCategoryReference;
     }
 }

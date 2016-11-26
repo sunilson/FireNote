@@ -184,7 +184,7 @@ public class ElementAdapter extends ArrayAdapter {
         Element element = (Element) getItem(position);
         LayoutInflater layoutInflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        if (LocalSettingsManager.getInstance().getCategoryVisibility(element.getCategory()) == -1 || LocalSettingsManager.getInstance().getColorVisibility(element.getColor()) == -1) {
+        if (LocalSettingsManager.getInstance().getCategoryVisibility(element.getCategory().getCategoryID()) == -1 || LocalSettingsManager.getInstance().getColorVisibility(element.getColor()) == -1) {
             return layoutInflater.inflate(R.layout.null_item, parent, false);
         }
 
@@ -207,7 +207,7 @@ public class ElementAdapter extends ArrayAdapter {
         elementHolder.elementIcon.setImageResource(element.getIcon());
         DateFormat df = new SimpleDateFormat("dd. MMM.", Locale.getDefault());
         elementHolder.elementDate.setText(df.format(element.getCreationDate()));
-        elementHolder.elementCategory.setText(element.getCategory());
+        elementHolder.elementCategory.setText(element.getCategory().getCategoryName());
 
         int elementColor = element.getColor();
         row.findViewById(R.id.elementList_icon_holder).setBackgroundColor(elementColor);

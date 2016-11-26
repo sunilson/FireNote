@@ -51,4 +51,7 @@
     <string name="delete_checklist_element">Delete</string>
     <string name="start_edit_mode">Editing element</string>
     <string name="stop_edit_mode">Finished editing element</string>
+    <string name="spinner_prompt">Finished editing element</string>
+    <string name="add_category_placeholder">Enter category name</string>
+    <string name="added_category">New Category added</string>
 </resources>

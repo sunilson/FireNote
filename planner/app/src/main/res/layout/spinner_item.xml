@@ -5,4 +5,5 @@
     android:gravity="center_vertical"
     android:hint="bla"
     android:textSize="18sp"
-/>
+    android:textColor="@color/primary_text_color"
+    />

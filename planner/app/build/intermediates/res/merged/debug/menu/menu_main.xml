@@ -5,13 +5,13 @@
     <item
         android:title="Sort Elements"
         android:id="@+id/main_element_sort"
-        android:icon="@drawable/ic_swap_vert_white_24dp"
+        android:icon="@drawable/main_menu_sort_icon"
         app:showAsAction="ifRoom"
         />
     <item
         android:title="Visibility"
         android:id="@+id/main_element_visibility"
-        android:icon="@drawable/ic_visibility_white_24dp"
+        android:icon="@drawable/main_menu_visibility_icon"
         app:showAsAction="ifRoom"
         />
     <item

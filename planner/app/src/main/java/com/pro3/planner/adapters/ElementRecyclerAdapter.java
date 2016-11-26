@@ -83,7 +83,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
 
         Element element = list.get(position);
         viewHolder.elementTitle.setText(element.getTitle());
-        viewHolder.elementCategory.setText(element.getCategory());
+        viewHolder.elementCategory.setText(element.getCategory().getCategoryName());
 
         viewHolder.elementIcon.setImageResource(element.getIcon());
 
@@ -114,7 +114,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
     }
 
     public void add(Element element) {
-        if (LocalSettingsManager.getInstance().getCategoryVisibility(element.getCategory()) != -1 || LocalSettingsManager.getInstance().getColorVisibility(element.getColor()) != -1) {
+        if (LocalSettingsManager.getInstance().getCategoryVisibility(element.getCategory().getCategoryID()) != -1 || LocalSettingsManager.getInstance().getColorVisibility(element.getColor()) != -1) {
             list.add(element);
         }
         allItems.add(element);
@@ -126,7 +126,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
     public void hideElements() {
         list.clear();
         for (Element e: allItems) {
-            if (LocalSettingsManager.getInstance().getCategoryVisibility(e.getCategory()) == -1 || LocalSettingsManager.getInstance().getColorVisibility(e.getColor()) == -1) {
+            if (LocalSettingsManager.getInstance().getCategoryVisibility(e.getCategory().getCategoryID()) == -1 || LocalSettingsManager.getInstance().getColorVisibility(e.getColor()) == -1) {
                 list.remove(e);
             } else {
                 list.add(e);

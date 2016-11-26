@@ -14,7 +14,7 @@ public class Element {
     private String title;
     private String noteID;
     private String noteType;
-    private String category;
+    private Category category;
     private int color;
     private int icon;
     private Date creationDate;
@@ -37,7 +37,6 @@ public class Element {
         }
 
         this.creationDate = new Date();
-        this.category = context.getResources().getString(R.string.default_category);
     }
 
     public Element() {
@@ -84,11 +83,11 @@ public class Element {
         return noteType;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 }

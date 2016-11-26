@@ -1,50 +1,120 @@
 package com.pro3.planner.views;
 
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.TableRow;
+import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.pro3.planner.Interfaces.CanAddElement;
+import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import com.pro3.planner.adapters.ColorAddAdapter;
+import com.pro3.planner.adapters.SpinnerAdapter;
+import com.pro3.planner.baseClasses.Category;
+import com.pro3.planner.baseClasses.NoteColor;
 
 /**
  * Created by linus_000 on 14.11.2016.
  */
 
-public class AddElementView extends LinearLayout{
+public class AddElementView extends LinearLayout implements AdapterView.OnItemSelectedListener{
 
     private View v;
-    private List<View> colorBlocks = new ArrayList<>();
-    private TableLayout tableLayout;
-    private EditText title;
-    private Spinner category;
-    private HashMap<String, String> categories = new HashMap<>();
-    private ArrayAdapter<CharSequence> categoryAdapter;
+    private ImageView addCategory, addCategoryDone;
+    private EditText title, category;
+    private Spinner spinner;
     private int selectedColor;
+    private ListView colorList;
+    private Category selectedCategory;
 
-    public AddElementView(Context context, ArrayAdapter<CharSequence> categoryAdapter) {
+    public AddElementView(final Context context, final ArrayAdapter<CharSequence> categoryAdapter) {
         super(context);
 
         LayoutInflater inflater = LayoutInflater.from(context);
         v = inflater.inflate(R.layout.alertdialog_body_add_element, this, true);
 
-
         title = (EditText) findViewById(R.id.add_element_title);
-        tableLayout = (TableLayout) findViewById(R.id.add_element_tableLayout);
-        category = (Spinner) findViewById(R.id.add_element_category);
-        category.setAdapter(categoryAdapter);
+        spinner = (Spinner) findViewById(R.id.add_element_categorySpinner);
+        category = (EditText) findViewById(R.id.add_element_category);
+        addCategory = (ImageView) findViewById(R.id.add_element_addCategory);
+        addCategoryDone = (ImageView) findViewById(R.id.add_element_addCategory_done);
+        colorList = (ListView) findViewById(R.id.add_element_colors);
 
+        addCategory.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addCategory.setVisibility(GONE);
+                addCategoryDone.setVisibility(VISIBLE);
+                spinner.setVisibility(GONE);
+                category.setVisibility(VISIBLE);
+            }
+        });
+
+        addCategoryDone.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addCategory.setVisibility(VISIBLE);
+                addCategoryDone.setVisibility(GONE);
+                spinner.setVisibility(VISIBLE);
+                category.setVisibility(GONE);
+
+                String categoryName = category.getText().toString();
+                if (!categoryName.equals("")) {
+                    CanAddElement canAddElement = (CanAddElement) getContext();
+                    DatabaseReference dRef = canAddElement.getCategoryReference().push();
+                    Category category = new Category(categoryName, dRef.getKey());
+                    dRef.setValue(category);
+                    Toast.makeText(getContext(), R.string.added_category, Toast.LENGTH_SHORT).show();
+                }
+                category.setText("");
+            }
+        });
+
+        spinner.setAdapter(categoryAdapter);
+        spinner.setOnItemSelectedListener(this);
+        spinner.setPrompt(getResources().getString(R.string.spinner_prompt));
+
+
+        final ColorAddAdapter colorAddAdapter = new ColorAddAdapter(getContext(), R.layout.color_list_layout);
+
+        colorAddAdapter.add(new NoteColor("note_color_1", ContextCompat.getColor(getContext(), R.color.note_color_1)));
+        colorAddAdapter.add(new NoteColor("note_color_2", ContextCompat.getColor(getContext(), R.color.note_color_2)));
+        colorAddAdapter.add(new NoteColor("note_color_3", ContextCompat.getColor(getContext(), R.color.note_color_3)));
+        colorAddAdapter.add(new NoteColor("note_color_4", ContextCompat.getColor(getContext(), R.color.note_color_4)));
+        colorAddAdapter.add(new NoteColor("note_color_5", ContextCompat.getColor(getContext(), R.color.note_color_5)));
+        colorAddAdapter.add(new NoteColor("note_color_6", ContextCompat.getColor(getContext(), R.color.note_color_6)));
+        colorAddAdapter.add(new NoteColor("note_color_7", ContextCompat.getColor(getContext(), R.color.note_color_7)));
+        colorAddAdapter.add(new NoteColor("note_color_8", ContextCompat.getColor(getContext(), R.color.note_color_8)));
+        colorAddAdapter.add(new NoteColor("note_color_9", ContextCompat.getColor(getContext(), R.color.note_color_9)));
+        colorList.setAdapter(colorAddAdapter);
+
+        colorList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ColorElementView colorElementView = (ColorElementView) view;
+                if (colorElementView.isChecked()) {
+
+                } else {
+                    selectedColor = colorAddAdapter.getItem(position).getColor();
+                    colorAddAdapter.uncheckAll();
+                    colorAddAdapter.setCheckedPosition(position);
+                    colorElementView.setChecked(true);
+                    LocalSettingsManager.getInstance().setColorVisibility(colorAddAdapter.getItem(position).getColor(), -1);
+                }
+            }
+        });
+
+
+        /*
         int countTableRows = tableLayout.getChildCount();
 
         for (int i = 0; i < countTableRows; i++) {
@@ -61,46 +131,28 @@ public class AddElementView extends LinearLayout{
                 colorBlocks.add(view);
             }
         }
-
-        selectItem(3);
-    }
-
-    private void selectItem(int position) {
-
-        Iterator it = colorBlocks.iterator();
-
-        while (it.hasNext()) {
-            View view = (View) it.next();
-            view.setVisibility(VISIBLE);
-        }
-
-        View view = colorBlocks.get(position);
-        view.setVisibility(INVISIBLE);
-
-        int color = ((ColorDrawable) view.getBackground()).getColor();
-        selectedColor = color;
-    }
-
-    public void addCategory(String category, String key) {
-        categories.put(key, category);
-        categoryAdapter.add(category);
-        categoryAdapter.notifyDataSetChanged();
-    }
-
-    public void removeCategory(String category, String key) {
-        categories.remove(key);
-        categoryAdapter.remove(category);
+        */
     }
 
     public String getTitle() {
         return title.getText().toString();
     }
 
-    public String getCategory() {
-        return category.getSelectedItem().toString();
+    public Category getCategory() {
+        return selectedCategory;
     }
 
     public int getColor() {
         return selectedColor;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        selectedCategory = ((SpinnerAdapter)parent.getAdapter()).getCategory(position);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

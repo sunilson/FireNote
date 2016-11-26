@@ -10,18 +10,20 @@ import android.widget.TextView;
 
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
+import com.pro3.planner.baseClasses.Category;
 import com.pro3.planner.views.CategoryElementView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * Created by linus_000 on 18.11.2016.
  */
 
-public class CategoryAdapter<String> extends ArrayAdapter {
+public class CategoryAdapter extends ArrayAdapter {
 
-    private List<String> list = new ArrayList<>();
+    private List<Category> list = new ArrayList<>();
 
     public CategoryAdapter(Context context, int resource) {
         super(context, resource);
@@ -35,14 +37,28 @@ public class CategoryAdapter<String> extends ArrayAdapter {
 
     @Override
     public void add(Object object) {
-        list.add((String) object);
+        list.add((Category) object);
         notifyDataSetChanged();
     }
 
     @Nullable
     @Override
-    public Object getItem(int position) {
+    public Category getItem(int position) {
         return list.get(position);
+    }
+
+
+    public void update(Category newCategory) {
+        Iterator<Category> it = list.iterator();
+
+        while (it.hasNext()) {
+            Category category = it.next();
+            if (category.getCategoryID().equals(newCategory.getCategoryID())) {
+                category.setCategoryName(newCategory.getCategoryName());
+            }
+        }
+
+        notifyDataSetChanged();
     }
 
     @Override
@@ -66,7 +82,7 @@ public class CategoryAdapter<String> extends ArrayAdapter {
             elementHolder = (CategoryAdapter.ElementHolder) row.getTag();
         }
 
-        java.lang.String string = (java.lang.String) getItem(position);
+        java.lang.String string = getItem(position).getCategoryName();
         elementHolder.elementText.setText(string);
 
         if (LocalSettingsManager.getInstance().getCategoryVisibility(string) == -1) {

@@ -9,12 +9,25 @@
         <item name="android:windowBackground">@color/main_background_color</item>
     </style>
 
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark">
+    </style>
+
+    <style name="AppTheme.AppBarOverlayMain" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:actionOverflowButtonStyle">@style/OverflowStyle</item>
+    </style>
+
+    <style name="OverflowStyle" parent="Base.Widget.AppCompat.ActionButton.Overflow">
+        <item name="android:src">@drawable/main_menu_more_icon</item>
+    </style>
+
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
