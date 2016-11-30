@@ -1,6 +1,6 @@
 package com.pro3.planner.activities;
 
-import android.app.DialogFragment;
+import android.support.v4.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,10 +8,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -23,7 +22,6 @@ import android.widget.EditText;
 import android.widget.Scroller;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,11 +29,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.pro3.planner.Interfaces.CanBeEdited;
+import com.pro3.planner.Interfaces.ConfirmDialogResult;
 import com.pro3.planner.R;
-import com.pro3.planner.dialogs.DeleteElementDialog;
+import com.pro3.planner.dialogs.ConfirmDialog;
 import com.pro3.planner.dialogs.EditElementDialog;
 
-public class NoteActivity extends AppCompatActivity implements CanBeEdited {
+public class NoteActivity extends BaseActivity implements CanBeEdited, ConfirmDialogResult {
 
     private EditText notePad;
     private String noteTitle;
@@ -45,11 +44,9 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
     private MenuItem editButton, settingsButton, doneButton;
     private GestureDetector gd;
 
-    private DatabaseReference mElementReference, mTextReference, mTitleReference;
-    private ValueEventListener mTextValueListener, mTitleValueListener;
-    private FirebaseAuth mAuth;
+    private DatabaseReference mElementReference, mTextReference, mTitleReference, mConnectedRef;
+    private ValueEventListener mTextValueListener, mTitleValueListener, mConnectedRefListener;
     private FirebaseUser user;
-    private FirebaseAuth.AuthStateListener mAuthListener;
     private SharedPreferences prefs;
 
     String elementID;
@@ -73,8 +70,6 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
         setColors();
 
         //Firebase Authentication
-        mAuth = FirebaseAuth.getInstance();
-        initializeAuthListener();
         user = mAuth.getCurrentUser();
 
         //Firebase Reference to the Checklist element we are currently in
@@ -87,36 +82,13 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
         notePad.setVerticalScrollBarEnabled(true);
         notePad.setMovementMethod(new ScrollingMovementMethod());
 
-        //Double Tap
-        /*
-        initializeDoulbeTapListener();
-
-        findViewById(R.id.content_note).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("Linus", "bla");
-            }
-        });
-
-        findViewById(R.id.double_tap).setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                gd.onTouchEvent(event);
-                return false;
-            }
-        });
-        */
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        mAuth.addAuthStateListener(mAuthListener);
 
         initializeTextListener();
         initializeTitleListener();
+
+        //Handle online/offline status
+        mConnectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+        initializeOnlineListener();
 
         if (mElementReference != null) {
             mTextReference = mElementReference.child("text");
@@ -128,12 +100,31 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onResume() {
+        super.onResume();
+        FirebaseDatabase.getInstance().goOnline();
 
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
+        if (mConnectedRefListener != null) {
+            mConnectedRef.addValueEventListener(mConnectedRefListener);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopEditMode();
+
+        if (mConnectedRefListener != null) {
+            mConnectedRef.removeEventListener(mConnectedRefListener);
+        }
+
+        FirebaseDatabase.getInstance().goOffline();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
         if (mTextValueListener != null && mTextReference != null) {
             mTextReference.removeEventListener(mTextValueListener);
@@ -142,8 +133,6 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
         if (mTitleValueListener != null && mTitleReference != null) {
             mTitleReference.removeEventListener(mTitleValueListener);
         }
-
-        stopEditMode();
     }
 
     @Override
@@ -160,11 +149,11 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
         } else if (id == R.id.note_menu_edit) {
             startEditMode();
         } else if (id == R.id.note_menu_delete) {
-            DialogFragment dialogFragment = DeleteElementDialog.newInstance(getResources().getString(R.string.delete_note_title), getTitle().toString());
-            dialogFragment.show(getFragmentManager(), "dialog");
+            DialogFragment dialogFragment = ConfirmDialog.newInstance(getResources().getString(R.string.delete_note_title), getString(R.string.delete_dialog_confirm_text), "delete");
+            dialogFragment.show(getSupportFragmentManager(), "dialog");
         } else if (id == R.id.note_menu_settings) {
-            DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_checklist_title), "note");
-            dialog.show(getFragmentManager(), "dialog");
+            DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_checklist_title), "note", "egal");
+            dialog.show(getSupportFragmentManager(), "dialog");
         } else if (id == R.id.note_menu_done) {
             stopEditMode();
         }
@@ -245,29 +234,21 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
         };
     }
 
-    private void initializeAuthListener() {
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+    private void initializeOnlineListener() {
+        mConnectedRefListener = new ValueEventListener() {
             @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    //Check if user has verified his email
-                    if (user.isEmailVerified()) {
-                        //User is signed in and verified. Do nothing
-                    } else {
-                        //If not verified, sign user out and switch to login activity
-                        mAuth.signOut();
-                        Toast.makeText(getApplicationContext(), R.string.verification_error, Toast.LENGTH_LONG).show();
-                        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(i);
-                    }
+            public void onDataChange(DataSnapshot snapshot) {
+                boolean connected = snapshot.getValue(Boolean.class);
+                if (connected) {
+                    Log.i("Linus", "connected");
                 } else {
-                    //User is signed out. Go to login
-                    Toast.makeText(getApplicationContext(), R.string.action_logOut, Toast.LENGTH_LONG).show();
-                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(i);
+                    Log.i("Linus", "disconnected");
                 }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                System.err.println("Listener was cancelled");
             }
         };
     }
@@ -303,6 +284,16 @@ public class NoteActivity extends AppCompatActivity implements CanBeEdited {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(darkenedColor);
+        }
+    }
+
+    @Override
+    public void confirmDialogResult(boolean bool, String type) {
+        if (bool) {
+            if (type.equals("delete")) {
+                mElementReference.removeValue();
+                finish();
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.pro3.planner;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -9,6 +10,8 @@ import com.google.firebase.database.FirebaseDatabase;
  */
 
 public class BaseApplication extends Application {
+
+    public Context mainContext = null;
 
     @Override
     public void onCreate() {

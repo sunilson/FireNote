@@ -1,11 +1,12 @@
 package com.pro3.planner.activities;
 
-import android.app.DialogFragment;
+import android.support.v4.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -15,9 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -25,7 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.pro3.planner.Interfaces.CanAddElement;
+import com.pro3.planner.BaseApplication;
+import com.pro3.planner.Interfaces.CanAddDeleteElement;
 import com.pro3.planner.ItemTouchHelper.SimpleItemTouchHelperCallbackMain;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
@@ -37,12 +37,11 @@ import com.pro3.planner.baseClasses.Element;
 import com.pro3.planner.dialogs.MenuAlertDialog;
 import com.pro3.planner.dialogs.VisibilityDialog;
 
-public class MainActivity extends BaseActivity implements CanAddElement {
+public class MainActivity extends BaseActivity implements CanAddDeleteElement {
 
-    private DatabaseReference mReference, mConnectedRef, mElementsReference, mSettingsReference, mCategoryReference;
+    private DatabaseReference mReference, mConnectedRef, mElementsReference, mSettingsReference, mCategoryReference, mBinReference;
     private ChildEventListener mChildEventListener, mSettingsListener, mCategoryListener;
     private ValueEventListener mConnectedRefListener;
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
     private ElementRecyclerAdapter elementRecyclerAdapter;
     private SpinnerAdapter spinnerCategoryAdapter;
@@ -50,8 +49,8 @@ public class MainActivity extends BaseActivity implements CanAddElement {
     private RecyclerView recyclerView;
     private View.OnClickListener recycleOnClickListener;
     private View.OnLongClickListener recycleOnLongClickListener;
+    private CoordinatorLayout coordinatorLayout;
 
-    private FirebaseAuth mAuth;
     private FirebaseUser user;
     private SharedPreferences prefs;
 
@@ -69,6 +68,8 @@ public class MainActivity extends BaseActivity implements CanAddElement {
         setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.app_name);
 
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.activity_main);
+
         /*
         //Recent Apps Color
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -78,8 +79,6 @@ public class MainActivity extends BaseActivity implements CanAddElement {
         */
 
         //Initialize the Firebase Auth System and the User
-        mAuth = FirebaseAuth.getInstance();
-        initializeAuthListener();
         user = mAuth.getCurrentUser();
 
         //Get the users Database Reference, if user exists
@@ -120,8 +119,14 @@ public class MainActivity extends BaseActivity implements CanAddElement {
                 ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallbackMain(elementRecyclerAdapter);
                 ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
                 itemTouchHelper.attachToRecyclerView(recyclerView);
+
+                //Papierkorb Reference
+                mBinReference = mReference.child("bin");
             }
         }
+
+        BaseApplication app = ((BaseApplication) getApplicationContext());
+        app.mainContext = this;
 
         //The Button used to add a new Element
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -129,7 +134,7 @@ public class MainActivity extends BaseActivity implements CanAddElement {
             @Override
             public void onClick(View view) {
                 DialogFragment dialog = MenuAlertDialog.newInstance(getResources().getString(R.string.add_Element_Title), "addElement", 0);
-                dialog.show(getFragmentManager(), "dialog");
+                dialog.show(getSupportFragmentManager(), "dialog");
             }
         });
     }
@@ -138,23 +143,30 @@ public class MainActivity extends BaseActivity implements CanAddElement {
     protected void onStart() {
         super.onStart();
 
-        //Add the authStateListener
-        mAuth.addAuthStateListener(mAuthListener);
-
-        if(mReference != null) {
+        if(mSettingsListener != null) {
             mSettingsReference.addChildEventListener(mSettingsListener);
         }
 
-        mConnectedRef.addValueEventListener(mConnectedRefListener);
+        if (mConnectedRefListener != null) {
+            mConnectedRef.addValueEventListener(mConnectedRefListener);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        FirebaseDatabase.getInstance().goOnline();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        FirebaseDatabase.getInstance().goOffline();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-
-        if(mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
 
         if(mSettingsListener != null) {
             mSettingsReference.removeEventListener(mSettingsListener);
@@ -162,6 +174,15 @@ public class MainActivity extends BaseActivity implements CanAddElement {
 
         if (mConnectedRefListener != null) {
             mConnectedRef.removeEventListener(mConnectedRefListener);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if(mElementsReference != null) {
+            mElementsReference.removeEventListener(mChildEventListener);
         }
     }
 
@@ -200,10 +221,10 @@ public class MainActivity extends BaseActivity implements CanAddElement {
             return true;
         } else if (id == R.id.action_sort) {
             DialogFragment dialog = MenuAlertDialog.newInstance(getResources().getString(R.string.menu_sort), "sort", 0);
-            dialog.show(getFragmentManager(), "dialog");
+            dialog.show(getSupportFragmentManager(), "dialog");
         } else if (id == R.id.main_element_sort) {
             DialogFragment dialog = MenuAlertDialog.newInstance(getResources().getString(R.string.menu_sort), "sort", 0);
-            dialog.show(getFragmentManager(), "dialog");
+            dialog.show(getSupportFragmentManager(), "dialog");
         } else if (id == R.id.main_element_visibility) {
             VisibilityDialog visibilityDialog = new VisibilityDialog();
             visibilityDialog.show(getSupportFragmentManager(), "dialog");
@@ -211,6 +232,9 @@ public class MainActivity extends BaseActivity implements CanAddElement {
             if (mReference != null) {
                 mReference.child("elements").removeValue();
             }
+        } else if (id == R.id.action_bin) {
+            Intent i = new Intent(MainActivity.this, BinActivity.class);
+            startActivity(i);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -249,7 +273,7 @@ public class MainActivity extends BaseActivity implements CanAddElement {
             public boolean onLongClick(View v) {
                 int itemPosition = recyclerView.getChildLayoutPosition(v);
                 DialogFragment dialog = MenuAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", itemPosition);
-                dialog.show(getFragmentManager(), "dialog");
+                dialog.show(getSupportFragmentManager(), "dialog");
                 return true;
             }
         };
@@ -280,6 +304,7 @@ public class MainActivity extends BaseActivity implements CanAddElement {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Element element = dataSnapshot.getValue(Element.class);
                 elementRecyclerAdapter.add(element);
+                elementRecyclerAdapter.hideElements();
             }
 
             @Override
@@ -290,8 +315,26 @@ public class MainActivity extends BaseActivity implements CanAddElement {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Element element = dataSnapshot.getValue(Element.class);
+                final Element element = dataSnapshot.getValue(Element.class);
                 elementRecyclerAdapter.remove(element.getNoteID());
+                DatabaseReference dRef = mBinReference.push();
+                element.setNoteID(dRef.getKey());
+                dRef.setValue(element);
+                Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout, R.string.moved_to_bin, 6000)
+                        .setAction(R.string.undo, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Snackbar snackbar1 = Snackbar.make(coordinatorLayout, R.string.element_restored, Snackbar.LENGTH_SHORT);
+                                snackbar1.show();
+                                mBinReference.child(element.getNoteID()).removeValue();
+                                DatabaseReference dRef = mElementsReference.push();
+                                element.setNoteID(dRef.getKey());
+                                dRef.setValue(element);
+                            }
+                        });
+
+                snackbar.show();
             }
 
             @Override
@@ -302,33 +345,6 @@ public class MainActivity extends BaseActivity implements CanAddElement {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
-            }
-        };
-    }
-
-    private void initializeAuthListener() {
-        mAuthListener = new FirebaseAuth.AuthStateListener(){
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    //Check if user has verified his email
-                    if(user.isEmailVerified()) {
-                        //User is signed in and verified. Do nothing
-                    } else {
-                        //If not verified, sign user out and switch to login activity
-                        mAuth.signOut();
-                        Toast.makeText(getApplicationContext(), R.string.verification_error, Toast.LENGTH_LONG).show();
-                        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(i);
-                    }
-                } else {
-                    //User is signed out. Go to login
-                    Toast.makeText(getApplicationContext(), R.string.action_logOut, Toast.LENGTH_LONG).show();
-                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(i);
-                }
             }
         };
     }
@@ -466,5 +482,10 @@ public class MainActivity extends BaseActivity implements CanAddElement {
     @Override
     public DatabaseReference getCategoryReference() {
         return mCategoryReference;
+    }
+
+    @Override
+    public DatabaseReference getBinReference() {
+        return mBinReference;
     }
 }

@@ -1,6 +1,6 @@
 package com.pro3.planner.activities;
 
-import android.app.DialogFragment;
+import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,13 +9,13 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,7 +26,6 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -36,28 +35,26 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.pro3.planner.Interfaces.CanBeEdited;
 import com.pro3.planner.Interfaces.CanDeleteChecklistElement;
-import com.pro3.planner.Interfaces.OnStartDragListener;
+import com.pro3.planner.Interfaces.ConfirmDialogResult;
 import com.pro3.planner.ItemTouchHelper.SimpleItemTouchHelperCallbackChecklist;
 import com.pro3.planner.R;
 import com.pro3.planner.adapters.ChecklistRecyclerAdapter;
 import com.pro3.planner.baseClasses.ChecklistElement;
-import com.pro3.planner.dialogs.DeleteElementDialog;
+import com.pro3.planner.dialogs.ConfirmDialog;
 import com.pro3.planner.dialogs.EditElementDialog;
 import com.pro3.planner.dialogs.MenuAlertDialog;
 
 import static com.pro3.planner.R.id.checkListView;
 
-public class ChecklistActivity extends BaseActivity implements CanBeEdited, CanDeleteChecklistElement, OnStartDragListener {
+public class ChecklistActivity extends BaseActivity implements CanBeEdited, CanDeleteChecklistElement, ConfirmDialogResult {
 
     private String elementID;
     private boolean editMode = false;
     private int elementColor;
     private MenuItem editButton, settingsButton, doneButton;
-    private DatabaseReference mElementReference, mChecklistElementsReference, mSettingsReference, mTitleReference;
+    private DatabaseReference mElementReference, mChecklistElementsReference, mSettingsReference, mTitleReference, mConnectedRef;
     private ChildEventListener mChecklistElementsListener, mSettingsListener;
-    private ValueEventListener mTitleListener;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseAuth mAuth;
+    private ValueEventListener mTitleListener, mConnectedRefListener;
     private FirebaseUser user;
     private SharedPreferences prefs;
     private RecyclerView recyclerView;
@@ -83,8 +80,6 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited, CanD
 
 
         //Firebase Authentication
-        mAuth = FirebaseAuth.getInstance();
-        initializeAuthListener();
         user = mAuth.getCurrentUser();
 
         //Get Element ID from clicked element and set Title
@@ -113,6 +108,10 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited, CanD
         //Initialize the Listview and it's adapter and it's onClick Handler
         setUpListView();
 
+        //Handle online/offline status
+        mConnectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+        initializeOnlineListener();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,21 +135,25 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited, CanD
     }
 
     @Override
-    protected void onStart() {
+    protected void onResume() {
         super.onStart();
 
-        mAuth.addAuthStateListener(mAuthListener);
+        FirebaseDatabase.getInstance().goOnline();
+        if (mConnectedRefListener != null) {
+            mConnectedRef.addValueEventListener(mConnectedRefListener);
+        }
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
+        stopEditMode();
 
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
+        if (mConnectedRefListener != null) {
+            mConnectedRef.removeEventListener(mConnectedRefListener);
         }
 
-        stopEditMode();
+        FirebaseDatabase.getInstance().goOffline();
     }
 
     @Override
@@ -190,13 +193,13 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited, CanD
         } else if (id == R.id.checklist_menu_edit) {
             startEditMode();
         } else if (id == R.id.checklist_menu_delete) {
-            DialogFragment dialogFragment = DeleteElementDialog.newInstance(getResources().getString(R.string.delete_checklist_title), getTitle().toString());
-            dialogFragment.show(getFragmentManager(), "dialog");
+            DialogFragment dialogFragment = ConfirmDialog.newInstance(getString(R.string.delete_checklist_title), getString(R.string.delete_dialog_confirm_text), "delete");
+            dialogFragment.show(getSupportFragmentManager(), "dialog");
         } else if (id == R.id.checklist_menu_done) {
             stopEditMode();
         } else if (id == R.id.checklist_menu_settings) {
-            DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_checklist_title), "checklist");
-            dialog.show(getFragmentManager(), "dialog");
+            DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_checklist_title), "checklist", "egal");
+            dialog.show(getSupportFragmentManager(), "dialog");
         }
         return super.onOptionsItemSelected(item);
     }
@@ -218,29 +221,21 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited, CanD
     -----------------------------
      */
 
-    private void initializeAuthListener() {
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+    private void initializeOnlineListener() {
+        mConnectedRefListener = new ValueEventListener() {
             @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    //Check if user has verified his email
-                    if (user.isEmailVerified()) {
-                        //User is signed in and verified. Do nothing
-                    } else {
-                        //If not verified, sign user out and switch to login activity
-                        mAuth.signOut();
-                        Toast.makeText(getApplicationContext(), R.string.verification_error, Toast.LENGTH_LONG).show();
-                        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                        startActivity(i);
-                    }
+            public void onDataChange(DataSnapshot snapshot) {
+                boolean connected = snapshot.getValue(Boolean.class);
+                if (connected) {
+                    Log.i("Linus", "connected");
                 } else {
-                    //User is signed out. Go to login
-                    Toast.makeText(getApplicationContext(), R.string.action_logOut, Toast.LENGTH_LONG).show();
-                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(i);
+                    Log.i("Linus", "disconnected");
                 }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                System.err.println("Listener was cancelled");
             }
         };
     }
@@ -311,7 +306,7 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited, CanD
             public boolean onLongClick(View v) {
                 int itemPosition = recyclerView.getChildLayoutPosition(v);
                 DialogFragment dialog = MenuAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editChecklistElement", itemPosition);
-                dialog.show(getFragmentManager(), "dialog");
+                dialog.show(getSupportFragmentManager(), "dialog");
                 return true;
             }
         };
@@ -361,7 +356,7 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited, CanD
         recyclerView.setLayoutManager(linearLayoutManager);
         initializeRecyclerOnClickListener();
         initializeRecyclerOnLongClickListener();
-        checklistRecyclerAdapter = new ChecklistRecyclerAdapter(this, this, recycleOnClickListener, recycleOnLongClickListener);
+        checklistRecyclerAdapter = new ChecklistRecyclerAdapter(this, recycleOnClickListener, recycleOnLongClickListener);
         recyclerView.setAdapter(checklistRecyclerAdapter);
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallbackChecklist(checklistRecyclerAdapter);
         itemTouchHelper = new ItemTouchHelper(callback);
@@ -387,11 +382,6 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited, CanD
     @Override
     public DatabaseReference getElementReference() {
         return mElementReference;
-    }
-
-    @Override
-    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-        itemTouchHelper.startDrag(viewHolder);
     }
 
     /*
@@ -442,4 +432,13 @@ public class ChecklistActivity extends BaseActivity implements CanBeEdited, CanD
         }
     }
 
+    @Override
+    public void confirmDialogResult(boolean bool, String type) {
+        if (bool) {
+            if (type.equals("delete")) {
+                mElementReference.removeValue();
+                finish();
+            }
+        }
+    }
 }

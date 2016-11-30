@@ -7,7 +7,14 @@
     android:orientation="vertical"
     android:paddingLeft="@dimen/dialog_margin_horizontal"
     android:paddingRight="@dimen/dialog_margin_horizontal"
-    android:paddingTop="@dimen/dialog_margin_vertically">
+    android:paddingTop="@dimen/dialog_margin_vertically"
+    >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose Element title:"
+        />
 
     <EditText
         android:id="@+id/add_element_title"
@@ -15,13 +22,23 @@
         android:layout_height="wrap_content"
         android:hint="@string/dialog_enter_title"
         android:inputType="textPersonName"
-        android:textSize="18sp" />
+        android:textColorHint="@color/primary_text_color"
+        android:textSize="18sp"
+        android:maxLines="1"
+        android:layout_marginLeft="-4dp"
+        android:imeOptions="actionDone"
+        />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose Element category:"
+        android:layout_marginTop="@dimen/add_dialog_menu_margin_vertical"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dialog_margin_vertically"
         android:orientation="horizontal">
 
         <EditText
@@ -32,7 +49,12 @@
             android:hint="@string/add_category_placeholder"
             android:inputType="textPersonName"
             android:textSize="18sp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:textColorHint="@color/primary_text_color"
+            android:maxLines="1"
+            android:layout_marginLeft="-4dp"
+            android:imeOptions="actionDone"
+            />
 
         <Spinner
             android:id="@+id/add_element_categorySpinner"
@@ -40,7 +62,9 @@
             android:layout_width="0px"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center" />
+            android:gravity="center"
+            android:layout_marginLeft="-4dp"
+            />
 
         <ImageView
             android:id="@+id/add_element_addCategory"
@@ -59,9 +83,17 @@
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose Element color:"
+        android:layout_marginTop="@dimen/add_dialog_menu_margin_vertical"
+        />
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:id="@+id/add_element_colors"
+        android:layout_marginTop="@dimen/dialog_margin_vertically"
         />
 </LinearLayout>

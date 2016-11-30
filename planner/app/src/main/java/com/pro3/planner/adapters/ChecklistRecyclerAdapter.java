@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.pro3.planner.Interfaces.CanDeleteChecklistElement;
 import com.pro3.planner.Interfaces.ItemTouchHelperAdapter;
-import com.pro3.planner.Interfaces.OnStartDragListener;
 import com.pro3.planner.R;
 import com.pro3.planner.baseClasses.ChecklistElement;
 
@@ -31,11 +30,9 @@ public class ChecklistRecyclerAdapter extends RecyclerView.Adapter implements It
     private final View.OnClickListener mOnClickListener;
     private final View.OnLongClickListener mOnLongClickListener;
     private LayoutInflater inflater;
-    private final OnStartDragListener onStartDragListener;
 
-    public ChecklistRecyclerAdapter(OnStartDragListener onStartDragListener, Context context, View.OnClickListener onClickListener, View.OnLongClickListener onLongClickListener) {
+    public ChecklistRecyclerAdapter(Context context, View.OnClickListener onClickListener, View.OnLongClickListener onLongClickListener) {
         this.context = context;
-        this.onStartDragListener = onStartDragListener;
         this.mOnLongClickListener = onLongClickListener;
         this.mOnClickListener = onClickListener;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

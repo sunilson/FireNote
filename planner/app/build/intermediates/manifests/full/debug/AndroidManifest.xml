@@ -56,6 +56,10 @@
             android:parentActivityName="com.pro3.planner.activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name="com.pro3.planner.activities.BinActivity"
+            android:label="@string/title_activity_bin"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <receiver
             android:name="com.google.android.gms.measurement.AppMeasurementReceiver"

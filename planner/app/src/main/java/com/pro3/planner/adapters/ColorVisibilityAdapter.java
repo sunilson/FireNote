@@ -6,8 +6,10 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 
 import com.pro3.planner.LocalSettingsManager;
+import com.pro3.planner.R;
 import com.pro3.planner.baseClasses.NoteColor;
 import com.pro3.planner.views.ColorElementView;
 
@@ -54,11 +56,16 @@ public class ColorVisibilityAdapter extends ArrayAdapter<NoteColor> {
         if(row == null) {
             row = new ColorElementView(getContext());
             elementHolder = new ColorVisibilityAdapter.ElementHolder();
+            elementHolder.icon = (ImageView) row.findViewById(R.id.color_list_icon);
             row.setTag(elementHolder);
+        } else {
+            elementHolder = (ElementHolder) row.getTag();
         }
 
         NoteColor noteColor = getItem(position);
         row.setBackgroundColor(noteColor.getColor());
+
+        elementHolder.icon.setImageResource(R.drawable.color_list_negative_icon);
 
         if (LocalSettingsManager.getInstance().getColorVisibility(noteColor.getColor()) == -1) {
             row.setChecked(true);
@@ -70,6 +77,6 @@ public class ColorVisibilityAdapter extends ArrayAdapter<NoteColor> {
     }
 
     static class ElementHolder {
-
+        public ImageView icon;
     }
 }

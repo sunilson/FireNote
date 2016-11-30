@@ -16,13 +16,19 @@
         />
     <item
         android:id="@+id/action_logOut"
-        android:orderInCategory="200"
+        android:orderInCategory="300"
         android:title="@string/menu_log_out"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_delete_all"
         android:orderInCategory="100"
         android:title="@string/menu_delete_all"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/action_bin"
+        android:orderInCategory="200"
+        android:title="@string/bin"
         app:showAsAction="never"
         />
 

@@ -26,9 +26,9 @@ public class VisibilityPagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0: // Fragment # 0 - This will show FirstFragment
-                return ColorFragment.newInstance("Page # 1");
+                return CategoryFragment.newInstance(1, "Page # 1");
             case 1: // Fragment # 0 - This will show FirstFragment different title
-                return CategoryFragment.newInstance(1, "Page # 2");
+                return ColorFragment.newInstance("Page # 2");
             default:
                 return null;
         }
@@ -44,9 +44,9 @@ public class VisibilityPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0: // Fragment # 0 - This will show FirstFragment
-                return "Colors";
-            case 1: // Fragment # 0 - This will show FirstFragment different title
                 return "Categories";
+            case 1: // Fragment # 0 - This will show FirstFragment different title
+                return "Colors";
             default:
                 return null;
         }

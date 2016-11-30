@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -14,8 +15,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
-import com.pro3.planner.Interfaces.CanAddElement;
-import com.pro3.planner.LocalSettingsManager;
+import com.pro3.planner.Interfaces.CanAddDeleteElement;
 import com.pro3.planner.R;
 import com.pro3.planner.adapters.ColorAddAdapter;
 import com.pro3.planner.adapters.SpinnerAdapter;
@@ -49,6 +49,10 @@ public class AddElementView extends LinearLayout implements AdapterView.OnItemSe
         addCategoryDone = (ImageView) findViewById(R.id.add_element_addCategory_done);
         colorList = (ListView) findViewById(R.id.add_element_colors);
 
+        title.requestFocus();
+        InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
         addCategory.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,8 +73,8 @@ public class AddElementView extends LinearLayout implements AdapterView.OnItemSe
 
                 String categoryName = category.getText().toString();
                 if (!categoryName.equals("")) {
-                    CanAddElement canAddElement = (CanAddElement) getContext();
-                    DatabaseReference dRef = canAddElement.getCategoryReference().push();
+                    CanAddDeleteElement canAddDeleteElement = (CanAddDeleteElement) getContext();
+                    DatabaseReference dRef = canAddDeleteElement.getCategoryReference().push();
                     Category category = new Category(categoryName, dRef.getKey());
                     dRef.setValue(category);
                     Toast.makeText(getContext(), R.string.added_category, Toast.LENGTH_SHORT).show();
@@ -108,30 +112,13 @@ public class AddElementView extends LinearLayout implements AdapterView.OnItemSe
                     colorAddAdapter.uncheckAll();
                     colorAddAdapter.setCheckedPosition(position);
                     colorElementView.setChecked(true);
-                    LocalSettingsManager.getInstance().setColorVisibility(colorAddAdapter.getItem(position).getColor(), -1);
                 }
             }
         });
 
-
-        /*
-        int countTableRows = tableLayout.getChildCount();
-
-        for (int i = 0; i < countTableRows; i++) {
-            TableRow tablerow = (TableRow) tableLayout.getChildAt(i);
-            int countColorblocks = tablerow.getChildCount();
-            for (int j = 0; j < countColorblocks; j++) {
-                View view = tablerow.getChildAt(j);
-                view.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        selectItem(Integer.parseInt(v.getTag().toString()));
-                    }
-                });
-                colorBlocks.add(view);
-            }
-        }
-        */
+        colorAddAdapter.setCheckedPosition(0);
+        ((ColorElementView)colorAddAdapter.getView(0, null, null)).setChecked(true);
+        selectedColor = colorAddAdapter.getItem(0).getColor();
     }
 
     public String getTitle() {
