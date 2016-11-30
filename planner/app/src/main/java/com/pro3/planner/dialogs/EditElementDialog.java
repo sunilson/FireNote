@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -25,6 +27,7 @@ public class EditElementDialog extends SuperDialog {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final String id = getArguments().getString("elementID");
         String type = getArguments().getString("type");
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -76,9 +79,13 @@ public class EditElementDialog extends SuperDialog {
             }
         });
 
-        AlertDialog dialog = builder.create();
+        return builder.create();
+    }
 
-        return dialog;
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override

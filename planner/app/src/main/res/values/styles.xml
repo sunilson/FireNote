@@ -51,7 +51,7 @@
 
     </style>
 
-    <style name="dialog" parent="@android:style/Theme.Dialog">
+    <style name="dialog">
         <item name="android:windowAnimationStyle">@style/dialogAnimation</item>
     </style>
 

@@ -1,7 +1,36 @@
-<set xmlns:android="http://schemas.android.com/apk/res/android">
-    <translate
-        android:duration="@android:integer/config_mediumAnimTime"
-        android:fromYDelta="-100%p"
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <scale
+        android:duration="200"
+        android:fromXScale="0.0"
+        android:fromYScale="0.0"
         android:interpolator="@android:anim/accelerate_interpolator"
-        android:toYDelta="0%p" />
+        android:toXScale="1.05"
+        android:toYScale="1.05"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        />
+    <scale
+        android:duration="75"
+        android:fromXScale="1.05"
+        android:fromYScale="1.05"
+        android:interpolator="@android:anim/accelerate_interpolator"
+        android:toXScale="0.95"
+        android:toYScale="0.95"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:startOffset="200"
+        />
+    <scale
+        android:duration="75"
+        android:fromXScale="0.95"
+        android:fromYScale="0.95"
+        android:interpolator="@android:anim/accelerate_interpolator"
+        android:toXScale="1.05"
+        android:toYScale="1.05"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:startOffset="275"
+        />
 </set>

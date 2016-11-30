@@ -23,8 +23,6 @@ public class VisibilityDialog extends SuperDialog {
 
     FragmentPagerAdapter adapterViewPager;
 
-
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
