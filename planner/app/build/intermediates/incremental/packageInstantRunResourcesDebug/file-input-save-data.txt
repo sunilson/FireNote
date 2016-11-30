@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Wed Nov 30 22:32:55 CET 2016
+#Wed Nov 30 23:23:55 CET 2016
 210.set=ANDROID_RESOURCE
 282.file=C\:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-v21\\abc_btn_colored_material.xml
 14.set=ANDROID_RESOURCE
