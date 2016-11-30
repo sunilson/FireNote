@@ -11,14 +11,15 @@ import java.util.List;
 
 public class Checklist extends Element{
 
-    private List checklistElements;
+    private List elements;
     private Reminder reminder;
 
     public Checklist(String noteType, String title, Context context) {
         super(noteType, title, context);
-        checklistElements = new ArrayList();
+        elements = new ArrayList();
     }
 
     public void addChecklistElement(String text) {
     }
+
 }

@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\src\main\AndroidManifest.xml:2:1-46:12
+ADDED from C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\src\main\AndroidManifest.xml:2:1-50:12
 	package
 		ADDED from C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\src\main\AndroidManifest.xml:3:5-31
 		INJECTED from C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\src\main\AndroidManifest.xml
@@ -21,7 +21,7 @@ MERGED from [com.google.firebase:firebase-iid:9.6.1] C:\Users\linus_000\Document
 	android:name
 		ADDED from C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\src\main\AndroidManifest.xml:5:22-64
 application
-ADDED from C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\src\main\AndroidManifest.xml:7:5-44:19
+ADDED from C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\src\main\AndroidManifest.xml:7:5-48:19
 MERGED from [com.android.support:design:24.2.1] C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\build\intermediates\exploded-aar\com.android.support\design\24.2.1\AndroidManifest.xml:22:5-20
 MERGED from [com.android.support:support-v4:24.2.1] C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.2.1\AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:support-compat:25.0.0] C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.0.0\AndroidManifest.xml:25:5-20
@@ -113,6 +113,14 @@ ADDED from C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\src\main\Android
 		ADDED from C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\src\main\AndroidManifest.xml:42:13-56
 	android:name
 		ADDED from C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\src\main\AndroidManifest.xml:39:13-52
+activity#com.pro3.planner.activities.BinActivity
+ADDED from C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\src\main\AndroidManifest.xml:44:9-47:68
+	android:label
+		ADDED from C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\src\main\AndroidManifest.xml:46:13-55
+	android:theme
+		ADDED from C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\src\main\AndroidManifest.xml:47:13-56
+	android:name
+		ADDED from C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\src\main\AndroidManifest.xml:45:13-51
 uses-sdk
 INJECTED from C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 MERGED from [com.android.support:design:24.2.1] C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\build\intermediates\exploded-aar\com.android.support\design\24.2.1\AndroidManifest.xml:20:5-43

@@ -1,7 +1,7 @@
 package com.pro3.planner.dialogs;
 
+import android.app.Activity;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.pro3.planner.Interfaces.CanAddDeleteElement;
 import com.pro3.planner.Interfaces.CanBeEdited;
 import com.pro3.planner.R;
 
@@ -18,10 +19,11 @@ import com.pro3.planner.R;
  * Created by linus_000 on 12.11.2016.
  */
 
-public class EditElementDialog extends DialogFragment {
+public class EditElementDialog extends SuperDialog {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        final String id = getArguments().getString("elementID");
         String type = getArguments().getString("type");
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -43,15 +45,29 @@ public class EditElementDialog extends DialogFragment {
             editTitleResource = R.id.note_edit_element_title;
         }
 
+        final Activity activity = getActivity();
         final EditText editTitleText = (EditText) content.findViewById(editTitleResource);
-        editTitleText.setText(getActivity().getTitle());
+        if (activity instanceof CanBeEdited) {
+            editTitleText.setText(getActivity().getTitle());
+        } else if (activity instanceof CanAddDeleteElement) {
+            CanAddDeleteElement canAddDeleteElement = (CanAddDeleteElement) activity;
+            editTitleText.setText(canAddDeleteElement.getElementAdapter().getElement(id).getTitle());
+        }
+
         builder.setView(content);
 
         builder.setPositiveButton(R.string.confirm_add_dialog, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                CanBeEdited canBeEdited = (CanBeEdited) getActivity();
-                String entry = editTitleText.getText().toString();
-                canBeEdited.getElementReference().child("title").setValue(entry);
+                if (activity instanceof CanBeEdited) {
+                    String title = editTitleText.getText().toString();
+                    CanBeEdited canBeEdited = (CanBeEdited) getActivity();
+                    canBeEdited.getElementReference().child("title").setValue(title);
+                } else if (activity instanceof CanAddDeleteElement) {
+                    String title = editTitleText.getText().toString();
+                    CanAddDeleteElement canAddDeleteElement = (CanAddDeleteElement) activity;
+                    canAddDeleteElement.getElementsReference().child(id).child("title").setValue(title);
+                }
+
             }
         });
 
@@ -60,7 +76,14 @@ public class EditElementDialog extends DialogFragment {
             }
         });
 
-        return builder.create();
+        AlertDialog dialog = builder.create();
+
+        return dialog;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -69,11 +92,12 @@ public class EditElementDialog extends DialogFragment {
         ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_negative_button));
     }
 
-    public static EditElementDialog newInstance(String title, String type) {
+    public static EditElementDialog newInstance(String title, String type, String elementID) {
         EditElementDialog dialog = new EditElementDialog();
         Bundle args = new Bundle();
         args.putString("title", title);
         args.putString("type", type);
+        args.putString("elementID", elementID);
         dialog.setArguments(args);
         return dialog;
     }

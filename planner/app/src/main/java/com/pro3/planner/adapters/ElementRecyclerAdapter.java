@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.pro3.planner.Interfaces.CanAddElement;
+import com.pro3.planner.Interfaces.CanAddDeleteElement;
 import com.pro3.planner.Interfaces.ItemTouchHelperAdapter;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
@@ -49,15 +49,14 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
-        //Move Events handeln
-        return true;
+        return false;
     }
 
     @Override
     public void onItemDismiss(int position) {
         //Löschen durch swipe
-        CanAddElement canAddElement = (CanAddElement) context;
-        canAddElement.getElementsReference().child((getItem(position)).getNoteID()).removeValue();
+        CanAddDeleteElement canAddDeleteElement = (CanAddDeleteElement) context;
+        canAddDeleteElement.getElementsReference().child((getItem(position)).getNoteID()).removeValue();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -107,6 +106,21 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    public Element getElement(String elementID) {
+        Element result = null;
+        Iterator<Element> it = list.iterator();
+
+        while (it.hasNext()) {
+            Element element = it.next();
+            if (element.getNoteID().equals(elementID)) {
+                result = element;
+                break;
+            }
+        }
+
+        return result;
     }
 
     public Element getItem(int position) {

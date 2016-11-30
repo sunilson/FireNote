@@ -82,13 +82,13 @@ public class CategoryAdapter extends ArrayAdapter {
             elementHolder = (CategoryAdapter.ElementHolder) row.getTag();
         }
 
-        java.lang.String string = getItem(position).getCategoryName();
-        elementHolder.elementText.setText(string);
+        Category category = getItem(position);
+        elementHolder.elementText.setText(category.getCategoryName());
 
-        if (LocalSettingsManager.getInstance().getCategoryVisibility(string) == -1) {
-            row.setChecked(true);
-        } else {
+        if (LocalSettingsManager.getInstance().getCategoryVisibility(category.getCategoryID()) == 1) {
             row.setChecked(false);
+        } else {
+            row.setChecked(true);
         }
 
         return row;

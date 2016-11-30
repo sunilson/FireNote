@@ -1,13 +1,14 @@
 package com.pro3.planner.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.pro3.planner.Interfaces.CanAddElement;
+import com.pro3.planner.Interfaces.CanAddDeleteElement;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
 import com.pro3.planner.views.CategoryElementView;
@@ -48,22 +49,24 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
 
         ListView categoryListView = (ListView) view.findViewById(R.id.fragment_category_listview);
 
-        final CanAddElement canAddElement = (CanAddElement) getActivity();
-        categoryListView.setAdapter(canAddElement.getListCategoryAdapter());
+        final CanAddDeleteElement canAddDeleteElement = (CanAddDeleteElement) getActivity();
+        categoryListView.setAdapter(canAddDeleteElement.getListCategoryAdapter());
 
         categoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CategoryElementView categoryElementView = (CategoryElementView) view;
                 if (categoryElementView.isChecked()) {
+                    Log.i("Linus", "Checked false");
                     categoryElementView.setChecked(false);
-                    LocalSettingsManager.getInstance().setCategoryVisibility(canAddElement.getListCategoryAdapter().getItem(position).getCategoryID(), 1);
+                    LocalSettingsManager.getInstance().setCategoryVisibility(canAddDeleteElement.getListCategoryAdapter().getItem(position).getCategoryID(), 1);
                 } else {
+                    Log.i("Linus", "Checked true");
                     categoryElementView.setChecked(true);
-                    LocalSettingsManager.getInstance().setCategoryVisibility(canAddElement.getListCategoryAdapter().getItem(position).getCategoryID(), -1);
+                    LocalSettingsManager.getInstance().setCategoryVisibility(canAddDeleteElement.getListCategoryAdapter().getItem(position).getCategoryID(), -1);
                 }
 
-                canAddElement.getElementAdapter().hideElements();
+                canAddDeleteElement.getElementAdapter().hideElements();
             }
         });
 

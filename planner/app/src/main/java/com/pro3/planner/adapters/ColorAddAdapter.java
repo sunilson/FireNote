@@ -58,11 +58,11 @@ public class ColorAddAdapter extends ArrayAdapter<NoteColor> {
 
         ColorElementView row = (ColorElementView) convertView;
 
-        ColorVisibilityAdapter.ElementHolder elementHolder;
+        ElementHolder elementHolder;
 
         if(row == null) {
             row = new ColorElementView(getContext());
-            elementHolder = new ColorVisibilityAdapter.ElementHolder();
+            elementHolder = new ElementHolder();
             row.setTag(elementHolder);
         }
 

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.pro3.planner.R;
 import com.pro3.planner.adapters.VisibilityPagerAdapter;
@@ -18,7 +19,7 @@ import com.pro3.planner.adapters.VisibilityPagerAdapter;
  * Created by linus_000 on 17.11.2016.
  */
 
-public class VisibilityDialog extends android.support.v4.app.DialogFragment {
+public class VisibilityDialog extends SuperDialog {
 
     FragmentPagerAdapter adapterViewPager;
 
@@ -34,6 +35,11 @@ public class VisibilityDialog extends android.support.v4.app.DialogFragment {
         layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
 
         dialog.getWindow().setAttributes(layoutParams);
+
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
+        TextView titleText = (TextView) title.findViewById(R.id.dialog_title);
+        titleText.setText("title");
 
         return dialog;
     }

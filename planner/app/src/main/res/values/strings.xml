@@ -42,7 +42,7 @@
     <string name="delete_element">Delete</string>
     <string name="title_activity_note">NoteActivity</string>
     <string name="confirm_delete_dialog">Delete</string>
-    <string name="delete_dialog_confirm_text">Do you really want to delete </string>
+    <string name="delete_dialog_confirm_text">Do you really want to delete this element?</string>
     <string name="default_category">Default Category</string>
     <string name="dialog_enter_title">Enter title here</string>
     <string name="dialog_enter_category">Enter category here</string>
@@ -54,4 +54,15 @@
     <string name="spinner_prompt">Finished editing element</string>
     <string name="add_category_placeholder">Enter category name</string>
     <string name="added_category">New Category added</string>
+    <string name="moved_to_bin">Moved element to bin</string>
+    <string name="bin">Recycle bin</string>
+    <string name="undo">Undo</string>
+    <string name="element_restored">Element restored!</string>
+    <string name="title_activity_bin">Recycle Bin</string>
+    <string name="clear_bin_title">Clear bin</string>
+    <string name="confirm_clear_bin_dialog">Confirm</string>
+    <string name="clear_bin_question">Do you really want to clear the recycle bin?</string>
+    <string name="restore_element">Restore element</string>
+    <string name="restore_element_question">Do you really want to restore this element?</string>
+    <string name="edit">Edit</string>
 </resources>

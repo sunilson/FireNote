@@ -38,11 +38,11 @@ public class CategoryElementView extends LinearLayout implements Checkable {
         if (isChecked()) {
             textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             textView.setTextColor(getResources().getColor(R.color.text_crossed_out));
-            checkBox.setChecked(true);
+            checkBox.setChecked(false);
         } else {
             textView.setPaintFlags(textView.getPaintFlags() & ~(Paint.STRIKE_THRU_TEXT_FLAG));
             textView.setTextColor(getResources().getColor(R.color.primary_text_color));
-            checkBox.setChecked(false);
+            checkBox.setChecked(true);
         }
     }
 

@@ -2,13 +2,12 @@ package com.pro3.planner.dialogs;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.DialogFragment;
+import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,7 +16,7 @@ import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
-import com.pro3.planner.Interfaces.CanAddElement;
+import com.pro3.planner.Interfaces.CanAddDeleteElement;
 import com.pro3.planner.Interfaces.CanDeleteChecklistElement;
 import com.pro3.planner.Interfaces.HasSortableList;
 import com.pro3.planner.LocalSettingsManager;
@@ -32,10 +31,10 @@ import com.pro3.planner.views.AddElementView;
  * Created by linus_000 on 11.11.2016.
  */
 
-public class MenuAlertDialog extends DialogFragment {
+public class MenuAlertDialog extends SuperDialog {
 
     private DialogMenuAdapter dialogAdapter;
-    private AlertDialog dialog;
+    //private AlertDialog dialog;
     private String elementType;
     private DatabaseReference mCategoryReference;
     private ChildEventListener mCategoryListener;
@@ -68,12 +67,13 @@ public class MenuAlertDialog extends DialogFragment {
             dialogAdapter.add(getResources().getString(R.string.element_note), R.drawable.ic_note_black_24dp);
         } else if (type.equals("editElement")) {
             dialogAdapter.add(getResources().getString(R.string.delete_element), R.drawable.ic_delete_black_24dp);
+            dialogAdapter.add(getResources().getString(R.string.edit), R.drawable.ic_mode_edit_black_24dp);
         } else if (type.equals("editChecklistElement")) {
             dialogAdapter.add(getResources().getString(R.string.delete_checklist_element), R.drawable.ic_delete_black_24dp);
         }
 
         builder.setView(content);
-        dialog = builder.create();
+        AlertDialog dialog = builder.create();
 
         if (type.equals("sort")) {
             initializeSortItemListener(contentListView);
@@ -86,6 +86,12 @@ public class MenuAlertDialog extends DialogFragment {
         }
 
         return dialog;
+    }
+
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     public static MenuAlertDialog newInstance(String title, String type, int extra) {
@@ -120,7 +126,7 @@ public class MenuAlertDialog extends DialogFragment {
 
                 hasSortingAdapter.getElementAdapter().sort(shortName);
                 LocalSettingsManager.getInstance().setSortingMethod(shortName);
-                dialog.dismiss();
+                getDialog().dismiss();
             }
         });
     }
@@ -130,8 +136,8 @@ public class MenuAlertDialog extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                final CanAddElement canAddElement = (CanAddElement) getActivity();
-                final AddElementView content = new AddElementView(getActivity(), canAddElement.getSpinnerCategoryAdapter());
+                final CanAddDeleteElement canAddDeleteElement = (CanAddDeleteElement) getActivity();
+                final AddElementView content = new AddElementView(getActivity(), canAddDeleteElement.getSpinnerCategoryAdapter());
 
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 final Activity activity = getActivity();
@@ -139,7 +145,7 @@ public class MenuAlertDialog extends DialogFragment {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
                 elementType = dialogAdapter.getName(position);
-                dialog.dismiss();
+                getDialog().dismiss();
 
                 TextView titleText = (TextView) title.findViewById(R.id.dialog_title);
                 titleText.setText(getArguments().getString("title"));
@@ -161,7 +167,7 @@ public class MenuAlertDialog extends DialogFragment {
                         element.setColor(content.getColor());
                         element.setCategory(content.getCategory());
 
-                        DatabaseReference dRef = canAddElement.getElementsReference().push();
+                        DatabaseReference dRef = canAddDeleteElement.getElementsReference().push();
                         element.setNoteID(dRef.getKey());
                         dRef.setValue(element);
                     }
@@ -171,24 +177,6 @@ public class MenuAlertDialog extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                    }
-                });
-
-                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        if (mCategoryReference != null && mCategoryListener != null) {
-                            Log.i("Linus", "Destroy Listener");
-                        }
-                    }
-                });
-
-                builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        if (mCategoryReference != null && mCategoryListener != null) {
-                            Log.i("Linus", "Destroy Listener");
-                        }
                     }
                 });
 
@@ -216,15 +204,19 @@ public class MenuAlertDialog extends DialogFragment {
         contentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CanAddElement canAddElement = (CanAddElement) getActivity();
+                CanAddDeleteElement canAddDeleteElement = (CanAddDeleteElement) getActivity();
 
+                String elementID = canAddDeleteElement.getElementAdapter().getItem(elementPosition).getNoteID();
                 String strName = dialogAdapter.getName(position);
 
                 if (strName.equals(getResources().getString(R.string.delete_element))) {
-                    canAddElement.getElementsReference().child((canAddElement.getElementAdapter().getItem(elementPosition)).getNoteID()).removeValue();
+                    canAddDeleteElement.getElementsReference().child((canAddDeleteElement.getElementAdapter().getItem(elementPosition)).getNoteID()).removeValue();
+                } else if (strName.equals(getResources().getString(R.string.edit))) {
+                    DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_checklist_title), "checklist", elementID);
+                    dialog.show(getFragmentManager(), "dialog");
                 }
 
-                dialog.dismiss();
+                getDialog().dismiss();
             }
         });
     }
@@ -234,14 +226,15 @@ public class MenuAlertDialog extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CanDeleteChecklistElement canDeleteChecklistElement = (CanDeleteChecklistElement) getActivity();
+                String elementID = canDeleteChecklistElement.getCheckListRecyclerAdapter().getItem(elementPosition).getElementID();
 
                 String strName = dialogAdapter.getName(position);
 
                 if (strName.equals(getResources().getString(R.string.delete_checklist_element))) {
-                    canDeleteChecklistElement.getElementsReference().child((canDeleteChecklistElement.getCheckListRecyclerAdapter().getItem(elementPosition)).getElementID()).removeValue();
+                    canDeleteChecklistElement.getElementsReference().child(elementID).removeValue();
                 }
 
-                dialog.dismiss();
+                getDialog().dismiss();
             }
         });
     }

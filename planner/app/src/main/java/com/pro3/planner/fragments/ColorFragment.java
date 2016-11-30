@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.pro3.planner.Interfaces.CanAddElement;
+import com.pro3.planner.Interfaces.CanAddDeleteElement;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
 import com.pro3.planner.adapters.ColorVisibilityAdapter;
@@ -43,7 +43,7 @@ public class ColorFragment extends android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_color, container, false);
         ListView colorListView = (ListView) view.findViewById(R.id.fragment_color_listview);
-        final CanAddElement canAddElement = (CanAddElement) getActivity();
+        final CanAddDeleteElement canAddDeleteElement = (CanAddDeleteElement) getActivity();
 
         final ColorVisibilityAdapter colorVisibilityAdapter = new ColorVisibilityAdapter(getContext(), R.layout.color_list_layout);
 
@@ -70,7 +70,7 @@ public class ColorFragment extends android.support.v4.app.Fragment {
                     LocalSettingsManager.getInstance().setColorVisibility(colorVisibilityAdapter.getItem(position).getColor(), -1);
                 }
 
-                canAddElement.getElementAdapter().hideElements();
+                canAddDeleteElement.getElementAdapter().hideElements();
             }
         });
 
