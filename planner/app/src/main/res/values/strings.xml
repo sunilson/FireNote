@@ -66,4 +66,20 @@
     <string name="restore_element_question">Do you really want to restore this element?</string>
     <string name="edit">Edit</string>
     <string name="note_hint">Enter text here</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="set_master_password">Set Master password</string>
+    <string name="edit_user_profile">Edit User profile</string>
+    <string name="master_password_description">The master password is used to lock your Notes and Checklists. It is not your login password!</string>
+    <string name="about_title">About Everyday Planner</string>
+    <string name="master_password_new_hint">Enter new password</string>
+    <string name="master_password_new2_hint">Repeat new password</string>
+    <string name="master_password_old_hint">Enter old password</string>
+    <string name="need_connection">You need an internet connection to do that!</string>
+    <string name="user_profile_description">Here you can edit the data of your account.</string>
+    <string name="lock">Lock/Unlock</string>
+    <string name="unlock">Unlock</string>
+    <string name="locked">Locked</string>
+    <string name="unlocked">Unlocked</string>
+    <string name="master_password_not_set">Please first set a master password under "Settings"!</string>
+    <string name="wrong_password">Wrong password!</string>
 </resources>

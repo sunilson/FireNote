@@ -22,6 +22,8 @@ public class Element {
     private Date creationDate;
     private String text;
     private Map<String, ChecklistElement> elements = new HashMap<>();
+    private String password;
+    private boolean locked;
 
     public Element(String noteType, String title, Context context) {
         this.noteType = noteType;
@@ -40,6 +42,7 @@ public class Element {
             icon = R.drawable.ic_toc_black_24dp;
         }
 
+        this.password = "";
         this.creationDate = new Date();
     }
 
@@ -109,5 +112,13 @@ public class Element {
 
     public String getText() {
         return this.text;
+    }
+
+    public boolean getLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 }

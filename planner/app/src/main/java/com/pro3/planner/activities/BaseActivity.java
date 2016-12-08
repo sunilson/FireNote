@@ -10,8 +10,12 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
-import com.pro3.planner.baseClasses.Settings;
 
 /**
  * Created by linus_000 on 05.11.2016.
@@ -21,9 +25,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private FirebaseUser user;
     protected FirebaseAuth mAuth;
+    protected DatabaseReference mSettingsReference;
     private FirebaseAuth.AuthStateListener mAuthListener;
     protected ChildEventListener mSettingsListener;
-    protected Settings settings;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,17 +36,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         //Initialize the Auth system and the Listener, which detects changes to the user state
         mAuth = FirebaseAuth.getInstance();
         initializeAuthListener();
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
 
     }
 
@@ -51,6 +45,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onStart();
         //Auth Listener zu Instanz hinzufügen
         mAuth.addAuthStateListener(mAuthListener);
+
+        if (mAuth.getCurrentUser() != null) {
+            initializeSettingsListener();
+            mSettingsReference =  FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid()).child("settings");
+            mSettingsReference.addChildEventListener(mSettingsListener);
+        }
     }
 
     @Override
@@ -59,6 +59,43 @@ public abstract class BaseActivity extends AppCompatActivity {
         if(mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
+
+        if(mSettingsListener != null) {
+            mSettingsReference.removeEventListener(mSettingsListener);
+        }
+    }
+
+    private void initializeSettingsListener() {
+        mSettingsListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if (dataSnapshot.getKey().equals("masterPassword")) {
+                    LocalSettingsManager.getInstance().setMasterPassword(dataSnapshot.getValue(String.class));
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getKey().equals("masterPassword")) {
+                    LocalSettingsManager.getInstance().setMasterPassword("");
+                }
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
     }
 
     private void initializeAuthListener() {

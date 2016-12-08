@@ -1,12 +1,12 @@
 package com.pro3.planner.activities;
 
-import android.support.v4.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -24,8 +25,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.pro3.planner.BaseApplication;
-import com.pro3.planner.Interfaces.CanAddDeleteElement;
+import com.pro3.planner.Interfaces.ConfirmDialogResult;
+import com.pro3.planner.Interfaces.MainInterface;
 import com.pro3.planner.ItemTouchHelper.SimpleItemTouchHelperCallbackMain;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
@@ -35,14 +36,14 @@ import com.pro3.planner.adapters.SpinnerAdapter;
 import com.pro3.planner.baseClasses.Category;
 import com.pro3.planner.baseClasses.Element;
 import com.pro3.planner.dialogs.MenuAlertDialog;
+import com.pro3.planner.dialogs.PasswordDialog;
 import com.pro3.planner.dialogs.VisibilityDialog;
 
-public class MainActivity extends BaseActivity implements CanAddDeleteElement {
+public class MainActivity extends BaseActivity implements MainInterface, ConfirmDialogResult {
 
-    private DatabaseReference mReference, mConnectedRef, mElementsReference, mSettingsReference, mCategoryReference, mBinReference;
-    private ChildEventListener mChildEventListener, mSettingsListener, mCategoryListener;
+    private DatabaseReference mReference, mConnectedRef, mElementsReference, mCategoryReference, mBinReference;
+    private ChildEventListener mChildEventListener, mCategoryListener;
     private ValueEventListener mConnectedRefListener;
-
     private ElementRecyclerAdapter elementRecyclerAdapter;
     private SpinnerAdapter spinnerCategoryAdapter;
     private CategoryAdapter listCategoryAdapter;
@@ -50,7 +51,6 @@ public class MainActivity extends BaseActivity implements CanAddDeleteElement {
     private View.OnClickListener recycleOnClickListener;
     private View.OnLongClickListener recycleOnLongClickListener;
     private CoordinatorLayout coordinatorLayout;
-
     private FirebaseUser user;
     private SharedPreferences prefs;
 
@@ -70,26 +70,20 @@ public class MainActivity extends BaseActivity implements CanAddDeleteElement {
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.activity_main);
 
-        /*
-        //Recent Apps Color
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ActivityManager.TaskDescription taskDescription = new ActivityManager.TaskDescription(getString(R.string.app_name), BitmapFactory.decodeResource(getResources(), R.drawable.checklist_menu_delete_icon), ContextCompat.getColor(this, R.color.recent_apps_color));
-            this.setTaskDescription(taskDescription);
-        }
-        */
-
         //Initialize the Firebase Auth System and the User
         user = mAuth.getCurrentUser();
+
+        //Handle online/offline status
+        mConnectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+        initializeOnlineListener();
 
         //Get the users Database Reference, if user exists
         if(user != null) {
             mReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
 
-            //Handle online/offline status
-            mConnectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
-            initializeOnlineListener();
+            //Prefs initialization
+            prefs = this.getSharedPreferences(user.getUid(), MODE_PRIVATE);
 
-            initializeUserSettings();
             if(mReference != null) {
 
                 //Initialize the Listener which detects changes in the note data
@@ -125,9 +119,6 @@ public class MainActivity extends BaseActivity implements CanAddDeleteElement {
             }
         }
 
-        BaseApplication app = ((BaseApplication) getApplicationContext());
-        app.mainContext = this;
-
         //The Button used to add a new Element
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -142,10 +133,6 @@ public class MainActivity extends BaseActivity implements CanAddDeleteElement {
     @Override
     protected void onStart() {
         super.onStart();
-
-        if(mSettingsListener != null) {
-            mSettingsReference.addChildEventListener(mSettingsListener);
-        }
 
         if (mConnectedRefListener != null) {
             mConnectedRef.addValueEventListener(mConnectedRefListener);
@@ -167,10 +154,6 @@ public class MainActivity extends BaseActivity implements CanAddDeleteElement {
     @Override
     protected void onStop() {
         super.onStop();
-
-        if(mSettingsListener != null) {
-            mSettingsReference.removeEventListener(mSettingsListener);
-        }
 
         if (mConnectedRefListener != null) {
             mConnectedRef.removeEventListener(mConnectedRefListener);
@@ -235,6 +218,9 @@ public class MainActivity extends BaseActivity implements CanAddDeleteElement {
         } else if (id == R.id.action_bin) {
             Intent i = new Intent(MainActivity.this, BinActivity.class);
             startActivity(i);
+        } else if (id == R.id.action_settings) {
+            Intent i = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(i);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -252,17 +238,22 @@ public class MainActivity extends BaseActivity implements CanAddDeleteElement {
             public void onClick(View v) {
                 int itemPosition = recyclerView.getChildLayoutPosition(v);
                 Element element = elementRecyclerAdapter.getItem(itemPosition);
-                Intent i = null;
-                if (element.getNoteType().equals("checklist")) {
-                    i = new Intent(MainActivity.this, ChecklistActivity.class);
-                } else if (element.getNoteType().equals("note")) {
-                    i = new Intent(MainActivity.this, NoteActivity.class);
-                }
+                if (element.getLocked()) {
+                    DialogFragment dialogFragment = PasswordDialog.newInstance("passwordOpenElement", element.getNoteType(), element.getNoteID(), element.getTitle(), element.getColor());
+                    dialogFragment.show(getSupportFragmentManager(), "dialog");
+                } else {
+                    Intent i = null;
+                    if (element.getNoteType().equals("checklist")) {
+                        i = new Intent(MainActivity.this, ChecklistActivity.class);
+                    } else if (element.getNoteType().equals("note")) {
+                        i = new Intent(MainActivity.this, NoteActivity.class);
+                    }
 
-                i.putExtra("elementID", element.getNoteID());
-                i.putExtra("elementTitle", element.getTitle());
-                i.putExtra("elementColor", element.getColor());
-                startActivity(i);
+                    i.putExtra("elementID", element.getNoteID());
+                    i.putExtra("elementTitle", element.getTitle());
+                    i.putExtra("elementColor", element.getColor());
+                    startActivity(i);
+                }
             }
         };
     }
@@ -272,8 +263,15 @@ public class MainActivity extends BaseActivity implements CanAddDeleteElement {
             @Override
             public boolean onLongClick(View v) {
                 int itemPosition = recyclerView.getChildLayoutPosition(v);
-                DialogFragment dialog = MenuAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", itemPosition);
-                dialog.show(getSupportFragmentManager(), "dialog");
+                Element element = elementRecyclerAdapter.getItem(itemPosition);
+
+                if (element.getLocked()) {
+                    DialogFragment dialogFragment = PasswordDialog.newInstance("passwordEditElement", "", "", "", itemPosition);
+                    dialogFragment.show(getSupportFragmentManager(), "dialog");
+                } else {
+                    DialogFragment dialog = MenuAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", itemPosition);
+                    dialog.show(getSupportFragmentManager(), "dialog");
+                }
                 return true;
             }
         };
@@ -349,38 +347,6 @@ public class MainActivity extends BaseActivity implements CanAddDeleteElement {
         };
     }
 
-    private void initializeSettingsListener() {
-        mSettingsListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                String value = dataSnapshot.getValue(String.class);
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putString(dataSnapshot.getKey(), value);
-                editor.commit();
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-    }
-
     private void initializeCategoryListener() {
         LocalSettingsManager.getInstance();
         LocalSettingsManager.getInstance().setPrefs(prefs);
@@ -428,29 +394,6 @@ public class MainActivity extends BaseActivity implements CanAddDeleteElement {
 
     /*
     ---------------------------
-    ---- User Initializing ----
-    ---------------------------
-     */
-
-    private void initializeUserSettings() {
-        initializeSettingsListener();
-        prefs = this.getSharedPreferences(user.getUid(), MODE_PRIVATE);
-
-        mSettingsReference = mReference.child("settings");
-        mSettingsReference.addChildEventListener(mSettingsListener);
-
-        //Default Color
-        String defaultColor = prefs.getString("defaultColor", "empty");
-        if (defaultColor == "empty") {
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putString("defaultColor", "#FFFFA5");
-            editor.commit();
-            mSettingsReference.child("defaultColor").setValue("#FFFFA5");
-        }
-    }
-
-    /*
-    ---------------------------
     ---- Interface methods ----
     ---------------------------
      */
@@ -487,5 +430,33 @@ public class MainActivity extends BaseActivity implements CanAddDeleteElement {
     @Override
     public DatabaseReference getBinReference() {
         return mBinReference;
+    }
+
+    @Override
+    public void confirmDialogResult(boolean bool, String type, Bundle args) {
+        if (type.equals("passwordOpenElement")) {
+            if (bool) {
+                Intent i = null;
+                if (args.getString("elementType").equals("checklist")) {
+                    i = new Intent(MainActivity.this, ChecklistActivity.class);
+                } else if (args.getString("elementType").equals("note")) {
+                    i = new Intent(MainActivity.this, NoteActivity.class);
+                }
+
+                i.putExtra("elementID", args.getString("elementID"));
+                i.putExtra("elementTitle", args.getString("elementTitle"));
+                i.putExtra("elementColor", args.getInt("elementColor"));
+                startActivity(i);
+            } else {
+                Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
+            }
+        } else if (type.equals("passwordEditElement")) {
+            if(bool) {
+                DialogFragment dialog = MenuAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", args.getInt("elementColor"));
+                dialog.show(getSupportFragmentManager(), "dialog");
+            } else {
+                Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

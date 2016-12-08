@@ -21,7 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.pro3.planner.Interfaces.CanDeleteBinElements;
+import com.pro3.planner.Interfaces.BinInterface;
 import com.pro3.planner.Interfaces.ConfirmDialogResult;
 import com.pro3.planner.ItemTouchHelper.SimpleItemTouchHelperCallbackMain;
 import com.pro3.planner.R;
@@ -29,7 +29,7 @@ import com.pro3.planner.adapters.BinRecyclerAdapter;
 import com.pro3.planner.baseClasses.Element;
 import com.pro3.planner.dialogs.ConfirmDialog;
 
-public class BinActivity extends BaseActivity implements CanDeleteBinElements, ConfirmDialogResult {
+public class BinActivity extends BaseActivity implements BinInterface, ConfirmDialogResult {
 
     private DatabaseReference mReference, mBinReference, mConnectedRef, mElementsRefernce;
     private FirebaseUser user;
@@ -229,7 +229,7 @@ public class BinActivity extends BaseActivity implements CanDeleteBinElements, C
     }
 
     @Override
-    public void confirmDialogResult(boolean result, String type) {
+    public void confirmDialogResult(boolean result, String type, Bundle args) {
         if (result) {
             if(type.equals("clear")) {
                 mBinReference.removeValue();

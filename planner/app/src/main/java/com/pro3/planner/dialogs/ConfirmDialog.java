@@ -36,7 +36,7 @@ public class ConfirmDialog extends SuperDialog {
         builder.setPositiveButton(R.string.confirm_clear_bin_dialog, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 ConfirmDialogResult confirmDialogResult = (ConfirmDialogResult) getActivity();
-                confirmDialogResult.confirmDialogResult(true, getArguments().getString("type"));
+                confirmDialogResult.confirmDialogResult(true, getArguments().getString("type"), null);
                 dialog.dismiss();
             }
         });

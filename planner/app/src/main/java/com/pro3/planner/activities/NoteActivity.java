@@ -1,17 +1,15 @@
 package com.pro3.planner.activities;
 
-import android.support.v4.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,13 +26,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.pro3.planner.Interfaces.CanBeEdited;
 import com.pro3.planner.Interfaces.ConfirmDialogResult;
+import com.pro3.planner.Interfaces.ElementInterface;
+import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
 import com.pro3.planner.dialogs.ConfirmDialog;
 import com.pro3.planner.dialogs.EditElementDialog;
 
-public class NoteActivity extends BaseActivity implements CanBeEdited, ConfirmDialogResult {
+public class NoteActivity extends BaseActivity implements ElementInterface, ConfirmDialogResult {
 
     private EditText notePad;
     private String noteTitle;
@@ -42,12 +41,9 @@ public class NoteActivity extends BaseActivity implements CanBeEdited, ConfirmDi
     private int elementColor;
     private boolean editMode;
     private MenuItem editButton, settingsButton, doneButton;
-    private GestureDetector gd;
-
     private DatabaseReference mElementReference, mTextReference, mTitleReference, mConnectedRef;
     private ValueEventListener mTextValueListener, mTitleValueListener, mConnectedRefListener;
     private FirebaseUser user;
-    private SharedPreferences prefs;
 
     String elementID;
 
@@ -156,6 +152,13 @@ public class NoteActivity extends BaseActivity implements CanBeEdited, ConfirmDi
             dialog.show(getSupportFragmentManager(), "dialog");
         } else if (id == R.id.note_menu_done) {
             stopEditMode();
+        } else if (id == R.id.note_menu_lock) {
+            if (LocalSettingsManager.getInstance().getMasterPassword() != "") {
+                mElementReference.child("locked").setValue(true);
+                Toast.makeText(this, R.string.locked, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, R.string.master_password_not_set, Toast.LENGTH_LONG).show();
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -288,7 +291,7 @@ public class NoteActivity extends BaseActivity implements CanBeEdited, ConfirmDi
     }
 
     @Override
-    public void confirmDialogResult(boolean bool, String type) {
+    public void confirmDialogResult(boolean bool, String type, Bundle args) {
         if (bool) {
             if (type.equals("delete")) {
                 mElementReference.removeValue();

@@ -2,6 +2,11 @@ package com.pro3.planner;
 
 import android.content.SharedPreferences;
 
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * Created by linus_000 on 18.11.2016.
  */
@@ -71,5 +76,21 @@ public class LocalSettingsManager {
         } else {
             return prefs.getString("mainElementSorting", "nameAscending");
         }
+    }
+
+    public void setMasterPassword(String password){
+        SharedPreferences.Editor editor =  prefs.edit();
+        editor.putString("masterPassword", password);
+        editor.commit();
+    }
+
+    public String getMasterPassword() {
+        return prefs.getString("masterPassword", "");
+    }
+
+    public String getMD5Hash(String masterPasswordHash) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(masterPasswordHash.getBytes());
+        return new BigInteger(1, md.digest()).toString();
     }
 }

@@ -1,99 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:descendantFocusability="beforeDescendants"
-    android:focusableInTouchMode="true"
-    android:orientation="vertical"
-    android:paddingLeft="@dimen/dialog_margin_horizontal"
-    android:paddingRight="@dimen/dialog_margin_horizontal"
-    android:paddingTop="@dimen/dialog_margin_vertically"
-    >
+    android:fillViewport="true">
 
-    <TextView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Choose Element title:"
-        />
+        android:layout_height="match_parent"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/dialog_margin_horizontal"
+        android:paddingRight="@dimen/dialog_margin_horizontal"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:paddingTop="@dimen/dialog_margin_vertically">
 
-    <EditText
-        android:id="@+id/add_element_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/dialog_enter_title"
-        android:inputType="textPersonName"
-        android:textColorHint="@color/primary_text_color"
-        android:textSize="18sp"
-        android:maxLines="1"
-        android:layout_marginLeft="-4dp"
-        android:imeOptions="actionDone"
-        />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Choose Element category:"
-        android:layout_marginTop="@dimen/add_dialog_menu_margin_vertical"
-        />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose Element title:" />
 
         <EditText
-            android:id="@+id/add_element_category"
-            android:layout_width="0px"
+            android:id="@+id/add_element_title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/add_category_placeholder"
-            android:inputType="textPersonName"
-            android:textSize="18sp"
-            android:visibility="gone"
-            android:textColorHint="@color/primary_text_color"
-            android:maxLines="1"
             android:layout_marginLeft="-4dp"
+            android:hint="@string/dialog_enter_title"
             android:imeOptions="actionDone"
-            />
+            android:inputType="textPersonName"
+            android:maxLines="1"
+            android:textColorHint="@color/primary_text_color"
+            android:textSize="18sp" />
 
-        <Spinner
-            android:id="@+id/add_element_categorySpinner"
-            style="@style/Base.Widget.AppCompat.Spinner.Underlined"
-            android:layout_width="0px"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:layout_marginLeft="-4dp"
-            />
+            android:layout_marginTop="@dimen/add_dialog_menu_margin_vertical"
+            android:text="Choose Element category:" />
 
-        <ImageView
-            android:id="@+id/add_element_addCategory"
-            android:layout_width="40dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_add_circle_black_24dp" />
+            android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/add_element_addCategory_done"
-            android:layout_width="40dp"
+            <EditText
+                android:id="@+id/add_element_category"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="-4dp"
+                android:layout_weight="1"
+                android:hint="@string/add_category_placeholder"
+                android:imeOptions="actionDone"
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                android:textColorHint="@color/primary_text_color"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
+            <Spinner
+                android:id="@+id/add_element_categorySpinner"
+                style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="-4dp"
+                android:layout_weight="1"
+                android:gravity="center" />
+
+            <ImageView
+                android:id="@+id/add_element_addCategory"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_add_circle_black_24dp" />
+
+            <ImageView
+                android:id="@+id/add_element_addCategory_done"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_done_black_24dp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_done_black_24dp"
-            android:visibility="gone" />
+            android:layout_marginTop="@dimen/add_dialog_menu_margin_vertical"
+            android:text="Choose Element color:" />
 
+        <ListView
+            android:id="@+id/add_element_colors"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="@dimen/dialog_margin_vertically" />
     </LinearLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Choose Element color:"
-        android:layout_marginTop="@dimen/add_dialog_menu_margin_vertical"
-        />
-
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:id="@+id/add_element_colors"
-        android:layout_marginTop="@dimen/dialog_margin_vertically"
-        />
-</LinearLayout>
+</ScrollView>

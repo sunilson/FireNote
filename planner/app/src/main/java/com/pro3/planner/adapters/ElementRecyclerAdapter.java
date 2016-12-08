@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.pro3.planner.Interfaces.CanAddDeleteElement;
+import com.pro3.planner.Interfaces.MainInterface;
 import com.pro3.planner.Interfaces.ItemTouchHelperAdapter;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
@@ -55,13 +55,13 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
     @Override
     public void onItemDismiss(int position) {
         //Löschen durch swipe
-        CanAddDeleteElement canAddDeleteElement = (CanAddDeleteElement) context;
-        canAddDeleteElement.getElementsReference().child((getItem(position)).getNoteID()).removeValue();
+        MainInterface mainInterface = (MainInterface) context;
+        mainInterface.getElementsReference().child((getItem(position)).getNoteID()).removeValue();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView elementTitle, elementDate, elementCategory;
-        public ImageView elementIcon;
+        public ImageView elementIcon, lockIcon;
         public LinearLayout iconHolder, content;
 
         public ViewHolder (View itemView) {
@@ -72,6 +72,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
             elementIcon = (ImageView) itemView.findViewById(R.id.elementList_icon);
             iconHolder = (LinearLayout) itemView.findViewById(R.id.elementList_icon_holder);
             content = (LinearLayout) itemView.findViewById(R.id.elementList_content);
+            lockIcon = (ImageView) itemView.findViewById(R.id.elementLList_lock);
         }
     }
 
@@ -92,6 +93,12 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         int elementColor = element.getColor();
         viewHolder.iconHolder.setBackgroundColor(elementColor);
         viewHolder.content.setBackgroundColor(ColorUtils.setAlphaComponent(elementColor, 80));
+
+        if (element.getLocked()) {
+            viewHolder.lockIcon.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.lockIcon.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -133,8 +140,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         }
         allItems.add(element);
         sort(LocalSettingsManager.getInstance().getSortingMethod());
-        int index = list.indexOf(element);
-        notifyItemInserted(index);
+        notifyDataSetChanged();
     }
 
     public void hideElements() {

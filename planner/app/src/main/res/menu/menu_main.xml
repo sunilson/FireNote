@@ -3,17 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.pro3.planner.activities.MainActivity">
     <item
-        android:title="Sort Elements"
         android:id="@+id/main_element_sort"
         android:icon="@drawable/main_menu_sort_icon"
-        app:showAsAction="ifRoom"
-        />
+        android:title="Sort Elements"
+        app:showAsAction="ifRoom" />
     <item
-        android:title="Visibility"
         android:id="@+id/main_element_visibility"
         android:icon="@drawable/main_menu_visibility_icon"
-        app:showAsAction="ifRoom"
-        />
+        android:title="Visibility"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_logOut"
         android:orderInCategory="300"
@@ -23,13 +21,17 @@
         android:id="@+id/action_delete_all"
         android:orderInCategory="100"
         android:title="@string/menu_delete_all"
-        app:showAsAction="never"
-        />
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_bin"
         android:orderInCategory="200"
         android:title="@string/bin"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="400"
         app:showAsAction="never"
+        android:title="@string/action_settings"
         />
 
 </menu>
