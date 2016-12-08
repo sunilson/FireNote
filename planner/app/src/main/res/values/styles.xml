@@ -9,12 +9,14 @@
         <item name="android:windowBackground">@color/main_background_color</item>
     </style>
 
-
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="SettingsTheme" parent="AppTheme.NoActionBar">
+        <item name="homeAsUpIndicator">@drawable/back_button_dark</item>
+    </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark"></style>
 
@@ -58,6 +60,35 @@
     <style name="dialogAnimation">
         <item name="android:windowEnterAnimation">@anim/anim_in</item>
         <item name="android:windowExitAnimation">@anim/anim_out</item>
+    </style>
+
+    <style name="settingsLinearMasterLayout">
+        <item name="android:background">@color/tint_white</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="settingsElementsHolder">
+        <item name="android:paddingLeft">@dimen/settings_element_padding_vertical</item>
+        <item name="android:paddingRight">@dimen/settings_element_padding_vertical</item>
+        <item name="android:paddingTop">@dimen/settings_element_padding_vertical</item>
+        <item name="android:paddingBottom">@dimen/settings_element_padding_vertical</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="settingsDivider">
+        <item name="android:layout_height">2dp</item>
+        <item name="android:background">@color/main_background_color</item>
+    </style>
+
+    <style name="settingsTextview">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/primary_text_color</item>
+    </style>
+
+    <style name="settingsTextviewSubtitle" parent="settingsTextview">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_crossed_out</item>
     </style>
 
 </resources>

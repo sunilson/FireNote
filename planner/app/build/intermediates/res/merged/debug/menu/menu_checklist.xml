@@ -28,9 +28,9 @@
         app:showAsAction="ifRoom"
         />
     <item
-        android:id="@+id/action_logOut"
+        android:id="@+id/checklist_menu_lock"
+        android:title="@string/lock"
         android:orderInCategory="100"
-        android:title="@string/menu_log_out"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_sort"

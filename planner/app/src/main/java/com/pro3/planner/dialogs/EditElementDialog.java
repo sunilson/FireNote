@@ -4,17 +4,16 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.pro3.planner.Interfaces.CanAddDeleteElement;
-import com.pro3.planner.Interfaces.CanBeEdited;
+import com.pro3.planner.Interfaces.ElementInterface;
+import com.pro3.planner.Interfaces.MainInterface;
 import com.pro3.planner.R;
 
 /**
@@ -50,25 +49,25 @@ public class EditElementDialog extends SuperDialog {
 
         final Activity activity = getActivity();
         final EditText editTitleText = (EditText) content.findViewById(editTitleResource);
-        if (activity instanceof CanBeEdited) {
+        if (activity instanceof ElementInterface) {
             editTitleText.setText(getActivity().getTitle());
-        } else if (activity instanceof CanAddDeleteElement) {
-            CanAddDeleteElement canAddDeleteElement = (CanAddDeleteElement) activity;
-            editTitleText.setText(canAddDeleteElement.getElementAdapter().getElement(id).getTitle());
+        } else if (activity instanceof MainInterface) {
+            MainInterface mainInterface = (MainInterface) activity;
+            editTitleText.setText(mainInterface.getElementAdapter().getElement(id).getTitle());
         }
 
         builder.setView(content);
 
         builder.setPositiveButton(R.string.confirm_add_dialog, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                if (activity instanceof CanBeEdited) {
+                if (activity instanceof ElementInterface) {
                     String title = editTitleText.getText().toString();
-                    CanBeEdited canBeEdited = (CanBeEdited) getActivity();
-                    canBeEdited.getElementReference().child("title").setValue(title);
-                } else if (activity instanceof CanAddDeleteElement) {
+                    ElementInterface elementInterface = (ElementInterface) getActivity();
+                    elementInterface.getElementReference().child("title").setValue(title);
+                } else if (activity instanceof MainInterface) {
                     String title = editTitleText.getText().toString();
-                    CanAddDeleteElement canAddDeleteElement = (CanAddDeleteElement) activity;
-                    canAddDeleteElement.getElementsReference().child(id).child("title").setValue(title);
+                    MainInterface mainInterface = (MainInterface) activity;
+                    mainInterface.getElementsReference().child(id).child("title").setValue(title);
                 }
 
             }
@@ -82,15 +81,11 @@ public class EditElementDialog extends SuperDialog {
         return builder.create();
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
     @Override

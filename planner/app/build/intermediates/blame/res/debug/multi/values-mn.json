@@ -11,13 +11,13 @@
                     "endOffset": 212
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\9.6.1\\res\\values-mn\\values.xml",
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-mn\\values.xml",
                     "position": {
                         "startLine": 4,
-                        "startColumn": 4,
-                        "startOffset": 340,
-                        "endColumn": 111,
-                        "endOffset": 447
+                        "startColumn": 0,
+                        "startOffset": 283,
+                        "endColumn": 107,
+                        "endOffset": 390
                     }
                 }
             },
@@ -30,13 +30,13 @@
                     "endOffset": 401
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\9.6.1\\res\\values-mn\\values.xml",
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-mn\\values.xml",
                     "position": {
                         "startLine": 5,
-                        "startColumn": 4,
-                        "startOffset": 452,
+                        "startColumn": 0,
+                        "startOffset": 391,
                         "endColumn": 188,
-                        "endOffset": 636
+                        "endOffset": 579
                     }
                 }
             },
@@ -49,13 +49,13 @@
                     "endOffset": 535
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\9.6.1\\res\\values-mn\\values.xml",
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-mn\\values.xml",
                     "position": {
                         "startLine": 6,
-                        "startColumn": 4,
-                        "startOffset": 641,
-                        "endColumn": 133,
-                        "endOffset": 770
+                        "startColumn": 0,
+                        "startOffset": 580,
+                        "endColumn": 129,
+                        "endOffset": 709
                     }
                 }
             },
@@ -68,13 +68,13 @@
                     "endOffset": 644
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\9.6.1\\res\\values-mn\\values.xml",
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-mn\\values.xml",
                     "position": {
                         "startLine": 7,
-                        "startColumn": 4,
-                        "startOffset": 775,
-                        "endColumn": 108,
-                        "endOffset": 879
+                        "startColumn": 0,
+                        "startOffset": 710,
+                        "endColumn": 104,
+                        "endOffset": 814
                     }
                 }
             },
@@ -83,17 +83,17 @@
                     "startLine": 6,
                     "startColumn": 4,
                     "startOffset": 649,
-                    "endColumn": 207,
-                    "endOffset": 852
+                    "endColumn": 195,
+                    "endOffset": 840
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\9.6.1\\res\\values-mn\\values.xml",
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-mn\\values.xml",
                     "position": {
                         "startLine": 8,
-                        "startColumn": 4,
-                        "startOffset": 884,
-                        "endColumn": 207,
-                        "endOffset": 1087
+                        "startColumn": 0,
+                        "startOffset": 815,
+                        "endColumn": 195,
+                        "endOffset": 1010
                     }
                 }
             },
@@ -101,18 +101,18 @@
                 "to": {
                     "startLine": 7,
                     "startColumn": 4,
-                    "startOffset": 857,
-                    "endColumn": 207,
-                    "endOffset": 1060
+                    "startOffset": 845,
+                    "endColumn": 127,
+                    "endOffset": 968
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\9.6.1\\res\\values-mn\\values.xml",
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-mn\\values.xml",
                     "position": {
                         "startLine": 9,
-                        "startColumn": 4,
-                        "startOffset": 1092,
-                        "endColumn": 207,
-                        "endOffset": 1295
+                        "startColumn": 0,
+                        "startOffset": 1011,
+                        "endColumn": 123,
+                        "endOffset": 1134
                     }
                 }
             },
@@ -120,18 +120,18 @@
                 "to": {
                     "startLine": 8,
                     "startColumn": 4,
-                    "startOffset": 1065,
-                    "endColumn": 127,
-                    "endOffset": 1188
+                    "startOffset": 973,
+                    "endColumn": 138,
+                    "endOffset": 1107
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\9.6.1\\res\\values-mn\\values.xml",
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-mn\\values.xml",
                     "position": {
                         "startLine": 10,
-                        "startColumn": 4,
-                        "startOffset": 1300,
-                        "endColumn": 127,
-                        "endOffset": 1423
+                        "startColumn": 0,
+                        "startOffset": 1135,
+                        "endColumn": 134,
+                        "endOffset": 1269
                     }
                 }
             },
@@ -139,18 +139,18 @@
                 "to": {
                     "startLine": 9,
                     "startColumn": 4,
-                    "startOffset": 1193,
-                    "endColumn": 138,
-                    "endOffset": 1327
+                    "startOffset": 1112,
+                    "endColumn": 208,
+                    "endOffset": 1316
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\9.6.1\\res\\values-mn\\values.xml",
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-basement\\10.0.1\\res\\values-mn\\values.xml",
                     "position": {
-                        "startLine": 11,
-                        "startColumn": 4,
-                        "startOffset": 1428,
-                        "endColumn": 138,
-                        "endOffset": 1562
+                        "startLine": 4,
+                        "startColumn": 0,
+                        "startOffset": 285,
+                        "endColumn": 208,
+                        "endOffset": 493
                     }
                 }
             },
@@ -158,18 +158,18 @@
                 "to": {
                     "startLine": 10,
                     "startColumn": 4,
-                    "startOffset": 1332,
-                    "endColumn": 255,
-                    "endOffset": 1583
+                    "startOffset": 1321,
+                    "endColumn": 202,
+                    "endOffset": 1519
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-basement\\9.6.1\\res\\values-mn\\values.xml",
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-mn\\values.xml",
                     "position": {
-                        "startLine": 4,
-                        "startColumn": 4,
-                        "startOffset": 343,
-                        "endColumn": 255,
-                        "endOffset": 594
+                        "startLine": 11,
+                        "startColumn": 0,
+                        "startOffset": 1270,
+                        "endColumn": 202,
+                        "endOffset": 1472
                     }
                 }
             },
@@ -177,18 +177,18 @@
                 "to": {
                     "startLine": 11,
                     "startColumn": 4,
-                    "startOffset": 1588,
-                    "endColumn": 279,
-                    "endOffset": 1863
+                    "startOffset": 1524,
+                    "endColumn": 108,
+                    "endOffset": 1628
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\9.6.1\\res\\values-mn\\values.xml",
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-mn\\values.xml",
                     "position": {
                         "startLine": 12,
-                        "startColumn": 4,
-                        "startOffset": 1567,
-                        "endColumn": 279,
-                        "endOffset": 1842
+                        "startColumn": 0,
+                        "startOffset": 1473,
+                        "endColumn": 104,
+                        "endOffset": 1577
                     }
                 }
             },
@@ -196,18 +196,18 @@
                 "to": {
                     "startLine": 12,
                     "startColumn": 4,
-                    "startOffset": 1868,
-                    "endColumn": 124,
-                    "endOffset": 1988
+                    "startOffset": 1633,
+                    "endColumn": 198,
+                    "endOffset": 1827
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\9.6.1\\res\\values-mn\\values.xml",
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-mn\\values.xml",
                     "position": {
                         "startLine": 13,
-                        "startColumn": 4,
-                        "startOffset": 1847,
-                        "endColumn": 124,
-                        "endOffset": 1967
+                        "startColumn": 0,
+                        "startOffset": 1578,
+                        "endColumn": 198,
+                        "endOffset": 1776
                     }
                 }
             },
@@ -215,18 +215,18 @@
                 "to": {
                     "startLine": 13,
                     "startColumn": 4,
-                    "startOffset": 1993,
-                    "endColumn": 108,
-                    "endOffset": 2097
+                    "startOffset": 1832,
+                    "endColumn": 130,
+                    "endOffset": 1958
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\9.6.1\\res\\values-mn\\values.xml",
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-mn\\values.xml",
                     "position": {
                         "startLine": 14,
-                        "startColumn": 4,
-                        "startOffset": 1972,
-                        "endColumn": 108,
-                        "endOffset": 2076
+                        "startColumn": 0,
+                        "startOffset": 1777,
+                        "endColumn": 126,
+                        "endOffset": 1903
                     }
                 }
             },
@@ -234,18 +234,18 @@
                 "to": {
                     "startLine": 14,
                     "startColumn": 4,
-                    "startOffset": 2102,
-                    "endColumn": 198,
-                    "endOffset": 2296
+                    "startOffset": 1963,
+                    "endColumn": 199,
+                    "endOffset": 2158
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\9.6.1\\res\\values-mn\\values.xml",
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-mn\\values.xml",
                     "position": {
                         "startLine": 15,
-                        "startColumn": 4,
-                        "startOffset": 2081,
-                        "endColumn": 198,
-                        "endOffset": 2275
+                        "startColumn": 0,
+                        "startOffset": 1904,
+                        "endColumn": 199,
+                        "endOffset": 2103
                     }
                 }
             },
@@ -253,18 +253,18 @@
                 "to": {
                     "startLine": 15,
                     "startColumn": 4,
-                    "startOffset": 2301,
-                    "endColumn": 130,
-                    "endOffset": 2427
+                    "startOffset": 2163,
+                    "endColumn": 197,
+                    "endOffset": 2356
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\9.6.1\\res\\values-mn\\values.xml",
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-mn\\values.xml",
                     "position": {
                         "startLine": 16,
-                        "startColumn": 4,
-                        "startOffset": 2280,
-                        "endColumn": 130,
-                        "endOffset": 2406
+                        "startColumn": 0,
+                        "startOffset": 2104,
+                        "endColumn": 193,
+                        "endOffset": 2297
                     }
                 }
             },
@@ -272,18 +272,18 @@
                 "to": {
                     "startLine": 16,
                     "startColumn": 4,
-                    "startOffset": 2432,
-                    "endColumn": 199,
-                    "endOffset": 2627
+                    "startOffset": 2361,
+                    "endColumn": 90,
+                    "endOffset": 2447
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\9.6.1\\res\\values-mn\\values.xml",
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-mn\\values.xml",
                     "position": {
                         "startLine": 17,
-                        "startColumn": 4,
-                        "startOffset": 2411,
-                        "endColumn": 199,
-                        "endOffset": 2606
+                        "startColumn": 0,
+                        "startOffset": 2298,
+                        "endColumn": 86,
+                        "endOffset": 2384
                     }
                 }
             },
@@ -291,18 +291,18 @@
                 "to": {
                     "startLine": 17,
                     "startColumn": 4,
-                    "startOffset": 2632,
-                    "endColumn": 138,
-                    "endOffset": 2766
+                    "startOffset": 2452,
+                    "endColumn": 91,
+                    "endOffset": 2539
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\9.6.1\\res\\values-mn\\values.xml",
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-mn\\values.xml",
                     "position": {
                         "startLine": 18,
-                        "startColumn": 4,
-                        "startOffset": 2611,
-                        "endColumn": 138,
-                        "endOffset": 2745
+                        "startColumn": 0,
+                        "startOffset": 2385,
+                        "endColumn": 87,
+                        "endOffset": 2472
                     }
                 }
             },
@@ -310,75 +310,18 @@
                 "to": {
                     "startLine": 18,
                     "startColumn": 4,
-                    "startOffset": 2771,
-                    "endColumn": 197,
-                    "endOffset": 2964
+                    "startOffset": 2544,
+                    "endColumn": 105,
+                    "endOffset": 2645
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\9.6.1\\res\\values-mn\\values.xml",
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-mn\\values.xml",
                     "position": {
                         "startLine": 19,
-                        "startColumn": 4,
-                        "startOffset": 2750,
-                        "endColumn": 197,
-                        "endOffset": 2943
-                    }
-                }
-            },
-            {
-                "to": {
-                    "startLine": 19,
-                    "startColumn": 4,
-                    "startOffset": 2969,
-                    "endColumn": 90,
-                    "endOffset": 3055
-                },
-                "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\9.6.1\\res\\values-mn\\values.xml",
-                    "position": {
-                        "startLine": 20,
-                        "startColumn": 4,
-                        "startOffset": 2948,
-                        "endColumn": 90,
-                        "endOffset": 3034
-                    }
-                }
-            },
-            {
-                "to": {
-                    "startLine": 20,
-                    "startColumn": 4,
-                    "startOffset": 3060,
-                    "endColumn": 91,
-                    "endOffset": 3147
-                },
-                "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\9.6.1\\res\\values-mn\\values.xml",
-                    "position": {
-                        "startLine": 21,
-                        "startColumn": 4,
-                        "startOffset": 3039,
-                        "endColumn": 91,
-                        "endOffset": 3126
-                    }
-                }
-            },
-            {
-                "to": {
-                    "startLine": 21,
-                    "startColumn": 4,
-                    "startOffset": 3152,
-                    "endColumn": 105,
-                    "endOffset": 3253
-                },
-                "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\9.6.1\\res\\values-mn\\values.xml",
-                    "position": {
-                        "startLine": 22,
-                        "startColumn": 4,
-                        "startOffset": 3131,
-                        "endColumn": 105,
-                        "endOffset": 3232
+                        "startColumn": 0,
+                        "startOffset": 2473,
+                        "endColumn": 101,
+                        "endOffset": 2574
                     }
                 }
             }

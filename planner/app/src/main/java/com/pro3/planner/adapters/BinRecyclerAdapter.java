@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.pro3.planner.Interfaces.CanDeleteBinElements;
+import com.pro3.planner.Interfaces.BinInterface;
 import com.pro3.planner.Interfaces.ItemTouchHelperAdapter;
 import com.pro3.planner.R;
 import com.pro3.planner.baseClasses.Element;
@@ -83,8 +83,8 @@ public class BinRecyclerAdapter extends RecyclerView.Adapter implements ItemTouc
 
     @Override
     public void onItemDismiss(int position) {
-        CanDeleteBinElements canDeleteBinElements = (CanDeleteBinElements) context;
-        canDeleteBinElements.getBinReference().child(list.get(position).getNoteID()).removeValue();
+        BinInterface binInterface = (BinInterface) context;
+        binInterface.getBinReference().child(list.get(position).getNoteID()).removeValue();
     }
 
     public void add(Element element) {

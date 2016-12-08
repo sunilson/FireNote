@@ -15,7 +15,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
-import com.pro3.planner.Interfaces.CanAddDeleteElement;
+import com.pro3.planner.Interfaces.MainInterface;
 import com.pro3.planner.R;
 import com.pro3.planner.adapters.ColorAddAdapter;
 import com.pro3.planner.adapters.SpinnerAdapter;
@@ -35,6 +35,7 @@ public class AddElementView extends LinearLayout implements AdapterView.OnItemSe
     private int selectedColor;
     private ListView colorList;
     private Category selectedCategory;
+    private InputMethodManager imm;
 
     public AddElementView(final Context context, final ArrayAdapter<CharSequence> categoryAdapter) {
         super(context);
@@ -50,7 +51,7 @@ public class AddElementView extends LinearLayout implements AdapterView.OnItemSe
         colorList = (ListView) findViewById(R.id.add_element_colors);
 
         title.requestFocus();
-        InputMethodManager imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
         addCategory.setOnClickListener(new OnClickListener() {
@@ -60,6 +61,8 @@ public class AddElementView extends LinearLayout implements AdapterView.OnItemSe
                 addCategoryDone.setVisibility(VISIBLE);
                 spinner.setVisibility(GONE);
                 category.setVisibility(VISIBLE);
+                category.requestFocus();
+                imm.showSoftInput(category, 0);
             }
         });
 
@@ -73,12 +76,14 @@ public class AddElementView extends LinearLayout implements AdapterView.OnItemSe
 
                 String categoryName = category.getText().toString();
                 if (!categoryName.equals("")) {
-                    CanAddDeleteElement canAddDeleteElement = (CanAddDeleteElement) getContext();
-                    DatabaseReference dRef = canAddDeleteElement.getCategoryReference().push();
-                    Category category = new Category(categoryName, dRef.getKey());
-                    dRef.setValue(category);
+                    MainInterface mainInterface = (MainInterface) getContext();
+                    DatabaseReference dRef = mainInterface.getCategoryReference().push();
+                    Category cat = new Category(categoryName, dRef.getKey());
+                    dRef.setValue(cat);
                     Toast.makeText(getContext(), R.string.added_category, Toast.LENGTH_SHORT).show();
                 }
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+                imm.hideSoftInputFromWindow(category.getWindowToken(), 0);
                 category.setText("");
             }
         });

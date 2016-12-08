@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
-import com.pro3.planner.Interfaces.CanAddDeleteElement;
-import com.pro3.planner.Interfaces.CanDeleteChecklistElement;
+import com.pro3.planner.Interfaces.MainInterface;
+import com.pro3.planner.Interfaces.ChecklistInterface;
 import com.pro3.planner.Interfaces.HasSortableList;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
@@ -136,8 +136,8 @@ public class MenuAlertDialog extends SuperDialog {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                final CanAddDeleteElement canAddDeleteElement = (CanAddDeleteElement) getActivity();
-                final AddElementView content = new AddElementView(getActivity(), canAddDeleteElement.getSpinnerCategoryAdapter());
+                final MainInterface mainInterface = (MainInterface) getActivity();
+                final AddElementView content = new AddElementView(getActivity(), mainInterface.getSpinnerCategoryAdapter());
 
                 LayoutInflater inflater = getActivity().getLayoutInflater();
                 final Activity activity = getActivity();
@@ -167,7 +167,7 @@ public class MenuAlertDialog extends SuperDialog {
                         element.setColor(content.getColor());
                         element.setCategory(content.getCategory());
 
-                        DatabaseReference dRef = canAddDeleteElement.getElementsReference().push();
+                        DatabaseReference dRef = mainInterface.getElementsReference().push();
                         element.setNoteID(dRef.getKey());
                         dRef.setValue(element);
                     }
@@ -204,13 +204,13 @@ public class MenuAlertDialog extends SuperDialog {
         contentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CanAddDeleteElement canAddDeleteElement = (CanAddDeleteElement) getActivity();
+                MainInterface mainInterface = (MainInterface) getActivity();
 
-                String elementID = canAddDeleteElement.getElementAdapter().getItem(elementPosition).getNoteID();
+                String elementID = mainInterface.getElementAdapter().getItem(elementPosition).getNoteID();
                 String strName = dialogAdapter.getName(position);
 
                 if (strName.equals(getResources().getString(R.string.delete_element))) {
-                    canAddDeleteElement.getElementsReference().child((canAddDeleteElement.getElementAdapter().getItem(elementPosition)).getNoteID()).removeValue();
+                    mainInterface.getElementsReference().child((mainInterface.getElementAdapter().getItem(elementPosition)).getNoteID()).removeValue();
                 } else if (strName.equals(getResources().getString(R.string.edit))) {
                     DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_checklist_title), "checklist", elementID);
                     dialog.show(getFragmentManager(), "dialog");
@@ -225,13 +225,13 @@ public class MenuAlertDialog extends SuperDialog {
         contentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CanDeleteChecklistElement canDeleteChecklistElement = (CanDeleteChecklistElement) getActivity();
-                String elementID = canDeleteChecklistElement.getCheckListRecyclerAdapter().getItem(elementPosition).getElementID();
+                ChecklistInterface checklistInterface = (ChecklistInterface) getActivity();
+                String elementID = checklistInterface.getCheckListRecyclerAdapter().getItem(elementPosition).getElementID();
 
                 String strName = dialogAdapter.getName(position);
 
                 if (strName.equals(getResources().getString(R.string.delete_checklist_element))) {
-                    canDeleteChecklistElement.getElementsReference().child(elementID).removeValue();
+                    checklistInterface.getElementsReference().child(elementID).removeValue();
                 }
 
                 getDialog().dismiss();

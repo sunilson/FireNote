@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.pro3.planner.Interfaces.CanAddDeleteElement;
+import com.pro3.planner.Interfaces.MainInterface;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
 import com.pro3.planner.views.CategoryElementView;
@@ -49,8 +49,8 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
 
         ListView categoryListView = (ListView) view.findViewById(R.id.fragment_category_listview);
 
-        final CanAddDeleteElement canAddDeleteElement = (CanAddDeleteElement) getActivity();
-        categoryListView.setAdapter(canAddDeleteElement.getListCategoryAdapter());
+        final MainInterface mainInterface = (MainInterface) getActivity();
+        categoryListView.setAdapter(mainInterface.getListCategoryAdapter());
 
         categoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -59,14 +59,14 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
                 if (categoryElementView.isChecked()) {
                     Log.i("Linus", "Checked false");
                     categoryElementView.setChecked(false);
-                    LocalSettingsManager.getInstance().setCategoryVisibility(canAddDeleteElement.getListCategoryAdapter().getItem(position).getCategoryID(), 1);
+                    LocalSettingsManager.getInstance().setCategoryVisibility(mainInterface.getListCategoryAdapter().getItem(position).getCategoryID(), 1);
                 } else {
                     Log.i("Linus", "Checked true");
                     categoryElementView.setChecked(true);
-                    LocalSettingsManager.getInstance().setCategoryVisibility(canAddDeleteElement.getListCategoryAdapter().getItem(position).getCategoryID(), -1);
+                    LocalSettingsManager.getInstance().setCategoryVisibility(mainInterface.getListCategoryAdapter().getItem(position).getCategoryID(), -1);
                 }
 
-                canAddDeleteElement.getElementAdapter().hideElements();
+                mainInterface.getElementAdapter().hideElements();
             }
         });
 

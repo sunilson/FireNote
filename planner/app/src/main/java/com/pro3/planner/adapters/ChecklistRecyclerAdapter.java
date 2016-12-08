@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.pro3.planner.Interfaces.CanDeleteChecklistElement;
+import com.pro3.planner.Interfaces.ChecklistInterface;
 import com.pro3.planner.Interfaces.ItemTouchHelperAdapter;
 import com.pro3.planner.R;
 import com.pro3.planner.baseClasses.ChecklistElement;
@@ -170,7 +170,7 @@ public class ChecklistRecyclerAdapter extends RecyclerView.Adapter implements It
 
     @Override
     public void onItemDismiss(int position) {
-        CanDeleteChecklistElement canDeleteChecklistElement = (CanDeleteChecklistElement) context;
-        canDeleteChecklistElement.getElementsReference().child(getItem(position).getElementID()).removeValue();
+        ChecklistInterface checklistInterface = (ChecklistInterface) context;
+        checklistInterface.getElementsReference().child(getItem(position).getElementID()).removeValue();
     }
 }
