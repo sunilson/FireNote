@@ -1,5 +1,6 @@
 package com.pro3.planner.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v7.widget.RecyclerView;
@@ -10,8 +11,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.pro3.planner.Interfaces.MainInterface;
+import com.pro3.planner.BaseApplication;
+import com.pro3.planner.Interfaces.BundleInterface;
 import com.pro3.planner.Interfaces.ItemTouchHelperAdapter;
+import com.pro3.planner.Interfaces.MainActivityInterface;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
 import com.pro3.planner.baseClasses.Element;
@@ -55,8 +58,20 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
     @Override
     public void onItemDismiss(int position) {
         //Löschen durch swipe
-        MainInterface mainInterface = (MainInterface) context;
-        mainInterface.getElementsReference().child((getItem(position)).getNoteID()).removeValue();
+        Element element = getItem(position);
+        Activity activity = (Activity) context;
+
+        if (activity instanceof MainActivityInterface) {
+            MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication)activity.getApplicationContext()).mainContext;
+            mainActivityInterface.getElementsReference().child(element.getNoteID()).removeValue();
+        } else {
+            BundleInterface bundleInterface = (BundleInterface) activity;
+            if (element.getNoteType().equals("checklist")) {
+                bundleInterface.getChecklistElementsReference().child(element.getNoteID()).removeValue();
+            } else {
+                bundleInterface.getNoteElementsReference().child(element.getNoteID()).removeValue();
+            }
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -76,29 +91,93 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         }
     }
 
+    public class SwipeableViewHolder extends RecyclerView.ViewHolder {
+        public TextView elementTitle, elementDate, elementCategory;
+        public ImageView elementIcon, lockIcon;
+        public LinearLayout iconHolder, content;
+
+        public SwipeableViewHolder (View itemView) {
+            super(itemView);
+            elementTitle = (TextView) itemView.findViewById(R.id.elementList_title);
+            elementDate = (TextView) itemView.findViewById(R.id.elementList_date);
+            elementCategory = (TextView) itemView.findViewById(R.id.elementList_category);
+            elementIcon = (ImageView) itemView.findViewById(R.id.elementList_icon);
+            iconHolder = (LinearLayout) itemView.findViewById(R.id.elementList_icon_holder);
+            content = (LinearLayout) itemView.findViewById(R.id.elementList_content);
+            lockIcon = (ImageView) itemView.findViewById(R.id.elementLList_lock);
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+
+        Element element = list.get(position);
+
+        if (element.getLocked()) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        ViewHolder viewHolder = (ViewHolder) holder;
-
         Element element = list.get(position);
-        viewHolder.elementTitle.setText(element.getTitle());
-        viewHolder.elementCategory.setText(element.getCategory().getCategoryName());
-
-        viewHolder.elementIcon.setImageResource(element.getIcon());
-
-        DateFormat df = new SimpleDateFormat("dd. MMM.", Locale.getDefault());
-        viewHolder.elementDate.setText(df.format(element.getCreationDate()));
-
-        int elementColor = element.getColor();
-        viewHolder.iconHolder.setBackgroundColor(elementColor);
-        viewHolder.content.setBackgroundColor(ColorUtils.setAlphaComponent(elementColor, 80));
 
         if (element.getLocked()) {
-            viewHolder.lockIcon.setVisibility(View.VISIBLE);
+            ViewHolder viewHolder = (ViewHolder) holder;
+            viewHolder.elementTitle.setText(element.getTitle());
+            viewHolder.elementCategory.setText(element.getCategory().getCategoryName());
+
+            if (element.getNoteType().equals("checklist")) {
+                viewHolder.elementIcon.setImageResource(R.drawable.element_checklist_icon);
+            } else if (element.getNoteType().equals("note")) {
+                viewHolder.elementIcon.setImageResource(R.drawable.element_note_icon);
+            } else {
+                viewHolder.elementIcon.setImageResource(R.drawable.element_bundle_icon);
+            }
+
+            DateFormat df = new SimpleDateFormat("dd. MMM.", Locale.getDefault());
+            viewHolder.elementDate.setText(df.format(element.getCreationDate()));
+
+            int elementColor = element.getColor();
+            viewHolder.iconHolder.setBackgroundColor(elementColor);
+            viewHolder.content.setBackgroundColor(ColorUtils.setAlphaComponent(elementColor, 80));
+
+            if (element.getLocked()) {
+                viewHolder.lockIcon.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.lockIcon.setVisibility(View.INVISIBLE);
+            }
         } else {
-            viewHolder.lockIcon.setVisibility(View.INVISIBLE);
+            SwipeableViewHolder viewHolder = (SwipeableViewHolder) holder;
+            viewHolder.elementTitle.setText(element.getTitle());
+            viewHolder.elementCategory.setText(element.getCategory().getCategoryName());
+
+            if (element.getNoteType().equals("checklist")) {
+                viewHolder.elementIcon.setImageResource(R.drawable.element_checklist_icon);
+            } else if (element.getNoteType().equals("note")) {
+                viewHolder.elementIcon.setImageResource(R.drawable.element_note_icon);
+            } else {
+                viewHolder.elementIcon.setImageResource(R.drawable.element_bundle_icon);
+            }
+
+            DateFormat df = new SimpleDateFormat("dd. MMM.", Locale.getDefault());
+            viewHolder.elementDate.setText(df.format(element.getCreationDate()));
+
+            int elementColor = element.getColor();
+            viewHolder.iconHolder.setBackgroundColor(elementColor);
+            viewHolder.content.setBackgroundColor(ColorUtils.setAlphaComponent(elementColor, 80));
+
+            if (element.getLocked()) {
+                viewHolder.lockIcon.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.lockIcon.setVisibility(View.INVISIBLE);
+            }
         }
+
+
     }
 
     @Override
@@ -106,8 +185,11 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.element_list_layout, parent, false);
         v.setOnClickListener(mOnClickListener);
         v.setOnLongClickListener(mOnLongClickListener);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        if (viewType == 0) {
+            return new ViewHolder(v);
+        } else {
+            return new SwipeableViewHolder(v);
+        }
     }
 
     @Override
@@ -157,12 +239,23 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
     }
 
     public void update(Element element, String noteID) {
+
         ListIterator<Element> it = list.listIterator();
 
         while (it.hasNext()) {
             Element nextElement = it.next();
             if (nextElement.getNoteID().equals(noteID)) {
                 it.set(element);
+                break;
+            }
+        }
+
+        ListIterator<Element> it2 = allItems.listIterator();
+
+        while (it2.hasNext()) {
+            Element nextElement = it2.next();
+            if (nextElement.getNoteID().equals(noteID)) {
+                it2.set(element);
                 break;
             }
         }
@@ -198,13 +291,13 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
     }
 
     public void sort(String sortMethod) {
-        if (sortMethod.equals("dateDescending")) {
+        if (sortMethod.equals(context.getResources().getString(R.string.sort_descending_date))) {
             sortByDateDescending();
-        } else if (sortMethod.equals("dateAscending")) {
+        } else if (sortMethod.equals(context.getResources().getString(R.string.sort_ascending_date))) {
             sortByDateAscending();
-        } else if (sortMethod.equals("nameDescending")) {
+        } else if (sortMethod.equals(context.getResources().getString(R.string.sort_descending_name))) {
             sortByNameDescending();
-        } else if (sortMethod.equals("nameAscending")) {
+        } else if (sortMethod.equals(context.getResources().getString(R.string.sort_ascending_name))) {
             sortByNameAscending();
         }
     }

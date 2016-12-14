@@ -37,6 +37,18 @@ public class SpinnerAdapter extends ArrayAdapter {
         notifyDataSetChanged();
     }
 
+    public void remove(String categoryID) {
+        Iterator it = list.iterator();
+
+        while (it.hasNext()) {
+            Category category = (Category) it.next();
+            if (category.getCategoryID().equals(categoryID)) {
+                it.remove();
+                return;
+            }
+        }
+    }
+
     @Override
     public int getCount() {
         return list.size();

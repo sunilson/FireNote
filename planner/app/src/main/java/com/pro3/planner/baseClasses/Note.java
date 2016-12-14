@@ -1,7 +1,5 @@
 package com.pro3.planner.baseClasses;
 
-import android.content.Context;
-
 /**
  * Created by linus_000 on 02.11.2016.
  */
@@ -9,11 +7,14 @@ import android.content.Context;
 public class Note extends Element{
 
     private String text;
-    private Reminder reminder;
 
-    public Note(String noteType, String title, Context context) {
-        super(noteType, title, context);
+    public Note(String noteType, String title) {
+        super(noteType, title);
         this.text = "";
+    }
+
+    public Note() {
+        super();
     }
 
     public void setText(String text) {

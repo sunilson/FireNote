@@ -10,6 +10,7 @@
     <dimen name="checklist_list_vertical_margin">8dp</dimen>
     <dimen name="dialog_margin_horizontal">16dp</dimen>
     <dimen name="dialog_margin_vertically">16dp</dimen>
+    <dimen name="dialog_margin_vertically_half">8dp</dimen>
     <dimen name="dialog_menu_margin_horizontal">16dp</dimen>
     <dimen name="dialog_menu_margin_vertical">16dp</dimen>
     <dimen name="add_dialog_menu_margin_vertical">16dp</dimen>

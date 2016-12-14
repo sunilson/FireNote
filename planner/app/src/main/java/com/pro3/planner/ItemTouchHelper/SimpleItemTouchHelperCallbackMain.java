@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
 import com.pro3.planner.Interfaces.ItemTouchHelperAdapter;
+import com.pro3.planner.adapters.ElementRecyclerAdapter;
 
 /**
  * Created by linus_000 on 24.11.2016.
@@ -27,10 +28,18 @@ public class SimpleItemTouchHelperCallbackMain extends ItemTouchHelper.Callback 
         return true;
     }
 
+
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
-        int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-        int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+
+        int dragFlags = 0;
+        int swipeFlags = 0;
+
+        if (viewHolder instanceof ElementRecyclerAdapter.SwipeableViewHolder) {
+            dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+            swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+        }
+
         return makeMovementFlags(dragFlags, swipeFlags);
     }
 

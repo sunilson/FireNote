@@ -1,8 +1,7 @@
 package com.pro3.planner.baseClasses;
 
-import android.content.Context;
-
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by linus_000 on 02.11.2016.
@@ -10,9 +9,40 @@ import java.util.List;
 
 public class Bundle extends Element {
 
-    private List elements;
+    private Map<String, Checklist> checklists = new HashMap<>();
+    private Map<String, Note> notes = new HashMap<>();
+    private BundleBin bin;
 
-    public Bundle(String noteType, String title, Context context) {
-        super(noteType, title, context);
+    public Bundle() {
+        super();
+    }
+
+    public Bundle(String noteType, String title) {
+        super(noteType, title);
+    }
+
+    public Map<String, Checklist> getChecklists() {
+        return checklists;
+    }
+
+    public void setChecklists(Map<String, Checklist> checklistElements) {
+        this.checklists = checklistElements;
+    }
+
+    public Map<String, Note> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(Map<String, Note> noteElements) {
+        this.notes = noteElements;
+    }
+
+    public BundleBin getBin() {
+        return bin;
+    }
+
+    public void setBin(BundleBin bin) {
+        this.bin = bin;
     }
 }
+

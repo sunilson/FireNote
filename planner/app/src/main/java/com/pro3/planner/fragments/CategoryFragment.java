@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.pro3.planner.Interfaces.MainInterface;
+import com.pro3.planner.BaseApplication;
+import com.pro3.planner.Interfaces.MainActivityInterface;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
 import com.pro3.planner.views.CategoryElementView;
@@ -49,8 +50,9 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
 
         ListView categoryListView = (ListView) view.findViewById(R.id.fragment_category_listview);
 
-        final MainInterface mainInterface = (MainInterface) getActivity();
-        categoryListView.setAdapter(mainInterface.getListCategoryAdapter());
+        final MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication)getContext().getApplicationContext()).mainContext;
+
+        categoryListView.setAdapter(mainActivityInterface.getListCategoryAdapter());
 
         categoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -59,14 +61,14 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
                 if (categoryElementView.isChecked()) {
                     Log.i("Linus", "Checked false");
                     categoryElementView.setChecked(false);
-                    LocalSettingsManager.getInstance().setCategoryVisibility(mainInterface.getListCategoryAdapter().getItem(position).getCategoryID(), 1);
+                    LocalSettingsManager.getInstance().setCategoryVisibility(mainActivityInterface.getListCategoryAdapter().getItem(position).getCategoryID(), 1);
                 } else {
                     Log.i("Linus", "Checked true");
                     categoryElementView.setChecked(true);
-                    LocalSettingsManager.getInstance().setCategoryVisibility(mainInterface.getListCategoryAdapter().getItem(position).getCategoryID(), -1);
+                    LocalSettingsManager.getInstance().setCategoryVisibility(mainActivityInterface.getListCategoryAdapter().getItem(position).getCategoryID(), -1);
                 }
 
-                mainInterface.getElementAdapter().hideElements();
+                mainActivityInterface.getElementAdapter().hideElements();
             }
         });
 

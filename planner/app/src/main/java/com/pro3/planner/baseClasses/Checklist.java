@@ -1,25 +1,29 @@
 package com.pro3.planner.baseClasses;
 
-import android.content.Context;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by linus_000 on 02.11.2016.
  */
 
-public class Checklist extends Element{
+public class Checklist extends Element {
 
-    private List elements;
-    private Reminder reminder;
+    private Map<String, ChecklistElement> elements = new HashMap<>();
 
-    public Checklist(String noteType, String title, Context context) {
-        super(noteType, title, context);
-        elements = new ArrayList();
+    public Checklist() {
+        super();
     }
 
-    public void addChecklistElement(String text) {
+    public Checklist(String noteType, String title) {
+        super(noteType, title);
     }
 
+    public Map<String, ChecklistElement> getElements() {
+        return elements;
+    }
+
+    public void setElements(Map<String, ChecklistElement> elements) {
+        this.elements = elements;
+    }
 }

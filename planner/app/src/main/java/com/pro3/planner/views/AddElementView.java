@@ -15,7 +15,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
-import com.pro3.planner.Interfaces.MainInterface;
+import com.pro3.planner.BaseApplication;
+import com.pro3.planner.Interfaces.MainActivityInterface;
 import com.pro3.planner.R;
 import com.pro3.planner.adapters.ColorAddAdapter;
 import com.pro3.planner.adapters.SpinnerAdapter;
@@ -76,8 +77,8 @@ public class AddElementView extends LinearLayout implements AdapterView.OnItemSe
 
                 String categoryName = category.getText().toString();
                 if (!categoryName.equals("")) {
-                    MainInterface mainInterface = (MainInterface) getContext();
-                    DatabaseReference dRef = mainInterface.getCategoryReference().push();
+                    MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication)getContext().getApplicationContext()).mainContext;
+                    DatabaseReference dRef = mainActivityInterface.getCategoryReference().push();
                     Category cat = new Category(categoryName, dRef.getKey());
                     dRef.setValue(cat);
                     Toast.makeText(getContext(), R.string.added_category, Toast.LENGTH_SHORT).show();
