@@ -7,6 +7,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,8 +67,6 @@ public class MasterPasswordDialog extends SuperDialog {
 
         final AlertDialog dialog = (AlertDialog) getDialog();
 
-        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_negative_button));
-
         final SettingsInterface settings = (SettingsInterface) getActivity();
         final EditText pwOld = ((EditText) content.findViewById(R.id.master_password_old));
         final EditText pwNew = ((EditText) content.findViewById(R.id.master_password_new));
@@ -110,6 +109,16 @@ public class MasterPasswordDialog extends SuperDialog {
                 }
             }
         });
+
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_negative_button));
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_positive_button));
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
     public static MasterPasswordDialog newInstance() {

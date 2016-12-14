@@ -59,7 +59,13 @@ public class BinRecyclerAdapter extends RecyclerView.Adapter implements ItemTouc
         viewHolder.elementTitle.setText(element.getTitle());
         viewHolder.elementCategory.setText(element.getCategory().getCategoryName());
 
-        viewHolder.elementIcon.setImageResource(element.getIcon());
+        if (element.getNoteType().equals("checklist")) {
+            viewHolder.elementIcon.setImageResource(R.drawable.element_checklist_icon);
+        } else if (element.getNoteType().equals("note")) {
+            viewHolder.elementIcon.setImageResource(R.drawable.element_note_icon);
+        } else {
+            viewHolder.elementIcon.setImageResource(R.drawable.element_bundle_icon);
+        }
 
         int elementColor = element.getColor();
         viewHolder.iconHolder.setBackgroundColor(elementColor);

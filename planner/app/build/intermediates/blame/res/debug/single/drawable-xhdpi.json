@@ -40,12 +40,20 @@
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xhdpi\\ic_add_white_24dp.png"
     },
     {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\ic_folder_black_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xhdpi\\ic_folder_black_24dp.png"
+    },
+    {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\ic_arrow_back_black_24dp.png",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xhdpi\\ic_arrow_back_black_24dp.png"
     },
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\ic_done_black_24dp.png",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xhdpi\\ic_done_black_24dp.png"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\ic_list_black_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xhdpi\\ic_list_black_24dp.png"
     },
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\ic_delete_sweep_black_24dp.png",
@@ -88,11 +96,11 @@
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xhdpi\\ic_text_fields_black_24dp.png"
     },
     {
-        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\ic_add_circle_black_24dp.png",
-        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xhdpi\\ic_add_circle_black_24dp.png"
-    },
-    {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\icon.png",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xhdpi\\icon.png"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi\\ic_add_circle_black_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xhdpi\\ic_add_circle_black_24dp.png"
     }
 ]

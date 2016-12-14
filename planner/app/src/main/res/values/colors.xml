@@ -17,6 +17,7 @@
     <color name="tint_white">#FFFFFF</color>
     <color name="notepad_underline">#ededed</color>
     <color name="dialog_negative_button">#F44336</color>
+    <color name="dialog_positive_button">#9E9E9E</color>
     <color name="recent_apps_color">#FFFFA5</color>
 
     <color name="note_color_1">#F44336</color>

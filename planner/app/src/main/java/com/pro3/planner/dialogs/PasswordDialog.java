@@ -92,6 +92,7 @@ public class PasswordDialog extends SuperDialog {
         super.onStart();
 
         ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_negative_button));
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_positive_button));
     }
 
     public static PasswordDialog newInstance(String type, String elementType, String elementID, String elementTitle, int elementColor) {

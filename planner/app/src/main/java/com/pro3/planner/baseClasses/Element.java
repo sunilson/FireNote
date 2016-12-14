@@ -1,12 +1,6 @@
 package com.pro3.planner.baseClasses;
 
-import android.content.Context;
-
-import com.pro3.planner.R;
-
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by linus_000 on 02.11.2016.
@@ -16,16 +10,14 @@ public class Element {
     private String title;
     private String noteID;
     private String noteType;
+    private String bundleID;
     private Category category;
     private int color;
-    private int icon;
     private Date creationDate;
     private String text;
-    private Map<String, ChecklistElement> elements = new HashMap<>();
-    private String password;
     private boolean locked;
 
-    public Element(String noteType, String title, Context context) {
+    public Element(String noteType, String title) {
         this.noteType = noteType;
 
         if (title != null) {
@@ -34,28 +26,11 @@ public class Element {
             this.title = "New Element";
         }
 
-        if (noteType.equals("checklist")) {
-            icon = R.drawable.element_checklist_icon;
-        } else if (noteType.equals("note")) {
-            icon = R.drawable.element_note_icon;
-        } else {
-            icon = R.drawable.ic_toc_black_24dp;
-        }
-
-        this.password = "";
         this.creationDate = new Date();
     }
 
     public Element() {
 
-    }
-
-    public int getIcon() {
-        return icon;
-    }
-
-    public void setIcon(int icon) {
-        this.icon = icon;
     }
 
     public String getTitle() {
@@ -98,14 +73,6 @@ public class Element {
         this.category = category;
     }
 
-    public Map<String, ChecklistElement> getElements() {
-        return elements;
-    }
-
-    public void setElements(Map<String, ChecklistElement> elements) {
-        this.elements = elements;
-    }
-
     public void setText(String text) {
         this.text = text;
     }
@@ -120,5 +87,13 @@ public class Element {
 
     public void setLocked(boolean locked) {
         this.locked = locked;
+    }
+
+    public String getBundleID() {
+        return bundleID;
+    }
+
+    public void setBundleID(String bundleID) {
+        this.bundleID = bundleID;
     }
 }

@@ -9,11 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.pro3.planner.Interfaces.SettingsInterface;
 import com.pro3.planner.R;
 import com.pro3.planner.dialogs.MasterPasswordDialog;
@@ -21,11 +18,14 @@ import com.pro3.planner.dialogs.MasterPasswordDialog;
 public class SettingsActivity extends BaseActivity implements SettingsInterface{
 
     private LinearLayout masterPassword;
-    private DatabaseReference mConnectedRef, mReference;
+    private DatabaseReference mReference;
     private FirebaseUser user;
-    private ValueEventListener mConnectedValueEventListener;
-    private boolean connected;
 
+    /*
+    ------------------------
+    ---- Android Events ----
+    ------------------------
+     */
 
     @Override
     protected void onResume() {
@@ -47,10 +47,6 @@ public class SettingsActivity extends BaseActivity implements SettingsInterface{
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //Handle online/offline status
-        mConnectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
-        initializeOnlineListener();
-
         masterPassword = (LinearLayout) findViewById(R.id.master_password);
         initializeMasterPasswordClickListener();
 
@@ -61,38 +57,6 @@ public class SettingsActivity extends BaseActivity implements SettingsInterface{
         if (user != null) {
             mReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
         }
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        if (mConnectedValueEventListener != null) {
-            mConnectedRef.addValueEventListener(mConnectedValueEventListener);
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        if (mConnectedValueEventListener != null) {
-            mConnectedRef.removeEventListener(mConnectedValueEventListener);
-        }
-    }
-
-    private void initializeOnlineListener() {
-        mConnectedValueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                connected = snapshot.getValue(Boolean.class);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                System.err.println("Listener was cancelled");
-            }
-        };
     }
 
     private void initializeMasterPasswordClickListener() {

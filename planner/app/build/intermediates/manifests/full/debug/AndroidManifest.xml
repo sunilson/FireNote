@@ -70,6 +70,10 @@
             android:name="com.pro3.planner.activities.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/SettingsTheme" />
+        <activity
+            android:name="com.pro3.planner.activities.BundleActivity"
+            android:label="@string/title_activity_bundle"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <receiver
             android:name="com.google.android.gms.measurement.AppMeasurementReceiver"

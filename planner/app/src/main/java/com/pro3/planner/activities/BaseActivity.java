@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,6 +15,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
 
@@ -25,9 +27,17 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private FirebaseUser user;
     protected FirebaseAuth mAuth;
-    protected DatabaseReference mSettingsReference;
+    protected boolean connected;
+    protected DatabaseReference mSettingsReference, mConnectedRef;
+    protected ValueEventListener mConnectedRefListener;
     private FirebaseAuth.AuthStateListener mAuthListener;
     protected ChildEventListener mSettingsListener;
+
+    /*
+    ------------------------
+    ---- Android Events ----
+    ------------------------
+     */
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,7 +47,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         initializeAuthListener();
 
-
+        //Handle online/offline status
+        mConnectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
+        initializeOnlineListener();
     }
 
     @Override
@@ -63,6 +75,50 @@ public abstract class BaseActivity extends AppCompatActivity {
         if(mSettingsListener != null) {
             mSettingsReference.removeEventListener(mSettingsListener);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        FirebaseDatabase.getInstance().goOnline();
+
+        if (mConnectedRefListener != null) {
+            mConnectedRef.addValueEventListener(mConnectedRefListener);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (mConnectedRefListener != null) {
+            mConnectedRef.removeEventListener(mConnectedRefListener);
+        }
+    }
+
+    /*
+    -----------------------------
+    --- Listener Initializing ---
+    -----------------------------
+     */
+
+    private void initializeOnlineListener() {
+        mConnectedRefListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                connected = snapshot.getValue(Boolean.class);
+                if (connected) {
+                    Log.i("Linus", "connected");
+                } else {
+                    Log.i("Linus", "disconnected");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                System.err.println("Listener was cancelled");
+            }
+        };
     }
 
     private void initializeSettingsListener() {

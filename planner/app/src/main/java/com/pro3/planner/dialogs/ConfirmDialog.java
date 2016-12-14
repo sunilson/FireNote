@@ -49,12 +49,6 @@ public class ConfirmDialog extends SuperDialog {
         return builder.create();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_negative_button));
-    }
-
     public static ConfirmDialog newInstance(String title, String text, String type) {
         ConfirmDialog dialog = new ConfirmDialog();
         Bundle args = new Bundle();
@@ -63,5 +57,13 @@ public class ConfirmDialog extends SuperDialog {
         args.putString("type", type);
         dialog.setArguments(args);
         return dialog;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_negative_button));
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_positive_button));
     }
 }

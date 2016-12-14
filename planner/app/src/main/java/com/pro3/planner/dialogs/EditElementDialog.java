@@ -12,8 +12,10 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.pro3.planner.BaseApplication;
+import com.pro3.planner.Interfaces.BundleInterface;
 import com.pro3.planner.Interfaces.ElementInterface;
-import com.pro3.planner.Interfaces.MainInterface;
+import com.pro3.planner.Interfaces.MainActivityInterface;
 import com.pro3.planner.R;
 
 /**
@@ -25,14 +27,14 @@ public class EditElementDialog extends SuperDialog {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final String id = getArguments().getString("elementID");
-        String type = getArguments().getString("type");
+        final String type = getArguments().getString("type");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
 
-        TextView titleText = (TextView)title.findViewById(R.id.dialog_title);
+        TextView titleText = (TextView) title.findViewById(R.id.dialog_title);
         titleText.setText(getArguments().getString("title"));
         builder.setCustomTitle(title);
 
@@ -49,34 +51,49 @@ public class EditElementDialog extends SuperDialog {
 
         final Activity activity = getActivity();
         final EditText editTitleText = (EditText) content.findViewById(editTitleResource);
-        if (activity instanceof ElementInterface) {
-            editTitleText.setText(getActivity().getTitle());
-        } else if (activity instanceof MainInterface) {
-            MainInterface mainInterface = (MainInterface) activity;
-            editTitleText.setText(mainInterface.getElementAdapter().getElement(id).getTitle());
+
+        if (activity instanceof BundleInterface) {
+            BundleInterface bundleInterface = (BundleInterface) activity;
+            editTitleText.setText(bundleInterface.getElementAdapter().getElement(id).getTitle());
+        } else if (activity instanceof ElementInterface) {
+            ElementInterface elementInterface = (ElementInterface) activity;
+            editTitleText.setText(elementInterface.getElementTitle());
+        } else if (activity instanceof MainActivityInterface) {
+            MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
+            editTitleText.setText(mainActivityInterface.getElementAdapter().getElement(id).getTitle());
         }
 
         builder.setView(content);
 
         builder.setPositiveButton(R.string.confirm_add_dialog, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                if (activity instanceof ElementInterface) {
-                    String title = editTitleText.getText().toString();
-                    ElementInterface elementInterface = (ElementInterface) getActivity();
-                    elementInterface.getElementReference().child("title").setValue(title);
-                } else if (activity instanceof MainInterface) {
-                    String title = editTitleText.getText().toString();
-                    MainInterface mainInterface = (MainInterface) activity;
-                    mainInterface.getElementsReference().child(id).child("title").setValue(title);
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String title = editTitleText.getText().toString();
+                        if (activity instanceof BundleInterface) {
+                            BundleInterface bundleInterface = (BundleInterface) getActivity();
+                            if (type.equals("checklist")) {
+                                bundleInterface.getChecklistElementsReference().child(id).child("title").setValue(title);
+                            } else {
+                                bundleInterface.getNoteElementsReference().child(id).child("title").setValue(title);
+                            }
+                        } else if (activity instanceof ElementInterface) {
+                            ElementInterface elementInterface = (ElementInterface) getActivity();
+                            elementInterface.getElementReference().child("title").setValue(title);
+                        } else if (activity instanceof MainActivityInterface) {
+                            MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
+                            mainActivityInterface.getElementsReference().child(id).child("title").setValue(title);
+                        }
+                    }
+                }
+        );
+
+        builder.setNegativeButton(R.string.cancel_add_dialog, new DialogInterface.OnClickListener()
+
+                {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
                 }
 
-            }
-        });
-
-        builder.setNegativeButton(R.string.cancel_add_dialog, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-            }
-        });
+        );
 
         return builder.create();
     }
@@ -88,12 +105,6 @@ public class EditElementDialog extends SuperDialog {
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_negative_button));
-    }
-
     public static EditElementDialog newInstance(String title, String type, String elementID) {
         EditElementDialog dialog = new EditElementDialog();
         Bundle args = new Bundle();
@@ -102,5 +113,13 @@ public class EditElementDialog extends SuperDialog {
         args.putString("elementID", elementID);
         dialog.setArguments(args);
         return dialog;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_negative_button));
+        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_positive_button));
     }
 }

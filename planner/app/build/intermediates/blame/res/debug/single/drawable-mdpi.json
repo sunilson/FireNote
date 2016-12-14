@@ -8,12 +8,20 @@
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-mdpi\\ic_add_white_24dp.png"
     },
     {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\ic_folder_black_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-mdpi\\ic_folder_black_24dp.png"
+    },
+    {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\ic_clear_black_24dp.png",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-mdpi\\ic_clear_black_24dp.png"
     },
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\ic_date_range_black_24dp.png",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-mdpi\\ic_date_range_black_24dp.png"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\ic_list_black_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-mdpi\\ic_list_black_24dp.png"
     },
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\ic_add_circle_black_24dp.png",

@@ -31,7 +31,6 @@
             android:imeOptions="actionDone"
             android:inputType="textPersonName"
             android:maxLines="1"
-            android:textColorHint="@color/primary_text_color"
             android:textSize="18sp" />
 
         <TextView
@@ -55,7 +54,6 @@
                 android:imeOptions="actionDone"
                 android:inputType="textPersonName"
                 android:maxLines="1"
-                android:textColorHint="@color/primary_text_color"
                 android:textSize="18sp"
                 android:visibility="gone" />
 

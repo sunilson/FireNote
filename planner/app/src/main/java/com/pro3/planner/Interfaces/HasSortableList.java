@@ -1,6 +1,6 @@
 package com.pro3.planner.Interfaces;
 
-import android.content.SharedPreferences;
+import android.widget.TextView;
 
 import com.pro3.planner.adapters.ElementRecyclerAdapter;
 
@@ -10,8 +10,8 @@ import com.pro3.planner.adapters.ElementRecyclerAdapter;
 
 public interface HasSortableList {
 
-    public ElementRecyclerAdapter getElementAdapter();
+    ElementRecyclerAdapter getElementAdapter();
 
-    public SharedPreferences getSharedPrefs();
+    TextView getSortTextView();
 
 }

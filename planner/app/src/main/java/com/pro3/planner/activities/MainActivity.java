@@ -11,11 +11,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -24,9 +24,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.pro3.planner.BaseApplication;
 import com.pro3.planner.Interfaces.ConfirmDialogResult;
-import com.pro3.planner.Interfaces.MainInterface;
+import com.pro3.planner.Interfaces.MainActivityInterface;
 import com.pro3.planner.ItemTouchHelper.SimpleItemTouchHelperCallbackMain;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
@@ -34,16 +34,16 @@ import com.pro3.planner.adapters.CategoryAdapter;
 import com.pro3.planner.adapters.ElementRecyclerAdapter;
 import com.pro3.planner.adapters.SpinnerAdapter;
 import com.pro3.planner.baseClasses.Category;
+import com.pro3.planner.baseClasses.Checklist;
 import com.pro3.planner.baseClasses.Element;
-import com.pro3.planner.dialogs.MenuAlertDialog;
+import com.pro3.planner.dialogs.ListAlertDialog;
 import com.pro3.planner.dialogs.PasswordDialog;
 import com.pro3.planner.dialogs.VisibilityDialog;
 
-public class MainActivity extends BaseActivity implements MainInterface, ConfirmDialogResult {
+public class MainActivity extends BaseActivity implements MainActivityInterface, ConfirmDialogResult {
 
-    private DatabaseReference mReference, mConnectedRef, mElementsReference, mCategoryReference, mBinReference;
+    private DatabaseReference mReference, mElementsReference, mCategoryReference, mBinReference;
     private ChildEventListener mChildEventListener, mCategoryListener;
-    private ValueEventListener mConnectedRefListener;
     private ElementRecyclerAdapter elementRecyclerAdapter;
     private SpinnerAdapter spinnerCategoryAdapter;
     private CategoryAdapter listCategoryAdapter;
@@ -53,6 +53,7 @@ public class MainActivity extends BaseActivity implements MainInterface, Confirm
     private CoordinatorLayout coordinatorLayout;
     private FirebaseUser user;
     private SharedPreferences prefs;
+    private TextView currentSortingMethod;
 
     /*
     ------------------------
@@ -68,14 +69,14 @@ public class MainActivity extends BaseActivity implements MainInterface, Confirm
         setSupportActionBar(toolbar);
         toolbar.setTitle(R.string.app_name);
 
+        //Set Main Context of BaseApplication, so we can use it in the other Activities
+        ((BaseApplication)getApplicationContext()).mainContext = this;
+
+        currentSortingMethod = (TextView) findViewById(R.id.current_sorting_method);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.activity_main);
 
         //Initialize the Firebase Auth System and the User
         user = mAuth.getCurrentUser();
-
-        //Handle online/offline status
-        mConnectedRef = FirebaseDatabase.getInstance().getReference(".info/connected");
-        initializeOnlineListener();
 
         //Get the users Database Reference, if user exists
         if(user != null) {
@@ -116,6 +117,15 @@ public class MainActivity extends BaseActivity implements MainInterface, Confirm
 
                 //Papierkorb Reference
                 mBinReference = mReference.child("bin");
+
+                currentSortingMethod.setText(getString(R.string.current_sorthing_method) + " " + LocalSettingsManager.getInstance().getSortingMethod());
+                currentSortingMethod.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.menu_sort), "sort", 0);
+                        dialog.show(getSupportFragmentManager(), "dialog");
+                    }
+                });
             }
         }
 
@@ -124,7 +134,7 @@ public class MainActivity extends BaseActivity implements MainInterface, Confirm
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment dialog = MenuAlertDialog.newInstance(getResources().getString(R.string.add_Element_Title), "addElement", 0);
+                DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.add_Element_Title), "addElement", 0);
                 dialog.show(getSupportFragmentManager(), "dialog");
             }
         });
@@ -133,10 +143,6 @@ public class MainActivity extends BaseActivity implements MainInterface, Confirm
     @Override
     protected void onStart() {
         super.onStart();
-
-        if (mConnectedRefListener != null) {
-            mConnectedRef.addValueEventListener(mConnectedRefListener);
-        }
     }
 
     @Override
@@ -154,10 +160,6 @@ public class MainActivity extends BaseActivity implements MainInterface, Confirm
     @Override
     protected void onStop() {
         super.onStop();
-
-        if (mConnectedRefListener != null) {
-            mConnectedRef.removeEventListener(mConnectedRefListener);
-        }
     }
 
     @Override
@@ -166,6 +168,10 @@ public class MainActivity extends BaseActivity implements MainInterface, Confirm
 
         if(mElementsReference != null) {
             mElementsReference.removeEventListener(mChildEventListener);
+        }
+
+        if (mCategoryReference != null) {
+            mCategoryReference.removeEventListener(mCategoryListener);
         }
     }
 
@@ -203,10 +209,10 @@ public class MainActivity extends BaseActivity implements MainInterface, Confirm
             mAuth.signOut();
             return true;
         } else if (id == R.id.action_sort) {
-            DialogFragment dialog = MenuAlertDialog.newInstance(getResources().getString(R.string.menu_sort), "sort", 0);
+            DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.menu_sort), "sort", 0);
             dialog.show(getSupportFragmentManager(), "dialog");
         } else if (id == R.id.main_element_sort) {
-            DialogFragment dialog = MenuAlertDialog.newInstance(getResources().getString(R.string.menu_sort), "sort", 0);
+            DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.menu_sort), "sort", 0);
             dialog.show(getSupportFragmentManager(), "dialog");
         } else if (id == R.id.main_element_visibility) {
             VisibilityDialog visibilityDialog = new VisibilityDialog();
@@ -247,11 +253,14 @@ public class MainActivity extends BaseActivity implements MainInterface, Confirm
                         i = new Intent(MainActivity.this, ChecklistActivity.class);
                     } else if (element.getNoteType().equals("note")) {
                         i = new Intent(MainActivity.this, NoteActivity.class);
+                    } else if (element.getNoteType().equals("bundle")) {
+                        i = new Intent(MainActivity.this, BundleActivity.class);
                     }
 
                     i.putExtra("elementID", element.getNoteID());
                     i.putExtra("elementTitle", element.getTitle());
                     i.putExtra("elementColor", element.getColor());
+                    i.putExtra("elementType", element.getNoteType());
                     startActivity(i);
                 }
             }
@@ -269,29 +278,10 @@ public class MainActivity extends BaseActivity implements MainInterface, Confirm
                     DialogFragment dialogFragment = PasswordDialog.newInstance("passwordEditElement", "", "", "", itemPosition);
                     dialogFragment.show(getSupportFragmentManager(), "dialog");
                 } else {
-                    DialogFragment dialog = MenuAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", itemPosition);
+                    DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", itemPosition);
                     dialog.show(getSupportFragmentManager(), "dialog");
                 }
                 return true;
-            }
-        };
-    }
-
-    private void initializeOnlineListener() {
-        mConnectedRefListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                boolean connected = snapshot.getValue(Boolean.class);
-                if (connected) {
-                    Log.i("Linus", "connected");
-                } else {
-                    Log.i("Linus", "disconnected");
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                System.err.println("Listener was cancelled");
             }
         };
     }
@@ -313,11 +303,23 @@ public class MainActivity extends BaseActivity implements MainInterface, Confirm
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
+                final DataSnapshot dataSnapshotValue = dataSnapshot;
                 final Element element = dataSnapshot.getValue(Element.class);
                 elementRecyclerAdapter.remove(element.getNoteID());
-                DatabaseReference dRef = mBinReference.push();
-                element.setNoteID(dRef.getKey());
-                dRef.setValue(element);
+                final DatabaseReference dRef = mBinReference.push();
+                if(element.getNoteType().equals("checklist")) {
+                    Checklist checklist = dataSnapshot.getValue(Checklist.class);
+                    checklist.setNoteID(dRef.getKey());
+                    dRef.setValue(checklist);
+                } else if (element.getNoteType().equals("bundle")) {
+                    com.pro3.planner.baseClasses.Bundle bundle = dataSnapshot.getValue(com.pro3.planner.baseClasses.Bundle.class);
+                    bundle.setNoteID(dRef.getKey());
+                    dRef.setValue(bundle);
+                } else {
+                    element.setNoteID(dRef.getKey());
+                    dRef.setValue(element);
+                }
+
                 Snackbar snackbar = Snackbar
                         .make(coordinatorLayout, R.string.moved_to_bin, 6000)
                         .setAction(R.string.undo, new View.OnClickListener() {
@@ -325,10 +327,21 @@ public class MainActivity extends BaseActivity implements MainInterface, Confirm
                             public void onClick(View view) {
                                 Snackbar snackbar1 = Snackbar.make(coordinatorLayout, R.string.element_restored, Snackbar.LENGTH_SHORT);
                                 snackbar1.show();
-                                mBinReference.child(element.getNoteID()).removeValue();
+                                mBinReference.child(dRef.getKey()).removeValue();
+                                Element element = dataSnapshotValue.getValue(Element.class);
                                 DatabaseReference dRef = mElementsReference.push();
-                                element.setNoteID(dRef.getKey());
-                                dRef.setValue(element);
+                                if(element.getNoteType().equals("checklist")) {
+                                    Checklist checklist = dataSnapshotValue.getValue(Checklist.class);
+                                    checklist.setNoteID(dRef.getKey());
+                                    dRef.setValue(checklist);
+                                } else if (element.getNoteType().equals("bundle")) {
+                                    com.pro3.planner.baseClasses.Bundle bundle = dataSnapshotValue.getValue(com.pro3.planner.baseClasses.Bundle.class);
+                                    bundle.setNoteID(dRef.getKey());
+                                    dRef.setValue(bundle);
+                                } else {
+                                    element.setNoteID(dRef.getKey());
+                                    dRef.setValue(element);
+                                }
                             }
                         });
 
@@ -375,8 +388,8 @@ public class MainActivity extends BaseActivity implements MainInterface, Confirm
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 Category category = dataSnapshot.getValue(Category.class);
-                spinnerCategoryAdapter.remove(category);
-                listCategoryAdapter.remove(category);
+                spinnerCategoryAdapter.remove(dataSnapshot.getKey());
+                listCategoryAdapter.remove(dataSnapshot.getKey());
                 LocalSettingsManager.getInstance().removeCategory(category.getCategoryName());
             }
 
@@ -404,8 +417,8 @@ public class MainActivity extends BaseActivity implements MainInterface, Confirm
     }
 
     @Override
-    public SharedPreferences getSharedPrefs() {
-        return prefs;
+    public TextView getSortTextView() {
+        return currentSortingMethod;
     }
 
     @Override
@@ -413,6 +426,7 @@ public class MainActivity extends BaseActivity implements MainInterface, Confirm
         return mElementsReference;
     }
 
+    @Override
     public ArrayAdapter<CharSequence> getSpinnerCategoryAdapter() {
         return spinnerCategoryAdapter;
     }
@@ -441,18 +455,21 @@ public class MainActivity extends BaseActivity implements MainInterface, Confirm
                     i = new Intent(MainActivity.this, ChecklistActivity.class);
                 } else if (args.getString("elementType").equals("note")) {
                     i = new Intent(MainActivity.this, NoteActivity.class);
+                } else if (args.getString("elementType").equals("bundle")) {
+                    i = new Intent(MainActivity.this, BundleActivity.class);
                 }
 
                 i.putExtra("elementID", args.getString("elementID"));
                 i.putExtra("elementTitle", args.getString("elementTitle"));
                 i.putExtra("elementColor", args.getInt("elementColor"));
+                i.putExtra("elementType", args.getString("elementType"));
                 startActivity(i);
             } else {
                 Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
             }
         } else if (type.equals("passwordEditElement")) {
             if(bool) {
-                DialogFragment dialog = MenuAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", args.getInt("elementColor"));
+                DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", args.getInt("elementColor"));
                 dialog.show(getSupportFragmentManager(), "dialog");
             } else {
                 Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();

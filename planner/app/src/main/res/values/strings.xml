@@ -26,10 +26,11 @@
     <string name="element_sync_success">Successfully added and synced Element</string>
     <string name="menu_log_out">Log out</string>
     <string name="menu_sort">Sort elements</string>
-    <string name="menu_sort_ascending_date">Sort by Date Ascending</string>
-    <string name="menu_sort_descending_date">Sort by Date Descending</string>
-    <string name="menu_sort_ascending_name">Sort by Name Ascending</string>
-    <string name="menu_sort_descending_name">Sort by Name Descending</string>
+    <string name="sort_by">Sort by</string>
+    <string name="sort_ascending_date">Date Ascending</string>
+    <string name="sort_descending_date">Date Descending</string>
+    <string name="sort_ascending_name">Name Ascending</string>
+    <string name="sort_descending_name">Name Descending</string>
     <string name="login_loading">Logging in</string>
     <string name="add_checklist_item_title">Add new Element</string>
     <string name="confirm_add_dialog">Done</string>
@@ -82,4 +83,7 @@
     <string name="unlocked">Unlocked</string>
     <string name="master_password_not_set">Please first set a master password under "Settings"!</string>
     <string name="wrong_password">Wrong password!</string>
+    <string name="element_bundle">Bundle</string>
+    <string name="current_sorthing_method">List sorted by</string>
+    <string name="title_activity_bundle">BundleActivity</string>
 </resources>

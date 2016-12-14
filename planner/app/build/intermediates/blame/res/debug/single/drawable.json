@@ -132,6 +132,10 @@
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\drawable\\notification_bg_low.xml"
     },
     {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\bordershadow.xml",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable\\bordershadow.xml"
+    },
+    {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_seekbar_tick_mark_material.xml",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\drawable\\abc_seekbar_tick_mark_material.xml"
     },
@@ -228,6 +232,10 @@
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable\\element_checklist_icon.xml"
     },
     {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\element_bundle_icon.xml",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable\\element_bundle_icon.xml"
+    },
+    {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_btn_default_mtrl_shape.xml",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\drawable\\abc_btn_default_mtrl_shape.xml"
     },
@@ -254,6 +262,10 @@
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_vector_test.xml",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\drawable\\abc_vector_test.xml"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\bundle_icon.xml",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable\\bundle_icon.xml"
     },
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\element_note_icon.xml",

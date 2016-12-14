@@ -8,8 +8,8 @@ import com.google.firebase.database.DatabaseReference;
 
 public interface ElementInterface {
 
-    public DatabaseReference getElementReference();
-
+    DatabaseReference getElementReference();
+    String getElementTitle();
 
 
 }

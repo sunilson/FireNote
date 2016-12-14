@@ -14,7 +14,7 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_logOut"
-        android:orderInCategory="300"
+        android:orderInCategory="400"
         android:title="@string/menu_log_out"
         app:showAsAction="never" />
     <item
@@ -29,7 +29,7 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="400"
+        android:orderInCategory="300"
         app:showAsAction="never"
         android:title="@string/action_settings"
         />

@@ -35,6 +35,18 @@ public class CategoryAdapter extends ArrayAdapter {
         notifyDataSetChanged();
     }
 
+    public void remove(String categoryID) {
+        Iterator it = list.iterator();
+
+        while (it.hasNext()) {
+            Category category = (Category) it.next();
+            if (category.getCategoryID().equals(categoryID)) {
+                it.remove();
+                return;
+            }
+        }
+    }
+
     @Override
     public void add(Object object) {
         list.add((Category) object);
