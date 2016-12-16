@@ -53,7 +53,9 @@ public class ChecklistRecyclerAdapter extends RecyclerView.Adapter implements It
     }
 
     public void clear() {
+        int listEnd = list.size();
         list.clear();
+        notifyItemRangeChanged(0, listEnd);
     }
 
     @Override

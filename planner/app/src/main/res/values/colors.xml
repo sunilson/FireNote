@@ -19,6 +19,9 @@
     <color name="dialog_negative_button">#F44336</color>
     <color name="dialog_positive_button">#9E9E9E</color>
     <color name="recent_apps_color">#FFFFA5</color>
+    <color name="login_button_background">#f39c12</color>
+    <color name="login_button_background_selected">#FFC15E</color>
+    <color name="login_background">#34495e</color>
 
     <color name="note_color_1">#F44336</color>
     <color name="note_color_2">#E91E63</color>

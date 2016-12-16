@@ -3,6 +3,7 @@ package com.pro3.planner.activities;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.text.InputType;
 import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -16,13 +17,13 @@ import android.widget.Toast;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.pro3.planner.Interfaces.ConfirmDialogResult;
-import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
 import com.pro3.planner.dialogs.ConfirmDialog;
 import com.pro3.planner.dialogs.EditElementDialog;
+
+import static com.pro3.planner.R.id.notepad;
 
 public class NoteActivity extends BaseElementActivity implements ConfirmDialogResult {
 
@@ -47,7 +48,7 @@ public class NoteActivity extends BaseElementActivity implements ConfirmDialogRe
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-        notePad = (EditText) findViewById(R.id.notepad);
+        notePad = (EditText) findViewById(notepad);
         notePad.setScroller(new Scroller(this));
         notePad.setVerticalScrollBarEnabled(true);
         notePad.setMovementMethod(new ScrollingMovementMethod());
@@ -58,7 +59,6 @@ public class NoteActivity extends BaseElementActivity implements ConfirmDialogRe
 
         if (mElementReference != null) {
             mTextReference = mElementReference.child("text");
-            mTextReference.addValueEventListener(mTextValueListener);
         }
     }
 
@@ -66,12 +66,18 @@ public class NoteActivity extends BaseElementActivity implements ConfirmDialogRe
     protected void onPause() {
         super.onPause();
         stopEditMode();
-        FirebaseDatabase.getInstance().goOffline();
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStart() {
+        super.onStart();
+
+        mTextReference.addValueEventListener(mTextValueListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
 
         if (mTextValueListener != null && mTextReference != null) {
             mTextReference.removeEventListener(mTextValueListener);
@@ -127,12 +133,6 @@ public class NoteActivity extends BaseElementActivity implements ConfirmDialogRe
             dialog.show(getSupportFragmentManager(), "dialog");
         } else if (id == R.id.note_menu_done) {
             stopEditMode();
-        } else if (id == R.id.note_menu_lock) {
-            if (LocalSettingsManager.getInstance().getMasterPassword() != "") {
-                mElementReference.child("locked").setValue(!locked);
-            } else {
-                Toast.makeText(this, R.string.master_password_not_set, Toast.LENGTH_LONG).show();
-            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -176,6 +176,9 @@ public class NoteActivity extends BaseElementActivity implements ConfirmDialogRe
             notePad.setFocusableInTouchMode(true);
             notePad.setFocusable(true);
             notePad.requestFocus();
+            notePad.setRawInputType(InputType.TYPE_CLASS_TEXT);
+            notePad.setTextIsSelectable(true);
+            notePad.setSelection(notePad.getText().length());
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(notePad, InputMethodManager.SHOW_IMPLICIT);
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);

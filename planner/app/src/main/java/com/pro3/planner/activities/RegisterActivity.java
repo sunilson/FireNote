@@ -76,8 +76,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
-
-        Log.i("Linus", "Stop " + this.getClass().getSimpleName());
     }
 
     /*

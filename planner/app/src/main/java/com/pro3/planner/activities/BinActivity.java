@@ -64,22 +64,6 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
                 mReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("elements").child(elementID);
             }
 
-            if (mReference != null) {
-                mBinReference = mReference.child("bin");
-                if(elementID == null) {
-                    mElementsRefernce = mReference.child("elements");
-                    initializeBinListener();
-                    mBinReference.addChildEventListener(mBinListener);
-                } else {
-                    mChecklistBinElementsReference = mReference.child("bin").child("checklists");
-                    mNoteBinElementsReference = mReference.child("bin").child("notes");
-                    initializeChecklistBinListener();
-                    initializeNoteBinListener();
-                    mChecklistBinElementsReference.addChildEventListener(mChecklistElementsListener);
-                    mNoteBinElementsReference.addChildEventListener(mNoteElementsListener);
-                }
-            }
-
             coordinatorLayout = (CoordinatorLayout) findViewById(R.id.activity_bin);
 
             binList = (RecyclerView) findViewById(R.id.binList);
@@ -94,36 +78,48 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
             ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallbackMain(binRecyclerAdapter);
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
             itemTouchHelper.attachToRecyclerView(binList);
+
+            if(elementID == null) {
+                mElementsRefernce = mReference.child("elements");
+                initializeBinListener();
+            } else {
+                initializeChecklistBinListener();
+                initializeNoteBinListener();
+                mChecklistBinElementsReference = mReference.child("bin").child("checklists");
+                mNoteBinElementsReference = mReference.child("bin").child("notes");
+            }
         }
     }
 
     @Override
-    protected void onPause() {
-        super.onStop();
-
-        if (mConnectedRefListener != null) {
-            mConnectedRef.removeEventListener(mConnectedRefListener);
-        }
-
-        FirebaseDatabase.getInstance().goOffline();
-    }
-
-    @Override
-    protected void onResume() {
+    protected void onStart() {
         super.onStart();
-        FirebaseDatabase.getInstance().goOnline();
 
-        if (mConnectedRefListener != null) {
-            mConnectedRef.addValueEventListener(mConnectedRefListener);
+        if (mReference != null) {
+            mBinReference = mReference.child("bin");
+            if(elementID == null) {
+                mBinReference.addChildEventListener(mBinListener);
+            } else {
+                mChecklistBinElementsReference.addChildEventListener(mChecklistElementsListener);
+                mNoteBinElementsReference.addChildEventListener(mNoteElementsListener);
+            }
         }
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStop() {
+        super.onStop();
 
         if (mBinListener != null) {
             mBinReference.removeEventListener(mBinListener);
+        }
+
+        if (mChecklistElementsListener != null) {
+            mChecklistBinElementsReference.removeEventListener(mChecklistElementsListener);
+        }
+
+        if (mNoteElementsListener != null) {
+            mNoteBinElementsReference.removeEventListener(mNoteElementsListener);
         }
     }
 
@@ -242,7 +238,7 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
                 binRecyclerAdapter.remove(element.getNoteID());
 
                 if (restore) {
-                    DatabaseReference dRef = mNoteBinElementsReference.push();
+                    DatabaseReference dRef = mElementsRefernce.push();
                     if(element.getNoteType().equals("checklist")) {
                         Checklist checklist = dataSnapshot.getValue(Checklist.class);
                         checklist.setNoteID(dRef.getKey());

@@ -8,7 +8,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="70dp"
-    android:padding="@dimen/checklist_list_vertical_margin"
     android:background="@color/defaultElementColor"
     android:foreground="?attr/selectableItemBackground"
     android:orientation="horizontal"
@@ -42,6 +41,6 @@
 </LinearLayout>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="match_parent"
-android:layout_height="6dp"
+android:layout_height="4dp"
 android:background="@color/main_background_color" />
     </LinearLayout>

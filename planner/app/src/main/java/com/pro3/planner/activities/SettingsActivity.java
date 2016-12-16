@@ -28,18 +28,6 @@ public class SettingsActivity extends BaseActivity implements SettingsInterface{
      */
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        FirebaseDatabase.getInstance().goOnline();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        FirebaseDatabase.getInstance().goOffline();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
