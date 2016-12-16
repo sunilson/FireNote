@@ -3,9 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.pro3.planner.activities.BundleActivity">
+
+
+    <item
+        android:title="Checklist Settings"
+        android:id="@+id/bundle_menu_settings"
+        android:icon="@drawable/checklist_menu_settings_icon"
+        app:showAsAction="ifRoom"
+        />
+    <item
+        android:title="Edit Checklist"
+        android:id="@+id/bundle_menu_delete"
+        android:icon="@drawable/checklist_menu_delete_icon"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
+        android:id="@+id/menu_lock"
+        android:title="@string/lock"
+        android:orderInCategory="200"
+        app:showAsAction="never" />
+
     <item
         android:id="@+id/bundle_menu_bin"
         android:title="@string/bin"
-        android:orderInCategory="100"
+        android:orderInCategory="300"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_reminder"
+        android:title="@string/add_reminder"
+        android:orderInCategory="100"
+        />
 </menu>

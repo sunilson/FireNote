@@ -27,6 +27,7 @@ import com.pro3.planner.R;
 import com.pro3.planner.adapters.ElementRecyclerAdapter;
 import com.pro3.planner.baseClasses.Checklist;
 import com.pro3.planner.baseClasses.Element;
+import com.pro3.planner.dialogs.ConfirmDialog;
 import com.pro3.planner.dialogs.ListAlertDialog;
 import com.pro3.planner.dialogs.PasswordDialog;
 
@@ -62,16 +63,13 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
             itemTouchHelper.attachToRecyclerView(bundleList);
 
-            //Checklist Element Listeners
             initializeNoteElementsListener();
             initializeChecklistElementsListener();
             mNoteElementsReference = mElementReference.child("notes");
             mChecklistElementsReference = mElementReference.child("checklists");
-            mNoteElementsReference.addChildEventListener(mNoteElementsListener);
-            mChecklistElementsReference.addChildEventListener(mChecklistElementsListener);
+
 
             mBinReference = mElementReference.child("bin");
-
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -85,8 +83,17 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStart() {
+        super.onStart();
+        mNoteElementsReference.addChildEventListener(mNoteElementsListener);
+        mChecklistElementsReference.addChildEventListener(mChecklistElementsListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        elementRecyclerAdapter.clear();
         if (mChecklistElementsListener != null) {
             mChecklistElementsReference.removeEventListener(mChecklistElementsListener);
         }
@@ -297,6 +304,9 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
             Intent i = new Intent(BundleActivity.this, BinActivity.class);
             i.putExtra("elementID", elementID);
             startActivity(i);
+        } else if (id == R.id.bundle_menu_delete) {
+            DialogFragment dialogFragment = ConfirmDialog.newInstance(getString(R.string.delete_bundle_title), getString(R.string.delete_dialog_confirm_text), "delete");
+            dialogFragment.show(getSupportFragmentManager(), "dialog");
         }
 
         return super.onOptionsItemSelected(item);
@@ -328,6 +338,17 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
                 dialog.show(getSupportFragmentManager(), "dialog");
             } else {
                 Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
+            }
+        } else if (type.equals("delete")) {
+            if (bool) {
+                if (mChecklistElementsListener != null) {
+                    mChecklistElementsReference.removeEventListener(mChecklistElementsListener);
+                }
+                if (mNoteElementsListener != null) {
+                    mNoteElementsReference.removeEventListener(mNoteElementsListener);
+                }
+                mElementReference.removeValue();
+                finish();
             }
         }
     }

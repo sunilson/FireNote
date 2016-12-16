@@ -1,11 +1,11 @@
 [
     {
-        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\list_divider.xml",
-        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable\\list_divider.xml"
-    },
-    {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\common_google_signin_btn_icon_light_focused.xml",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\drawable\\common_google_signin_btn_icon_light_focused.xml"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\list_divider.xml",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable\\list_divider.xml"
     },
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_btn_borderless_material.xml",
@@ -52,6 +52,10 @@
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\drawable\\abc_ic_menu_overflow_material.xml"
     },
     {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\login_edit_text.xml",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable\\login_edit_text.xml"
+    },
+    {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_btn_radio_material.xml",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\drawable\\abc_btn_radio_material.xml"
     },
@@ -60,8 +64,16 @@
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\drawable\\abc_ratingbar_indicator_material.xml"
     },
     {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\notepad_cursor.xml",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable\\notepad_cursor.xml"
+    },
+    {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_dialog_material_background.xml",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\drawable\\abc_dialog_material_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\background_animation.xml",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable\\background_animation.xml"
     },
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\checklist_menu_done_icon.xml",
@@ -116,6 +128,10 @@
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable\\main_menu_sort_icon.xml"
     },
     {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\google_login_button.xml",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable\\google_login_button.xml"
+    },
+    {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_cab_background_internal_bg.xml",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\drawable\\abc_cab_background_internal_bg.xml"
     },
@@ -126,6 +142,10 @@
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_spinner_textfield_background_material.xml",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\drawable\\abc_spinner_textfield_background_material.xml"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\register_button.xml",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable\\register_button.xml"
     },
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\notification_bg_low.xml",
@@ -144,6 +164,10 @@
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\drawable\\abc_ic_arrow_drop_right_black_24dp.xml"
     },
     {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\background1.xml",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable\\background1.xml"
+    },
+    {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\notification_icon_background.xml",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\drawable\\notification_icon_background.xml"
     },
@@ -160,6 +184,10 @@
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\drawable\\abc_item_background_holo_light.xml"
     },
     {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\login_button.xml",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable\\login_button.xml"
+    },
+    {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_list_selector_holo_light.xml",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\drawable\\abc_list_selector_holo_light.xml"
     },
@@ -168,8 +196,20 @@
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable\\bin_menu_delete_all.xml"
     },
     {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\register_button_selected.xml",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable\\register_button_selected.xml"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\background2.xml",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable\\background2.xml"
+    },
+    {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_seekbar_thumb_material.xml",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\drawable\\abc_seekbar_thumb_material.xml"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\login_button_drawable.xml",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable\\login_button_drawable.xml"
     },
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\notification_tile_bg.xml",
@@ -244,6 +284,10 @@
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\drawable\\abc_ic_voice_search_api_material.xml"
     },
     {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\login_button_selected.xml",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable\\login_button_selected.xml"
+    },
+    {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\abc_list_selector_background_transition_holo_light.xml",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\drawable\\abc_list_selector_background_transition_holo_light.xml"
     },
@@ -254,6 +298,10 @@
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\ic_notifications_black_24dp.xml",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable\\ic_notifications_black_24dp.xml"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\register_button_drawable.xml",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable\\register_button_drawable.xml"
     },
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable\\element_lock_icon_dark.xml",

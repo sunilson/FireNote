@@ -141,28 +141,6 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        FirebaseDatabase.getInstance().goOnline();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        FirebaseDatabase.getInstance().goOffline();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
 
@@ -208,9 +186,6 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         if (id == R.id.action_logOut) {
             mAuth.signOut();
             return true;
-        } else if (id == R.id.action_sort) {
-            DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.menu_sort), "sort", 0);
-            dialog.show(getSupportFragmentManager(), "dialog");
         } else if (id == R.id.main_element_sort) {
             DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.menu_sort), "sort", 0);
             dialog.show(getSupportFragmentManager(), "dialog");

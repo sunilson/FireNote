@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,11 +21,9 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.pro3.planner.Interfaces.ChecklistInterface;
 import com.pro3.planner.Interfaces.ConfirmDialogResult;
 import com.pro3.planner.ItemTouchHelper.SimpleItemTouchHelperCallbackChecklist;
-import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
 import com.pro3.planner.adapters.ChecklistRecyclerAdapter;
 import com.pro3.planner.baseClasses.ChecklistElement;
@@ -61,7 +60,6 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
             //Checklist Element Listener
             initializeChecklistElementListener();
             mChecklistElementsReference = mElementReference.child("elements");
-            mChecklistElementsReference.addChildEventListener(mChecklistElementsListener);
         }
 
         //Initialize the Listview and it's adapter and it's onClick Handler
@@ -93,13 +91,20 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
     protected void onPause() {
         super.onPause();
         stopEditMode();
-        FirebaseDatabase.getInstance().goOffline();
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStart() {
+        super.onStart();
 
+        mChecklistElementsReference.addChildEventListener(mChecklistElementsListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        checklistRecyclerAdapter.clear();
         if (mChecklistElementsListener != null) {
             mChecklistElementsReference.removeEventListener(mChecklistElementsListener);
         }
@@ -136,12 +141,6 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         } else if (id == R.id.checklist_menu_settings) {
             DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_checklist_title), "checklist", "egal");
             dialog.show(getSupportFragmentManager(), "dialog");
-        } else if (id == R.id.checklist_menu_lock) {
-            if (LocalSettingsManager.getInstance().getMasterPassword() != "") {
-                mElementReference.child("locked").setValue(!locked);
-            } else {
-                Toast.makeText(this, R.string.master_password_not_set, Toast.LENGTH_LONG).show();
-            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -246,7 +245,11 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
             }
         });
 
-        alert.show();
+        AlertDialog dialog = alert.create();
+
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        dialog.show();
     }
 
     /*

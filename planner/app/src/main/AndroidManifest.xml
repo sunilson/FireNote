@@ -15,12 +15,69 @@
         <activity
             android:name=".activities.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.LoginActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
             android:label="@string/app_name"
+            android:parentActivityName=".activities.StartActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.RegisterActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:label="@string/app_name"
+            android:parentActivityName=".activities.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.ChecklistActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:label="@string/app_name"
+            android:parentActivityName=".activities.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.NoteActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:label="@string/app_name"
+            android:parentActivityName=".activities.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.BinActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:label="@string/title_activity_bin"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:label="@string/title_activity_settings"
+            android:screenOrientation="portrait"
+            android:theme="@style/SettingsTheme" />
+        <activity
+            android:name=".activities.BundleActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:label="@string/title_activity_bundle"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.StartActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:label="@string/title_activity_start"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,36 +86,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.RegisterActivity"
-            android:label="@string/app_name"
+            android:name=".activities.ResetPasswordActivity"
+            android:label="@string/title_activity_reset_password"
             android:parentActivityName=".activities.LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.ChecklistActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/app_name"
-            android:parentActivityName=".activities.MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.NoteActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:label="@string/app_name"
-            android:parentActivityName=".activities.MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.BinActivity"
-            android:label="@string/title_activity_bin"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".activities.SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:theme="@style/SettingsTheme" />
-        <activity
-            android:name=".activities.BundleActivity"
-            android:label="@string/title_activity_bundle"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

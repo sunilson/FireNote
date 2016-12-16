@@ -24,6 +24,8 @@ import com.pro3.planner.R;
 
 public class EditElementDialog extends SuperDialog {
 
+    private EditText editTitleText;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final String id = getArguments().getString("elementID");
@@ -50,7 +52,7 @@ public class EditElementDialog extends SuperDialog {
         }
 
         final Activity activity = getActivity();
-        final EditText editTitleText = (EditText) content.findViewById(editTitleResource);
+        editTitleText = (EditText) content.findViewById(editTitleResource);
 
         if (activity instanceof BundleInterface) {
             BundleInterface bundleInterface = (BundleInterface) activity;
@@ -87,9 +89,9 @@ public class EditElementDialog extends SuperDialog {
         );
 
         builder.setNegativeButton(R.string.cancel_add_dialog, new DialogInterface.OnClickListener()
-
                 {
                     public void onClick(DialogInterface dialog, int whichButton) {
+                        dialog.dismiss();
                     }
                 }
 
@@ -104,6 +106,7 @@ public class EditElementDialog extends SuperDialog {
 
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
+
 
     public static EditElementDialog newInstance(String title, String type, String elementID) {
         EditElementDialog dialog = new EditElementDialog();

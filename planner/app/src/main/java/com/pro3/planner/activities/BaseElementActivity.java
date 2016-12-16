@@ -6,9 +6,11 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -20,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.pro3.planner.Interfaces.ElementInterface;
+import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
 
 /**
@@ -165,11 +168,15 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
         mLockedListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                locked = dataSnapshot.getValue(Boolean.class);
-                if (locked) {
-                    Toast.makeText(BaseElementActivity.this, R.string.locked, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(BaseElementActivity.this, R.string.unlocked, Toast.LENGTH_SHORT).show();
+
+                if (dataSnapshot.getValue(Boolean.class) != null) {
+                    locked = dataSnapshot.getValue(Boolean.class);
+
+                    if (locked) {
+                        Toast.makeText(BaseElementActivity.this, R.string.locked, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(BaseElementActivity.this, R.string.unlocked, Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
@@ -188,5 +195,37 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
     @Override
     public String getElementTitle() {
         return elementTitle;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.menu_reminder) {
+            Intent calIntent = new Intent(Intent.ACTION_INSERT);
+            calIntent.setData(CalendarContract.Events.CONTENT_URI);
+            calIntent.setType("vnd.android.cursor.item/event");
+            calIntent.putExtra(CalendarContract.Events.TITLE, elementTitle + " - " + getString(R.string.app_name));
+            calIntent.putExtra(CalendarContract.Events.DESCRIPTION, "A reminder for your " + elementType + "!");
+            startActivityForResult(calIntent, 123);
+        } else if (id == R.id.menu_lock) {
+            if (LocalSettingsManager.getInstance().getMasterPassword() != "") {
+                mElementReference.child("locked").setValue(!locked);
+            } else {
+                Toast.makeText(this, R.string.master_password_not_set, Toast.LENGTH_LONG).show();
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
     }
 }

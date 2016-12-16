@@ -50,6 +50,13 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    public void clear() {
+        int listEnd = list.size();
+        list.clear();
+        allItems.clear();
+        notifyItemRangeChanged(0, listEnd);
+    }
+
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
         return false;

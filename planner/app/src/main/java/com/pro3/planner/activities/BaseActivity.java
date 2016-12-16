@@ -62,6 +62,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             initializeSettingsListener();
             mSettingsReference =  FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid()).child("settings");
             mSettingsReference.addChildEventListener(mSettingsListener);
+            mConnectedRef.addValueEventListener(mConnectedRefListener);
         }
     }
 
@@ -75,21 +76,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         if(mSettingsListener != null) {
             mSettingsReference.removeEventListener(mSettingsListener);
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        FirebaseDatabase.getInstance().goOnline();
-
-        if (mConnectedRefListener != null) {
-            mConnectedRef.addValueEventListener(mConnectedRefListener);
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
 
         if (mConnectedRefListener != null) {
             mConnectedRef.removeEventListener(mConnectedRefListener);

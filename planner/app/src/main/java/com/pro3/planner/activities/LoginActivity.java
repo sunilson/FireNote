@@ -5,13 +5,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private EditText loginEmail, loginPassword;
-    private TextView loginRegisterText;
+    private TextView forgotPassword;
     private Button loginButton;
     private GoogleApiClient mGoogleApiClient;
     private int googleSignInRequestCode = 1;
@@ -59,14 +59,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginEmail = (EditText) findViewById(R.id.loginEmail);
         loginPassword = (EditText) findViewById(R.id.loginPassword);
         loginButton = (Button) findViewById(R.id.loginButton);
-        loginRegisterText = (TextView) findViewById(R.id.loginRegisterText);
+        forgotPassword = (TextView) findViewById(R.id.forgotPasswordLink);
 
         //Used to make part of the text blue
-        loginRegisterText.setText(Html.fromHtml(getResources().getString(R.string.login_register_text)));
+        //loginRegisterText.setText(Html.fromHtml(getResources().getString(R.string.login_register_text)));
 
         //Login Submit Click Handler
         loginButton.setOnClickListener(this);
-        loginRegisterText.setOnClickListener(this);
 
         //Initialize Firebase Auth Instance and the Auth Listener
         //Auth Listener is used to detect any change in the authentication state of the user
@@ -75,7 +74,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initializeAuthListener();
 
         //Google Sign In
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
+        findViewById(R.id.google_sign_in).setOnClickListener(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("376414129715-ehhkuv1f9acftujtvuk0r9biir5c98v2.apps.googleusercontent.com")
@@ -87,6 +86,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
         //Ende Google Sign IN
+
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(LoginActivity.this, ResetPasswordActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     @Override
@@ -123,10 +130,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         //User is signed in and verified. Continue
                         Intent i = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(i);
-                        /*
-                        mReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
-                        mSettingsReference = mReference.child("settings");
-                        */
                     } else {
                         //If not verified, sign user out and switch to login activity
                         mAuth.signOut();
@@ -139,6 +142,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         };
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, StartActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -155,11 +164,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             } else {
                 Toast.makeText(LoginActivity.this, R.string.error_register_empty, Toast.LENGTH_LONG).show();
             }
-        } else if (v.getId() == R.id.loginRegisterText) {
-            //Start register activity
-            Intent i = new Intent(this, RegisterActivity.class);
-            startActivity(i);
-        } else if (v.getId() == R.id.sign_in_button) {
+        } else if (v.getId() == R.id.google_sign_in) {
             //Start the google sign in proccess
             googleSignIn();
         }
