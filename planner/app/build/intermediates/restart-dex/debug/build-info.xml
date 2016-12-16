@@ -5,7 +5,7 @@
     density="xxxhdpi"
     format="8"
     plugin-version="2.2.3"
-    timestamp="173162907004241"
+    timestamp="173493360227805"
     token="-1276383515429520973"
     verifier="COLD_SWAP_REQUESTED" >
 
@@ -54,7 +54,7 @@
             type="DEX" />
     </build>
     <build
-        timestamp="173162907004241"
+        timestamp="173493360227805"
         verifier="COLD_SWAP_REQUESTED" >
         <artifact
             location="C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\build\intermediates\instant-run-resources\resources-debug.ir.ap_"

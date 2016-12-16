@@ -38,10 +38,10 @@
     <color name="bright_foreground_material_light">@android:color/black</color>
     <color name="button_material_dark">#ff5a595b</color>
     <color name="button_material_light">#ffd6d7d7</color>
-    <color name="colorAccent">#9E9E9E</color>
-    <color name="colorAccentDark">#BDBDBD</color>
+    <color name="colorAccent">#BDBDBD</color>
+    <color name="colorAccentDark">#9E9E9E</color>
     <color name="colorPrimary">#EEEEEE</color>
-    <color name="colorPrimaryDark">#616161</color>
+    <color name="colorPrimaryDark">#BDBDBD</color>
     <color name="color_overlay">#64000000</color>
     <color name="common_google_signin_btn_text_dark_default">@android:color/white</color>
     <color name="common_google_signin_btn_text_dark_disabled">#1F000000</color>
