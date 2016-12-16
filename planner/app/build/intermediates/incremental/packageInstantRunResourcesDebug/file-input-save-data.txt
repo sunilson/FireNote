@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Fri Dec 16 23:15:20 CET 2016
+#Fri Dec 16 23:20:50 CET 2016
 20.base=C\:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\resources-debug.ap_
 143.base=C\:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\resources-debug.ap_
 340.file=C\:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\resources-debug.ap_\\res\\drawable-ldrtl-xxxhdpi-v17\\abc_spinner_mtrl_am_alpha.9.png

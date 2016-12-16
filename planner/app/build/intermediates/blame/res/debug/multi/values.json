@@ -348,7 +348,14 @@
                     "endOffset": 2424
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values\\colors.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values\\colors.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 157,
+                        "endColumn": 45,
+                        "endOffset": 198
+                    }
                 }
             },
             {
@@ -360,7 +367,14 @@
                     "endOffset": 2474
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values\\colors.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values\\colors.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 204,
+                        "endColumn": 49,
+                        "endOffset": 249
+                    }
                 }
             },
             {
@@ -384,7 +398,14 @@
                     "endOffset": 2572
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values\\colors.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values\\colors.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 105,
+                        "endColumn": 50,
+                        "endOffset": 151
+                    }
                 }
             },
             {
@@ -5076,14 +5097,7 @@
                     "endOffset": 61143
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values\\strings.xml",
-                    "position": {
-                        "startLine": 69,
-                        "startColumn": 4,
-                        "startOffset": 4626,
-                        "endColumn": 79,
-                        "endOffset": 4701
-                    }
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values\\strings.xml"
                 }
             },
             {
