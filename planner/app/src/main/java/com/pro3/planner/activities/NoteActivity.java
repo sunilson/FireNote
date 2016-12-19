@@ -129,7 +129,7 @@ public class NoteActivity extends BaseElementActivity implements ConfirmDialogRe
             DialogFragment dialogFragment = ConfirmDialog.newInstance(getResources().getString(R.string.delete_note_title), getString(R.string.delete_dialog_confirm_text), "delete");
             dialogFragment.show(getSupportFragmentManager(), "dialog");
         } else if (id == R.id.note_menu_settings) {
-            DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_checklist_title), "note", "egal");
+            DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_Note_Title), "note", "egal");
             dialog.show(getSupportFragmentManager(), "dialog");
         } else if (id == R.id.note_menu_done) {
             stopEditMode();

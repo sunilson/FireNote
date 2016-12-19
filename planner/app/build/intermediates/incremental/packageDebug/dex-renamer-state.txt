@@ -1,4 +1,4 @@
-#Fri Dec 16 23:02:08 CET 2016
+#Sun Dec 18 21:36:13 CET 2016
 base.0=C\:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\transforms\\dex\\debug\\folders\\1000\\10\\instant-run-bootstrap_be4133518a4bfb0f193992574bbf2c307e7967c8
 renamed.1=classes2.dex
 renamed.0=classes.dex

@@ -6,7 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -66,6 +68,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         //Login Submit Click Handler
         loginButton.setOnClickListener(this);
+
+        loginPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if ((keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (i == EditorInfo.IME_ACTION_DONE)) {
+                    loginButton.performClick();
+                }
+                return false;
+            }
+        });
 
         //Initialize Firebase Auth Instance and the Auth Listener
         //Auth Listener is used to detect any change in the authentication state of the user

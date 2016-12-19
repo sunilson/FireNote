@@ -1,5 +1,6 @@
 package com.pro3.planner.dialogs;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.pro3.planner.Interfaces.ConfirmDialogResult;
 import com.pro3.planner.R;
+import com.pro3.planner.activities.BaseElementActivity;
 
 /**
  * Created by linus_000 on 29.11.2016.
@@ -21,12 +23,18 @@ public class ConfirmDialog extends SuperDialog {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        Activity activity = getActivity();
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
 
         TextView titleText = (TextView) title.findViewById(R.id.dialog_title);
         titleText.setText(getArguments().getString("title"));
+
+        if (activity instanceof BaseElementActivity) {
+            (title.findViewById(R.id.dialog_title_container)).setBackgroundColor(((BaseElementActivity)activity).getElementColor());
+        }
+
         builder.setCustomTitle(title);
 
         View content = inflater.inflate(R.layout.alertdialog_body_confirm, null);

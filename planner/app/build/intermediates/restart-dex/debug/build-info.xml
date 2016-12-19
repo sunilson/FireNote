@@ -5,60 +5,47 @@
     density="xxxhdpi"
     format="8"
     plugin-version="2.2.3"
-    timestamp="173493360227805"
+    timestamp="132209423953125"
     token="-1276383515429520973"
     verifier="COLD_SWAP_REQUESTED" >
 
     <task
         name="javac"
-        duration="0" />
+        duration="1104" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="0" />
+        duration="23" />
     <task
         name="verifier"
-        duration="0" />
+        duration="3" />
 
     <artifact
-        location="C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\build\intermediates\instant-run-resources\resources-debug.ir.ap_"
-        type="RESOURCES" />
+        location="C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_7\classes.dex"
+        type="DEX" />
 
     <build
-        timestamp="172365478418912"
+        timestamp="132147441217452"
         verifier="BINARY_MANIFEST_FILE_CHANGE" >
         <artifact
             location="C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\build\outputs\apk\app-debug.apk"
             type="MAIN" />
     </build>
     <build
-        timestamp="172647967310091"
+        timestamp="132179792642913"
         verifier="COLD_SWAP_REQUESTED" >
-        <artifact
-            location="C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_0\classes.dex"
-            type="DEX" />
-        <artifact
-            location="C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_9\classes.dex"
-            type="DEX" />
         <artifact
             location="C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_2\classes.dex"
             type="DEX" />
     </build>
     <build
-        timestamp="173057057975167"
+        timestamp="132209423953125"
         verifier="COLD_SWAP_REQUESTED" >
         <artifact
-            location="C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_4\classes.dex"
+            location="C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_7\classes.dex"
             type="DEX" />
-    </build>
-    <build
-        timestamp="173493360227805"
-        verifier="COLD_SWAP_REQUESTED" >
-        <artifact
-            location="C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\build\intermediates\instant-run-resources\resources-debug.ir.ap_"
-            type="RESOURCES" />
     </build>
 
 </instant-run>

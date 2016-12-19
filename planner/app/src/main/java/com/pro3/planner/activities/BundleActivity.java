@@ -28,6 +28,7 @@ import com.pro3.planner.adapters.ElementRecyclerAdapter;
 import com.pro3.planner.baseClasses.Checklist;
 import com.pro3.planner.baseClasses.Element;
 import com.pro3.planner.dialogs.ConfirmDialog;
+import com.pro3.planner.dialogs.EditElementDialog;
 import com.pro3.planner.dialogs.ListAlertDialog;
 import com.pro3.planner.dialogs.PasswordDialog;
 
@@ -307,6 +308,9 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
         } else if (id == R.id.bundle_menu_delete) {
             DialogFragment dialogFragment = ConfirmDialog.newInstance(getString(R.string.delete_bundle_title), getString(R.string.delete_dialog_confirm_text), "delete");
             dialogFragment.show(getSupportFragmentManager(), "dialog");
+        } else if (id == R.id.bundle_menu_settings) {
+            DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_Bundle_Title), "bundle", "egal");
+            dialog.show(getSupportFragmentManager(), "dialog");
         }
 
         return super.onOptionsItemSelected(item);

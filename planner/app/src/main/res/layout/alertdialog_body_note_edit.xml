@@ -10,7 +10,8 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+        android:inputType="text"
+        android:imeOptions="actionDone"
         android:text="Test"
         android:ems="10"
         android:id="@+id/note_edit_element_title"

@@ -5,7 +5,8 @@
     <string name="title_activity_login">Login to your account</string>
     <string name="title_activity_register">Register a new account</string>
     <string name="add_Element_Title">Add a new Element</string>
-    <string name="edit_Note_Title">Edit note</string>
+    <string name="edit_Note_Title">Edit Note</string>
+    <string name="edit_Bundle_Title">Edit Bundle</string>
     <string name="verification_error">"Account not verfied yet. Please click verification link"</string>
     <string name="error_register_empty">Please fill out all fields!</string>
     <string name="error_register_invalid_characters">Register failed! One or more inputs contain invalid characters</string>
@@ -16,6 +17,7 @@
     <string name="error_password_match">Passwords don\'t match!</string>
     <string name="login_register_text">No account yet? <![CDATA[<font color=#0000EE>Register here!]]></string>
     <string name="enter_password">Enter password</string>
+    <string name="enter_master_password">Enter your master password</string>
     <string name="enter_email">Enter E-Mail address</string>
     <string name="repeat_password">Repeat password</string>
     <string name="register_button">Register</string>
@@ -35,7 +37,7 @@
     <string name="add_checklist_item_title">Add new Element</string>
     <string name="confirm_add_dialog">Done</string>
     <string name="cancel_add_dialog">Cancel</string>
-    <string name="edit_checklist_title">Edit checklist</string>
+    <string name="edit_checklist_title">Edit Checklist</string>
     <string name="title_activity_edit_checklist">EditChecklistActivity</string>
     <string name="delete_checklist_title">Delete Checklist</string>
     <string name="delete_bundle_title">Delete Bundle</string>
@@ -96,4 +98,8 @@
     <string name="send_mail">Send mail!</string>
     <string name="reset_failed">Reset unsuccessful. Please check E-Mail and internet connection!</string>
     <string name="reset_success">Reset mail sent! Please check your inbox</string>
+    <string name="register_success">Registration successful! Please check your inbox for the activation link.</string>
+    <string name="change_font_size">Change font size</string>
+    <string name="change_font_size_description">Change the default font size of note and checklist elements.</string>
+    <string name="sort_category_name">Category Name</string>
 </resources>

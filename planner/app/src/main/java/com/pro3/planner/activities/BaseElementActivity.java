@@ -219,6 +219,10 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
         return super.onOptionsItemSelected(item);
     }
 
+    public int getElementColor() {
+        return elementColor;
+    }
+
     @Override
     protected void onStart() {
         super.onStart();

@@ -306,7 +306,27 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
             sortByNameDescending();
         } else if (sortMethod.equals(context.getResources().getString(R.string.sort_ascending_name))) {
             sortByNameAscending();
+        } else if (sortMethod.equals(context.getResources().getString(R.string.sort_category_name))) {
+            sortByCategory();
         }
+    }
+
+    private void sortByCategory() {
+        Comparator<Element> comp = new Comparator<Element>() {
+            @Override
+            public int compare(Element o1, Element o2) {
+
+                if (o1.getCategory().getCategoryName().compareTo(o2.getCategory().getCategoryName()) < 0) {
+                    return -1;
+                } else if (o1.getCategory().getCategoryName().compareTo(o2.getCategory().getCategoryName()) > 0) {
+                    return 1;
+                }
+                return 0;
+            }
+        };
+
+        Collections.sort(list, comp);
+        notifyDataSetChanged();
     }
 
     private void sortByDateDescending() {

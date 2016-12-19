@@ -6,9 +6,12 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -19,7 +22,10 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.pro3.planner.R;
+import com.pro3.planner.baseClasses.Category;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -47,6 +53,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         registerButton = (Button) findViewById(R.id.registerSubmitButton);
         registerButton.setOnClickListener(this);
 
+        passwordAgain.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if ((keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (i == EditorInfo.IME_ACTION_DONE)) {
+                    registerButton.performClick();
+                }
+                return false;
+            }
+        });
+
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -55,13 +71,23 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 if (user != null) {
                     //User is signed in/registered successfully
                     user.sendEmailVerification();
-                    Intent i = new Intent(RegisterActivity.this, MainActivity.class);
+                    loadDefaultData(user);
+                    Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
                     startActivity(i);
                 } else {
                     // User is signed out
                 }
             }
         };
+    }
+
+    private void loadDefaultData(FirebaseUser user) {
+        DatabaseReference mReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
+        DatabaseReference dRef = mReference.child("categories").push();
+        Category category = new Category();
+        category.setCategoryName("Default");
+        category.setCategoryID(dRef.getKey());
+        dRef.setValue(category);
     }
 
     @Override
@@ -121,8 +147,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         } else {
             Toast.makeText(this, R.string.error_register_invalid_characters, Toast.LENGTH_LONG).show();
         }
-
-
     }
 
     /**

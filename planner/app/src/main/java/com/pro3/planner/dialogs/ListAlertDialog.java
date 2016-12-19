@@ -61,6 +61,7 @@ public class ListAlertDialog extends SuperDialog {
             dialogAdapter.add(getResources().getString(R.string.sort_by) + " " + getResources().getString(R.string.sort_descending_date), R.drawable.ic_date_range_black_24dp);
             dialogAdapter.add(getResources().getString(R.string.sort_by) + " " + getResources().getString(R.string.sort_ascending_name), R.drawable.ic_text_fields_black_24dp);
             dialogAdapter.add(getResources().getString(R.string.sort_by) + " " + getResources().getString(R.string.sort_descending_name), R.drawable.ic_text_fields_black_24dp);
+            dialogAdapter.add(getResources().getString(R.string.sort_by) + " " + getResources().getString(R.string.sort_category_name), R.drawable.ic_label_black_24dp);
         } else if (type.equals("addElement")) {
             dialogAdapter.add(getResources().getString(R.string.element_checklist), R.drawable.ic_done_all_black_24dp);
             dialogAdapter.add(getResources().getString(R.string.element_note), R.drawable.ic_note_black_24dp);
@@ -69,8 +70,8 @@ public class ListAlertDialog extends SuperDialog {
             dialogAdapter.add(getResources().getString(R.string.element_checklist), R.drawable.ic_done_all_black_24dp);
             dialogAdapter.add(getResources().getString(R.string.element_note), R.drawable.ic_note_black_24dp);
         } else if (type.equals("editElement")) {
-            dialogAdapter.add(getResources().getString(R.string.delete_element), R.drawable.ic_delete_black_24dp);
             dialogAdapter.add(getResources().getString(R.string.edit), R.drawable.ic_mode_edit_black_24dp);
+            dialogAdapter.add(getResources().getString(R.string.delete_element), R.drawable.ic_delete_black_24dp);
         } else if (type.equals("editChecklistElement")) {
             dialogAdapter.add(getResources().getString(R.string.delete_checklist_element), R.drawable.ic_delete_black_24dp);
         }
@@ -122,8 +123,8 @@ public class ListAlertDialog extends SuperDialog {
                     name = getString(R.string.sort_descending_date);
                 } else if (strName.equals(getString(R.string.sort_by) + " " + getString(R.string.sort_descending_name))) {
                     name = getString(R.string.sort_descending_name);
-                } else if (strName.equals(getString(R.string.sort_by) + " " + getString(R.string.sort_ascending_name))) {
-                    name = getString(R.string.sort_ascending_name);
+                }  else if (strName.equals(getString(R.string.sort_by) + " " + getString(R.string.sort_category_name))) {
+                    name = getString(R.string.sort_category_name);
                 }
 
                 hasSortingAdapter.getSortTextView().setText(getString(R.string.current_sorthing_method) + " " + name);
@@ -222,12 +223,13 @@ public class ListAlertDialog extends SuperDialog {
                     MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication)getContext().getApplicationContext()).mainContext;
 
                     String elementID = mainActivityInterface.getElementAdapter().getItem(elementPosition).getNoteID();
+                    String elementType = mainActivityInterface.getElementAdapter().getItem(elementPosition).getNoteType();
                     String strName = dialogAdapter.getName(position);
 
                     if (strName.equals(getResources().getString(R.string.delete_element))) {
                         mainActivityInterface.getElementsReference().child((mainActivityInterface.getElementAdapter().getItem(elementPosition)).getNoteID()).removeValue();
                     } else if (strName.equals(getResources().getString(R.string.edit))) {
-                        DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_checklist_title), "checklist", elementID);
+                        DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_element_title), elementType, elementID);
                         dialog.show(getFragmentManager(), "dialog");
                     }
 

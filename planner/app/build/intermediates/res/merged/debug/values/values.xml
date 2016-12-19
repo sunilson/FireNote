@@ -38,10 +38,11 @@
     <color name="bright_foreground_material_light">@android:color/black</color>
     <color name="button_material_dark">#ff5a595b</color>
     <color name="button_material_light">#ffd6d7d7</color>
-    <color name="colorAccent">#BDBDBD</color>
-    <color name="colorAccentDark">#9E9E9E</color>
+    <color name="colorAccent">#9E9E9E</color>
+    <color name="colorAccentDark">#BDBDBD</color>
+    <color name="colorFloatingMain">#9E9E9E</color>
     <color name="colorPrimary">#EEEEEE</color>
-    <color name="colorPrimaryDark">#BDBDBD</color>
+    <color name="colorPrimaryDark">#616161</color>
     <color name="color_overlay">#64000000</color>
     <color name="common_google_signin_btn_text_dark_default">@android:color/white</color>
     <color name="common_google_signin_btn_text_dark_disabled">#1F000000</color>
@@ -682,6 +683,8 @@
     <string name="bin">Recycle bin</string>
     <string name="bottom_sheet_behavior" translatable="false">android.support.design.widget.BottomSheetBehavior</string>
     <string name="cancel_add_dialog">Cancel</string>
+    <string name="change_font_size">Change font size</string>
+    <string name="change_font_size_description">Change the default font size of note and checklist elements.</string>
     <string name="character_counter_pattern" translatable="false">%1$d / %2$d</string>
     <string name="clear_bin_question">Do you really want to clear the recycle bin?</string>
     <string name="clear_bin_title">Clear bin</string>
@@ -717,8 +720,9 @@
     <string name="dialog_enter_category">Enter category here</string>
     <string name="dialog_enter_title">Enter title here</string>
     <string name="edit">Edit</string>
-    <string name="edit_Note_Title">Edit note</string>
-    <string name="edit_checklist_title">Edit checklist</string>
+    <string name="edit_Bundle_Title">Edit Bundle</string>
+    <string name="edit_Note_Title">Edit Note</string>
+    <string name="edit_checklist_title">Edit Checklist</string>
     <string name="edit_element_title">Edit Element</string>
     <string name="edit_user_profile">Edit User profile</string>
     <string name="element_bundle">Bundle</string>
@@ -727,6 +731,7 @@
     <string name="element_restored">Element restored!</string>
     <string name="element_sync_success">Successfully added and synced Element</string>
     <string name="enter_email">Enter E-Mail address</string>
+    <string name="enter_master_password">Enter your master password</string>
     <string name="enter_password">Enter password</string>
     <string name="error_password_match">Passwords don\'t match!</string>
     <string name="error_password_security">Password is not secure. Guidelines: 8 Characters, Lower- and Uppercase Letters, Number</string>
@@ -761,6 +766,7 @@
     <string name="new_checklist_item">New checklist item</string>
     <string name="note_hint">Click on the edit button to start typing!</string>
     <string name="register_button">Register</string>
+    <string name="register_success">Registration successful! Please check your inbox for the activation link.</string>
     <string name="repeat_password">Repeat password</string>
     <string name="reset_failed">Reset unsuccessful. Please check E-Mail and internet connection!</string>
     <string name="reset_password_email">Enter your E-Mail address</string>
@@ -773,6 +779,7 @@
     <string name="sort_ascending_date">Date Ascending</string>
     <string name="sort_ascending_name">Name Ascending</string>
     <string name="sort_by">Sort by</string>
+    <string name="sort_category_name">Category Name</string>
     <string name="sort_descending_date">Date Descending</string>
     <string name="sort_descending_name">Name Descending</string>
     <string name="spinner_prompt">Finished editing element</string>
