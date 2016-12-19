@@ -5,6 +5,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -36,6 +37,7 @@ public class AddElementView extends LinearLayout implements AdapterView.OnItemSe
     private int selectedColor;
     private ListView colorList;
     private Category selectedCategory;
+    private LinearLayout linearLayout;
     private InputMethodManager imm;
 
     public AddElementView(final Context context, final ArrayAdapter<CharSequence> categoryAdapter) {
@@ -50,6 +52,7 @@ public class AddElementView extends LinearLayout implements AdapterView.OnItemSe
         addCategory = (ImageView) findViewById(R.id.add_element_addCategory);
         addCategoryDone = (ImageView) findViewById(R.id.add_element_addCategory_done);
         colorList = (ListView) findViewById(R.id.add_element_colors);
+        linearLayout = (LinearLayout) findViewById(R.id.add_element_layout);
 
         title.requestFocus();
         imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -83,7 +86,6 @@ public class AddElementView extends LinearLayout implements AdapterView.OnItemSe
                     dRef.setValue(cat);
                     Toast.makeText(getContext(), R.string.added_category, Toast.LENGTH_SHORT).show();
                 }
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
                 imm.hideSoftInputFromWindow(category.getWindowToken(), 0);
                 category.setText("");
             }
@@ -119,6 +121,18 @@ public class AddElementView extends LinearLayout implements AdapterView.OnItemSe
                     colorAddAdapter.setCheckedPosition(position);
                     colorElementView.setChecked(true);
                 }
+            }
+        });
+
+        colorList.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+                imm.hideSoftInputFromWindow(category.getWindowToken(), 0);
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+
             }
         });
 

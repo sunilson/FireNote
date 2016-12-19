@@ -227,6 +227,7 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         View content = inflater.inflate(R.layout.alertdialog_body_checklist_add, null);
         ((TextView) title.findViewById(R.id.dialog_title)).setText(getResources().getString(R.string.add_checklist_item_title));
         final TextView elementTitleTextView = (TextView) content.findViewById(R.id.checklist_add_element_title);
+        title.findViewById(R.id.dialog_title_container).setBackgroundColor(elementColor);
         alert.setCustomTitle(title);
 
         alert.setView(content);

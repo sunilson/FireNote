@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#616161</color>
     <color name="colorAccent">#9E9E9E</color>
     <color name="colorAccentDark">#BDBDBD</color>
+    <color name="colorFloatingMain">#9E9E9E</color>
     <color name="defaultElementColor">#FFFFA5</color>
     <color name="main_background_color">#E0E0E0</color>
     <color name="text_crossed_out">#61000000</color>
