@@ -57,7 +57,7 @@ public class BinRecyclerAdapter extends RecyclerView.Adapter implements ItemTouc
 
         Element element = list.get(position);
         viewHolder.elementTitle.setText(element.getTitle());
-        viewHolder.elementCategory.setText(element.getCategory().getCategoryName());
+        viewHolder.elementCategory.setText(element.getCategoryName());
 
         if (element.getNoteType().equals("checklist")) {
             viewHolder.elementIcon.setImageResource(R.drawable.element_checklist_icon);
@@ -90,7 +90,7 @@ public class BinRecyclerAdapter extends RecyclerView.Adapter implements ItemTouc
     @Override
     public void onItemDismiss(int position) {
         BinInterface binInterface = (BinInterface) context;
-        binInterface.getBinReference().child(list.get(position).getNoteID()).removeValue();
+        binInterface.getBinReference().child(list.get(position).getElementID()).removeValue();
     }
 
     public void add(Element element) {
@@ -105,7 +105,7 @@ public class BinRecyclerAdapter extends RecyclerView.Adapter implements ItemTouc
 
         while (it.hasNext()) {
             Element element = it.next();
-            if (element.getNoteID().equals(noteID)) {
+            if (element.getElementID().equals(noteID)) {
                 it.remove();
                 break;
             }

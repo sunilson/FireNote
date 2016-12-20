@@ -15,20 +15,19 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseReference;
 import com.pro3.planner.BaseApplication;
 import com.pro3.planner.Interfaces.MainActivityInterface;
 import com.pro3.planner.R;
+import com.pro3.planner.activities.BaseActivity;
 import com.pro3.planner.adapters.ColorAddAdapter;
 import com.pro3.planner.adapters.SpinnerAdapter;
-import com.pro3.planner.baseClasses.Category;
 import com.pro3.planner.baseClasses.NoteColor;
 
 /**
  * Created by linus_000 on 14.11.2016.
  */
 
-public class AddElementView extends LinearLayout implements AdapterView.OnItemSelectedListener{
+public class AddElementView extends LinearLayout implements AdapterView.OnItemSelectedListener {
 
     private View v;
     private ImageView addCategory, addCategoryDone;
@@ -36,13 +35,15 @@ public class AddElementView extends LinearLayout implements AdapterView.OnItemSe
     private Spinner spinner;
     private int selectedColor;
     private ListView colorList;
-    private Category selectedCategory;
+    private String selectedCategory;
     private LinearLayout linearLayout;
+    private BaseActivity baseActivity;
     private InputMethodManager imm;
 
     public AddElementView(final Context context, final ArrayAdapter<CharSequence> categoryAdapter) {
         super(context);
 
+        baseActivity = (BaseActivity) context;
         LayoutInflater inflater = LayoutInflater.from(context);
         v = inflater.inflate(R.layout.alertdialog_body_add_element, this, true);
 
@@ -55,46 +56,51 @@ public class AddElementView extends LinearLayout implements AdapterView.OnItemSe
         linearLayout = (LinearLayout) findViewById(R.id.add_element_layout);
 
         title.requestFocus();
-        imm = (InputMethodManager)getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
         addCategory.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                addCategory.setVisibility(GONE);
-                addCategoryDone.setVisibility(VISIBLE);
-                spinner.setVisibility(GONE);
-                category.setVisibility(VISIBLE);
-                category.requestFocus();
-                imm.showSoftInput(category, 0);
+                if (baseActivity.getConnected() && baseActivity.getInternetConnected()) {
+                    addCategory.setVisibility(GONE);
+                    addCategoryDone.setVisibility(VISIBLE);
+                    spinner.setVisibility(GONE);
+                    category.setVisibility(VISIBLE);
+                    category.requestFocus();
+                    imm.showSoftInput(category, 0);
+                } else {
+                    Toast.makeText(context, R.string.need_connection, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         addCategoryDone.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                addCategory.setVisibility(VISIBLE);
-                addCategoryDone.setVisibility(GONE);
-                spinner.setVisibility(VISIBLE);
-                category.setVisibility(GONE);
-
-                String categoryName = category.getText().toString();
-                if (!categoryName.equals("")) {
-                    MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication)getContext().getApplicationContext()).mainContext;
-                    DatabaseReference dRef = mainActivityInterface.getCategoryReference().push();
-                    Category cat = new Category(categoryName, dRef.getKey());
-                    dRef.setValue(cat);
-                    Toast.makeText(getContext(), R.string.added_category, Toast.LENGTH_SHORT).show();
-                }
-                imm.hideSoftInputFromWindow(category.getWindowToken(), 0);
-                category.setText("");
+            addCategory.setVisibility(VISIBLE);
+            addCategoryDone.setVisibility(GONE);
+            spinner.setVisibility(VISIBLE);
+            category.setVisibility(GONE);
+            if (baseActivity.getConnected() && baseActivity.getInternetConnected()) {
+               String categoryName = category.getText().toString();
+               if (!categoryName.equals("")) {
+                   MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
+                   mainActivityInterface.getCategoryReference().child(categoryName).setValue(categoryName);
+                   Toast.makeText(getContext(), R.string.added_category, Toast.LENGTH_SHORT).show();
+               }
+            } else {
+               Toast.makeText(getContext(), R.string.need_connection, Toast.LENGTH_SHORT).show();
             }
-        });
+            imm.hideSoftInputFromWindow(category.getWindowToken(), 0);
+            category.setText("");
+            }
+            }
+        );
 
         spinner.setAdapter(categoryAdapter);
         spinner.setOnItemSelectedListener(this);
         spinner.setPrompt(getResources().getString(R.string.spinner_prompt));
-
 
         final ColorAddAdapter colorAddAdapter = new ColorAddAdapter(getContext(), R.layout.color_list_layout);
 
@@ -110,42 +116,48 @@ public class AddElementView extends LinearLayout implements AdapterView.OnItemSe
         colorList.setAdapter(colorAddAdapter);
 
         colorList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ColorElementView colorElementView = (ColorElementView) view;
-                if (colorElementView.isChecked()) {
+             @Override
+             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                 ColorElementView colorElementView = (ColorElementView) view;
+                 if (!colorElementView.isChecked()) {
+                     selectedColor = colorAddAdapter.getItem(position).getColor();
+                     colorAddAdapter.uncheckAll();
+                     colorAddAdapter.setCheckedPosition(position);
+                     colorElementView.setChecked(true);
+                 }
+             }
+         }
+        );
 
-                } else {
-                    selectedColor = colorAddAdapter.getItem(position).getColor();
-                    colorAddAdapter.uncheckAll();
-                    colorAddAdapter.setCheckedPosition(position);
-                    colorElementView.setChecked(true);
-                }
-            }
-        });
+        colorList.setOnScrollListener(new AbsListView.OnScrollListener()
+          {
+              @Override
+              public void onScrollStateChanged(AbsListView absListView, int i) {
+                  imm.hideSoftInputFromWindow(category.getWindowToken(), 0);
+              }
 
-        colorList.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView absListView, int i) {
-                imm.hideSoftInputFromWindow(category.getWindowToken(), 0);
-            }
+              @Override
+              public void onScroll(AbsListView absListView, int i, int i1, int i2) {
 
-            @Override
-            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
-
-            }
-        });
+              }
+          }
+        );
 
         colorAddAdapter.setCheckedPosition(0);
-        ((ColorElementView)colorAddAdapter.getView(0, null, null)).setChecked(true);
-        selectedColor = colorAddAdapter.getItem(0).getColor();
+        ((ColorElementView) colorAddAdapter.getView(0, null, null)).
+
+                setChecked(true);
+
+        selectedColor = colorAddAdapter.getItem(0).
+
+                getColor();
     }
 
     public String getTitle() {
         return title.getText().toString();
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return selectedCategory;
     }
 
@@ -155,7 +167,7 @@ public class AddElementView extends LinearLayout implements AdapterView.OnItemSe
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        selectedCategory = ((SpinnerAdapter)parent.getAdapter()).getCategory(position);
+        selectedCategory = ((SpinnerAdapter) parent.getAdapter()).getCategory(position);
     }
 
     @Override

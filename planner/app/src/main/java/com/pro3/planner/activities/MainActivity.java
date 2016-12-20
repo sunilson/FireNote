@@ -30,11 +30,10 @@ import com.pro3.planner.Interfaces.MainActivityInterface;
 import com.pro3.planner.ItemTouchHelper.SimpleItemTouchHelperCallbackMain;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
-import com.pro3.planner.adapters.CategoryAdapter;
+import com.pro3.planner.adapters.CategorySettingsAdapter;
+import com.pro3.planner.adapters.categoryVisibilityAdapter;
 import com.pro3.planner.adapters.ElementRecyclerAdapter;
 import com.pro3.planner.adapters.SpinnerAdapter;
-import com.pro3.planner.baseClasses.Category;
-import com.pro3.planner.baseClasses.Checklist;
 import com.pro3.planner.baseClasses.Element;
 import com.pro3.planner.dialogs.ListAlertDialog;
 import com.pro3.planner.dialogs.PasswordDialog;
@@ -43,10 +42,11 @@ import com.pro3.planner.dialogs.VisibilityDialog;
 public class MainActivity extends BaseActivity implements MainActivityInterface, ConfirmDialogResult {
 
     private DatabaseReference mReference, mElementsReference, mCategoryReference, mBinReference;
-    private ChildEventListener mChildEventListener, mCategoryListener;
+    private ChildEventListener mElementsListener, mCategoryListener;
     private ElementRecyclerAdapter elementRecyclerAdapter;
     private SpinnerAdapter spinnerCategoryAdapter;
-    private CategoryAdapter listCategoryAdapter;
+    private categoryVisibilityAdapter listCategoryVisibilityAdapter;
+    private CategorySettingsAdapter categorySettingsAdapter;
     private RecyclerView recyclerView;
     private View.OnClickListener recycleOnClickListener;
     private View.OnLongClickListener recycleOnLongClickListener;
@@ -70,7 +70,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         toolbar.setTitle(R.string.app_name);
 
         //Set Main Context of BaseApplication, so we can use it in the other Activities
-        ((BaseApplication)getApplicationContext()).mainContext = this;
+        ((BaseApplication) getApplicationContext()).mainContext = this;
 
         currentSortingMethod = (TextView) findViewById(R.id.current_sorting_method);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.activity_main);
@@ -79,20 +79,20 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         user = mAuth.getCurrentUser();
 
         //Get the users Database Reference, if user exists
-        if(user != null) {
+        if (user != null) {
             mReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
 
             //Prefs initialization
             prefs = this.getSharedPreferences(user.getUid(), MODE_PRIVATE);
 
-            if(mReference != null) {
+            if (mReference != null) {
 
                 //Initialize the Listener which detects changes in the note data
                 initializeElementsListener();
 
                 //Register ChildEventListener here so it's not added every time we switch Activity
-                mElementsReference = mReference.child("elements");
-                mElementsReference.addChildEventListener(mChildEventListener);
+                mElementsReference = mReference.child("elements").child("main");
+                mElementsReference.addChildEventListener(mElementsListener);
 
                 initializeCategoryListener();
 
@@ -116,7 +116,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                 itemTouchHelper.attachToRecyclerView(recyclerView);
 
                 //Papierkorb Reference
-                mBinReference = mReference.child("bin");
+                mBinReference = mReference.child("bin").child("main");
 
                 currentSortingMethod.setText(getString(R.string.current_sorthing_method) + " " + LocalSettingsManager.getInstance().getSortingMethod());
                 currentSortingMethod.setOnClickListener(new View.OnClickListener() {
@@ -144,8 +144,8 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
     protected void onDestroy() {
         super.onDestroy();
 
-        if(mElementsReference != null) {
-            mElementsReference.removeEventListener(mChildEventListener);
+        if (mElementsReference != null) {
+            mElementsReference.removeEventListener(mElementsListener);
         }
 
         if (mCategoryReference != null) {
@@ -220,7 +220,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                 int itemPosition = recyclerView.getChildLayoutPosition(v);
                 Element element = elementRecyclerAdapter.getItem(itemPosition);
                 if (element.getLocked()) {
-                    DialogFragment dialogFragment = PasswordDialog.newInstance("passwordOpenElement", element.getNoteType(), element.getNoteID(), element.getTitle(), element.getColor());
+                    DialogFragment dialogFragment = PasswordDialog.newInstance("passwordOpenElement", element.getNoteType(), element.getElementID(), element.getTitle(), element.getColor());
                     dialogFragment.show(getSupportFragmentManager(), "dialog");
                 } else {
                     Intent i = null;
@@ -232,7 +232,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                         i = new Intent(MainActivity.this, BundleActivity.class);
                     }
 
-                    i.putExtra("elementID", element.getNoteID());
+                    i.putExtra("elementID", element.getElementID());
                     i.putExtra("elementTitle", element.getTitle());
                     i.putExtra("elementColor", element.getColor());
                     i.putExtra("elementType", element.getNoteType());
@@ -262,10 +262,11 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
     }
 
     private void initializeElementsListener() {
-        mChildEventListener = new ChildEventListener() {
+        mElementsListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Element element = dataSnapshot.getValue(Element.class);
+                element.setElementID(dataSnapshot.getKey());
                 elementRecyclerAdapter.add(element);
                 elementRecyclerAdapter.hideElements();
             }
@@ -273,27 +274,17 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Element element = dataSnapshot.getValue(Element.class);
-                elementRecyclerAdapter.update(element, element.getNoteID());
+                element.setElementID(dataSnapshot.getKey());
+                elementRecyclerAdapter.update(element, element.getElementID());
+                elementRecyclerAdapter.hideElements();
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                final DataSnapshot dataSnapshotValue = dataSnapshot;
                 final Element element = dataSnapshot.getValue(Element.class);
-                elementRecyclerAdapter.remove(element.getNoteID());
-                final DatabaseReference dRef = mBinReference.push();
-                if(element.getNoteType().equals("checklist")) {
-                    Checklist checklist = dataSnapshot.getValue(Checklist.class);
-                    checklist.setNoteID(dRef.getKey());
-                    dRef.setValue(checklist);
-                } else if (element.getNoteType().equals("bundle")) {
-                    com.pro3.planner.baseClasses.Bundle bundle = dataSnapshot.getValue(com.pro3.planner.baseClasses.Bundle.class);
-                    bundle.setNoteID(dRef.getKey());
-                    dRef.setValue(bundle);
-                } else {
-                    element.setNoteID(dRef.getKey());
-                    dRef.setValue(element);
-                }
+                element.setElementID(dataSnapshot.getKey());
+                elementRecyclerAdapter.remove(element.getElementID());
+                mBinReference.child(element.getElementID()).setValue(element);
 
                 Snackbar snackbar = Snackbar
                         .make(coordinatorLayout, R.string.moved_to_bin, 6000)
@@ -302,21 +293,8 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                             public void onClick(View view) {
                                 Snackbar snackbar1 = Snackbar.make(coordinatorLayout, R.string.element_restored, Snackbar.LENGTH_SHORT);
                                 snackbar1.show();
-                                mBinReference.child(dRef.getKey()).removeValue();
-                                Element element = dataSnapshotValue.getValue(Element.class);
-                                DatabaseReference dRef = mElementsReference.push();
-                                if(element.getNoteType().equals("checklist")) {
-                                    Checklist checklist = dataSnapshotValue.getValue(Checklist.class);
-                                    checklist.setNoteID(dRef.getKey());
-                                    dRef.setValue(checklist);
-                                } else if (element.getNoteType().equals("bundle")) {
-                                    com.pro3.planner.baseClasses.Bundle bundle = dataSnapshotValue.getValue(com.pro3.planner.baseClasses.Bundle.class);
-                                    bundle.setNoteID(dRef.getKey());
-                                    dRef.setValue(bundle);
-                                } else {
-                                    element.setNoteID(dRef.getKey());
-                                    dRef.setValue(element);
-                                }
+                                mBinReference.child(element.getElementID()).removeValue();
+                                mElementsReference.child(element.getElementID()).setValue(element);
                             }
                         });
 
@@ -341,31 +319,30 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
 
         spinnerCategoryAdapter = new SpinnerAdapter(this, R.layout.spinner_item);
         spinnerCategoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        listCategoryAdapter = new CategoryAdapter(this, R.layout.category_list_layout);
-
+        listCategoryVisibilityAdapter = new categoryVisibilityAdapter(this, R.layout.category_list_layout);
+        categorySettingsAdapter = new CategorySettingsAdapter(this, R.layout.category_settings_list_layout);
         mCategoryListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Category category = dataSnapshot.getValue(Category.class);
+                String category = dataSnapshot.getValue(String.class);
                 spinnerCategoryAdapter.add(category);
-                listCategoryAdapter.add(category);
-                LocalSettingsManager.getInstance().addCategory(category.getCategoryName());
+                listCategoryVisibilityAdapter.add(category);
+                categorySettingsAdapter.add(category);
+                LocalSettingsManager.getInstance().addCategory(category);
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Category category = dataSnapshot.getValue(Category.class);
-                spinnerCategoryAdapter.update(category);
-                listCategoryAdapter.update(category);
-                LocalSettingsManager.getInstance().addCategory(category.getCategoryName());
+
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Category category = dataSnapshot.getValue(Category.class);
-                spinnerCategoryAdapter.remove(dataSnapshot.getKey());
-                listCategoryAdapter.remove(dataSnapshot.getKey());
-                LocalSettingsManager.getInstance().removeCategory(category.getCategoryName());
+                String category = dataSnapshot.getValue(String.class);
+                spinnerCategoryAdapter.remove(category);
+                listCategoryVisibilityAdapter.remove(category);
+                categorySettingsAdapter.remove(category);
+                LocalSettingsManager.getInstance().removeCategory(category);
             }
 
             @Override
@@ -406,9 +383,13 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         return spinnerCategoryAdapter;
     }
 
+    public ArrayAdapter<String> getListCategoryVisibilityAdapter() {
+        return listCategoryVisibilityAdapter;
+    }
+
     @Override
-    public ArrayAdapter<Category> getListCategoryAdapter() {
-        return listCategoryAdapter;
+    public ArrayAdapter<String> getSettingsCategoryAdapter() {
+        return categorySettingsAdapter;
     }
 
     @Override
@@ -443,7 +424,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                 Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
             }
         } else if (type.equals("passwordEditElement")) {
-            if(bool) {
+            if (bool) {
                 DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", args.getInt("elementColor"));
                 dialog.show(getSupportFragmentManager(), "dialog");
             } else {

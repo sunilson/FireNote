@@ -85,11 +85,7 @@ public class EditElementDialog extends SuperDialog {
                         String title = editTitleText.getText().toString();
                         if (activity instanceof BundleInterface && !type.equals("bundle")) {
                             BundleInterface bundleInterface = (BundleInterface) getActivity();
-                            if (type.equals("checklist")) {
-                                bundleInterface.getChecklistElementsReference().child(id).child("title").setValue(title);
-                            } else {
-                                bundleInterface.getNoteElementsReference().child(id).child("title").setValue(title);
-                            }
+                            bundleInterface.getElementsReference().child(id).child("title").setValue(title);
 
                         } else if (activity instanceof ElementInterface) {
                             ElementInterface elementInterface = (ElementInterface) getActivity();

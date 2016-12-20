@@ -20,29 +20,32 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.pro3.planner.BaseApplication;
 import com.pro3.planner.Interfaces.BinInterface;
 import com.pro3.planner.Interfaces.ConfirmDialogResult;
+import com.pro3.planner.Interfaces.MainActivityInterface;
 import com.pro3.planner.ItemTouchHelper.SimpleItemTouchHelperCallbackMain;
 import com.pro3.planner.R;
 import com.pro3.planner.adapters.BinRecyclerAdapter;
-import com.pro3.planner.baseClasses.Checklist;
+import com.pro3.planner.adapters.categoryVisibilityAdapter;
 import com.pro3.planner.baseClasses.Element;
 import com.pro3.planner.dialogs.ConfirmDialog;
 
 public class BinActivity extends BaseActivity implements BinInterface, ConfirmDialogResult {
 
-    private DatabaseReference mReference, mBinReference, mElementsRefernce, mChecklistBinElementsReference, mNoteBinElementsReference;
+    private DatabaseReference mReference, mBinReference, mElementsRefernce, mContentsReference;
     private FirebaseUser user;
     private RecyclerView binList;
     private boolean restore = false;
     private View.OnClickListener recycleOnClickListener;
     private View.OnLongClickListener recycleOnLongClickListener;
-    private ChildEventListener mBinListener, mChecklistElementsListener, mNoteElementsListener;
+    private ChildEventListener mBinListener;
     private BinRecyclerAdapter binRecyclerAdapter;
     private CoordinatorLayout coordinatorLayout;
     private Element currentlySelectedElement;
     private String elementID;
-
+    private MainActivityInterface mainActivityInterface;
+    private categoryVisibilityAdapter categoryVisibilityAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,18 +55,16 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mainActivityInterface = (MainActivityInterface) ((BaseApplication) getApplicationContext()).mainContext;
+        categoryVisibilityAdapter = (categoryVisibilityAdapter) mainActivityInterface.getListCategoryVisibilityAdapter();
+
         user = mAuth.getCurrentUser();
 
         Intent i = getIntent();
         elementID = i.getStringExtra("elementID");
 
-        if(user != null) {
-            if(elementID == null) {
-                mReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
-            } else {
-                mReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("elements").child(elementID);
-            }
-
+        if (user != null) {
+            mReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
             coordinatorLayout = (CoordinatorLayout) findViewById(R.id.activity_bin);
 
             binList = (RecyclerView) findViewById(R.id.binList);
@@ -78,16 +79,16 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
             ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallbackMain(binRecyclerAdapter);
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
             itemTouchHelper.attachToRecyclerView(binList);
-
-            if(elementID == null) {
-                mElementsRefernce = mReference.child("elements");
-                initializeBinListener();
+            initializeBinListener();
+            if (elementID == null) {
+                mElementsRefernce = mReference.child("elements").child("main");
+                mBinReference = mReference.child("bin").child("main");
             } else {
-                initializeChecklistBinListener();
-                initializeNoteBinListener();
-                mChecklistBinElementsReference = mReference.child("bin").child("checklists");
-                mNoteBinElementsReference = mReference.child("bin").child("notes");
+                mElementsRefernce = mReference.child("elements").child("bundles").child(elementID);
+                mBinReference = mReference.child("bin").child("bundles").child(elementID);
             }
+
+            mContentsReference = mReference.child("contents");
         }
     }
 
@@ -96,13 +97,7 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
         super.onStart();
 
         if (mReference != null) {
-            mBinReference = mReference.child("bin");
-            if(elementID == null) {
-                mBinReference.addChildEventListener(mBinListener);
-            } else {
-                mChecklistBinElementsReference.addChildEventListener(mChecklistElementsListener);
-                mNoteBinElementsReference.addChildEventListener(mNoteElementsListener);
-            }
+            mBinReference.addChildEventListener(mBinListener);
         }
     }
 
@@ -113,66 +108,14 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
         if (mBinListener != null) {
             mBinReference.removeEventListener(mBinListener);
         }
-
-        if (mChecklistElementsListener != null) {
-            mChecklistBinElementsReference.removeEventListener(mChecklistElementsListener);
-        }
-
-        if (mNoteElementsListener != null) {
-            mNoteBinElementsReference.removeEventListener(mNoteElementsListener);
-        }
     }
 
-    private void initializeChecklistBinListener() {
-        mChecklistElementsListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Checklist checklist = dataSnapshot.getValue(Checklist.class);
-                binRecyclerAdapter.add(checklist);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Element element = dataSnapshot.getValue(Element.class);
-                binRecyclerAdapter.remove(element.getNoteID());
-
-                if (restore) {
-                    DatabaseReference dRef = mReference.child("checklists").push();
-                    Checklist checklist = dataSnapshot.getValue(Checklist.class);
-                    checklist.setNoteID(dRef.getKey());
-                    dRef.setValue(checklist);
-
-
-                    Snackbar snackbar = Snackbar
-                            .make(coordinatorLayout, R.string.element_restored, 6000);
-                    snackbar.show();
-
-                    restore = false;
-                }
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-    }
-
-    private void initializeNoteBinListener() {
-        mNoteElementsListener = new ChildEventListener() {
+    private void initializeBinListener() {
+        mBinListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Element element = dataSnapshot.getValue(Element.class);
+                element.setElementID(dataSnapshot.getKey());
                 binRecyclerAdapter.add(element);
             }
 
@@ -184,81 +127,22 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 Element element = dataSnapshot.getValue(Element.class);
-                binRecyclerAdapter.remove(element.getNoteID());
+                binRecyclerAdapter.remove(element.getElementID());
 
                 if (restore) {
-                    DatabaseReference dRef = mReference.child("notes").push();
-                    element.setNoteID(dRef.getKey());
-                    dRef.setValue(element);
-
-                    Snackbar snackbar = Snackbar
-                            .make(coordinatorLayout, R.string.element_restored, 6000);
-                    snackbar.show();
-
-                    restore = false;
-                }
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-    }
-
-    private void initializeBinListener() {
-        mBinListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Element element = dataSnapshot.getValue(Element.class);
-                if (element.getNoteType().equals("checklist")) {
-                    Checklist checklist = dataSnapshot.getValue(Checklist.class);
-                    binRecyclerAdapter.add(checklist);
-                } else if (element.getNoteType().equals("bundle")) {
-                    com.pro3.planner.baseClasses.Bundle bundle = dataSnapshot.getValue(com.pro3.planner.baseClasses.Bundle.class);
-                    binRecyclerAdapter.add(bundle);
+                    element.setElementID(element.getElementID());
+                    mElementsRefernce.child(element.getElementID()).setValue(element);
                 } else {
-                    binRecyclerAdapter.add(element);
+                    mContentsReference.child(element.getElementID()).removeValue();
                 }
+
+                Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout, R.string.element_restored, 6000);
+                snackbar.show();
+
+                restore = false;
             }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Element element = dataSnapshot.getValue(Element.class);
-                binRecyclerAdapter.remove(element.getNoteID());
-
-                if (restore) {
-                    DatabaseReference dRef = mElementsRefernce.push();
-                    if(element.getNoteType().equals("checklist")) {
-                        Checklist checklist = dataSnapshot.getValue(Checklist.class);
-                        checklist.setNoteID(dRef.getKey());
-                        dRef.setValue(checklist);
-                    } else if (element.getNoteType().equals("bundle")) {
-                        com.pro3.planner.baseClasses.Bundle bundle = dataSnapshot.getValue(com.pro3.planner.baseClasses.Bundle.class);
-                        bundle.setNoteID(dRef.getKey());
-                        dRef.setValue(bundle);
-                    }else {
-                        element.setNoteID(dRef.getKey());
-                        dRef.setValue(element);
-                    }
-
-                    Snackbar snackbar = Snackbar
-                            .make(coordinatorLayout, R.string.element_restored, 6000);
-                    snackbar.show();
-
-                    restore = false;
-                }
-            }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
@@ -272,7 +156,7 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
         };
     }
 
-    private void initializeOnLongClickListener(){
+    private void initializeOnLongClickListener() {
         recycleOnLongClickListener = new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -318,7 +202,7 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
         return super.onOptionsItemSelected(item);
     }
 
-    private void initializeDeleteAllDialog(){
+    private void initializeDeleteAllDialog() {
         DialogFragment dialogFragment = ConfirmDialog.newInstance(getString(R.string.clear_bin_title), getString(R.string.clear_bin_question), "clear");
         dialogFragment.show(getSupportFragmentManager(), "dialog");
     }
@@ -326,16 +210,11 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
     @Override
     public void confirmDialogResult(boolean result, String type, Bundle args) {
         if (result) {
-            if(type.equals("clear")) {
+            if (type.equals("clear")) {
                 mBinReference.removeValue();
             } else if (type.equals("restore")) {
                 if (currentlySelectedElement != null) {
-                    if (elementID == null) {
-                        mBinReference.child(currentlySelectedElement.getNoteID()).removeValue();
-                    } else {
-                        mChecklistBinElementsReference.child(currentlySelectedElement.getNoteID()).removeValue();
-                        mNoteBinElementsReference.child(currentlySelectedElement.getNoteID()).removeValue();
-                    }
+                    mBinReference.child(currentlySelectedElement.getElementID()).removeValue();
                 }
                 restore = true;
             }

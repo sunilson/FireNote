@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,8 +38,7 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
 
     private boolean editMode = false;
     private MenuItem editButton, settingsButton, doneButton;
-    private DatabaseReference mChecklistElementsReference;
-    private ChildEventListener mChecklistElementsListener;
+    private ChildEventListener mContentsListener;
     private RecyclerView recyclerView;
     private View.OnClickListener recycleOnClickListener;
     private View.OnLongClickListener recycleOnLongClickListener;
@@ -57,9 +57,9 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         super.onCreate(savedInstanceState);
 
         if (mElementReference != null) {
-            //Checklist Element Listener
-            initializeChecklistElementListener();
-            mChecklistElementsReference = mElementReference.child("elements");
+            //Checklist Content Listener
+            mContentReference = mContentReference.child("elements");
+            initializeContentsListener();
         }
 
         //Initialize the Listview and it's adapter and it's onClick Handler
@@ -97,7 +97,7 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
     protected void onStart() {
         super.onStart();
 
-        mChecklistElementsReference.addChildEventListener(mChecklistElementsListener);
+        mContentReference.addChildEventListener(mContentsListener);
     }
 
     @Override
@@ -105,8 +105,8 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         super.onStop();
 
         checklistRecyclerAdapter.clear();
-        if (mChecklistElementsListener != null) {
-            mChecklistElementsReference.removeEventListener(mChecklistElementsListener);
+        if (mContentsListener != null) {
+            mContentReference.removeEventListener(mContentsListener);
         }
     }
 
@@ -162,17 +162,19 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
     -----------------------------
      */
 
-    private void initializeChecklistElementListener() {
-        mChecklistElementsListener = new ChildEventListener() {
+    private void initializeContentsListener() {
+        mContentsListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 ChecklistElement element = dataSnapshot.getValue(ChecklistElement.class);
+                element.setElementID(dataSnapshot.getKey());
                 checklistRecyclerAdapter.add(element);
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 ChecklistElement element = dataSnapshot.getValue(ChecklistElement.class);
+                element.setElementID(dataSnapshot.getKey());
                 checklistRecyclerAdapter.update(element);
             }
 
@@ -202,7 +204,7 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
                 ChecklistElement checklistElement = checklistRecyclerAdapter.getItem(itemPosition);
                 boolean finished = checklistElement.isFinished();
                 finished = !finished;
-                mChecklistElementsReference.child(checklistElement.getElementID()).child("finished").setValue(finished);
+                mContentReference.child(checklistElement.getElementID()).child("finished").setValue(finished);
             }
         };
     }
@@ -234,9 +236,8 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         alert.setPositiveButton(R.string.confirm_add_dialog, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String entry = elementTitleTextView.getText().toString();
-                DatabaseReference dRef = mChecklistElementsReference.push();
-                String elementID = dRef.getKey();
-                ChecklistElement checklistElement = new ChecklistElement(entry, elementID, checklistRecyclerAdapter.getItemCount());
+                DatabaseReference dRef = mContentReference.push();
+                ChecklistElement checklistElement = new ChecklistElement(entry, checklistRecyclerAdapter.getItemCount());
                 dRef.setValue(checklistElement);
             }
         });
@@ -245,10 +246,18 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
             public void onClick(DialogInterface dialog, int whichButton) {
             }
         });
-
-        AlertDialog dialog = alert.create();
-
+        final AlertDialog dialog = alert.create();
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        elementTitleTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if ((keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (i == EditorInfo.IME_ACTION_DONE)) {
+                    dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+                }
+                return false;
+            }
+        });
 
         dialog.show();
     }
@@ -283,7 +292,7 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
 
     @Override
     public DatabaseReference getElementsReference() {
-        return mChecklistElementsReference;
+        return mContentReference;
     }
 
     @Override

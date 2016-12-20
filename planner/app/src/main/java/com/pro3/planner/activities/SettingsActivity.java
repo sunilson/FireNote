@@ -1,5 +1,6 @@
 package com.pro3.planner.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.Toolbar;
@@ -17,7 +18,7 @@ import com.pro3.planner.dialogs.MasterPasswordDialog;
 
 public class SettingsActivity extends BaseActivity implements SettingsInterface{
 
-    private LinearLayout masterPassword;
+    private LinearLayout masterPassword, categorySettings;
     private DatabaseReference mReference;
     private FirebaseUser user;
 
@@ -38,6 +39,9 @@ public class SettingsActivity extends BaseActivity implements SettingsInterface{
         masterPassword = (LinearLayout) findViewById(R.id.master_password);
         initializeMasterPasswordClickListener();
 
+        categorySettings = (LinearLayout) findViewById(R.id.settings_categories);
+        initializeCategoryClickListener();
+
         //Initialize the Firebase Auth System and the User
         user = mAuth.getCurrentUser();
 
@@ -47,11 +51,21 @@ public class SettingsActivity extends BaseActivity implements SettingsInterface{
         }
     }
 
+    private void initializeCategoryClickListener() {
+        categorySettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(SettingsActivity.this, CategoryActivity.class);
+                startActivity(i);
+            }
+        });
+    }
+
     private void initializeMasterPasswordClickListener() {
         masterPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (connected) {
+                if (connected && getInternetConnected()) {
                     DialogFragment dialogFragment = MasterPasswordDialog.newInstance();
                     dialogFragment.show(getSupportFragmentManager(), "dialog");
                 }else {

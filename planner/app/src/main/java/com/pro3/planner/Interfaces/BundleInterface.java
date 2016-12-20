@@ -8,7 +8,6 @@ import com.google.firebase.database.DatabaseReference;
 
 public interface BundleInterface extends HasSortableList {
 
-    DatabaseReference getChecklistElementsReference();
-    DatabaseReference getNoteElementsReference();
+    DatabaseReference getElementsReference();
 
 }

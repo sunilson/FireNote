@@ -70,14 +70,10 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
 
         if (activity instanceof MainActivityInterface) {
             MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication)activity.getApplicationContext()).mainContext;
-            mainActivityInterface.getElementsReference().child(element.getNoteID()).removeValue();
+            mainActivityInterface.getElementsReference().child(element.getElementID()).removeValue();
         } else {
             BundleInterface bundleInterface = (BundleInterface) activity;
-            if (element.getNoteType().equals("checklist")) {
-                bundleInterface.getChecklistElementsReference().child(element.getNoteID()).removeValue();
-            } else {
-                bundleInterface.getNoteElementsReference().child(element.getNoteID()).removeValue();
-            }
+            bundleInterface.getElementsReference().child(element.getElementID()).removeValue();
         }
     }
 
@@ -135,7 +131,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         if (element.getLocked()) {
             ViewHolder viewHolder = (ViewHolder) holder;
             viewHolder.elementTitle.setText(element.getTitle());
-            viewHolder.elementCategory.setText(element.getCategory().getCategoryName());
+            viewHolder.elementCategory.setText(element.getCategoryName());
 
             if (element.getNoteType().equals("checklist")) {
                 viewHolder.elementIcon.setImageResource(R.drawable.element_checklist_icon);
@@ -160,7 +156,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         } else {
             SwipeableViewHolder viewHolder = (SwipeableViewHolder) holder;
             viewHolder.elementTitle.setText(element.getTitle());
-            viewHolder.elementCategory.setText(element.getCategory().getCategoryName());
+            viewHolder.elementCategory.setText(element.getCategoryName());
 
             if (element.getNoteType().equals("checklist")) {
                 viewHolder.elementIcon.setImageResource(R.drawable.element_checklist_icon);
@@ -210,7 +206,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
 
         while (it.hasNext()) {
             Element element = it.next();
-            if (element.getNoteID().equals(elementID)) {
+            if (element.getElementID().equals(elementID)) {
                 result = element;
                 break;
             }
@@ -224,7 +220,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
     }
 
     public void add(Element element) {
-        if (LocalSettingsManager.getInstance().getCategoryVisibility(element.getCategory().getCategoryID()) != -1 || LocalSettingsManager.getInstance().getColorVisibility(element.getColor()) != -1) {
+        if (LocalSettingsManager.getInstance().getCategoryVisibility(element.getCategoryName()) != -1 || LocalSettingsManager.getInstance().getColorVisibility(element.getColor()) != -1) {
             list.add(element);
         }
         allItems.add(element);
@@ -235,7 +231,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
     public void hideElements() {
         list.clear();
         for (Element e: allItems) {
-            if (LocalSettingsManager.getInstance().getCategoryVisibility(e.getCategory().getCategoryID()) == -1 || LocalSettingsManager.getInstance().getColorVisibility(e.getColor()) == -1) {
+            if (LocalSettingsManager.getInstance().getCategoryVisibility(e.getCategoryName()) == -1 || LocalSettingsManager.getInstance().getColorVisibility(e.getColor()) == -1) {
                 list.remove(e);
             } else {
                 list.add(e);
@@ -251,7 +247,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
 
         while (it.hasNext()) {
             Element nextElement = it.next();
-            if (nextElement.getNoteID().equals(noteID)) {
+            if (nextElement.getElementID().equals(noteID)) {
                 it.set(element);
                 break;
             }
@@ -261,7 +257,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
 
         while (it2.hasNext()) {
             Element nextElement = it2.next();
-            if (nextElement.getNoteID().equals(noteID)) {
+            if (nextElement.getElementID().equals(noteID)) {
                 it2.set(element);
                 break;
             }
@@ -277,7 +273,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
 
         while (it.hasNext()) {
             Element element = it.next();
-            if (element.getNoteID().equals(noteID)) {
+            if (element.getElementID().equals(noteID)) {
                 it.remove();
                 break;
             }
@@ -290,7 +286,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         Iterator<Element> it = allItems.iterator();
         while (it.hasNext()) {
             Element element = it.next();
-            if (element.getNoteID().equals(noteID)) {
+            if (element.getElementID().equals(noteID)) {
                 it.remove();
                 break;
             }
@@ -316,9 +312,9 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
             @Override
             public int compare(Element o1, Element o2) {
 
-                if (o1.getCategory().getCategoryName().compareTo(o2.getCategory().getCategoryName()) < 0) {
+                if (o1.getCategoryName().compareTo(o2.getCategoryName()) < 0) {
                     return -1;
-                } else if (o1.getCategory().getCategoryName().compareTo(o2.getCategory().getCategoryName()) > 0) {
+                } else if (o1.getCategoryName().compareTo(o2.getCategoryName()) > 0) {
                     return 1;
                 }
                 return 0;

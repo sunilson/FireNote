@@ -11,10 +11,9 @@ public class ChecklistElement {
     private String elementID;
     private int position;
 
-    public ChecklistElement(String text, String elementID, int position) {
+    public ChecklistElement(String text, int position) {
         this.text = text;
         finished = false;
-        this.elementID = elementID;
         this.position = position;
     }
 

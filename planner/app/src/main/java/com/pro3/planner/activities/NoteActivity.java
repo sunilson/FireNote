@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.pro3.planner.Interfaces.ConfirmDialogResult;
 import com.pro3.planner.R;
@@ -28,13 +27,9 @@ import static com.pro3.planner.R.id.notepad;
 public class NoteActivity extends BaseElementActivity implements ConfirmDialogResult {
 
     private EditText notePad;
-    private String noteText;
     private boolean editMode;
     private MenuItem editButton, settingsButton, doneButton;
-    private DatabaseReference mTextReference;
-    private ValueEventListener mTextValueListener;
-
-    String elementID;
+    private ValueEventListener mContentsListener;
 
     /*
     ------------------------
@@ -54,11 +49,9 @@ public class NoteActivity extends BaseElementActivity implements ConfirmDialogRe
         notePad.setMovementMethod(new ScrollingMovementMethod());
 
 
-        initializeTextListener();
-        initializeTitleListener();
-
         if (mElementReference != null) {
-            mTextReference = mElementReference.child("text");
+            mContentReference = mContentReference.child("text");
+            initializeContentsListener();
         }
     }
 
@@ -71,16 +64,14 @@ public class NoteActivity extends BaseElementActivity implements ConfirmDialogRe
     @Override
     protected void onStart() {
         super.onStart();
-
-        mTextReference.addValueEventListener(mTextValueListener);
+        mContentReference.addValueEventListener(mContentsListener);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-
-        if (mTextValueListener != null && mTextReference != null) {
-            mTextReference.removeEventListener(mTextValueListener);
+        if (mContentsListener != null) {
+            mContentReference.removeEventListener(mContentsListener);
         }
     }
 
@@ -144,12 +135,12 @@ public class NoteActivity extends BaseElementActivity implements ConfirmDialogRe
     -----------------------------
      */
 
-    private void initializeTextListener() {
-        mTextValueListener = new ValueEventListener() {
+    private void initializeContentsListener() {
+
+        mContentsListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String text = dataSnapshot.getValue(String.class);
-                noteText = text;
                 notePad.setText(text);
             }
 
@@ -193,7 +184,7 @@ public class NoteActivity extends BaseElementActivity implements ConfirmDialogRe
             settingsButton.setVisible(false);
             doneButton.setVisible(false);
             notePad.setEnabled(false);
-            mTextReference.setValue(notePad.getText().toString());
+            mContentReference.setValue(notePad.getText().toString());
             Toast.makeText(this, R.string.stop_edit_mode, Toast.LENGTH_SHORT).show();
         }
     }

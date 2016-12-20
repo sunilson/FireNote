@@ -25,7 +25,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.pro3.planner.R;
-import com.pro3.planner.baseClasses.Category;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -83,11 +82,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void loadDefaultData(FirebaseUser user) {
         DatabaseReference mReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
-        DatabaseReference dRef = mReference.child("categories").push();
-        Category category = new Category();
-        category.setCategoryName("Default");
-        category.setCategoryID(dRef.getKey());
-        dRef.setValue(category);
+        mReference.child("categories").child(getString(R.string.default_category)).setValue(getString(R.string.default_category));
     }
 
     @Override

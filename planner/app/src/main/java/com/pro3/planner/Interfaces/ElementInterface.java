@@ -9,7 +9,8 @@ import com.google.firebase.database.DatabaseReference;
 public interface ElementInterface {
 
     DatabaseReference getElementReference();
+    DatabaseReference getContentsReference();
     String getElementTitle();
-
+    int getElementColor();
 
 }

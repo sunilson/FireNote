@@ -1,6 +1,9 @@
 package com.pro3.planner.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -138,6 +141,17 @@ public abstract class BaseActivity extends AppCompatActivity {
 
             }
         };
+    }
+
+    public boolean getConnected() {
+        return connected;
+    }
+
+    public boolean getInternetConnected() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     private void initializeAuthListener() {

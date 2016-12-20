@@ -24,19 +24,20 @@ import com.google.firebase.database.ValueEventListener;
 import com.pro3.planner.Interfaces.ElementInterface;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
+import com.pro3.planner.baseClasses.Element;
 
 /**
  * Created by linus_000 on 09.12.2016.
  */
 
-public abstract class BaseElementActivity extends BaseActivity implements ElementInterface{
+public abstract class BaseElementActivity extends BaseActivity implements ElementInterface {
 
     protected boolean locked;
     protected int elementColor;
-    protected String elementID, elementType, elementTitle;
-    protected ValueEventListener mTitleListener, mLockedListener;
+    protected String elementID, elementType, elementTitle, parentID;
+    protected ValueEventListener mElementListener;
     protected FirebaseUser user;
-    protected DatabaseReference mElementReference, mTitleReference, mLockedReference;
+    protected DatabaseReference mElementReference, mContentReference;
 
     /*
     ------------------------
@@ -69,8 +70,8 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
 
         //Get Element ID from clicked element and set Title
         elementID = i.getStringExtra("elementID");
+        parentID = i.getStringExtra("parentID");
         elementColor = i.getIntExtra("elementColor", 1);
-
         setTitle(i.getStringExtra("elementTitle"));
 
         setColors();
@@ -78,44 +79,34 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
         //Firebase Authentication
         user = mAuth.getCurrentUser();
 
-        //Firebase Reference to the Checklist element we are currently in
+        //Firebase Reference to the Checklist element we are currently in and the contents of that element
         if (user != null) {
-            String parentID = i.getStringExtra("parent");
-            if(parentID == null) {
-                mElementReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("elements").child(elementID);
+            if (parentID == null) {
+                mElementReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("elements").child("main").child(elementID);
             } else {
-                if (elementType.equals("checklist")) {
-                    mElementReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("elements").child(parentID).child("checklists").child(elementID);
-                } else {
-                    mElementReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("elements").child(parentID).child("notes").child(elementID);
-                }
+                mElementReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("elements").child("bundles").child(parentID).child(elementID);
             }
+            mContentReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("contents").child(elementID);
         }
 
         if (mElementReference != null) {
-            //Title Listener
-            initializeTitleListener();
-            mTitleReference = mElementReference.child("title");
-            mTitleReference.addValueEventListener(mTitleListener);
-
-            //Locked Listener
-            initializeLockedListener();
-            mLockedReference = mElementReference.child("locked");
-            mLockedReference.addValueEventListener(mLockedListener);
-
+            initializeElementListener();
         }
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStart() {
+        super.onStart();
 
-        if (mTitleListener != null) {
-            mElementReference.child("title").removeEventListener(mTitleListener);
-        }
+        mElementReference.addValueEventListener(mElementListener);
+    }
 
-        if (mLockedListener != null) {
-            mLockedReference.removeEventListener(mLockedListener);
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (mElementListener != null) {
+            mElementReference.removeEventListener(mElementListener);
         }
     }
 
@@ -148,13 +139,12 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
     -----------------------------
      */
 
-    protected void initializeTitleListener() {
-        mTitleListener = new ValueEventListener() {
+    protected void initializeElementListener() {
+        mElementListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String newTitle = dataSnapshot.getValue(String.class);
-                setTitle(newTitle);
-                elementTitle = newTitle;
+                Element element = dataSnapshot.getValue(Element.class);
+                updateElement(element);
             }
 
             @Override
@@ -164,37 +154,23 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
         };
     }
 
-    private void initializeLockedListener(){
-        mLockedListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+    private void updateElement(Element element) {
+        //Set Title
+        setTitle(element.getTitle());
+        elementTitle = element.getTitle();
 
-                if (dataSnapshot.getValue(Boolean.class) != null) {
-                    locked = dataSnapshot.getValue(Boolean.class);
+        //Check Locked
+        locked = element.getLocked();
 
-                    if (locked) {
-                        Toast.makeText(BaseElementActivity.this, R.string.locked, Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(BaseElementActivity.this, R.string.unlocked, Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
+        if (locked) {
+            Toast.makeText(BaseElementActivity.this, R.string.locked, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(BaseElementActivity.this, R.string.unlocked, Toast.LENGTH_SHORT).show();
+        }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-    }
-
-    @Override
-    public DatabaseReference getElementReference() {
-        return mElementReference;
-    }
-
-    @Override
-    public String getElementTitle() {
-        return elementTitle;
+        //Set colors
+        elementColor = element.getColor();
+        setColors();
     }
 
     @Override
@@ -219,17 +195,23 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
     public int getElementColor() {
         return elementColor;
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    public DatabaseReference getElementReference() {
+        return mElementReference;
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    public DatabaseReference getContentsReference() {
+        return mContentReference;
+    }
+
+    @Override
+    public String getElementTitle() {
+        return elementTitle;
     }
 }

@@ -3,6 +3,7 @@
     <color name="colorPrimary">#EEEEEE</color>
     <color name="colorPrimaryDark">#616161</color>
     <color name="colorAccent">#9E9E9E</color>
+    <color name="colorAccentSelected">#B5B5B5</color>
     <color name="colorAccentDark">#BDBDBD</color>
     <color name="colorFloatingMain">#9E9E9E</color>
     <color name="defaultElementColor">#FFFFA5</color>

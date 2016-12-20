@@ -20,12 +20,12 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.pro3.planner.Interfaces.BundleInterface;
 import com.pro3.planner.Interfaces.ConfirmDialogResult;
 import com.pro3.planner.ItemTouchHelper.SimpleItemTouchHelperCallbackMain;
 import com.pro3.planner.R;
 import com.pro3.planner.adapters.ElementRecyclerAdapter;
-import com.pro3.planner.baseClasses.Checklist;
 import com.pro3.planner.baseClasses.Element;
 import com.pro3.planner.dialogs.ConfirmDialog;
 import com.pro3.planner.dialogs.EditElementDialog;
@@ -35,8 +35,8 @@ import com.pro3.planner.dialogs.PasswordDialog;
 public class BundleActivity extends BaseElementActivity implements BundleInterface, ConfirmDialogResult {
 
     private RecyclerView bundleList;
-    private DatabaseReference mChecklistElementsReference, mNoteElementsReference, mBinReference;
-    private ChildEventListener mChecklistElementsListener, mNoteElementsListener;
+    private DatabaseReference mElementsReference, mBinReference;
+    private ChildEventListener mElementsListener;
     private ElementRecyclerAdapter elementRecyclerAdapter;
     private View.OnClickListener recycleOnClickListener;
     private CoordinatorLayout coordinatorLayout;
@@ -64,13 +64,10 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
             itemTouchHelper.attachToRecyclerView(bundleList);
 
-            initializeNoteElementsListener();
-            initializeChecklistElementsListener();
-            mNoteElementsReference = mElementReference.child("notes");
-            mChecklistElementsReference = mElementReference.child("checklists");
+            initializeElementsListener();
 
-
-            mBinReference = mElementReference.child("bin");
+            mElementsReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("elements").child("bundles").child(elementID);
+            mBinReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("bin").child("bundles").child(elementID);
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -86,8 +83,8 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
     @Override
     protected void onStart() {
         super.onStart();
-        mNoteElementsReference.addChildEventListener(mNoteElementsListener);
-        mChecklistElementsReference.addChildEventListener(mChecklistElementsListener);
+
+        mElementsReference.addChildEventListener(mElementsListener);
     }
 
     @Override
@@ -95,21 +92,19 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
         super.onStop();
 
         elementRecyclerAdapter.clear();
-        if (mChecklistElementsListener != null) {
-            mChecklistElementsReference.removeEventListener(mChecklistElementsListener);
-        }
 
-        if (mNoteElementsListener != null) {
-            mNoteElementsReference.removeEventListener(mNoteElementsListener);
+        if (mElementsListener != null) {
+            mElementsReference.removeEventListener(mElementsListener);
         }
     }
 
-    private void initializeNoteElementsListener() {
-        mNoteElementsListener = new ChildEventListener() {
+    private void initializeElementsListener() {
+        mElementsListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Element element = dataSnapshot.getValue(Element.class);
                 if (element != null) {
+                    element.setElementID(dataSnapshot.getKey());
                     elementRecyclerAdapter.add(element);
                     elementRecyclerAdapter.hideElements();
                 }
@@ -118,17 +113,16 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Element element = dataSnapshot.getValue(Element.class);
-                elementRecyclerAdapter.update(element, element.getNoteID());
+                element.setElementID(dataSnapshot.getKey());
+                elementRecyclerAdapter.update(element, element.getElementID());
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                final DataSnapshot dataSnapshotValue = dataSnapshot;
                 final Element element = dataSnapshot.getValue(Element.class);
-                elementRecyclerAdapter.remove(element.getNoteID());
-                DatabaseReference dRef = mBinReference.child("notes").push();
-                element.setNoteID(dRef.getKey());
-                dRef.setValue(element);
+                element.setElementID(dataSnapshot.getKey());
+                elementRecyclerAdapter.remove(element.getElementID());
+                mBinReference.child(element.getElementID()).setValue(element);
 
                 Snackbar snackbar = Snackbar
                         .make(coordinatorLayout, R.string.moved_to_bin, 6000)
@@ -137,72 +131,13 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
                             public void onClick(View view) {
                                 Snackbar snackbar1 = Snackbar.make(coordinatorLayout, R.string.element_restored, Snackbar.LENGTH_SHORT);
                                 snackbar1.show();
-                                mBinReference.child("notes").child(element.getNoteID()).removeValue();
-                                Element element = dataSnapshotValue.getValue(Element.class);
-                                DatabaseReference dRef = mNoteElementsReference.push();
-                                element.setNoteID(dRef.getKey());
-                                dRef.setValue(element);
+                                mBinReference.child(element.getElementID()).removeValue();
+                                mElementsReference.child(element.getElementID()).setValue(element);
                             }
                         });
+
                 snackbar.show();
             }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-    }
-
-    private void initializeChecklistElementsListener() {
-        mChecklistElementsListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Element element = dataSnapshot.getValue(Element.class);
-                if (element != null) {
-                    elementRecyclerAdapter.add(element);
-                    elementRecyclerAdapter.hideElements();
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Element element = dataSnapshot.getValue(Element.class);
-                elementRecyclerAdapter.update(element, element.getNoteID());
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                final DataSnapshot dataSnapshotValue = dataSnapshot;
-                 Element element = dataSnapshot.getValue(Element.class);
-                elementRecyclerAdapter.remove(element.getNoteID());
-                final DatabaseReference dRef = mBinReference.child("checklists").push();
-                Checklist checklist = dataSnapshot.getValue(Checklist.class);
-                checklist.setNoteID(dRef.getKey());
-                dRef.setValue(checklist);
-
-                Snackbar snackbar = Snackbar
-                        .make(coordinatorLayout, R.string.moved_to_bin, 6000)
-                        .setAction(R.string.undo, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Snackbar snackbar1 = Snackbar.make(coordinatorLayout, R.string.element_restored, Snackbar.LENGTH_SHORT);
-                                snackbar1.show();
-                                mBinReference.child("checklists").child(dRef.getKey()).removeValue();
-                                DatabaseReference dRef = mChecklistElementsReference.push();
-                                Checklist checklist = dataSnapshotValue.getValue(Checklist.class);
-                                checklist.setNoteID(dRef.getKey());
-                                dRef.setValue(checklist);
-                            }
-                        });
-                snackbar.show();
-            }
-
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
@@ -223,7 +158,7 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
                 int itemPosition = bundleList.getChildLayoutPosition(v);
                 Element element = elementRecyclerAdapter.getItem(itemPosition);
                 if (element.getLocked()) {
-                    DialogFragment dialogFragment = PasswordDialog.newInstance("passwordOpenElement", element.getNoteType(), element.getNoteID(), element.getTitle(), element.getColor());
+                    DialogFragment dialogFragment = PasswordDialog.newInstance("passwordOpenElement", element.getNoteType(), element.getElementID(), element.getTitle(), element.getColor());
                     dialogFragment.show(getSupportFragmentManager(), "dialog");
                 } else {
                     Intent i = null;
@@ -235,11 +170,11 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
                         i = new Intent(BundleActivity.this, BundleActivity.class);
                     }
 
-                    i.putExtra("elementID", element.getNoteID());
+                    i.putExtra("elementID", element.getElementID());
                     i.putExtra("elementTitle", element.getTitle());
                     i.putExtra("elementColor", element.getColor());
                     i.putExtra("elementType", element.getNoteType());
-                    i.putExtra("parent", elementID);
+                    i.putExtra("parentID", elementID);
                     startActivity(i);
                 }
             }
@@ -267,13 +202,8 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
 
 
     @Override
-    public DatabaseReference getChecklistElementsReference() {
-        return mChecklistElementsReference;
-    }
-
-    @Override
-    public DatabaseReference getNoteElementsReference() {
-        return mNoteElementsReference;
+    public DatabaseReference getElementsReference() {
+        return mElementsReference;
     }
 
     @Override
@@ -331,7 +261,7 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
                 i.putExtra("elementTitle", args.getString("elementTitle"));
                 i.putExtra("elementColor", args.getInt("elementColor"));
                 i.putExtra("elementType", args.getString("elementType"));
-                i.putExtra("parent", elementID);
+                i.putExtra("parentID", elementID);
                 startActivity(i);
             } else {
                 Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
@@ -345,11 +275,8 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
             }
         } else if (type.equals("delete")) {
             if (bool) {
-                if (mChecklistElementsListener != null) {
-                    mChecklistElementsReference.removeEventListener(mChecklistElementsListener);
-                }
-                if (mNoteElementsListener != null) {
-                    mNoteElementsReference.removeEventListener(mNoteElementsListener);
+                if (mElementsListener != null) {
+                    mElementsReference.removeEventListener(mElementsListener);
                 }
                 mElementReference.removeValue();
                 finish();

@@ -14,10 +14,17 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.pro3.planner.activities.LoginActivity"
     tools:showIn="@layout/activity_login"
-    android:background="@color/login_background"
+    android:background="@color/main_background_color"
     android:gravity="center_vertical"
     android:layout_centerHorizontal="true"
     >
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo"
+        android:layout_gravity="center"
+        />
 
     <LinearLayout
         android:layout_width="0px"
@@ -30,9 +37,8 @@
         android:layout_width="match_parent"
         android:inputType="textEmailAddress|textAutoCorrect|textAutoComplete"
         android:layout_height="@dimen/login_edit_text_height"
-        android:textColor="@color/white_text_color"
         android:ems="10"
-        android:drawableLeft="@drawable/ic_email_white_24dp"
+        android:drawableLeft="@drawable/email_login"
         android:id="@+id/loginEmail"
         android:hint="@string/enter_email"
         android:theme="@style/loginEditText"
@@ -42,18 +48,18 @@
         android:nextFocusDown="@+id/loginPassword"
         android:nextFocusForward="@+id/loginPassword"
         android:nextFocusRight="@+id/loginPassword"
-    />
+        android:layout_marginTop="20dp"
+        />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_marginTop="20dp"
         android:layout_height="@dimen/login_edit_text_height"
-        android:textColor="@color/white_text_color"
         android:inputType="textPassword"
         android:ems="10"
         android:theme="@style/loginEditText"
         android:fontFamily="sans-serif"
-        android:drawableLeft="@drawable/ic_lock_white_24dp"
+        android:drawableLeft="@drawable/lock_login"
         android:id="@+id/loginPassword"
         android:background="@drawable/login_edit_text"
         android:hint="@string/enter_password" />
@@ -84,7 +90,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/forgotPasswordLink"
-        android:textColor="@color/white_text_color"
+        android:textColor="@color/title_text_color"
         android:gravity="center"
         android:layout_gravity="center"
         android:layout_marginTop="20dp" />

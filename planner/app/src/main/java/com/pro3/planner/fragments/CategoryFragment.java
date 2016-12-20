@@ -12,7 +12,7 @@ import com.pro3.planner.BaseApplication;
 import com.pro3.planner.Interfaces.MainActivityInterface;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
-import com.pro3.planner.views.CategoryElementView;
+import com.pro3.planner.views.CategoryVisibilityView;
 
 /**
  * Created by linus_000 on 17.11.2016.
@@ -52,20 +52,20 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
 
         final MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication)getContext().getApplicationContext()).mainContext;
 
-        categoryListView.setAdapter(mainActivityInterface.getListCategoryAdapter());
+        categoryListView.setAdapter(mainActivityInterface.getListCategoryVisibilityAdapter());
 
         categoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                CategoryElementView categoryElementView = (CategoryElementView) view;
-                if (categoryElementView.isChecked()) {
+                CategoryVisibilityView categoryVisibilityView = (CategoryVisibilityView) view;
+                if (categoryVisibilityView.isChecked()) {
                     Log.i("Linus", "Checked false");
-                    categoryElementView.setChecked(false);
-                    LocalSettingsManager.getInstance().setCategoryVisibility(mainActivityInterface.getListCategoryAdapter().getItem(position).getCategoryID(), 1);
+                    categoryVisibilityView.setChecked(false);
+                    LocalSettingsManager.getInstance().setCategoryVisibility(mainActivityInterface.getListCategoryVisibilityAdapter().getItem(position), 1);
                 } else {
                     Log.i("Linus", "Checked true");
-                    categoryElementView.setChecked(true);
-                    LocalSettingsManager.getInstance().setCategoryVisibility(mainActivityInterface.getListCategoryAdapter().getItem(position).getCategoryID(), -1);
+                    categoryVisibilityView.setChecked(true);
+                    LocalSettingsManager.getInstance().setCategoryVisibility(mainActivityInterface.getListCategoryVisibilityAdapter().getItem(position), -1);
                 }
 
                 mainActivityInterface.getElementAdapter().hideElements();

@@ -40,6 +40,7 @@
     <color name="button_material_light">#ffd6d7d7</color>
     <color name="colorAccent">#9E9E9E</color>
     <color name="colorAccentDark">#BDBDBD</color>
+    <color name="colorAccentSelected">#B5B5B5</color>
     <color name="colorFloatingMain">#9E9E9E</color>
     <color name="colorPrimary">#EEEEEE</color>
     <color name="colorPrimaryDark">#616161</color>
@@ -776,6 +777,8 @@
     <string name="search_menu_title">Search</string>
     <string name="send_mail">Send mail!</string>
     <string name="set_master_password">Set Master password</string>
+    <string name="settings_categories">Manage categories</string>
+    <string name="settings_categories_description">Manage all your created categories. You can either edit or delete them. Needs online connection!</string>
     <string name="sort_ascending_date">Date Ascending</string>
     <string name="sort_ascending_name">Name Ascending</string>
     <string name="sort_by">Sort by</string>
@@ -788,6 +791,7 @@
     <string name="stop_edit_mode">Finished editing element</string>
     <string name="title_activity_bin">Recycle Bin</string>
     <string name="title_activity_bundle">BundleActivity</string>
+    <string name="title_activity_category">CategoryActivity</string>
     <string name="title_activity_checklist">ChecklistActivity</string>
     <string name="title_activity_edit_checklist">EditChecklistActivity</string>
     <string name="title_activity_login">Login to your account</string>
@@ -811,7 +815,7 @@
         <item name="android:windowExitAnimation">@anim/design_bottom_sheet_slide_out</item>
     </style>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        
+        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -2350,10 +2354,11 @@
         <item name="android:padding">10dp</item>
         <item name="android:drawablePadding">10dp</item>
         <item name="android:maxLines">1</item>
-        <item name="android:textColorHint">@color/white_text_color_sub</item>
+        <item name="android:textColorHint">@color/colorAccent</item>
+        <item name="android:textColor">@color/title_text_color</item>
         <item name="android:textSize">16sp</item>
-        <item name="colorControlNormal">@color/tint_white</item>
-        <item name="colorControlActivated">@color/tint_white</item>
+        <item name="colorControlNormal">@color/title_text_color</item>
+        <item name="colorControlActivated">@color/title_text_color</item>
     </style>
     <style name="settingsDivider">
         <item name="android:layout_height">2dp</item>

@@ -23,9 +23,7 @@ import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
 import com.pro3.planner.activities.MainActivity;
 import com.pro3.planner.adapters.DialogMenuAdapter;
-import com.pro3.planner.baseClasses.Checklist;
 import com.pro3.planner.baseClasses.Element;
-import com.pro3.planner.baseClasses.Note;
 import com.pro3.planner.views.AddElementView;
 
 /**
@@ -123,7 +121,9 @@ public class ListAlertDialog extends SuperDialog {
                     name = getString(R.string.sort_descending_date);
                 } else if (strName.equals(getString(R.string.sort_by) + " " + getString(R.string.sort_descending_name))) {
                     name = getString(R.string.sort_descending_name);
-                }  else if (strName.equals(getString(R.string.sort_by) + " " + getString(R.string.sort_category_name))) {
+                } else if (strName.equals(getString(R.string.sort_by) + " " + getString(R.string.sort_ascending_name))) {
+                    name = getString(R.string.sort_ascending_name);
+                } else if (strName.equals(getString(R.string.sort_by) + " " + getString(R.string.sort_category_name))) {
                     name = getString(R.string.sort_category_name);
                 }
 
@@ -140,7 +140,7 @@ public class ListAlertDialog extends SuperDialog {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                final MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication)getContext().getApplicationContext()).mainContext;
+                final MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
                 final AddElementView content = new AddElementView(getActivity(), mainActivityInterface.getSpinnerCategoryAdapter());
 
                 LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -162,30 +162,24 @@ public class ListAlertDialog extends SuperDialog {
                         Element element = null;
                         String elementTitle = content.getTitle();
 
-                        if (elementType.equals(activity.getString(R.string.element_checklist))) {
-                            element = new Checklist("checklist", elementTitle);
-                        } else if (elementType.equals(activity.getString(R.string.element_note))) {
-                            element = new Note("note", elementTitle);
-                        } else if (elementType.equals(activity.getString(R.string.element_bundle))) {
-                            element = new com.pro3.planner.baseClasses.Bundle("bundle", elementTitle);
+                        if (elementType.equals(activity.getString(R.string.element_note))) {
+                            element = new Element("note", elementTitle);
+                        } else if (elementType.equals(activity.getString(R.string.element_checklist))) {
+                            element = new Element("checklist", elementTitle);
+                        } else {
+                            element = new Element("bundle", elementTitle);
                         }
 
                         element.setColor(content.getColor());
-                        element.setCategory(content.getCategory());
+                        element.setCategoryName(content.getCategory());
 
                         DatabaseReference dRef = null;
                         if (activity instanceof MainActivity) {
                             dRef = mainActivityInterface.getElementsReference().push();
-                            element.setNoteID(dRef.getKey());
                             dRef.setValue(element);
                         } else {
                             BundleInterface bundleInterface = (BundleInterface) activity;
-                            if (element.getNoteType().equals("checklist")) {
-                                dRef = bundleInterface.getChecklistElementsReference().push();
-                            } else {
-                                dRef = bundleInterface.getNoteElementsReference().push();
-                            }
-                            element.setNoteID(dRef.getKey());
+                            dRef = bundleInterface.getElementsReference().push();
                             dRef.setValue(element);
                         }
                     }
@@ -219,15 +213,15 @@ public class ListAlertDialog extends SuperDialog {
 
                 Activity activity = getActivity();
 
-                if(activity instanceof MainActivityInterface) {
-                    MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication)getContext().getApplicationContext()).mainContext;
+                if (activity instanceof MainActivityInterface) {
+                    MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
 
-                    String elementID = mainActivityInterface.getElementAdapter().getItem(elementPosition).getNoteID();
+                    String elementID = mainActivityInterface.getElementAdapter().getItem(elementPosition).getElementID();
                     String elementType = mainActivityInterface.getElementAdapter().getItem(elementPosition).getNoteType();
                     String strName = dialogAdapter.getName(position);
 
                     if (strName.equals(getResources().getString(R.string.delete_element))) {
-                        mainActivityInterface.getElementsReference().child((mainActivityInterface.getElementAdapter().getItem(elementPosition)).getNoteID()).removeValue();
+                        mainActivityInterface.getElementsReference().child((mainActivityInterface.getElementAdapter().getItem(elementPosition)).getElementID()).removeValue();
                     } else if (strName.equals(getResources().getString(R.string.edit))) {
                         DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_element_title), elementType, elementID);
                         dialog.show(getFragmentManager(), "dialog");
@@ -237,16 +231,12 @@ public class ListAlertDialog extends SuperDialog {
                 } else if (activity instanceof BundleInterface) {
                     BundleInterface bundleInterface = (BundleInterface) activity;
 
-                    String elementID = bundleInterface.getElementAdapter().getItem(elementPosition).getNoteID();
+                    String elementID = bundleInterface.getElementAdapter().getItem(elementPosition).getElementID();
                     String elementType = bundleInterface.getElementAdapter().getItem(elementPosition).getNoteType();
                     String strName = dialogAdapter.getName(position);
 
                     if (strName.equals(getResources().getString(R.string.delete_element))) {
-                        if (elementType.equals("Checklist")) {
-                            bundleInterface.getChecklistElementsReference().child(elementID).removeValue();
-                        } else {
-                            bundleInterface.getNoteElementsReference().child(elementID).removeValue();
-                        }
+                        bundleInterface.getElementsReference().child(elementID).removeValue();
                     } else if (strName.equals(getResources().getString(R.string.edit))) {
                         DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_checklist_title), elementType, elementID);
                         dialog.show(getFragmentManager(), "dialog");

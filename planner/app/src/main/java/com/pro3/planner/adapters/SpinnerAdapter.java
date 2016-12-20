@@ -5,10 +5,7 @@ import android.support.annotation.Nullable;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.pro3.planner.baseClasses.Category;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -17,7 +14,7 @@ import java.util.List;
 
 public class SpinnerAdapter extends ArrayAdapter {
 
-    List<Category> list = new ArrayList<>();
+    List<String> list = new ArrayList<>();
     private int resource;
 
     public SpinnerAdapter(Context context, int resource) {
@@ -27,7 +24,7 @@ public class SpinnerAdapter extends ArrayAdapter {
 
     @Override
     public void add(Object object) {
-        list.add((Category) object);
+        list.add((String) object);
         notifyDataSetChanged();
     }
 
@@ -37,16 +34,9 @@ public class SpinnerAdapter extends ArrayAdapter {
         notifyDataSetChanged();
     }
 
-    public void remove(String categoryID) {
-        Iterator it = list.iterator();
-
-        while (it.hasNext()) {
-            Category category = (Category) it.next();
-            if (category.getCategoryID().equals(categoryID)) {
-                it.remove();
-                return;
-            }
-        }
+    public void remove(String categoryName) {
+        list.remove(categoryName);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -57,10 +47,10 @@ public class SpinnerAdapter extends ArrayAdapter {
     @Nullable
     @Override
     public String getItem(int position) {
-        return list.get(position).getCategoryName();
+        return list.get(position);
     }
 
-    public Category getCategory(int position) {
+    public String getCategory(int position) {
         return list.get(position);
     }
 
@@ -70,15 +60,8 @@ public class SpinnerAdapter extends ArrayAdapter {
         return super.getPosition(item);
     }
 
-    public void update(Category newCategory) {
-        Iterator<Category> it = list.iterator();
-
-        while (it.hasNext()) {
-            Category category = it.next();
-            if (category.getCategoryID().equals(newCategory.getCategoryID())) {
-                category.setCategoryName(newCategory.getCategoryName());
-            }
-        }
+    public void update(String oldCategory, String newCategory) {
+        list.set(list.indexOf(oldCategory), newCategory);
         notifyDataSetChanged();
     }
 

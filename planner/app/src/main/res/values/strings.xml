@@ -102,4 +102,7 @@
     <string name="change_font_size">Change font size</string>
     <string name="change_font_size_description">Change the default font size of note and checklist elements.</string>
     <string name="sort_category_name">Category Name</string>
+    <string name="settings_categories">Manage categories</string>
+    <string name="settings_categories_description">Manage all your created categories. You can either edit or delete them. Needs online connection!</string>
+    <string name="title_activity_category">CategoryActivity</string>
 </resources>

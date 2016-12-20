@@ -15,14 +15,14 @@ import com.pro3.planner.R;
  * Created by linus_000 on 18.11.2016.
  */
 
-public class CategoryElementView extends LinearLayout implements Checkable {
+public class CategoryVisibilityView extends LinearLayout implements Checkable {
 
     private View v;
     private TextView textView;
     private CheckBox checkBox;
     private boolean checked = false;
 
-    public CategoryElementView(Context context) {
+    public CategoryVisibilityView(Context context) {
         super(context);
 
         LayoutInflater inflater = LayoutInflater.from(context);

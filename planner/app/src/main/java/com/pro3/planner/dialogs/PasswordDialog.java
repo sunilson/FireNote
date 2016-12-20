@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -24,8 +26,6 @@ import java.security.NoSuchAlgorithmException;
  */
 
 public class PasswordDialog extends SuperDialog {
-
-
 
     @NonNull
     @Override
@@ -70,7 +70,19 @@ public class PasswordDialog extends SuperDialog {
             }
         });
 
-        return builder.create();
+        final AlertDialog dialog = builder.create();
+
+        password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if ((keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (i == EditorInfo.IME_ACTION_DONE)) {
+                    dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+                }
+                return false;
+            }
+        });
+
+        return dialog;
     }
 
     @Override

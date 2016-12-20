@@ -10,12 +10,11 @@ public class Element {
     private String title;
     private String noteID;
     private String noteType;
-    private String bundleID;
-    private Category category;
+    private String categoryName;
     private int color;
     private Date creationDate;
-    private String text;
     private boolean locked;
+    private boolean isBundleElement;
 
     public Element(String noteType, String title) {
         this.noteType = noteType;
@@ -41,11 +40,11 @@ public class Element {
         this.title = title;
     }
 
-    public String getNoteID() {
+    public String getElementID() {
         return noteID;
     }
 
-    public void setNoteID(String noteID) {
+    public void setElementID(String noteID) {
         this.noteID = noteID;
     }
 
@@ -65,22 +64,6 @@ public class Element {
         return noteType;
     }
 
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getText() {
-        return this.text;
-    }
-
     public boolean getLocked() {
         return locked;
     }
@@ -89,11 +72,19 @@ public class Element {
         this.locked = locked;
     }
 
-    public String getBundleID() {
-        return bundleID;
+    public boolean isBundleElement() {
+        return isBundleElement;
     }
 
-    public void setBundleID(String bundleID) {
-        this.bundleID = bundleID;
+    public void setBundleElement(boolean bundleElement) {
+        isBundleElement = bundleElement;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }
