@@ -62,6 +62,10 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         return false;
     }
 
+    public List<Element> getList() {
+        return allItems;
+    }
+
     @Override
     public void onItemDismiss(int position) {
         //Löschen durch swipe
@@ -131,7 +135,9 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         if (element.getLocked()) {
             ViewHolder viewHolder = (ViewHolder) holder;
             viewHolder.elementTitle.setText(element.getTitle());
+
             viewHolder.elementCategory.setText(element.getCategoryName());
+
 
             if (element.getNoteType().equals("checklist")) {
                 viewHolder.elementIcon.setImageResource(R.drawable.element_checklist_icon);
@@ -156,6 +162,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         } else {
             SwipeableViewHolder viewHolder = (SwipeableViewHolder) holder;
             viewHolder.elementTitle.setText(element.getTitle());
+
             viewHolder.elementCategory.setText(element.getCategoryName());
 
             if (element.getNoteType().equals("checklist")) {
@@ -231,7 +238,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
     public void hideElements() {
         list.clear();
         for (Element e: allItems) {
-            if (LocalSettingsManager.getInstance().getCategoryVisibility(e.getCategoryName()) == -1 || LocalSettingsManager.getInstance().getColorVisibility(e.getColor()) == -1) {
+            if (LocalSettingsManager.getInstance().getCategoryVisibility(e.getCategoryID()) == -1 || LocalSettingsManager.getInstance().getColorVisibility(e.getColor()) == -1) {
                 list.remove(e);
             } else {
                 list.add(e);

@@ -10,11 +10,11 @@ public class Element {
     private String title;
     private String noteID;
     private String noteType;
+    private String categoryID;
     private String categoryName;
     private int color;
     private Date creationDate;
     private boolean locked;
-    private boolean isBundleElement;
 
     public Element(String noteType, String title) {
         this.noteType = noteType;
@@ -72,12 +72,12 @@ public class Element {
         this.locked = locked;
     }
 
-    public boolean isBundleElement() {
-        return isBundleElement;
+    public String getCategoryID() {
+        return categoryID;
     }
 
-    public void setBundleElement(boolean bundleElement) {
-        isBundleElement = bundleElement;
+    public void setCategoryID(String categoryID) {
+        this.categoryID = categoryID;
     }
 
     public String getCategoryName() {

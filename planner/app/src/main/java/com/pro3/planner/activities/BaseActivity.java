@@ -101,6 +101,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                 } else {
                     Log.i("Linus", "disconnected");
                 }
+
+                connectionChanged();
             }
 
             @Override
@@ -179,5 +181,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             }
         };
+    }
+
+    protected void connectionChanged() {
+
     }
 }

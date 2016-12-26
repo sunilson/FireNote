@@ -28,7 +28,6 @@ import com.pro3.planner.R;
 import com.pro3.planner.adapters.ElementRecyclerAdapter;
 import com.pro3.planner.baseClasses.Element;
 import com.pro3.planner.dialogs.ConfirmDialog;
-import com.pro3.planner.dialogs.EditElementDialog;
 import com.pro3.planner.dialogs.ListAlertDialog;
 import com.pro3.planner.dialogs.PasswordDialog;
 
@@ -74,7 +73,7 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.add_Element_Title), "addElementBundle", 0);
+                DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.add_Element_Title), "addElementBundle", null, null);
                 dialog.show(getSupportFragmentManager(), "dialog");
             }
         });
@@ -192,7 +191,7 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
                     DialogFragment dialogFragment = PasswordDialog.newInstance("passwordEditElement", "", "", "", itemPosition);
                     dialogFragment.show(getSupportFragmentManager(), "dialog");
                 } else {
-                    DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", itemPosition);
+                    DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", element.getElementID(), element.getNoteType());
                     dialog.show(getSupportFragmentManager(), "dialog");
                 }
                 return true;
@@ -220,7 +219,7 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_bundle, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -236,11 +235,8 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
             i.putExtra("elementID", elementID);
             startActivity(i);
         } else if (id == R.id.bundle_menu_delete) {
-            DialogFragment dialogFragment = ConfirmDialog.newInstance(getString(R.string.delete_bundle_title), getString(R.string.delete_dialog_confirm_text), "delete");
+            DialogFragment dialogFragment = ConfirmDialog.newInstance(getString(R.string.delete_bundle_title), getString(R.string.delete_dialog_confirm_text), "delete", null);
             dialogFragment.show(getSupportFragmentManager(), "dialog");
-        } else if (id == R.id.bundle_menu_settings) {
-            DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_Bundle_Title), "bundle", "egal");
-            dialog.show(getSupportFragmentManager(), "dialog");
         }
 
         return super.onOptionsItemSelected(item);
@@ -268,8 +264,8 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
             }
         } else if (type.equals("passwordEditElement")) {
             if (bool) {
-                DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", args.getInt("elementColor"));
-                dialog.show(getSupportFragmentManager(), "dialog");
+                //DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", args.getInt("elementColor"));
+                //dialog.show(getSupportFragmentManager(), "dialog");
             } else {
                 Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
             }

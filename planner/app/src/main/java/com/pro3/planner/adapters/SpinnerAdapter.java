@@ -3,9 +3,11 @@ package com.pro3.planner.adapters;
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.pro3.planner.baseClasses.Category;
+
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -14,29 +16,16 @@ import java.util.List;
 
 public class SpinnerAdapter extends ArrayAdapter {
 
-    List<String> list = new ArrayList<>();
-    private int resource;
+    private List<Category> list;
 
-    public SpinnerAdapter(Context context, int resource) {
+    public SpinnerAdapter(Context context, int resource, List<Category> entries) {
         super(context, resource);
-        this.resource = resource;
+        list = entries;
     }
 
     @Override
-    public void add(Object object) {
-        list.add((String) object);
-        notifyDataSetChanged();
-    }
-
-    @Override
-    public void remove(Object object) {
-        list.remove(object);
-        notifyDataSetChanged();
-    }
-
-    public void remove(String categoryName) {
-        list.remove(categoryName);
-        notifyDataSetChanged();
+    public void sort(Comparator comparator) {
+        Collections.sort(list, comparator);
     }
 
     @Override
@@ -47,10 +36,10 @@ public class SpinnerAdapter extends ArrayAdapter {
     @Nullable
     @Override
     public String getItem(int position) {
-        return list.get(position);
+        return list.get(position).getCategoryName();
     }
 
-    public String getCategory(int position) {
+    public Category getCategory(int position) {
         return list.get(position);
     }
 
@@ -58,14 +47,5 @@ public class SpinnerAdapter extends ArrayAdapter {
     @Override
     public int getPosition(Object item) {
         return super.getPosition(item);
-    }
-
-    public void update(String oldCategory, String newCategory) {
-        list.set(list.indexOf(oldCategory), newCategory);
-        notifyDataSetChanged();
-    }
-
-    static class ElementHolder {
-        TextView elementText;
     }
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Everyday Planner</string>
+    <string name="app_name">Fire Note</string>
     <string name="action_settings">Settings</string>
     <string name="action_logOut">Log Out</string>
     <string name="title_activity_login">Login to your account</string>
@@ -105,4 +105,12 @@
     <string name="settings_categories">Manage categories</string>
     <string name="settings_categories_description">Manage all your created categories. You can either edit or delete them. Needs online connection!</string>
     <string name="title_activity_category">CategoryActivity</string>
+    <string name="default_category_delete">Can\'t delete default Category!</string>
+    <string name="category_general">General</string>
+    <string name="category_school">School</string>
+    <string name="category_project">Project</string>
+    <string name="category_sport">Sport</string>
+    <string name="category_finances">Finances</string>
+    <string name="register_title">Register a new account</string>
+    <string name="reset_password_title">Reset your password</string>
 </resources>

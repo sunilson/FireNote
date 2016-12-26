@@ -26,6 +26,17 @@
         android:focusableInTouchMode="true"
         />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="@string/register_title"
+        android:textSize="24sp"
+        android:paddingBottom="50dp"
+        android:textColor="@color/title_text_color"
+        android:gravity="center"
+        />
+
     <EditText
         android:layout_width="match_parent"
         android:inputType="textEmailAddress|textAutoCorrect|textAutoComplete"
