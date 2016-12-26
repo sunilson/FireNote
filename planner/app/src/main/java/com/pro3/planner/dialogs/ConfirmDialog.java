@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +43,7 @@ public class ConfirmDialog extends SuperDialog {
         builder.setPositiveButton(R.string.confirm_clear_bin_dialog, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 ConfirmDialogResult confirmDialogResult = (ConfirmDialogResult) getActivity();
-                confirmDialogResult.confirmDialogResult(true, getArguments().getString("type"), null);
+                confirmDialogResult.confirmDialogResult(true, getArguments().getString("type"), getArguments());
                 dialog.dismiss();
             }
         });
@@ -57,12 +56,13 @@ public class ConfirmDialog extends SuperDialog {
         return builder.create();
     }
 
-    public static ConfirmDialog newInstance(String title, String text, String type) {
+    public static ConfirmDialog newInstance(String title, String text, String type, String extra) {
         ConfirmDialog dialog = new ConfirmDialog();
         Bundle args = new Bundle();
         args.putString("title", title);
         args.putString("text", text);
         args.putString("type", type);
+        args.putString("extra", extra);
         dialog.setArguments(args);
         return dialog;
     }
@@ -71,7 +71,7 @@ public class ConfirmDialog extends SuperDialog {
     public void onStart() {
         super.onStart();
 
-        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_negative_button));
-        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_positive_button));
+        //((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_negative_button));
+        //((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_positive_button));
     }
 }

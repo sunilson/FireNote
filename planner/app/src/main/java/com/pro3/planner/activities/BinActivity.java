@@ -27,7 +27,7 @@ import com.pro3.planner.Interfaces.MainActivityInterface;
 import com.pro3.planner.ItemTouchHelper.SimpleItemTouchHelperCallbackMain;
 import com.pro3.planner.R;
 import com.pro3.planner.adapters.BinRecyclerAdapter;
-import com.pro3.planner.adapters.categoryVisibilityAdapter;
+import com.pro3.planner.adapters.CategoryVisibilityAdapter;
 import com.pro3.planner.baseClasses.Element;
 import com.pro3.planner.dialogs.ConfirmDialog;
 
@@ -45,7 +45,7 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
     private Element currentlySelectedElement;
     private String elementID;
     private MainActivityInterface mainActivityInterface;
-    private categoryVisibilityAdapter categoryVisibilityAdapter;
+    private CategoryVisibilityAdapter CategoryVisibilityAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mainActivityInterface = (MainActivityInterface) ((BaseApplication) getApplicationContext()).mainContext;
-        categoryVisibilityAdapter = (categoryVisibilityAdapter) mainActivityInterface.getListCategoryVisibilityAdapter();
+        CategoryVisibilityAdapter = (CategoryVisibilityAdapter) mainActivityInterface.getListCategoryVisibilityAdapter();
 
         user = mAuth.getCurrentUser();
 
@@ -163,7 +163,7 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
                 if (!restore) {
                     int itemPosition = binList.getChildLayoutPosition(v);
                     currentlySelectedElement = binRecyclerAdapter.getItem(itemPosition);
-                    DialogFragment dialogFragment = ConfirmDialog.newInstance(getString(R.string.restore_element), getString(R.string.restore_element_question), "restore");
+                    DialogFragment dialogFragment = ConfirmDialog.newInstance(getString(R.string.restore_element), getString(R.string.restore_element_question), "restore", null);
                     dialogFragment.show(getSupportFragmentManager(), "dialog");
                 }
 
@@ -180,7 +180,7 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
                 if (!restore) {
                     int itemPosition = binList.getChildLayoutPosition(v);
                     currentlySelectedElement = binRecyclerAdapter.getItem(itemPosition);
-                    DialogFragment dialogFragment = ConfirmDialog.newInstance(getString(R.string.restore_element), getString(R.string.restore_element_question), "restore");
+                    DialogFragment dialogFragment = ConfirmDialog.newInstance(getString(R.string.restore_element), getString(R.string.restore_element_question), "restore", null);
                     dialogFragment.show(getSupportFragmentManager(), "dialog");
                 }
             }
@@ -203,7 +203,7 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
     }
 
     private void initializeDeleteAllDialog() {
-        DialogFragment dialogFragment = ConfirmDialog.newInstance(getString(R.string.clear_bin_title), getString(R.string.clear_bin_question), "clear");
+        DialogFragment dialogFragment = ConfirmDialog.newInstance(getString(R.string.clear_bin_title), getString(R.string.clear_bin_question), "clear", null);
         dialogFragment.show(getSupportFragmentManager(), "dialog");
     }
 

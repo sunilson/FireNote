@@ -30,14 +30,17 @@ import com.pro3.planner.Interfaces.MainActivityInterface;
 import com.pro3.planner.ItemTouchHelper.SimpleItemTouchHelperCallbackMain;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
-import com.pro3.planner.adapters.CategorySettingsAdapter;
-import com.pro3.planner.adapters.categoryVisibilityAdapter;
+import com.pro3.planner.adapters.CategoryVisibilityAdapter;
 import com.pro3.planner.adapters.ElementRecyclerAdapter;
 import com.pro3.planner.adapters.SpinnerAdapter;
+import com.pro3.planner.baseClasses.Category;
 import com.pro3.planner.baseClasses.Element;
 import com.pro3.planner.dialogs.ListAlertDialog;
 import com.pro3.planner.dialogs.PasswordDialog;
 import com.pro3.planner.dialogs.VisibilityDialog;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends BaseActivity implements MainActivityInterface, ConfirmDialogResult {
 
@@ -45,8 +48,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
     private ChildEventListener mElementsListener, mCategoryListener;
     private ElementRecyclerAdapter elementRecyclerAdapter;
     private SpinnerAdapter spinnerCategoryAdapter;
-    private categoryVisibilityAdapter listCategoryVisibilityAdapter;
-    private CategorySettingsAdapter categorySettingsAdapter;
+    private CategoryVisibilityAdapter listCategoryVisibilityAdapter;
     private RecyclerView recyclerView;
     private View.OnClickListener recycleOnClickListener;
     private View.OnLongClickListener recycleOnLongClickListener;
@@ -54,6 +56,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
     private FirebaseUser user;
     private SharedPreferences prefs;
     private TextView currentSortingMethod;
+    private List<Category> categories;
 
     /*
     ------------------------
@@ -94,11 +97,8 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                 mElementsReference = mReference.child("elements").child("main");
                 mElementsReference.addChildEventListener(mElementsListener);
 
-                initializeCategoryListener();
-
                 //Category Reference
-                mCategoryReference = mReference.child("categories");
-                mCategoryReference.addChildEventListener(mCategoryListener);
+                initializeCategories();
 
                 //RecyclerView Initialization
                 recyclerView = (RecyclerView) findViewById(R.id.elementList);
@@ -122,7 +122,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                 currentSortingMethod.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.menu_sort), "sort", 0);
+                        DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.menu_sort), "sort", null, null);
                         dialog.show(getSupportFragmentManager(), "dialog");
                     }
                 });
@@ -134,10 +134,15 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.add_Element_Title), "addElement", 0);
+                DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.add_Element_Title), "addElement", null, null);
                 dialog.show(getSupportFragmentManager(), "dialog");
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override
@@ -146,10 +151,6 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
 
         if (mElementsReference != null) {
             mElementsReference.removeEventListener(mElementsListener);
-        }
-
-        if (mCategoryReference != null) {
-            mCategoryReference.removeEventListener(mCategoryListener);
         }
     }
 
@@ -187,16 +188,12 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
             mAuth.signOut();
             return true;
         } else if (id == R.id.main_element_sort) {
-            DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.menu_sort), "sort", 0);
+            DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.menu_sort), "sort", null, null);
             dialog.show(getSupportFragmentManager(), "dialog");
         } else if (id == R.id.main_element_visibility) {
             VisibilityDialog visibilityDialog = new VisibilityDialog();
             visibilityDialog.show(getSupportFragmentManager(), "dialog");
-        } else if (id == R.id.action_delete_all) {
-            if (mReference != null) {
-                mReference.child("elements").removeValue();
-            }
-        } else if (id == R.id.action_bin) {
+        }  else if (id == R.id.action_bin) {
             Intent i = new Intent(MainActivity.this, BinActivity.class);
             startActivity(i);
         } else if (id == R.id.action_settings) {
@@ -253,7 +250,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                     DialogFragment dialogFragment = PasswordDialog.newInstance("passwordEditElement", "", "", "", itemPosition);
                     dialogFragment.show(getSupportFragmentManager(), "dialog");
                 } else {
-                    DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", itemPosition);
+                    DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", element.getElementID(), element.getNoteType());
                     dialog.show(getSupportFragmentManager(), "dialog");
                 }
                 return true;
@@ -313,48 +310,21 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         };
     }
 
-    private void initializeCategoryListener() {
+    private void initializeCategories() {
         LocalSettingsManager.getInstance();
         LocalSettingsManager.getInstance().setPrefs(prefs);
 
-        spinnerCategoryAdapter = new SpinnerAdapter(this, R.layout.spinner_item);
+        categories = new ArrayList<>();
+
+        categories.add(new Category(getString(R.string.category_general), "general"));
+        categories.add(new Category(getString(R.string.category_school), "school"));
+        categories.add(new Category(getString(R.string.category_finances), "finances"));
+        categories.add(new Category(getString(R.string.category_project), "project"));
+        categories.add(new Category(getString(R.string.category_sport), "sport"));
+
+        spinnerCategoryAdapter = new SpinnerAdapter(this, R.layout.spinner_item, categories);
         spinnerCategoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        listCategoryVisibilityAdapter = new categoryVisibilityAdapter(this, R.layout.category_list_layout);
-        categorySettingsAdapter = new CategorySettingsAdapter(this, R.layout.category_settings_list_layout);
-        mCategoryListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String category = dataSnapshot.getValue(String.class);
-                spinnerCategoryAdapter.add(category);
-                listCategoryVisibilityAdapter.add(category);
-                categorySettingsAdapter.add(category);
-                LocalSettingsManager.getInstance().addCategory(category);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                String category = dataSnapshot.getValue(String.class);
-                spinnerCategoryAdapter.remove(category);
-                listCategoryVisibilityAdapter.remove(category);
-                categorySettingsAdapter.remove(category);
-                LocalSettingsManager.getInstance().removeCategory(category);
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
+        listCategoryVisibilityAdapter = new CategoryVisibilityAdapter(this, R.layout.category_list_layout, categories);
     }
 
     /*
@@ -379,22 +349,17 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
     }
 
     @Override
+    public DatabaseReference getReference() {
+        return mReference;
+    }
+
+    @Override
     public ArrayAdapter<CharSequence> getSpinnerCategoryAdapter() {
         return spinnerCategoryAdapter;
     }
 
-    public ArrayAdapter<String> getListCategoryVisibilityAdapter() {
+    public ArrayAdapter<Category> getListCategoryVisibilityAdapter() {
         return listCategoryVisibilityAdapter;
-    }
-
-    @Override
-    public ArrayAdapter<String> getSettingsCategoryAdapter() {
-        return categorySettingsAdapter;
-    }
-
-    @Override
-    public DatabaseReference getCategoryReference() {
-        return mCategoryReference;
     }
 
     @Override
@@ -425,7 +390,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
             }
         } else if (type.equals("passwordEditElement")) {
             if (bool) {
-                DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", args.getInt("elementColor"));
+                DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", null, null);
                 dialog.show(getSupportFragmentManager(), "dialog");
             } else {
                 Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();

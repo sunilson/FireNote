@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -29,15 +28,12 @@ import com.pro3.planner.R;
 import com.pro3.planner.adapters.ChecklistRecyclerAdapter;
 import com.pro3.planner.baseClasses.ChecklistElement;
 import com.pro3.planner.dialogs.ConfirmDialog;
-import com.pro3.planner.dialogs.EditElementDialog;
 import com.pro3.planner.dialogs.ListAlertDialog;
 
 import static com.pro3.planner.R.id.checkListView;
 
 public class ChecklistActivity extends BaseElementActivity implements ChecklistInterface, ConfirmDialogResult {
 
-    private boolean editMode = false;
-    private MenuItem editButton, settingsButton, doneButton;
     private ChildEventListener mContentsListener;
     private RecyclerView recyclerView;
     private View.OnClickListener recycleOnClickListener;
@@ -74,23 +70,9 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         });
     }
 
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (editMode) {
-                stopEditMode();
-                return true;
-            }
-        }
-
-        return super.onKeyDown(keyCode, event);
-    }
-
     @Override
     protected void onPause() {
         super.onPause();
-        stopEditMode();
     }
 
     @Override
@@ -125,34 +107,19 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
 
         //noinspection SimplifiableIfStatement
         if (id == android.R.id.home) {
-            if (editMode) {
-                stopEditMode();
-                return true;
-            }
             this.finish();
             return true;
-        } else if (id == R.id.checklist_menu_edit) {
-            startEditMode();
         } else if (id == R.id.checklist_menu_delete) {
-            DialogFragment dialogFragment = ConfirmDialog.newInstance(getString(R.string.delete_checklist_title), getString(R.string.delete_dialog_confirm_text), "delete");
+            DialogFragment dialogFragment = ConfirmDialog.newInstance(getString(R.string.delete_checklist_title), getString(R.string.delete_dialog_confirm_text), "delete", null);
             dialogFragment.show(getSupportFragmentManager(), "dialog");
-        } else if (id == R.id.checklist_menu_done) {
-            stopEditMode();
-        } else if (id == R.id.checklist_menu_settings) {
-            DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_checklist_title), "checklist", "egal");
-            dialog.show(getSupportFragmentManager(), "dialog");
         }
+
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_checklist, menu);
-
-        editButton = menu.findItem(R.id.checklist_menu_edit);
-        settingsButton = menu.findItem(R.id.checklist_menu_settings);
-        doneButton = menu.findItem(R.id.checklist_menu_done);
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -213,8 +180,7 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         recycleOnLongClickListener = new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                int itemPosition = recyclerView.getChildLayoutPosition(v);
-                DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editChecklistElement", itemPosition);
+                DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editChecklistElement", elementID, elementType);
                 dialog.show(getSupportFragmentManager(), "dialog");
                 return true;
             }
@@ -305,27 +271,6 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
     ---- Own methods ----
     ---------------------
      */
-
-    private void startEditMode() {
-        if (!editMode) {
-            editMode = true;
-            editButton.setVisible(false);
-            settingsButton.setVisible(true);
-            doneButton.setVisible(true);
-            Toast.makeText(this, R.string.start_edit_mode, Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    private void stopEditMode() {
-        if (editMode) {
-            editMode = false;
-            editButton.setVisible(true);
-            settingsButton.setVisible(false);
-            doneButton.setVisible(false);
-            Toast.makeText(this, R.string.stop_edit_mode, Toast.LENGTH_SHORT).show();
-        }
-    }
 
     @Override
     public void confirmDialogResult(boolean bool, String type, Bundle args) {

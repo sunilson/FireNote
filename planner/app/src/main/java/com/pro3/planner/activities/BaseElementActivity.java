@@ -1,5 +1,6 @@
 package com.pro3.planner.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -9,10 +10,20 @@ import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -25,6 +36,7 @@ import com.pro3.planner.Interfaces.ElementInterface;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
 import com.pro3.planner.baseClasses.Element;
+import com.pro3.planner.dialogs.ListAlertDialog;
 
 /**
  * Created by linus_000 on 09.12.2016.
@@ -32,12 +44,17 @@ import com.pro3.planner.baseClasses.Element;
 
 public abstract class BaseElementActivity extends BaseActivity implements ElementInterface {
 
+    private MenuItem lockButton;
     protected boolean locked;
     protected int elementColor;
+    protected EditText titleEditText;
+    protected ImageView titleDoneButton;
     protected String elementID, elementType, elementTitle, parentID;
     protected ValueEventListener mElementListener;
     protected FirebaseUser user;
     protected DatabaseReference mElementReference, mContentReference;
+    protected InputMethodManager imm;
+    protected boolean titleEdit = false;
 
     /*
     ------------------------
@@ -63,16 +80,49 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
                 break;
         }
 
+        imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        titleDoneButton = (ImageView) toolbar.findViewById(R.id.title_done_button);
+        titleEditText = (EditText) toolbar.findViewById(R.id.title_edittext);
+        titleEditText.setFocusable(false);
+        titleEditText.setFocusableInTouchMode(false);
+
+        titleEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!titleEdit) {
+                    startTitleEdit();
+                }
+            }
+        });
+
+        titleDoneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                stopTitleEdit();
+            }
+        });
+
+
         //Get Element ID from clicked element and set Title
         elementID = i.getStringExtra("elementID");
         parentID = i.getStringExtra("parentID");
         elementColor = i.getIntExtra("elementColor", 1);
-        setTitle(i.getStringExtra("elementTitle"));
+        titleEditText.setText(i.getStringExtra("elementTitle"));
+
+        titleEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if ((keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (i == EditorInfo.IME_ACTION_DONE)) {
+                    titleDoneButton.performClick();
+                }
+                return false;
+            }
+        });
 
         setColors();
 
@@ -94,9 +144,43 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
         }
     }
 
+
+    protected void startTitleEdit() {
+        titleEdit = true;
+        titleEditText.setFocusableInTouchMode(true);
+        titleEditText.setFocusable(true);
+        titleEditText.requestFocus();
+        titleEditText.setSelection(titleEditText.getText().length());
+        titleEditText.setBackgroundColor(ContextCompat.getColor(BaseElementActivity.this, R.color.tint_white));
+        titleEditText.setTextColor(ContextCompat.getColor(BaseElementActivity.this, R.color.title_text_color));
+        titleDoneButton.setVisibility(View.VISIBLE);
+        imm.showSoftInput(titleEditText, InputMethodManager.SHOW_IMPLICIT);
+    }
+
+    protected void stopTitleEdit() {
+        titleEdit = false;
+        titleEditText.setFocusableInTouchMode(false);
+        titleEditText.setFocusable(false);
+        titleEditText.setBackgroundColor(ContextCompat.getColor(BaseElementActivity.this, android.R.color.transparent));
+        titleEditText.setTextColor(ContextCompat.getColor(BaseElementActivity.this, R.color.tint_white));
+        titleDoneButton.setVisibility(View.GONE);
+        imm.hideSoftInputFromWindow(titleEditText.getWindowToken(), 0);
+        mElementReference.child("title").setValue(titleEditText.getText().toString());
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
+
+        if (locked) {
+            if (lockButton != null) {
+                lockButton.setIcon(ContextCompat.getDrawable(this, R.drawable.element_lock_icon));
+            }
+        } else {
+            if (lockButton != null) {
+                lockButton.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_lock_open_white_24dp));
+            }
+        }
 
         mElementReference.addValueEventListener(mElementListener);
     }
@@ -104,6 +188,7 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
     @Override
     protected void onStop() {
         super.onStop();
+        stopTitleEdit();
 
         if (mElementListener != null) {
             mElementReference.removeEventListener(mElementListener);
@@ -158,19 +243,33 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
         //Set Title
         setTitle(element.getTitle());
         elementTitle = element.getTitle();
+        titleEditText.setText(element.getTitle());
 
         //Check Locked
         locked = element.getLocked();
 
         if (locked) {
-            Toast.makeText(BaseElementActivity.this, R.string.locked, Toast.LENGTH_SHORT).show();
+            if (lockButton != null) {
+                lockButton.setIcon(ContextCompat.getDrawable(this, R.drawable.element_lock_icon));
+            }
         } else {
-            Toast.makeText(BaseElementActivity.this, R.string.unlocked, Toast.LENGTH_SHORT).show();
+            if (lockButton != null) {
+                lockButton.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_lock_open_white_24dp));
+            }
         }
 
         //Set colors
         elementColor = element.getColor();
         setColors();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            stopTitleEdit();
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -190,9 +289,18 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
             } else {
                 Toast.makeText(this, R.string.master_password_not_set, Toast.LENGTH_LONG).show();
             }
+        } else if (id == R.id.menu_settings) {
+            DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", elementID, elementType);
+            dialog.show(getSupportFragmentManager(), "dialog");
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        lockButton = menu.findItem(R.id.menu_lock);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

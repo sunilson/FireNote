@@ -21,7 +21,7 @@
 
     <ImageView
         android:layout_width="70dp"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:src="@drawable/logo"
         android:layout_gravity="center"
         />
@@ -48,12 +48,12 @@
         android:nextFocusDown="@+id/loginPassword"
         android:nextFocusForward="@+id/loginPassword"
         android:nextFocusRight="@+id/loginPassword"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         />
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_height="@dimen/login_edit_text_height"
         android:inputType="textPassword"
         android:ems="10"
@@ -64,22 +64,22 @@
         android:background="@drawable/login_edit_text"
         android:hint="@string/enter_password" />
 
-        <Button
-            android:text="@string/login_button"
-            android:layout_width="match_parent"
-            android:layout_marginTop="30dp"
-            android:layout_height="50dp"
-            android:background="@drawable/login_button_drawable"
-            android:textColor="@color/tint_white"
-            style="?android:attr/borderlessButtonStyle"
-            android:id="@+id/loginButton" />
+    <Button
+        android:text="@string/login_button"
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_height="50dp"
+        android:background="@drawable/login_button_drawable"
+        android:textColor="@color/tint_white"
+        style="?android:attr/borderlessButtonStyle"
+        android:id="@+id/loginButton" />
 
     <Button
         android:id="@+id/google_sign_in"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="@string/google_sign_in"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         style="?android:attr/borderlessButtonStyle"
         android:background="@drawable/google_login_button"
         android:textColor="@color/secondary_text_color"

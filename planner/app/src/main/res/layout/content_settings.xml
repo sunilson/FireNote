@@ -71,35 +71,6 @@
 
     <LinearLayout
         style="@style/settingsLinearMasterLayout"
-        android:id="@+id/settings_categories"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            style="@style/settingsElementsHolder"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                style="@style/settingsTextview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_categories" />
-            <TextView
-                style="@style/settingsTextviewSubtitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/settings_categories_description"
-                />
-        </LinearLayout>
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            style="@style/settingsDivider"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/settingsLinearMasterLayout"
         android:id="@+id/settings_font_size"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

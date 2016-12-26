@@ -4,11 +4,10 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,14 +16,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.pro3.planner.BaseApplication;
 import com.pro3.planner.Interfaces.BundleInterface;
 import com.pro3.planner.Interfaces.ChecklistInterface;
+import com.pro3.planner.Interfaces.ElementInterface;
 import com.pro3.planner.Interfaces.HasSortableList;
 import com.pro3.planner.Interfaces.MainActivityInterface;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
+import com.pro3.planner.activities.BaseElementActivity;
 import com.pro3.planner.activities.MainActivity;
 import com.pro3.planner.adapters.DialogMenuAdapter;
 import com.pro3.planner.baseClasses.Element;
 import com.pro3.planner.views.AddElementView;
+import com.pro3.planner.views.EditElementView;
 
 /**
  * Created by linus_000 on 11.11.2016.
@@ -35,6 +37,8 @@ public class ListAlertDialog extends SuperDialog {
     private DialogMenuAdapter dialogAdapter;
     //private AlertDialog dialog;
     private String elementType;
+    private MainActivityInterface mainActivityInterface;
+    private BundleInterface bundleInterface;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -50,6 +54,11 @@ public class ListAlertDialog extends SuperDialog {
 
         titleText.setText(getArguments().getString("title"));
         builder.setCustomTitle(title);
+
+        Activity activity = getActivity();
+        if (activity instanceof BaseElementActivity) {
+            (title.findViewById(R.id.dialog_title_container)).setBackgroundColor(((BaseElementActivity) activity).getElementColor());
+        }
 
         dialogAdapter = new DialogMenuAdapter(getActivity(), R.layout.alertdialog_menu_list_layout);
         contentListView.setAdapter(dialogAdapter);
@@ -82,7 +91,7 @@ public class ListAlertDialog extends SuperDialog {
         } else if (type.equals("addElement") || type.equals("addElementBundle")) {
             initializeAddElementItemListener(contentListView);
         } else if (type.equals("editElement")) {
-            initializeEditElementItemListener(contentListView, getArguments().getInt("extra"));
+            initializeEditElementItemListener(contentListView, getArguments().getString("elementID"), getArguments().getString("elementType"));
         } else if (type.equals("editChecklistElement")) {
             initializeEditChecklistElementItemListener(contentListView, getArguments().getInt("extra"));
         }
@@ -96,12 +105,17 @@ public class ListAlertDialog extends SuperDialog {
         super.onActivityCreated(savedInstanceState);
     }
 
-    public static ListAlertDialog newInstance(String title, String type, int extra) {
+    public static ListAlertDialog newInstance(String title, String type, String elementID, String elementType) {
         ListAlertDialog dialog = new ListAlertDialog();
         Bundle args = new Bundle();
         args.putString("title", title);
         args.putString("type", type);
-        args.putInt("extra", extra);
+        if (elementID != null) {
+            args.putString("elementID", elementID);
+        }
+        if (elementType != null) {
+            args.putString("elementType", elementType);
+        }
         dialog.setArguments(args);
         return dialog;
     }
@@ -140,7 +154,7 @@ public class ListAlertDialog extends SuperDialog {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                final MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
+                mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
                 final AddElementView content = new AddElementView(getActivity(), mainActivityInterface.getSpinnerCategoryAdapter());
 
                 LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -171,15 +185,18 @@ public class ListAlertDialog extends SuperDialog {
                         }
 
                         element.setColor(content.getColor());
-                        element.setCategoryName(content.getCategory());
 
                         DatabaseReference dRef = null;
                         if (activity instanceof MainActivity) {
                             dRef = mainActivityInterface.getElementsReference().push();
+                            element.setCategoryName(content.getCategory().getCategoryName());
+                            element.setCategoryID(content.getCategory().getCategoryID());
                             dRef.setValue(element);
                         } else {
                             BundleInterface bundleInterface = (BundleInterface) activity;
                             dRef = bundleInterface.getElementsReference().push();
+                            element.setCategoryName(content.getCategory().getCategoryName());
+                            element.setCategoryID(content.getCategory().getCategoryID());
                             dRef.setValue(element);
                         }
                     }
@@ -193,59 +210,95 @@ public class ListAlertDialog extends SuperDialog {
                 });
 
                 final AlertDialog dialog = builder.create();
-
-                dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-                    @Override
-                    public void onShow(DialogInterface arg) {
-                        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_negative_button));
-                    }
-                });
-
+                setDialogLayoutParams(dialog);
                 dialog.show();
             }
         });
     }
 
-    private void initializeEditElementItemListener(ListView contentListView, final int elementPosition) {
+    private void initializeEditElementItemListener(ListView contentListView, final String elementID, final String elementType) {
         contentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                getDialog().dismiss();
+                final Activity activity = getActivity();
+                String strName = dialogAdapter.getName(position);
 
-                Activity activity = getActivity();
+                mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
+                if (activity instanceof BundleInterface) {
+                    bundleInterface = (BundleInterface) activity;
+                }
 
-                if (activity instanceof MainActivityInterface) {
-                    MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
-
-                    String elementID = mainActivityInterface.getElementAdapter().getItem(elementPosition).getElementID();
-                    String elementType = mainActivityInterface.getElementAdapter().getItem(elementPosition).getNoteType();
-                    String strName = dialogAdapter.getName(position);
-
-                    if (strName.equals(getResources().getString(R.string.delete_element))) {
-                        mainActivityInterface.getElementsReference().child((mainActivityInterface.getElementAdapter().getItem(elementPosition)).getElementID()).removeValue();
-                    } else if (strName.equals(getResources().getString(R.string.edit))) {
-                        DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_element_title), elementType, elementID);
-                        dialog.show(getFragmentManager(), "dialog");
-                    }
-
-                    getDialog().dismiss();
-                } else if (activity instanceof BundleInterface) {
-                    BundleInterface bundleInterface = (BundleInterface) activity;
-
-                    String elementID = bundleInterface.getElementAdapter().getItem(elementPosition).getElementID();
-                    String elementType = bundleInterface.getElementAdapter().getItem(elementPosition).getNoteType();
-                    String strName = dialogAdapter.getName(position);
-
-                    if (strName.equals(getResources().getString(R.string.delete_element))) {
+                if (strName.equals(getResources().getString(R.string.delete_element))) {
+                    if (mainActivityInterface != null) {
+                        mainActivityInterface.getElementsReference().child(elementID).removeValue();
+                    } else {
                         bundleInterface.getElementsReference().child(elementID).removeValue();
-                    } else if (strName.equals(getResources().getString(R.string.edit))) {
-                        DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_checklist_title), elementType, elementID);
-                        dialog.show(getFragmentManager(), "dialog");
+                    }
+                } else if (strName.equals(getResources().getString(R.string.edit))) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                    LayoutInflater inflater = getActivity().getLayoutInflater();
+                    View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
+
+                    TextView titleText = (TextView) title.findViewById(R.id.dialog_title);
+                    titleText.setText(getArguments().getString("title"));
+
+                    if (activity instanceof BaseElementActivity) {
+                        (title.findViewById(R.id.dialog_title_container)).setBackgroundColor(((BaseElementActivity) activity).getElementColor());
                     }
 
-                    getDialog().dismiss();
+                    builder.setCustomTitle(title);
+
+                    final EditElementView content = new EditElementView(getContext(), mainActivityInterface.getSpinnerCategoryAdapter(), elementType, elementID);
+
+                    builder.setView(content);
+                    builder.setPositiveButton(R.string.confirm_add_dialog, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    String title = content.getTitle();
+                                    String categoryName = content.getCategory().getCategoryName();
+                                    String categoryID = content.getCategory().getCategoryID();
+                                    int color = content.getColor();
+                                    DatabaseReference elementReference = null;
+                                    if (activity instanceof BundleInterface && !elementType.equals("bundle")) {
+                                        BundleInterface bundleInterface = (BundleInterface) activity;
+                                        elementReference = bundleInterface.getElementsReference().child(elementID);
+                                    } else if (activity instanceof ElementInterface) {
+                                        ElementInterface elementInterface = (ElementInterface) activity;
+                                        elementReference = elementInterface.getElementReference();
+                                    } else {
+                                        elementReference = mainActivityInterface.getElementsReference().child(elementID);
+                                    }
+                                    elementReference.child("title").setValue(title);
+                                    elementReference.child("categoryID").setValue(categoryID);
+                                    elementReference.child("categoryName").setValue(categoryName);
+                                    elementReference.child("color").setValue(color);
+                                }
+                            }
+                    );
+
+                    builder.setNegativeButton(R.string.cancel_add_dialog, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    dialog.dismiss();
+                                }
+                            }
+                    );
+
+                    final AlertDialog dialog = builder.create();
+                    setDialogLayoutParams(dialog);
+                    dialog.show();
                 }
             }
         });
+    }
+
+    private void setDialogLayoutParams(Dialog dialog) {
+        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+        dialog.getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        dialog.getWindow().setAttributes(lp);
     }
 
     private void initializeEditChecklistElementItemListener(ListView contentListView, final int elementPosition) {
@@ -264,13 +317,5 @@ public class ListAlertDialog extends SuperDialog {
                 getDialog().dismiss();
             }
         });
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_negative_button));
-        ((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_positive_button));
     }
 }

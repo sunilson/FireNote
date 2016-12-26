@@ -1,6 +1,5 @@
 package com.pro3.planner.activities;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.InputType;
@@ -20,8 +19,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.pro3.planner.Interfaces.ConfirmDialogResult;
 import com.pro3.planner.R;
 import com.pro3.planner.dialogs.ConfirmDialog;
-import com.pro3.planner.dialogs.EditElementDialog;
 
+import static android.view.View.GONE;
 import static com.pro3.planner.R.id.notepad;
 
 public class NoteActivity extends BaseElementActivity implements ConfirmDialogResult {
@@ -47,7 +46,6 @@ public class NoteActivity extends BaseElementActivity implements ConfirmDialogRe
         notePad.setScroller(new Scroller(this));
         notePad.setVerticalScrollBarEnabled(true);
         notePad.setMovementMethod(new ScrollingMovementMethod());
-
 
         if (mElementReference != null) {
             mContentReference = mContentReference.child("text");
@@ -98,7 +96,7 @@ public class NoteActivity extends BaseElementActivity implements ConfirmDialogRe
         getMenuInflater().inflate(R.menu.menu_note, menu);
 
         editButton = menu.findItem(R.id.note_menu_edit);
-        settingsButton = menu.findItem(R.id.note_menu_settings);
+        settingsButton = menu.findItem(R.id.menu_settings);
         doneButton = menu.findItem(R.id.note_menu_done);
         return super.onCreateOptionsMenu(menu);
     }
@@ -117,11 +115,8 @@ public class NoteActivity extends BaseElementActivity implements ConfirmDialogRe
         } else if (id == R.id.note_menu_edit) {
             startEditMode();
         } else if (id == R.id.note_menu_delete) {
-            DialogFragment dialogFragment = ConfirmDialog.newInstance(getResources().getString(R.string.delete_note_title), getString(R.string.delete_dialog_confirm_text), "delete");
+            DialogFragment dialogFragment = ConfirmDialog.newInstance(getResources().getString(R.string.delete_note_title), getString(R.string.delete_dialog_confirm_text), "delete", null);
             dialogFragment.show(getSupportFragmentManager(), "dialog");
-        } else if (id == R.id.note_menu_settings) {
-            DialogFragment dialog = EditElementDialog.newInstance(getResources().getString(R.string.edit_Note_Title), "note", "egal");
-            dialog.show(getSupportFragmentManager(), "dialog");
         } else if (id == R.id.note_menu_done) {
             stopEditMode();
         }
@@ -159,6 +154,11 @@ public class NoteActivity extends BaseElementActivity implements ConfirmDialogRe
 
     private void startEditMode() {
         if (!editMode) {
+            if (!titleEdit) {
+                startTitleEdit();
+            }
+
+            titleDoneButton.setVisibility(GONE);
             editMode = true;
             editButton.setVisible(false);
             settingsButton.setVisible(true);
@@ -166,11 +166,11 @@ public class NoteActivity extends BaseElementActivity implements ConfirmDialogRe
             notePad.setEnabled(true);
             notePad.setFocusableInTouchMode(true);
             notePad.setFocusable(true);
+            notePad.clearFocus();
             notePad.requestFocus();
             notePad.setRawInputType(InputType.TYPE_CLASS_TEXT);
             notePad.setTextIsSelectable(true);
             notePad.setSelection(notePad.getText().length());
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(notePad, InputMethodManager.SHOW_IMPLICIT);
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
             Toast.makeText(this, R.string.start_edit_mode, Toast.LENGTH_SHORT).show();
@@ -179,6 +179,9 @@ public class NoteActivity extends BaseElementActivity implements ConfirmDialogRe
 
     private void stopEditMode() {
         if (editMode) {
+            if (titleEdit) {
+                stopTitleEdit();
+            }
             editMode = false;
             editButton.setVisible(true);
             settingsButton.setVisible(false);

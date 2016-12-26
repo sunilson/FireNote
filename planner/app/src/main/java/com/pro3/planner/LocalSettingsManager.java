@@ -36,19 +36,19 @@ public class LocalSettingsManager {
         editor.commit();
     }
 
-    public void setCategoryVisibility(String categoryName, int visibility) {
+    public void setCategoryVisibility(String categoryID, int visibility) {
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(categoryName, visibility);
+        editor.putInt(categoryID, visibility);
         editor.commit();
     }
 
-    public int getCategoryVisibility(String categoryName) {
-        return prefs.getInt(categoryName, 1);
+    public int getCategoryVisibility(String categoryID) {
+        return prefs.getInt(categoryID, 1);
     }
 
-    public void removeCategory(String categoryName) {
+    public void removeCategory(String categoryID) {
         SharedPreferences.Editor editor = prefs.edit();
-        editor.remove(categoryName);
+        editor.remove(categoryID);
         editor.apply();
     }
 

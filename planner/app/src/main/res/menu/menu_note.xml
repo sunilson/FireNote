@@ -8,33 +8,37 @@
         android:id="@+id/note_menu_edit"
         android:icon="@drawable/checklist_menu_edit_icon"
         app:showAsAction="ifRoom"
+        android:orderInCategory="100"
         />
     <item
         android:title="Done"
         android:id="@+id/note_menu_done"
         android:icon="@drawable/checklist_menu_done_icon"
         app:showAsAction="ifRoom"
+        android:orderInCategory="100"
         android:visible="false" />
     <item
         android:title="Note Settings"
-        android:id="@+id/note_menu_settings"
+        android:id="@+id/menu_settings"
         android:icon="@drawable/checklist_menu_settings_icon"
         app:showAsAction="ifRoom"
+        android:orderInCategory="200"
         android:visible="false" />
-    <item
-        android:title="Delete Checklist"
-        android:id="@+id/note_menu_delete"
-        android:icon="@drawable/checklist_menu_delete_icon"
-        app:showAsAction="ifRoom"
-        />
     <item
         android:id="@+id/menu_lock"
         android:title="@string/lock"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
+        android:orderInCategory="200"
+        android:icon="@drawable/element_lock_icon"
+        app:showAsAction="ifRoom" />
+    <item
+        android:title="Delete Checklist"
+        android:orderInCategory="300"
+        android:id="@+id/note_menu_delete"
+        app:showAsAction="never"
+        />
     <item
         android:id="@+id/menu_reminder"
         android:title="@string/add_reminder"
-        android:orderInCategory="100"
+        android:orderInCategory="400"
         />
 </menu>
