@@ -1,7 +1,10 @@
 package com.pro3.planner.activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.CalendarContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -14,7 +17,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.OvershootInterpolator;
 import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -29,6 +34,12 @@ import com.pro3.planner.adapters.ChecklistRecyclerAdapter;
 import com.pro3.planner.baseClasses.ChecklistElement;
 import com.pro3.planner.dialogs.ConfirmDialog;
 import com.pro3.planner.dialogs.ListAlertDialog;
+
+import java.util.Iterator;
+import java.util.List;
+
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.ScaleInAnimator;
 
 import static com.pro3.planner.R.id.checkListView;
 
@@ -68,28 +79,41 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
                 initializeAddChecklistElementDialog();
             }
         });
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
+        FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.fab2);
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogFragment dialogFragment = ConfirmDialog.newInstance(getString(R.string.remove_checked_items_title), getString(R.string.remove_checked_items), "sweep", null);
+                dialogFragment.show(getSupportFragmentManager(), "dialog");
+            }
+        });
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        mContentReference.addChildEventListener(mContentsListener);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mContentReference.addChildEventListener(mContentsListener);
+            }
+        }, 200);
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        checklistRecyclerAdapter.clear();
         if (mContentsListener != null) {
             mContentReference.removeEventListener(mContentsListener);
         }
+
+        checklistRecyclerAdapter.clear();
     }
 
     /*
@@ -109,9 +133,24 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         if (id == android.R.id.home) {
             this.finish();
             return true;
-        } else if (id == R.id.checklist_menu_delete) {
-            DialogFragment dialogFragment = ConfirmDialog.newInstance(getString(R.string.delete_checklist_title), getString(R.string.delete_dialog_confirm_text), "delete", null);
-            dialogFragment.show(getSupportFragmentManager(), "dialog");
+        } else if (id == R.id.menu_share) {
+
+            String shareBody = getString(R.string.element_checklist) + " \"" + elementTitle + "\" " + getString(R.string.from_app) + ": " + "\n" + checklistRecyclerAdapter.toString();
+
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, elementTitle);
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+            startActivity(Intent.createChooser(sharingIntent, ""));
+        } else if (id == R.id.menu_reminder) {
+            String shareBody = getString(R.string.element_checklist) + " \"" + elementTitle + "\" " + getString(R.string.from_app) + ": " + "\n" + checklistRecyclerAdapter.toString();
+
+            Intent calIntent = new Intent(Intent.ACTION_INSERT);
+            calIntent.setData(CalendarContract.Events.CONTENT_URI);
+            calIntent.setType("vnd.android.cursor.item/event");
+            calIntent.putExtra(CalendarContract.Events.TITLE, elementTitle + " - " + getString(R.string.app_name));
+            calIntent.putExtra(CalendarContract.Events.DESCRIPTION, shareBody);
+            startActivityForResult(calIntent, 123);
         }
 
         return super.onOptionsItemSelected(item);
@@ -180,7 +219,9 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         recycleOnLongClickListener = new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editChecklistElement", elementID, elementType);
+                int itemPosition = recyclerView.getChildLayoutPosition(v);
+                ChecklistElement element = checklistRecyclerAdapter.getItem(itemPosition);
+                DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editChecklistElement", element.getElementID(), null);
                 dialog.show(getSupportFragmentManager(), "dialog");
                 return true;
             }
@@ -194,16 +235,16 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
         View content = inflater.inflate(R.layout.alertdialog_body_checklist_add, null);
         ((TextView) title.findViewById(R.id.dialog_title)).setText(getResources().getString(R.string.add_checklist_item_title));
-        final TextView elementTitleTextView = (TextView) content.findViewById(R.id.checklist_add_element_title);
+        final EditText elementTitle = (EditText) content.findViewById(R.id.checklist_add_element_title);
         title.findViewById(R.id.dialog_title_container).setBackgroundColor(elementColor);
         alert.setCustomTitle(title);
 
         alert.setView(content);
         alert.setPositiveButton(R.string.confirm_add_dialog, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                String entry = elementTitleTextView.getText().toString();
+                String entry = elementTitle.getText().toString();
                 DatabaseReference dRef = mContentReference.push();
-                ChecklistElement checklistElement = new ChecklistElement(entry, checklistRecyclerAdapter.getItemCount());
+                ChecklistElement checklistElement = new ChecklistElement(entry);
                 dRef.setValue(checklistElement);
             }
         });
@@ -214,8 +255,9 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         });
         final AlertDialog dialog = alert.create();
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimation;
 
-        elementTitleTextView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        elementTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
                 if ((keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (i == EditorInfo.IME_ACTION_DONE)) {
@@ -243,8 +285,13 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         recyclerView.setLayoutManager(linearLayoutManager);
         initializeRecyclerOnClickListener();
         initializeRecyclerOnLongClickListener();
-        checklistRecyclerAdapter = new ChecklistRecyclerAdapter(this, recycleOnClickListener, recycleOnLongClickListener);
-        recyclerView.setAdapter(checklistRecyclerAdapter);
+        checklistRecyclerAdapter = new ChecklistRecyclerAdapter(this, recycleOnClickListener, recycleOnLongClickListener, recyclerView);
+        AlphaInAnimationAdapter alphaInAnimationAdapter = new AlphaInAnimationAdapter(checklistRecyclerAdapter);
+        alphaInAnimationAdapter.setFirstOnly(false);
+        alphaInAnimationAdapter.setDuration(200);
+        recyclerView.setAdapter(alphaInAnimationAdapter);
+        recyclerView.setItemAnimator(new ScaleInAnimator(new OvershootInterpolator(1f)));
+        recyclerView.getItemAnimator().setAddDuration(400);
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallbackChecklist(checklistRecyclerAdapter);
         itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
@@ -266,18 +313,22 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         return checklistRecyclerAdapter;
     }
 
-    /*
-    ---------------------
-    ---- Own methods ----
-    ---------------------
-     */
-
     @Override
     public void confirmDialogResult(boolean bool, String type, Bundle args) {
+        super.confirmDialogResult(bool, type, args);
+
         if (bool) {
-            if (type.equals("delete")) {
-                mElementReference.removeValue();
-                finish();
+            if (type.equals("sweep")) {
+                List<ChecklistElement> list = checklistRecyclerAdapter.getList();
+
+                Iterator<ChecklistElement> it = list.iterator();
+
+                while (it.hasNext()) {
+                    ChecklistElement element = it.next();
+                    if (element.isFinished()) {
+                        mContentReference.child(element.getElementID()).removeValue();
+                    }
+                }
             }
         }
     }

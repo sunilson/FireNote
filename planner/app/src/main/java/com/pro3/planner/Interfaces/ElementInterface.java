@@ -12,5 +12,6 @@ public interface ElementInterface {
     DatabaseReference getContentsReference();
     String getElementTitle();
     int getElementColor();
+    String getElementCategoryID();
 
 }

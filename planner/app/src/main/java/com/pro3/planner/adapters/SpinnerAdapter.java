@@ -8,6 +8,7 @@ import com.pro3.planner.baseClasses.Category;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -43,6 +44,25 @@ public class SpinnerAdapter extends ArrayAdapter {
         return list.get(position);
     }
 
+    public int getPositionWithID(String categoryID) {
+        Iterator<Category> it = list.iterator();
+        int count = 0;
+
+        while (it.hasNext()) {
+            Category category = it.next();
+            if (category.getCategoryID().equals(categoryID)) {
+                break;
+            }
+
+            if (count == list.size() - 1) {
+                break;
+            }
+
+            count++;
+        }
+
+        return count;
+    }
 
     @Override
     public int getPosition(Object item) {

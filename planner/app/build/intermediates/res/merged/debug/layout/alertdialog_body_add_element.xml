@@ -7,6 +7,7 @@
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
+    android:clickable="true"
     android:paddingLeft="@dimen/dialog_margin_horizontal"
     android:paddingRight="@dimen/dialog_margin_horizontal"
     android:paddingTop="@dimen/dialog_margin_vertically"
@@ -15,7 +16,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Choose Element title:" />
+        android:text="@string/choose_element_title" />
 
     <EditText
         android:id="@+id/add_element_title"
@@ -33,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/add_dialog_menu_margin_vertical"
-        android:text="Choose Element category:" />
+        android:text="@string/choose_element_category" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,10 +56,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/add_dialog_menu_margin_vertical"
-        android:text="Choose Element color:" />
+        android:text="@string/choose_element_color" />
 
     <ListView
-        android:id="@+id/add_element_colors"
+        android:id="@+id/colorlist"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

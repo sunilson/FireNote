@@ -43,7 +43,7 @@ public class CategoryVisibilityAdapter extends ArrayAdapter {
     }
 
     @Override
-    public void sort(Comparator comparator) {
+    public void sort(@NonNull Comparator comparator) {
         Collections.sort(list, comparator);
     }
 

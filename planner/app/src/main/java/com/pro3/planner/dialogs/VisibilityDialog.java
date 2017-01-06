@@ -30,7 +30,7 @@ public class VisibilityDialog extends SuperDialog {
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         layoutParams.copyFrom(dialog.getWindow().getAttributes());
         layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
 
         dialog.getWindow().setAttributes(layoutParams);
 
@@ -50,7 +50,7 @@ public class VisibilityDialog extends SuperDialog {
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         layoutParams.copyFrom(getDialog().getWindow().getAttributes());
         layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
+        layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
 
         getDialog().getWindow().setAttributes(layoutParams);
 

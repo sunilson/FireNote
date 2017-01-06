@@ -5,10 +5,13 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.pro3.planner.BaseApplication;
 import com.pro3.planner.Interfaces.BundleInterface;
 import com.pro3.planner.Interfaces.ChecklistInterface;
+import com.pro3.planner.Interfaces.ConfirmDialogResult;
 import com.pro3.planner.Interfaces.ElementInterface;
 import com.pro3.planner.Interfaces.HasSortableList;
 import com.pro3.planner.Interfaces.MainActivityInterface;
@@ -24,9 +28,6 @@ import com.pro3.planner.R;
 import com.pro3.planner.activities.BaseElementActivity;
 import com.pro3.planner.activities.MainActivity;
 import com.pro3.planner.adapters.DialogMenuAdapter;
-import com.pro3.planner.baseClasses.Element;
-import com.pro3.planner.views.AddElementView;
-import com.pro3.planner.views.EditElementView;
 
 /**
  * Created by linus_000 on 11.11.2016.
@@ -39,6 +40,7 @@ public class ListAlertDialog extends SuperDialog {
     private String elementType;
     private MainActivityInterface mainActivityInterface;
     private BundleInterface bundleInterface;
+    private DatabaseReference elementReference;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -80,6 +82,7 @@ public class ListAlertDialog extends SuperDialog {
             dialogAdapter.add(getResources().getString(R.string.edit), R.drawable.ic_mode_edit_black_24dp);
             dialogAdapter.add(getResources().getString(R.string.delete_element), R.drawable.ic_delete_black_24dp);
         } else if (type.equals("editChecklistElement")) {
+            dialogAdapter.add(getResources().getString(R.string.edit), R.drawable.ic_mode_edit_black_24dp);
             dialogAdapter.add(getResources().getString(R.string.delete_checklist_element), R.drawable.ic_delete_black_24dp);
         }
 
@@ -93,7 +96,7 @@ public class ListAlertDialog extends SuperDialog {
         } else if (type.equals("editElement")) {
             initializeEditElementItemListener(contentListView, getArguments().getString("elementID"), getArguments().getString("elementType"));
         } else if (type.equals("editChecklistElement")) {
-            initializeEditChecklistElementItemListener(contentListView, getArguments().getInt("extra"));
+            initializeEditChecklistElementItemListener(contentListView, getArguments().getString("elementID"));
         }
 
         return dialog;
@@ -143,6 +146,7 @@ public class ListAlertDialog extends SuperDialog {
 
                 hasSortingAdapter.getSortTextView().setText(getString(R.string.current_sorthing_method) + " " + name);
                 hasSortingAdapter.getElementAdapter().sort(name);
+                hasSortingAdapter.getElementAdapter().notifyDataSetChanged();
                 LocalSettingsManager.getInstance().setSortingMethod(name);
                 getDialog().dismiss();
             }
@@ -153,65 +157,11 @@ public class ListAlertDialog extends SuperDialog {
         contentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
-                final AddElementView content = new AddElementView(getActivity(), mainActivityInterface.getSpinnerCategoryAdapter());
-
-                LayoutInflater inflater = getActivity().getLayoutInflater();
-                final Activity activity = getActivity();
-                View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-                elementType = dialogAdapter.getName(position);
                 getDialog().dismiss();
-
-                TextView titleText = (TextView) title.findViewById(R.id.dialog_title);
-                titleText.setText(getArguments().getString("title"));
-                builder.setCustomTitle(title);
-                builder.setView(content);
-
-                builder.setPositiveButton(getString(R.string.confirm_add_dialog), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Element element = null;
-                        String elementTitle = content.getTitle();
-
-                        if (elementType.equals(activity.getString(R.string.element_note))) {
-                            element = new Element("note", elementTitle);
-                        } else if (elementType.equals(activity.getString(R.string.element_checklist))) {
-                            element = new Element("checklist", elementTitle);
-                        } else {
-                            element = new Element("bundle", elementTitle);
-                        }
-
-                        element.setColor(content.getColor());
-
-                        DatabaseReference dRef = null;
-                        if (activity instanceof MainActivity) {
-                            dRef = mainActivityInterface.getElementsReference().push();
-                            element.setCategoryName(content.getCategory().getCategoryName());
-                            element.setCategoryID(content.getCategory().getCategoryID());
-                            dRef.setValue(element);
-                        } else {
-                            BundleInterface bundleInterface = (BundleInterface) activity;
-                            dRef = bundleInterface.getElementsReference().push();
-                            element.setCategoryName(content.getCategory().getCategoryName());
-                            element.setCategoryID(content.getCategory().getCategoryID());
-                            dRef.setValue(element);
-                        }
-                    }
-                });
-
-                builder.setNegativeButton(getString(R.string.cancel_add_dialog), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-                final AlertDialog dialog = builder.create();
-                setDialogLayoutParams(dialog);
-                dialog.show();
+                Bundle bundle = new Bundle();
+                bundle.putString("elementType", dialogAdapter.getName(position));
+                ConfirmDialogResult confirmDialogResult = (ConfirmDialogResult) getActivity();
+                confirmDialogResult.confirmDialogResult(true, "addElement", bundle);
             }
         });
     }
@@ -224,97 +174,102 @@ public class ListAlertDialog extends SuperDialog {
                 final Activity activity = getActivity();
                 String strName = dialogAdapter.getName(position);
 
-                mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
-                if (activity instanceof BundleInterface) {
-                    bundleInterface = (BundleInterface) activity;
-                }
-
                 if (strName.equals(getResources().getString(R.string.delete_element))) {
-                    if (mainActivityInterface != null) {
-                        mainActivityInterface.getElementsReference().child(elementID).removeValue();
+
+                    if (activity instanceof BundleInterface) {
+                        bundleInterface = (BundleInterface) activity;
+                    }
+
+                    mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
+
+                    if (activity instanceof BundleInterface && !elementType.equals("bundle")) {
+                        elementReference = bundleInterface.getElementsReference().child(elementID);
+                    } else if (activity instanceof ElementInterface) {
+                        ElementInterface elementInterface = (ElementInterface) activity;
+                        elementReference = elementInterface.getElementReference();
                     } else {
-                        bundleInterface.getElementsReference().child(elementID).removeValue();
-                    }
-                } else if (strName.equals(getResources().getString(R.string.edit))) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-                    LayoutInflater inflater = getActivity().getLayoutInflater();
-                    View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
-
-                    TextView titleText = (TextView) title.findViewById(R.id.dialog_title);
-                    titleText.setText(getArguments().getString("title"));
-
-                    if (activity instanceof BaseElementActivity) {
-                        (title.findViewById(R.id.dialog_title_container)).setBackgroundColor(((BaseElementActivity) activity).getElementColor());
+                        elementReference = mainActivityInterface.getElementsReference().child(elementID);
                     }
 
-                    builder.setCustomTitle(title);
+                    if (activity instanceof MainActivity) {
 
-                    final EditElementView content = new EditElementView(getContext(), mainActivityInterface.getSpinnerCategoryAdapter(), elementType, elementID);
+                    } else if (activity instanceof BundleInterface && !elementType.equals("bundle")) {
 
-                    builder.setView(content);
-                    builder.setPositiveButton(R.string.confirm_add_dialog, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                    String title = content.getTitle();
-                                    String categoryName = content.getCategory().getCategoryName();
-                                    String categoryID = content.getCategory().getCategoryID();
-                                    int color = content.getColor();
-                                    DatabaseReference elementReference = null;
-                                    if (activity instanceof BundleInterface && !elementType.equals("bundle")) {
-                                        BundleInterface bundleInterface = (BundleInterface) activity;
-                                        elementReference = bundleInterface.getElementsReference().child(elementID);
-                                    } else if (activity instanceof ElementInterface) {
-                                        ElementInterface elementInterface = (ElementInterface) activity;
-                                        elementReference = elementInterface.getElementReference();
-                                    } else {
-                                        elementReference = mainActivityInterface.getElementsReference().child(elementID);
-                                    }
-                                    elementReference.child("title").setValue(title);
-                                    elementReference.child("categoryID").setValue(categoryID);
-                                    elementReference.child("categoryName").setValue(categoryName);
-                                    elementReference.child("color").setValue(color);
-                                }
-                            }
-                    );
-
-                    builder.setNegativeButton(R.string.cancel_add_dialog, new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                    dialog.dismiss();
-                                }
-                            }
-                    );
-
-                    final AlertDialog dialog = builder.create();
-                    setDialogLayoutParams(dialog);
-                    dialog.show();
+                    } else {
+                        activity.finish();
+                    }
+                    elementReference.removeValue();
+                } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("elementType", elementType);
+                    bundle.putString("elementID", elementID);
+                    ConfirmDialogResult confirmDialogResult = (ConfirmDialogResult) getActivity();
+                    confirmDialogResult.confirmDialogResult(true, "editElement", bundle);
                 }
             }
         });
     }
 
-    private void setDialogLayoutParams(Dialog dialog) {
-        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-        dialog.getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        dialog.getWindow().setAttributes(lp);
-    }
-
-    private void initializeEditChecklistElementItemListener(ListView contentListView, final int elementPosition) {
+    private void initializeEditChecklistElementItemListener(ListView contentListView, final String elementID) {
         contentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ChecklistInterface checklistInterface = (ChecklistInterface) getActivity();
-                String elementID = checklistInterface.getCheckListRecyclerAdapter().getItem(elementPosition).getElementID();
+                final ChecklistInterface checklistInterface = (ChecklistInterface) getActivity();
 
                 String strName = dialogAdapter.getName(position);
 
+                getDialog().dismiss();
+
                 if (strName.equals(getResources().getString(R.string.delete_checklist_element))) {
                     checklistInterface.getElementsReference().child(elementID).removeValue();
-                }
+                } else if (strName.equals(getString(R.string.edit))) {
+                    final Activity activity = getActivity();
+                    AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
 
-                getDialog().dismiss();
+                    LayoutInflater inflater = getActivity().getLayoutInflater();
+                    View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
+                    View content = inflater.inflate(R.layout.alertdialog_body_checklist_add, null);
+                    ((TextView) title.findViewById(R.id.dialog_title)).setText(getResources().getString(R.string.edit_checklist_item_title));
+                    final EditText elementTitle = (EditText) content.findViewById(R.id.checklist_add_element_title);
+                    String currentTitle = checklistInterface.getCheckListRecyclerAdapter().getItemWithID(elementID).getText();
+                    if (currentTitle != null) {
+                        elementTitle.setText(currentTitle);
+                        elementTitle.setSelection(elementTitle.length());
+                    }
+
+                    if (activity instanceof BaseElementActivity) {
+                        (title.findViewById(R.id.dialog_title_container)).setBackgroundColor(((BaseElementActivity) activity).getElementColor());
+                    }
+                    alert.setCustomTitle(title);
+
+                    alert.setView(content);
+                    alert.setPositiveButton(R.string.confirm_add_dialog, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            String entry = elementTitle.getText().toString();
+                            checklistInterface.getElementsReference().child(elementID).child("text").setValue(entry);
+                        }
+                    });
+
+                    alert.setNegativeButton(R.string.cancel_add_dialog, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                        }
+                    });
+                    final AlertDialog dialog = alert.create();
+                    dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+                    dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimation;
+
+                    elementTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                            if ((keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (i == EditorInfo.IME_ACTION_DONE)) {
+                                dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+                            }
+                            return false;
+                        }
+                    });
+
+                    dialog.show();
+                }
             }
         });
     }

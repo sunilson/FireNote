@@ -74,7 +74,7 @@ public class LocalSettingsManager {
         if (this.sortingMethod != null) {
             return this.sortingMethod;
         } else {
-            return prefs.getString("mainElementSorting", "nameAscending");
+            return prefs.getString("mainElementSorting", null);
         }
     }
 
@@ -87,6 +87,7 @@ public class LocalSettingsManager {
     public String getMasterPassword() {
         return prefs.getString("masterPassword", "");
     }
+
 
     public String getMD5Hash(String masterPasswordHash) throws UnsupportedEncodingException, NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");

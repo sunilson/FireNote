@@ -34,6 +34,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.0.1'
     compile 'com.android.support:support-v4:25.0.1'
     compile 'com.android.support:support-vector-drawable:25.0.1'
+    compile 'jp.wasabeef:recyclerview-animators:2.2.5'
     testCompile 'junit:junit:4.12'
 }
 apply plugin: 'com.google.gms.google-services'

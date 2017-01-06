@@ -1,124 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/content_settings"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="@color/tint_white"
-    android:orientation="vertical"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.pro3.planner.activities.SettingsActivity"
-    tools:showIn="@layout/activity_settings">
+    android:fillViewport="true"
+    android:layout_marginTop="?actionBarSize"
+    >
 
-    <LinearLayout
-        style="@style/settingsLinearMasterLayout"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/content_settings"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="@color/tint_white"
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="com.pro3.planner.activities.SettingsActivity"
+        tools:showIn="@layout/activity_settings">
 
         <LinearLayout
-            style="@style/settingsElementsHolder"
+            style="@style/settingsLinearMasterLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <TextView
-                style="@style/settingsTextview"
+            <LinearLayout
+                style="@style/settingsElementsHolder"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/edit_user_profile" />
-            <TextView
-                style="@style/settingsTextviewSubtitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/user_profile_description"
-                />
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/username"
+                    style="@style/settingsTextview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/change_password"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/settingsDivider"
+                android:layout_width="match_parent" />
         </LinearLayout>
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            style="@style/settingsDivider"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/settingsLinearMasterLayout"
-        android:id="@+id/master_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <LinearLayout
-            style="@style/settingsElementsHolder"
+            style="@style/settingsLinearMasterLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                style="@style/settingsTextview"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/change_password"
+                style="@style/settingsElementsHolder"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/set_master_password" />
-            <TextView
-                style="@style/settingsTextviewSubtitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/master_password_description"
-                />
+                android:layout_height="match_parent">
+
+                <TextView
+                    style="@style/settingsTextview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/change_password" />
+
+                <TextView
+                    style="@style/settingsTextviewSubtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/change_password_description" />
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/settingsDivider"
+                android:layout_width="match_parent" />
         </LinearLayout>
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            style="@style/settingsDivider"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/settingsLinearMasterLayout"
-        android:id="@+id/settings_font_size"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <LinearLayout
-            style="@style/settingsElementsHolder"
+            android:id="@+id/master_password"
+            style="@style/settingsLinearMasterLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                style="@style/settingsTextview"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                style="@style/settingsElementsHolder"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/change_font_size" />
-            <TextView
-                style="@style/settingsTextviewSubtitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/change_font_size_description"
-                />
+                android:layout_height="match_parent">
+
+                <TextView
+                    style="@style/settingsTextview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/set_master_password" />
+
+                <TextView
+                    style="@style/settingsTextviewSubtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/master_password_description" />
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/settingsDivider"
+                android:layout_width="match_parent" />
         </LinearLayout>
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="match_parent"
-            style="@style/settingsDivider"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        style="@style/settingsLinearMasterLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
         <LinearLayout
-            style="@style/settingsElementsHolder"
+            android:id="@+id/delete_account"
+            style="@style/settingsLinearMasterLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <TextView
-                style="@style/settingsTextview"
+            <LinearLayout
+                style="@style/settingsElementsHolder"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/about_title" />
+                android:layout_height="match_parent">
+
+                <TextView
+                    style="@style/settingsTextview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/delete_account" />
+
+                <TextView
+                    style="@style/settingsTextviewSubtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/delete_account_description" />
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/settingsDivider"
+                android:layout_width="match_parent" />
         </LinearLayout>
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <LinearLayout
+            android:id="@+id/about"
+            style="@style/settingsLinearMasterLayout"
             android:layout_width="match_parent"
-            style="@style/settingsDivider"
-            />
-    </LinearLayout>
+            android:layout_height="wrap_content">
 
-</LinearLayout>
+            <LinearLayout
+                style="@style/settingsElementsHolder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    style="@style/settingsTextview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/about_title" />
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/settingsDivider"
+                android:layout_width="match_parent" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

@@ -58,7 +58,7 @@ public class PasswordDialog extends SuperDialog {
                     dialog.dismiss();
                 } else {
                     ConfirmDialogResult confirmDialogResult = (ConfirmDialogResult) getActivity();
-                    confirmDialogResult.confirmDialogResult(false, getArguments().getString("type"), null);
+                    confirmDialogResult.confirmDialogResult(false, getArguments().getString("type"), getArguments());
                     dialog.dismiss();
                 }
             }
@@ -101,9 +101,6 @@ public class PasswordDialog extends SuperDialog {
     @Override
     public void onStart() {
         super.onStart();
-
-        //((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_negative_button));
-        //((AlertDialog) getDialog()).getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getActivity(), R.color.dialog_positive_button));
     }
 
     public static PasswordDialog newInstance(String type, String elementType, String elementID, String elementTitle, int elementColor) {

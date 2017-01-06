@@ -2,6 +2,7 @@ package com.pro3.planner.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -31,6 +33,9 @@ import com.pro3.planner.adapters.CategoryVisibilityAdapter;
 import com.pro3.planner.baseClasses.Element;
 import com.pro3.planner.dialogs.ConfirmDialog;
 
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.ScaleInAnimator;
+
 public class BinActivity extends BaseActivity implements BinInterface, ConfirmDialogResult {
 
     private DatabaseReference mReference, mBinReference, mElementsRefernce, mContentsReference;
@@ -43,7 +48,7 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
     private BinRecyclerAdapter binRecyclerAdapter;
     private CoordinatorLayout coordinatorLayout;
     private Element currentlySelectedElement;
-    private String elementID;
+    private String elementID, elementName;
     private MainActivityInterface mainActivityInterface;
     private CategoryVisibilityAdapter CategoryVisibilityAdapter;
 
@@ -62,6 +67,7 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
 
         Intent i = getIntent();
         elementID = i.getStringExtra("elementID");
+        elementName = i.getStringExtra("elementName");
 
         if (user != null) {
             mReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
@@ -75,7 +81,12 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
             initializeOnClickListener();
             initializeOnLongClickListener();
             binRecyclerAdapter = new BinRecyclerAdapter(this, recycleOnClickListener, recycleOnLongClickListener);
-            binList.setAdapter(binRecyclerAdapter);
+            AlphaInAnimationAdapter alphaInAnimationAdapter = new AlphaInAnimationAdapter(binRecyclerAdapter);
+            alphaInAnimationAdapter.setFirstOnly(false);
+            alphaInAnimationAdapter.setDuration(200);
+            binList.setAdapter(alphaInAnimationAdapter);
+            binList.setItemAnimator(new ScaleInAnimator(new OvershootInterpolator(1f)));
+            binList.getItemAnimator().setAddDuration(400);
             ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallbackMain(binRecyclerAdapter);
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
             itemTouchHelper.attachToRecyclerView(binList);
@@ -83,9 +94,11 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
             if (elementID == null) {
                 mElementsRefernce = mReference.child("elements").child("main");
                 mBinReference = mReference.child("bin").child("main");
+                setTitle(getString(R.string.bin));
             } else {
                 mElementsRefernce = mReference.child("elements").child("bundles").child(elementID);
                 mBinReference = mReference.child("bin").child("bundles").child(elementID);
+                setTitle(getString(R.string.bin) + " - " + elementName);
             }
 
             mContentsReference = mReference.child("contents");
@@ -97,7 +110,13 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
         super.onStart();
 
         if (mReference != null) {
-            mBinReference.addChildEventListener(mBinListener);
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mBinReference.addChildEventListener(mBinListener);
+                }
+            }, 200);
         }
     }
 
@@ -108,6 +127,8 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
         if (mBinListener != null) {
             mBinReference.removeEventListener(mBinListener);
         }
+
+        binRecyclerAdapter.clear();
     }
 
     private void initializeBinListener() {

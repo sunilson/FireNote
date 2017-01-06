@@ -2,6 +2,7 @@ package com.pro3.planner.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +15,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,17 +37,24 @@ import com.pro3.planner.adapters.ElementRecyclerAdapter;
 import com.pro3.planner.adapters.SpinnerAdapter;
 import com.pro3.planner.baseClasses.Category;
 import com.pro3.planner.baseClasses.Element;
+import com.pro3.planner.dialogs.AddElementDialog;
+import com.pro3.planner.dialogs.EditElementDialog;
 import com.pro3.planner.dialogs.ListAlertDialog;
 import com.pro3.planner.dialogs.PasswordDialog;
 import com.pro3.planner.dialogs.VisibilityDialog;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.ScaleInAnimator;
 
 public class MainActivity extends BaseActivity implements MainActivityInterface, ConfirmDialogResult {
 
-    private DatabaseReference mReference, mElementsReference, mCategoryReference, mBinReference;
-    private ChildEventListener mElementsListener, mCategoryListener;
+    private DatabaseReference mReference, mElementsReference, mBinReference;
+    private ChildEventListener mElementsListener;
     private ElementRecyclerAdapter elementRecyclerAdapter;
     private SpinnerAdapter spinnerCategoryAdapter;
     private CategoryVisibilityAdapter listCategoryVisibilityAdapter;
@@ -57,6 +66,10 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
     private SharedPreferences prefs;
     private TextView currentSortingMethod;
     private List<Category> categories;
+    private boolean started;
+    private LinearLayoutManager linearLayoutManager;
+    private String restoredElement = "";
+    private DialogFragment addEditDialog;
 
     /*
     ------------------------
@@ -95,7 +108,6 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
 
                 //Register ChildEventListener here so it's not added every time we switch Activity
                 mElementsReference = mReference.child("elements").child("main");
-                mElementsReference.addChildEventListener(mElementsListener);
 
                 //Category Reference
                 initializeCategories();
@@ -103,14 +115,19 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                 //RecyclerView Initialization
                 recyclerView = (RecyclerView) findViewById(R.id.elementList);
                 recyclerView.setHasFixedSize(true);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-                recyclerView.setLayoutManager(linearLayoutManager);
+                linearLayoutManager = new LinearLayoutManager(this);
                 initializeRecyclerOnClickListener();
                 initializeRecyclerOnLongClickListener();
 
-                elementRecyclerAdapter = new ElementRecyclerAdapter(this, recycleOnClickListener, recycleOnLongClickListener);
+                elementRecyclerAdapter = new ElementRecyclerAdapter(this, recycleOnClickListener, recycleOnLongClickListener, recyclerView);
 
-                recyclerView.setAdapter(elementRecyclerAdapter);
+                AlphaInAnimationAdapter alphaInAnimationAdapter = new AlphaInAnimationAdapter(elementRecyclerAdapter);
+                alphaInAnimationAdapter.setFirstOnly(false);
+                alphaInAnimationAdapter.setDuration(200);
+                recyclerView.setAdapter(alphaInAnimationAdapter);
+                recyclerView.setLayoutManager(linearLayoutManager);
+                recyclerView.setItemAnimator(new ScaleInAnimator(new OvershootInterpolator(1f)));
+                recyclerView.getItemAnimator().setAddDuration(500);
                 ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallbackMain(elementRecyclerAdapter);
                 ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
                 itemTouchHelper.attachToRecyclerView(recyclerView);
@@ -118,7 +135,11 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                 //Papierkorb Reference
                 mBinReference = mReference.child("bin").child("main");
 
-                currentSortingMethod.setText(getString(R.string.current_sorthing_method) + " " + LocalSettingsManager.getInstance().getSortingMethod());
+                if (LocalSettingsManager.getInstance().getSortingMethod() != null) {
+                    currentSortingMethod.setText(getString(R.string.current_sorthing_method) + " " + LocalSettingsManager.getInstance().getSortingMethod());
+                } else {
+                    currentSortingMethod.setText(getString(R.string.current_sorthing_method) + " " + getString(R.string.sort_ascending_name));
+                }
                 currentSortingMethod.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -143,11 +164,17 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
     @Override
     protected void onStart() {
         super.onStart();
+        if (!started) {
+            mElementsReference.addChildEventListener(mElementsListener);
+            started = true;
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        elementRecyclerAdapter.clear();
 
         if (mElementsReference != null) {
             mElementsReference.removeEventListener(mElementsListener);
@@ -162,6 +189,17 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         startActivity(intent);
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (addEditDialog != null && addEditDialog.getDialog() != null) {
+            if (addEditDialog.getDialog().isShowing()) {
+                addEditDialog.dismiss();
+                addEditDialog.show(getSupportFragmentManager(), "dialog");
+            }
+        }
+    }
 
     /*
     ----------------------
@@ -217,7 +255,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                 int itemPosition = recyclerView.getChildLayoutPosition(v);
                 Element element = elementRecyclerAdapter.getItem(itemPosition);
                 if (element.getLocked()) {
-                    DialogFragment dialogFragment = PasswordDialog.newInstance("passwordOpenElement", element.getNoteType(), element.getElementID(), element.getTitle(), element.getColor());
+                    DialogFragment dialogFragment = PasswordDialog.newInstance("passwordOpenElement", null, element.getElementID(), null, 0);
                     dialogFragment.show(getSupportFragmentManager(), "dialog");
                 } else {
                     Intent i = null;
@@ -233,6 +271,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                     i.putExtra("elementTitle", element.getTitle());
                     i.putExtra("elementColor", element.getColor());
                     i.putExtra("elementType", element.getNoteType());
+                    i.putExtra("categoryID", element.getCategoryID());
                     startActivity(i);
                 }
             }
@@ -247,7 +286,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                 Element element = elementRecyclerAdapter.getItem(itemPosition);
 
                 if (element.getLocked()) {
-                    DialogFragment dialogFragment = PasswordDialog.newInstance("passwordEditElement", "", "", "", itemPosition);
+                    DialogFragment dialogFragment = PasswordDialog.newInstance("passwordEditElement", element.getNoteType(), element.getElementID(), element.getTitle(), 0);
                     dialogFragment.show(getSupportFragmentManager(), "dialog");
                 } else {
                     DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", element.getElementID(), element.getNoteType());
@@ -264,38 +303,48 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Element element = dataSnapshot.getValue(Element.class);
                 element.setElementID(dataSnapshot.getKey());
-                elementRecyclerAdapter.add(element);
-                elementRecyclerAdapter.hideElements();
+                if (element.getNoteType() != null) {
+                   int position = elementRecyclerAdapter.add(element);
+                    if (element.getElementID().equals(restoredElement)) {
+                        recyclerView.smoothScrollToPosition(position);
+                        restoredElement = "";
+                    }
+                } else {
+                    mElementsReference.child(dataSnapshot.getKey()).removeValue();
+                }
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Element element = dataSnapshot.getValue(Element.class);
                 element.setElementID(dataSnapshot.getKey());
-                elementRecyclerAdapter.update(element, element.getElementID());
-                elementRecyclerAdapter.hideElements();
+                if (element.getNoteType() != null) {
+                    elementRecyclerAdapter.update(element, element.getElementID());
+                }
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 final Element element = dataSnapshot.getValue(Element.class);
                 element.setElementID(dataSnapshot.getKey());
-                elementRecyclerAdapter.remove(element.getElementID());
-                mBinReference.child(element.getElementID()).setValue(element);
+                if (element.getNoteType() != null) {
+                    elementRecyclerAdapter.remove(element.getElementID());
+                    mBinReference.child(element.getElementID()).setValue(element);
+                    Snackbar snackbar = Snackbar
+                            .make(coordinatorLayout, R.string.moved_to_bin, 4000)
+                            .setAction(R.string.undo, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Snackbar snackbar1 = Snackbar.make(coordinatorLayout, R.string.element_restored, Snackbar.LENGTH_SHORT);
+                                    snackbar1.show();
+                                    mBinReference.child(element.getElementID()).removeValue();
+                                    mElementsReference.child(element.getElementID()).setValue(element);
+                                    restoredElement = element.getElementID();
+                                }
+                            });
 
-                Snackbar snackbar = Snackbar
-                        .make(coordinatorLayout, R.string.moved_to_bin, 6000)
-                        .setAction(R.string.undo, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Snackbar snackbar1 = Snackbar.make(coordinatorLayout, R.string.element_restored, Snackbar.LENGTH_SHORT);
-                                snackbar1.show();
-                                mBinReference.child(element.getElementID()).removeValue();
-                                mElementsReference.child(element.getElementID()).setValue(element);
-                            }
-                        });
-
-                snackbar.show();
+                    snackbar.show();
+                }
             }
 
             @Override
@@ -311,16 +360,33 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
     }
 
     private void initializeCategories() {
-        LocalSettingsManager.getInstance();
         LocalSettingsManager.getInstance().setPrefs(prefs);
 
         categories = new ArrayList<>();
 
-        categories.add(new Category(getString(R.string.category_general), "general"));
-        categories.add(new Category(getString(R.string.category_school), "school"));
+        categories.add(new Category(getString(R.string.category_business), "business"));
+        categories.add(new Category(getString(R.string.category_events), "events"));
         categories.add(new Category(getString(R.string.category_finances), "finances"));
+        categories.add(new Category(getString(R.string.category_general), "general"));
+        categories.add(new Category(getString(R.string.category_hobbies), "hobbies"));
         categories.add(new Category(getString(R.string.category_project), "project"));
+        categories.add(new Category(getString(R.string.category_school), "school"));
+        categories.add(new Category(getString(R.string.category_shopping), "shopping"));
         categories.add(new Category(getString(R.string.category_sport), "sport"));
+
+        Comparator<Category> comparator = new Comparator<Category>() {
+            @Override
+            public int compare(Category category, Category t1) {
+                if (category.getCategoryName().compareToIgnoreCase(t1.getCategoryName()) < 0) {
+                    return -1;
+                } else if (category.getCategoryName().compareToIgnoreCase(t1.getCategoryName()) > 0) {
+                    return 1;
+                }
+                return 0;
+            }
+        };
+
+        Collections.sort(categories, comparator);
 
         spinnerCategoryAdapter = new SpinnerAdapter(this, R.layout.spinner_item, categories);
         spinnerCategoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -354,7 +420,14 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
     }
 
     @Override
-    public ArrayAdapter<CharSequence> getSpinnerCategoryAdapter() {
+    public void removeListeners() {
+        if (mElementsListener != null) {
+            mElementsReference.removeEventListener(mElementsListener);
+        }
+    }
+
+    @Override
+    public SpinnerAdapter getSpinnerCategoryAdapter() {
         return spinnerCategoryAdapter;
     }
 
@@ -372,28 +445,39 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         if (type.equals("passwordOpenElement")) {
             if (bool) {
                 Intent i = null;
-                if (args.getString("elementType").equals("checklist")) {
+                Element element = elementRecyclerAdapter.getElement(args.getString("elementID"));
+                if (element.getNoteType().equals("checklist")) {
                     i = new Intent(MainActivity.this, ChecklistActivity.class);
-                } else if (args.getString("elementType").equals("note")) {
+                } else if (element.getNoteType().equals("note")) {
                     i = new Intent(MainActivity.this, NoteActivity.class);
-                } else if (args.getString("elementType").equals("bundle")) {
+                } else if (element.getNoteType().equals("bundle")) {
                     i = new Intent(MainActivity.this, BundleActivity.class);
                 }
-
-                i.putExtra("elementID", args.getString("elementID"));
-                i.putExtra("elementTitle", args.getString("elementTitle"));
-                i.putExtra("elementColor", args.getInt("elementColor"));
-                i.putExtra("elementType", args.getString("elementType"));
+                i.putExtra("elementID", element.getElementID());
+                i.putExtra("elementTitle", element.getTitle());
+                i.putExtra("elementColor",element.getColor());
+                i.putExtra("elementType", element.getNoteType());
+                i.putExtra("categoryID", element.getCategoryID());
                 startActivity(i);
             } else {
                 Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
             }
         } else if (type.equals("passwordEditElement")) {
             if (bool) {
-                DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", null, null);
+                DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", args.getString("elementID"), args.getString("elementType"));
                 dialog.show(getSupportFragmentManager(), "dialog");
             } else {
                 Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
+            }
+        } else if (type.equals("addElement")) {
+            if (bool) {
+                addEditDialog = AddElementDialog.newInstance(getString(R.string.add_Element_Title), args.getString("elementType"));
+                addEditDialog.show(getSupportFragmentManager(), "dialog");
+            }
+        } else if (type.equals("editElement")) {
+            if (bool) {
+                addEditDialog = EditElementDialog.newInstance(getString(R.string.edit_element_title), args.getString("elementType"), args.getString("elementID"));
+                addEditDialog.show(getSupportFragmentManager(), "dialog");
             }
         }
     }

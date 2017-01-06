@@ -1,8 +1,10 @@
 package com.pro3.planner.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -27,7 +29,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.pro3.planner.R;
+import com.pro3.planner.baseClasses.ChecklistElement;
+import com.pro3.planner.baseClasses.Element;
 
 /**
  * @author Linus Weiss
@@ -40,10 +49,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseAuth.AuthStateListener mAuthListener;
     private EditText loginEmail, loginPassword;
     private TextView forgotPassword;
-    private Button loginButton;
+    private Button loginButton, googleButton;
     private GoogleApiClient mGoogleApiClient;
     private int googleSignInRequestCode = 1;
     private FirebaseUser user;
+    private DatabaseReference mReference;
 
     /*
     ------------------------
@@ -61,10 +71,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginEmail = (EditText) findViewById(R.id.loginEmail);
         loginPassword = (EditText) findViewById(R.id.loginPassword);
         loginButton = (Button) findViewById(R.id.loginButton);
+        googleButton = (Button) findViewById(R.id.google_sign_in);
         forgotPassword = (TextView) findViewById(R.id.forgotPasswordLink);
 
-        //Used to make part of the text blue
-        //loginRegisterText.setText(Html.fromHtml(getResources().getString(R.string.login_register_text)));
+        loginEmail.setText(LoginActivity.this.getSharedPreferences("general", MODE_PRIVATE).getString("lastEmail", ""));
 
         //Login Submit Click Handler
         loginButton.setOnClickListener(this);
@@ -86,7 +96,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initializeAuthListener();
 
         //Google Sign In
-        findViewById(R.id.google_sign_in).setOnClickListener(this);
+        googleButton.setOnClickListener(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("376414129715-ehhkuv1f9acftujtvuk0r9biir5c98v2.apps.googleusercontent.com")
@@ -140,8 +150,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     //Check if user has verified his email
                     if(user.isEmailVerified()) {
                         //User is signed in and verified. Continue
-                        Intent i = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(i);
+                        SharedPreferences.Editor editor = LoginActivity.this.getSharedPreferences("general", MODE_PRIVATE).edit();
+                        editor.putString("lastEmail", loginEmail.getText().toString());
+                        editor.commit();
+                        mReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("settings").child("registered");
+                        mReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Boolean registered = dataSnapshot.getValue(Boolean.class);
+
+                                if (registered == null) {
+                                    loadDefaultData(user);
+                                } else {
+                                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(i);
+                                }
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                googleButton.setText(getString(R.string.google_sign_in));
+                                loginButton.setText(getString(R.string.login_button));
+                            }
+                        });
                     } else {
                         //If not verified, sign user out and switch to login activity
                         mAuth.signOut();
@@ -150,6 +180,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         startActivity(i);
                     }
                 } else {
+                    googleButton.setText(getString(R.string.google_sign_in));
+                    loginButton.setText(getString(R.string.login_button));
                     //User is signed out. Do nothing
                 }
             }
@@ -247,11 +279,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Log.d("Google", "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
-            Log.i("Linus", "Passt");
             GoogleSignInAccount acct = result.getSignInAccount();
             firebaseAuthWithGoogle(acct);
+            googleButton.setText(getString(R.string.login_loading));
         } else {
-            Log.i("Linus", "Passt ned");
             // Signed out, show unauthenticated UI.
         }
     }
@@ -274,4 +305,78 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
     }
 
+    private void loadDefaultData(final FirebaseUser user) {
+        DatabaseReference mReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
+
+        //Add Elements
+        Element firstChecklist = new Element("checklist", getString(R.string.example_checklist));
+        Element firstNote = new Element("note", getString(R.string.example_note));
+        Element firstBundle = new Element("bundle", getString(R.string.example_bundle));
+
+        DatabaseReference dRef = mReference.child("elements").child("main").push();
+        firstChecklist.setElementID(dRef.getKey());
+        firstChecklist.setCategoryID("general");
+        firstChecklist.setColor(ContextCompat.getColor(this, R.color.note_color_1));
+        firstChecklist.setCategoryName(getString(R.string.category_general));
+        dRef.setValue(firstChecklist);
+
+        dRef = mReference.child("elements").child("main").push();
+        firstNote.setElementID(dRef.getKey());
+        firstNote.setCategoryID("general");
+        firstNote.setColor(ContextCompat.getColor(this, R.color.note_color_4));
+        firstNote.setCategoryName(getString(R.string.category_general));
+        dRef.setValue(firstNote);
+
+        dRef = mReference.child("elements").child("main").push();
+        firstBundle.setElementID(dRef.getKey());
+        firstBundle.setCategoryID("general");
+        firstBundle.setColor(ContextCompat.getColor(this, R.color.note_color_7));
+        firstBundle.setCategoryName(getString(R.string.category_general));
+        dRef.setValue(firstBundle);
+
+        //Add Checklist Elements
+        ChecklistElement checklistElement = new ChecklistElement(getString(R.string.example_checklist_element));
+
+        dRef = mReference.child("contents").child(firstChecklist.getElementID()).child("elements").push();
+        checklistElement.setElementID(dRef.getKey());
+        dRef.setValue(checklistElement);
+
+        dRef = mReference.child("contents").child(firstChecklist.getElementID()).child("elements").push();
+        checklistElement.setElementID(dRef.getKey());
+        dRef.setValue(checklistElement);
+
+        dRef = mReference.child("contents").child(firstChecklist.getElementID()).child("elements").push();
+        checklistElement.setElementID(dRef.getKey());
+        dRef.setValue(checklistElement);
+
+        //Add Bundle Items
+        Element bundleChecklist = new Element("checklist", getString(R.string.example_checklist));
+        Element bundleNote = new Element("note", getString(R.string.example_note));
+
+        dRef = mReference.child("elements").child("bundles").child(firstBundle.getElementID()).push();
+        bundleChecklist.setElementID(dRef.getKey());
+        bundleChecklist.setCategoryID("general");
+        bundleChecklist.setColor(ContextCompat.getColor(this, R.color.note_color_2));
+        bundleChecklist.setCategoryName(getString(R.string.category_general));
+        dRef.setValue(bundleChecklist);
+
+        dRef = mReference.child("elements").child("bundles").child(firstBundle.getElementID()).push();
+        bundleNote.setElementID(dRef.getKey());
+        bundleNote.setCategoryID("general");
+        bundleNote.setColor(ContextCompat.getColor(this, R.color.note_color_6));
+        bundleNote.setCategoryName(getString(R.string.category_general));
+        dRef.setValue(bundleNote);
+
+        //Set Registered
+        mReference.child("settings").child("registered").setValue(true);
+
+        //Add Note Content
+        mReference.child("contents").child(firstNote.getElementID()).child("text").setValue(getString(R.string.example_note_text)).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(i);
+            }
+        });
+    }
 }

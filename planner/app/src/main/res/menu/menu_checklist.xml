@@ -16,19 +16,19 @@
         android:icon="@drawable/element_lock_icon"
         android:orderInCategory="200"
         app:showAsAction="ifRoom" />
-
-    <item
-        android:title="Edit Checklist"
-        android:id="@+id/checklist_menu_delete"
-        android:icon="@drawable/ic_delete_black_24dp"
-        android:orderInCategory="300"
-        app:showAsAction="ifRoom"
-        />
     <item
         android:id="@+id/menu_reminder"
         android:title="@string/add_reminder"
         android:orderInCategory="400"
         app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/menu_share"
+        android:title="@string/share"
+        android:orderInCategory="300"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_share_white_24dp"
         />
 
 </menu>

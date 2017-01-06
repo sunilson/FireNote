@@ -1,8 +1,10 @@
 package com.pro3.planner.dialogs;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.pro3.planner.Interfaces.SettingsInterface;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
@@ -91,17 +95,25 @@ public class MasterPasswordDialog extends SuperDialog {
                     if (newS.equals(newS2) && !newS.equals("")) {
                         if (LocalSettingsManager.getInstance().getMasterPassword() != "") {
                             if (oldHash.equals(LocalSettingsManager.getInstance().getMasterPassword())) {
-                                settings.getSettingsReference().child("masterPassword").setValue(newHash);
+                                final Activity activity = getActivity();
+                                settings.getSettingsReference().child("masterPassword").setValue(newHash).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(activity, R.string.master_password_changed, Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
                                 dialog.dismiss();
                             } else {
-                                Toast.makeText(getActivity(), "Old password not correct", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getActivity(), R.string.old_password_error, Toast.LENGTH_LONG).show();
                             }
                         } else {
                             settings.getSettingsReference().child("masterPassword").setValue(newHash);
                             dialog.dismiss();
                         }
                     } else {
-                        Toast.makeText(getActivity(), "Passwords not equal or empty", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), R.string.password_not_equal_empty, Toast.LENGTH_LONG).show();
                     }
                 } else {
                     Toast.makeText(getActivity(), R.string.need_connection, Toast.LENGTH_LONG).show();
