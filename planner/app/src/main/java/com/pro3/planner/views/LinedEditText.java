@@ -13,6 +13,7 @@ import com.pro3.planner.R;
 public class LinedEditText extends EditText {
     private Rect mRect;
     private Paint mPaint;
+    private boolean mEnabled;
 
     // we need this constructor for LayoutInflater
     public LinedEditText(Context context, AttributeSet attrs) {
@@ -47,5 +48,23 @@ public class LinedEditText extends EditText {
         }
 
         super.onDraw(canvas);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        try {
+            if (!mEnabled) return;
+            super.setEnabled(false);
+            super.setEnabled(mEnabled);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        this.mEnabled = enabled;
+        super.setEnabled(enabled);
     }
 }

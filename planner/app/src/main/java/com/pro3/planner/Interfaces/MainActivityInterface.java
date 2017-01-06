@@ -3,6 +3,7 @@ package com.pro3.planner.Interfaces;
 import android.widget.ArrayAdapter;
 
 import com.google.firebase.database.DatabaseReference;
+import com.pro3.planner.adapters.SpinnerAdapter;
 import com.pro3.planner.baseClasses.Category;
 
 /**
@@ -12,11 +13,13 @@ import com.pro3.planner.baseClasses.Category;
 public interface MainActivityInterface extends HasSortableList {
     DatabaseReference getBinReference();
 
-    ArrayAdapter<CharSequence> getSpinnerCategoryAdapter();
+    SpinnerAdapter getSpinnerCategoryAdapter();
 
     ArrayAdapter<Category> getListCategoryVisibilityAdapter();
 
     DatabaseReference getElementsReference();
 
     DatabaseReference getReference();
+
+    void removeListeners();
 }

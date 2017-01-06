@@ -11,6 +11,7 @@ import com.pro3.planner.baseClasses.NoteColor;
 import com.pro3.planner.views.ColorElementView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -36,6 +37,23 @@ public class ColorAddAdapter extends ArrayAdapter<NoteColor> {
     @Override
     public NoteColor getItem(int position) {
         return list.get(position);
+    }
+
+    public int getPositionWithColor(int color) {
+        Iterator<NoteColor> it = list.iterator();
+        int count = 0;
+
+        while (it.hasNext()) {
+            NoteColor noteColor = it.next();
+
+            if (noteColor.getColor() == color) {
+                break;
+            }
+
+            count++;
+        }
+
+        return count;
     }
 
     @Override

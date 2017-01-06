@@ -1,100 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/content_register"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/login_activity_horizontal_margin"
-    android:paddingRight="@dimen/login_activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
-    android:clipToPadding="false"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.pro3.planner.activities.LoginActivity"
-    tools:showIn="@layout/activity_login"
-    android:background="@color/main_background_color"
-    android:gravity="center_vertical"
-    android:layout_centerHorizontal="true"
-    >
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/tint_white"
+    android:fillViewport="true">
 
-    <LinearLayout
-        android:layout_width="0px"
-        android:layout_height="0px"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        />
-
-    <TextView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/content_register"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:text="@string/register_title"
-        android:textSize="24sp"
-        android:paddingBottom="50dp"
-        android:textColor="@color/title_text_color"
-        android:gravity="center"
-        />
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:background="@color/main_background_color"
+        android:clipToPadding="false"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/login_activity_horizontal_margin"
+        android:paddingRight="@dimen/login_activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="com.pro3.planner.activities.LoginActivity"
+        tools:showIn="@layout/activity_login">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:inputType="textEmailAddress|textAutoCorrect|textAutoComplete"
-        android:layout_height="@dimen/login_edit_text_height"
-        android:ems="10"
-        android:drawableLeft="@drawable/email_login"
-        android:id="@+id/registerEmail"
-        android:hint="@string/enter_email"
-        android:theme="@style/loginEditText"
-        android:background="@drawable/login_edit_text"
-        android:nextFocusUp="@+id/registerEmail"
-        android:nextFocusLeft="@+id/registerEmail"
-        android:nextFocusDown="@+id/registerPassword"
-        android:nextFocusForward="@+id/registerPassword"
-        android:nextFocusRight="@+id/registerPassword"
-        />
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_marginTop="20dp"
-        android:layout_height="@dimen/login_edit_text_height"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:theme="@style/loginEditText"
-        android:fontFamily="sans-serif"
-        android:drawableLeft="@drawable/lock_login"
-        android:id="@+id/registerPassword"
-        android:background="@drawable/login_edit_text"
-        android:hint="@string/enter_password"
-        android:nextFocusUp="@+id/registerEmail"
-        android:nextFocusLeft="@+id/registerEmail"
-        android:nextFocusDown="@+id/registerPasswordAgain"
-        android:nextFocusForward="@+id/registerPasswordAgain"
-        android:nextFocusRight="@+id/registerPasswordAgain"
-        />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:paddingBottom="50dp"
+            android:text="@string/register_title"
+            android:textColor="@color/title_text_color"
+            android:textSize="24sp" />
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_marginTop="20dp"
-        android:layout_height="@dimen/login_edit_text_height"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:theme="@style/loginEditText"
-        android:fontFamily="sans-serif"
-        android:drawableLeft="@drawable/lock_login"
-        android:id="@+id/registerPasswordAgain"
-        android:background="@drawable/login_edit_text"
-        android:hint="@string/repeat_password" />
+        <EditText
+            android:id="@+id/registerEmail"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/login_edit_text_height"
+            android:background="@drawable/login_edit_text"
+            android:drawableLeft="@drawable/email_login"
+            android:ems="10"
+            android:hint="@string/enter_email"
+            android:inputType="textEmailAddress|textAutoCorrect|textAutoComplete"
+            android:nextFocusDown="@+id/registerPassword"
+            android:nextFocusForward="@+id/registerPassword"
+            android:nextFocusLeft="@+id/registerEmail"
+            android:nextFocusRight="@+id/registerPassword"
+            android:nextFocusUp="@+id/registerEmail"
+            android:theme="@style/loginEditText" />
 
-    <Button
-        android:text="@string/register_button"
-        android:layout_width="match_parent"
-        android:layout_marginTop="30dp"
-        android:layout_height="50dp"
-        android:background="@drawable/login_button_drawable"
-        android:textColor="@color/tint_white"
-        style="?android:attr/borderlessButtonStyle"
-        android:id="@+id/registerSubmitButton" />
+        <EditText
+            android:id="@+id/registerPassword"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/login_edit_text_height"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/login_edit_text"
+            android:drawableLeft="@drawable/lock_login"
+            android:ems="10"
+            android:fontFamily="sans-serif"
+            android:hint="@string/enter_password"
+            android:inputType="textPassword"
+            android:nextFocusDown="@+id/registerPasswordAgain"
+            android:nextFocusForward="@+id/registerPasswordAgain"
+            android:nextFocusLeft="@+id/registerEmail"
+            android:nextFocusRight="@+id/registerPasswordAgain"
+            android:nextFocusUp="@+id/registerEmail"
+            android:theme="@style/loginEditText" />
+
+        <EditText
+            android:id="@+id/registerPasswordAgain"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/login_edit_text_height"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/login_edit_text"
+            android:drawableLeft="@drawable/lock_login"
+            android:ems="10"
+            android:fontFamily="sans-serif"
+            android:hint="@string/repeat_password"
+            android:inputType="textPassword"
+            android:theme="@style/loginEditText" />
+
+        <Button
+            android:id="@+id/registerSubmitButton"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/login_button_drawable"
+            android:text="@string/register_button"
+            android:textColor="@color/tint_white" />
 
 
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

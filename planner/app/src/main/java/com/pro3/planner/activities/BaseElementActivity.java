@@ -3,16 +3,17 @@ package com.pro3.planner.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,29 +33,32 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.pro3.planner.Interfaces.ConfirmDialogResult;
 import com.pro3.planner.Interfaces.ElementInterface;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
 import com.pro3.planner.baseClasses.Element;
+import com.pro3.planner.dialogs.EditElementDialog;
 import com.pro3.planner.dialogs.ListAlertDialog;
 
 /**
  * Created by linus_000 on 09.12.2016.
  */
 
-public abstract class BaseElementActivity extends BaseActivity implements ElementInterface {
+public abstract class BaseElementActivity extends BaseActivity implements ElementInterface, ConfirmDialogResult {
 
     private MenuItem lockButton;
     protected boolean locked;
     protected int elementColor;
     protected EditText titleEditText;
     protected ImageView titleDoneButton;
-    protected String elementID, elementType, elementTitle, parentID;
+    protected String elementID, elementType, elementTitle, parentID, categoryID;
     protected ValueEventListener mElementListener;
     protected FirebaseUser user;
     protected DatabaseReference mElementReference, mContentReference;
     protected InputMethodManager imm;
     protected boolean titleEdit = false;
+    protected DialogFragment addEditDialog;
 
     /*
     ------------------------
@@ -84,7 +88,8 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         titleDoneButton = (ImageView) toolbar.findViewById(R.id.title_done_button);
         titleEditText = (EditText) toolbar.findViewById(R.id.title_edittext);
@@ -112,6 +117,7 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
         elementID = i.getStringExtra("elementID");
         parentID = i.getStringExtra("parentID");
         elementColor = i.getIntExtra("elementColor", 1);
+        categoryID = i.getStringExtra("categoryID");
         titleEditText.setText(i.getStringExtra("elementTitle"));
 
         titleEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -144,9 +150,22 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
         }
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (addEditDialog != null && addEditDialog.getDialog() != null) {
+            if (addEditDialog.getDialog().isShowing()) {
+                addEditDialog.dismiss();
+                addEditDialog.show(getSupportFragmentManager(), "dialog");
+            }
+        }
+    }
+
 
     protected void startTitleEdit() {
         titleEdit = true;
+        titleEditText.setEllipsize(null);
         titleEditText.setFocusableInTouchMode(true);
         titleEditText.setFocusable(true);
         titleEditText.requestFocus();
@@ -155,10 +174,13 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
         titleEditText.setTextColor(ContextCompat.getColor(BaseElementActivity.this, R.color.title_text_color));
         titleDoneButton.setVisibility(View.VISIBLE);
         imm.showSoftInput(titleEditText, InputMethodManager.SHOW_IMPLICIT);
+        titleEditStarted();
     }
 
     protected void stopTitleEdit() {
         titleEdit = false;
+        titleEditText.setEllipsize(TextUtils.TruncateAt.END);
+        titleEditText.setSelection(0);
         titleEditText.setFocusableInTouchMode(false);
         titleEditText.setFocusable(false);
         titleEditText.setBackgroundColor(ContextCompat.getColor(BaseElementActivity.this, android.R.color.transparent));
@@ -166,6 +188,15 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
         titleDoneButton.setVisibility(View.GONE);
         imm.hideSoftInputFromWindow(titleEditText.getWindowToken(), 0);
         mElementReference.child("title").setValue(titleEditText.getText().toString());
+        titleEditStopped();
+    }
+
+    protected void titleEditStarted() {
+
+    }
+
+    protected void titleEditStopped() {
+
     }
 
     @Override
@@ -188,8 +219,13 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
     @Override
     protected void onStop() {
         super.onStop();
-        stopTitleEdit();
 
+        if (mElementListener != null) {
+            mElementReference.removeEventListener(mElementListener);
+        }
+    }
+
+    public void removeListeners() {
         if (mElementListener != null) {
             mElementReference.removeEventListener(mElementListener);
         }
@@ -229,7 +265,9 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Element element = dataSnapshot.getValue(Element.class);
-                updateElement(element);
+                if (element != null) {
+                    updateElement(element);
+                }
             }
 
             @Override
@@ -244,6 +282,7 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
         setTitle(element.getTitle());
         elementTitle = element.getTitle();
         titleEditText.setText(element.getTitle());
+        categoryID = element.getCategoryID();
 
         //Check Locked
         locked = element.getLocked();
@@ -266,7 +305,10 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            stopTitleEdit();
+            if (titleEdit) {
+                stopTitleEdit();
+                return true;
+            }
         }
 
         return super.onKeyDown(keyCode, event);
@@ -276,14 +318,7 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.menu_reminder) {
-            Intent calIntent = new Intent(Intent.ACTION_INSERT);
-            calIntent.setData(CalendarContract.Events.CONTENT_URI);
-            calIntent.setType("vnd.android.cursor.item/event");
-            calIntent.putExtra(CalendarContract.Events.TITLE, elementTitle + " - " + getString(R.string.app_name));
-            calIntent.putExtra(CalendarContract.Events.DESCRIPTION, "A reminder for your " + elementType + "!");
-            startActivityForResult(calIntent, 123);
-        } else if (id == R.id.menu_lock) {
+        if (id == R.id.menu_lock) {
             if (LocalSettingsManager.getInstance().getMasterPassword() != "") {
                 mElementReference.child("locked").setValue(!locked);
             } else {
@@ -300,6 +335,17 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         lockButton = menu.findItem(R.id.menu_lock);
+
+        if (locked) {
+            if (lockButton != null) {
+                lockButton.setIcon(ContextCompat.getDrawable(this, R.drawable.element_lock_icon));
+            }
+        } else {
+            if (lockButton != null) {
+                lockButton.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_lock_open_white_24dp));
+            }
+        }
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -321,5 +367,20 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
     @Override
     public String getElementTitle() {
         return elementTitle;
+    }
+
+    @Override
+    public String getElementCategoryID() {
+        return categoryID;
+    }
+
+    @Override
+    public void confirmDialogResult(boolean bool, String type, Bundle args) {
+        if (type.equals("editElement")) {
+            if (bool) {
+                addEditDialog = EditElementDialog.newInstance(getString(R.string.edit_element_title), args.getString("elementType"), args.getString("elementID"));
+                addEditDialog.show(getSupportFragmentManager(), "dialog");
+            }
+        }
     }
 }

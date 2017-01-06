@@ -9,24 +9,14 @@ public class ChecklistElement {
     private boolean finished;
     private String text;
     private String elementID;
-    private int position;
 
-    public ChecklistElement(String text, int position) {
+    public ChecklistElement(String text) {
         this.text = text;
         finished = false;
-        this.position = position;
     }
 
     public boolean isFinished() {
         return finished;
-    }
-
-    public int getPosition() {
-        return position;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
     }
 
     public void setFinished(boolean finished) {

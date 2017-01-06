@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.pro3.planner.R;
 import com.pro3.planner.fragments.CategoryFragment;
 import com.pro3.planner.fragments.ColorFragment;
 
@@ -44,9 +45,9 @@ public class VisibilityPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         switch (position) {
             case 0: // Fragment # 0 - This will show FirstFragment
-                return "Categories";
+                return context.getString(R.string.categories);
             case 1: // Fragment # 0 - This will show FirstFragment different title
-                return "Colors";
+                return context.getString(R.string.colors);
             default:
                 return null;
         }

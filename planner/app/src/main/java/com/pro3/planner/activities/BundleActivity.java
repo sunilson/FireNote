@@ -2,6 +2,8 @@ package com.pro3.planner.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.CalendarContract;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,19 +30,25 @@ import com.pro3.planner.ItemTouchHelper.SimpleItemTouchHelperCallbackMain;
 import com.pro3.planner.R;
 import com.pro3.planner.adapters.ElementRecyclerAdapter;
 import com.pro3.planner.baseClasses.Element;
-import com.pro3.planner.dialogs.ConfirmDialog;
+import com.pro3.planner.dialogs.AddElementDialog;
 import com.pro3.planner.dialogs.ListAlertDialog;
 import com.pro3.planner.dialogs.PasswordDialog;
+
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
+import jp.wasabeef.recyclerview.animators.ScaleInAnimator;
 
 public class BundleActivity extends BaseElementActivity implements BundleInterface, ConfirmDialogResult {
 
     private RecyclerView bundleList;
     private DatabaseReference mElementsReference, mBinReference;
     private ChildEventListener mElementsListener;
-    private ElementRecyclerAdapter elementRecyclerAdapter;
+    private ElementRecyclerAdapter bundleRecyclerAdapter;
     private View.OnClickListener recycleOnClickListener;
     private CoordinatorLayout coordinatorLayout;
     private View.OnLongClickListener recycleOnLongClickListener;
+    private boolean started;
+    private LinearLayoutManager linearLayoutManager;
+    private String restoredElement = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +60,21 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
             //Recyclerview Initialization
             bundleList = (RecyclerView) findViewById(R.id.bundleList);
             bundleList.setHasFixedSize(true);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+            linearLayoutManager = new LinearLayoutManager(this);
             bundleList.setLayoutManager(linearLayoutManager);
             initializeRecyclerOnClickListener();
             initializeRecyclerOnLongClickListener();
 
-            elementRecyclerAdapter = new ElementRecyclerAdapter(this, recycleOnClickListener, recycleOnLongClickListener);
-
-            bundleList.setAdapter(elementRecyclerAdapter);
-            ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallbackMain(elementRecyclerAdapter);
+            bundleRecyclerAdapter = new ElementRecyclerAdapter(this, recycleOnClickListener, recycleOnLongClickListener, bundleList);
+            ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallbackMain(bundleRecyclerAdapter);
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
             itemTouchHelper.attachToRecyclerView(bundleList);
-
+            AlphaInAnimationAdapter alphaInAnimationAdapter = new AlphaInAnimationAdapter(bundleRecyclerAdapter);
+            alphaInAnimationAdapter.setFirstOnly(false);
+            alphaInAnimationAdapter.setDuration(200);
+            bundleList.setAdapter(alphaInAnimationAdapter);
+            bundleList.setItemAnimator(new ScaleInAnimator(new OvershootInterpolator(1f)));
+            bundleList.getItemAnimator().setAddDuration(400);
             initializeElementsListener();
 
             mElementsReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("elements").child("bundles").child(elementID);
@@ -83,14 +95,23 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
     protected void onStart() {
         super.onStart();
 
-        mElementsReference.addChildEventListener(mElementsListener);
+        if (!started) {
+            started = true;
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable(){
+                @Override
+                public void run(){
+                    mElementsReference.addChildEventListener(mElementsListener);
+                }
+            }, 200);
+        }
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onDestroy() {
+        super.onDestroy();
 
-        elementRecyclerAdapter.clear();
+        bundleRecyclerAdapter.clear();
 
         if (mElementsListener != null) {
             mElementsReference.removeEventListener(mElementsListener);
@@ -102,10 +123,14 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Element element = dataSnapshot.getValue(Element.class);
-                if (element != null) {
-                    element.setElementID(dataSnapshot.getKey());
-                    elementRecyclerAdapter.add(element);
-                    elementRecyclerAdapter.hideElements();
+                element.setElementID(dataSnapshot.getKey());
+                if (element.getNoteType() != null) {
+                   int position = bundleRecyclerAdapter.add(element);
+                    if (element.getElementID().equals(restoredElement)) {
+                        linearLayoutManager.scrollToPosition(position);
+                    }
+                } else {
+                    mElementsReference.child(dataSnapshot.getKey()).removeValue();
                 }
             }
 
@@ -113,29 +138,35 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Element element = dataSnapshot.getValue(Element.class);
                 element.setElementID(dataSnapshot.getKey());
-                elementRecyclerAdapter.update(element, element.getElementID());
+                if (element.getNoteType() != null) {
+                    bundleRecyclerAdapter.update(element, element.getElementID());
+                }
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 final Element element = dataSnapshot.getValue(Element.class);
                 element.setElementID(dataSnapshot.getKey());
-                elementRecyclerAdapter.remove(element.getElementID());
-                mBinReference.child(element.getElementID()).setValue(element);
+                if (element.getNoteType() != null) {
+                    element.setElementID(dataSnapshot.getKey());
+                    bundleRecyclerAdapter.remove(element.getElementID());
+                    mBinReference.child(element.getElementID()).setValue(element);
 
-                Snackbar snackbar = Snackbar
-                        .make(coordinatorLayout, R.string.moved_to_bin, 6000)
-                        .setAction(R.string.undo, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Snackbar snackbar1 = Snackbar.make(coordinatorLayout, R.string.element_restored, Snackbar.LENGTH_SHORT);
-                                snackbar1.show();
-                                mBinReference.child(element.getElementID()).removeValue();
-                                mElementsReference.child(element.getElementID()).setValue(element);
-                            }
-                        });
+                    Snackbar snackbar = Snackbar
+                            .make(coordinatorLayout, R.string.moved_to_bin, 4000)
+                            .setAction(R.string.undo, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Snackbar snackbar1 = Snackbar.make(coordinatorLayout, R.string.element_restored, Snackbar.LENGTH_SHORT);
+                                    snackbar1.show();
+                                    mBinReference.child(element.getElementID()).removeValue();
+                                    mElementsReference.child(element.getElementID()).setValue(element);
+                                    restoredElement = element.getElementID();
+                                }
+                            });
 
-                snackbar.show();
+                    snackbar.show();
+                }
             }
 
             @Override
@@ -155,7 +186,7 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
             @Override
             public void onClick(View v) {
                 int itemPosition = bundleList.getChildLayoutPosition(v);
-                Element element = elementRecyclerAdapter.getItem(itemPosition);
+                Element element = bundleRecyclerAdapter.getItem(itemPosition);
                 if (element.getLocked()) {
                     DialogFragment dialogFragment = PasswordDialog.newInstance("passwordOpenElement", element.getNoteType(), element.getElementID(), element.getTitle(), element.getColor());
                     dialogFragment.show(getSupportFragmentManager(), "dialog");
@@ -174,6 +205,7 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
                     i.putExtra("elementColor", element.getColor());
                     i.putExtra("elementType", element.getNoteType());
                     i.putExtra("parentID", elementID);
+                    i.putExtra("categoryID", element.getCategoryID());
                     startActivity(i);
                 }
             }
@@ -185,7 +217,7 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
             @Override
             public boolean onLongClick(View v) {
                 int itemPosition = bundleList.getChildLayoutPosition(v);
-                Element element = elementRecyclerAdapter.getItem(itemPosition);
+                Element element = bundleRecyclerAdapter.getItem(itemPosition);
 
                 if (element.getLocked()) {
                     DialogFragment dialogFragment = PasswordDialog.newInstance("passwordEditElement", "", "", "", itemPosition);
@@ -207,7 +239,7 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
 
     @Override
     public ElementRecyclerAdapter getElementAdapter() {
-        return elementRecyclerAdapter;
+        return bundleRecyclerAdapter;
     }
 
     @Override
@@ -233,10 +265,24 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
         } else if (id == R.id.bundle_menu_bin) {
             Intent i = new Intent(BundleActivity.this, BinActivity.class);
             i.putExtra("elementID", elementID);
+            i.putExtra("elementName", elementTitle);
             startActivity(i);
-        } else if (id == R.id.bundle_menu_delete) {
-            DialogFragment dialogFragment = ConfirmDialog.newInstance(getString(R.string.delete_bundle_title), getString(R.string.delete_dialog_confirm_text), "delete", null);
-            dialogFragment.show(getSupportFragmentManager(), "dialog");
+        } else if (id == R.id.menu_reminder) {
+            Intent calIntent = new Intent(Intent.ACTION_INSERT);
+            calIntent.setData(CalendarContract.Events.CONTENT_URI);
+            calIntent.setType("vnd.android.cursor.item/event");
+            calIntent.putExtra(CalendarContract.Events.TITLE, elementTitle + " - " + getString(R.string.app_name));
+            calIntent.putExtra(CalendarContract.Events.DESCRIPTION, getString(R.string.reminder) + elementType + "!");
+            startActivityForResult(calIntent, 123);
+        } else if (id == R.id.menu_share) {
+
+            String shareBody = getString(R.string.element_bundle) + " \"" + elementTitle + "\" " + getString(R.string.from_app) + ": " + "\n" + bundleRecyclerAdapter.toString();
+
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("text/plain");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, elementTitle);
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+            startActivity(Intent.createChooser(sharingIntent, ""));
         }
 
         return super.onOptionsItemSelected(item);
@@ -244,6 +290,8 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
 
     @Override
     public void confirmDialogResult(boolean bool, String type, Bundle args) {
+        super.confirmDialogResult(bool, type, args);
+
         if (type.equals("passwordOpenElement")) {
             if (bool) {
                 Intent i = null;
@@ -258,14 +306,15 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
                 i.putExtra("elementColor", args.getInt("elementColor"));
                 i.putExtra("elementType", args.getString("elementType"));
                 i.putExtra("parentID", elementID);
+                i.putExtra("categoryID", categoryID);
                 startActivity(i);
             } else {
                 Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
             }
         } else if (type.equals("passwordEditElement")) {
             if (bool) {
-                //DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", args.getInt("elementColor"));
-                //dialog.show(getSupportFragmentManager(), "dialog");
+                DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", null, null);
+                dialog.show(getSupportFragmentManager(), "dialog");
             } else {
                 Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
             }
@@ -276,6 +325,11 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
                 }
                 mElementReference.removeValue();
                 finish();
+            }
+        } else if (type.equals("addElement")) {
+            if (bool) {
+                addEditDialog = AddElementDialog.newInstance(getString(R.string.add_Element_Title), args.getString("elementType"));
+                addEditDialog.show(getSupportFragmentManager(), "dialog");
             }
         }
     }

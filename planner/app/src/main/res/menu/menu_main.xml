@@ -25,14 +25,15 @@
         android:id="@+id/action_bin"
         android:orderInCategory="300"
         android:title="@string/bin"
-        android:icon="@drawable/ic_delete_black_24dp"
+        android:icon="@drawable/main_menu_bin_icon"
         app:showAsAction="ifRoom"
         />
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="400"
-        app:showAsAction="never"
+        app:showAsAction="ifRoom"
         android:title="@string/action_settings"
+        android:icon="@drawable/main_menu_settings_icon"
         />
 
 </menu>

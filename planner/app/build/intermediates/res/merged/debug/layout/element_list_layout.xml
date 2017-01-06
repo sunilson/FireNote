@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:id="@+id/container"
     >
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,7 +27,9 @@
                 android:gravity="center"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:id="@+id/elementList_icon" />
+                android:id="@+id/elementList_icon"
+                android:tint="@color/tint_white"
+                />
 
         </LinearLayout>
         <LinearLayout
@@ -68,7 +71,7 @@
         <ImageView
             android:layout_width="30dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="8dp"
             android:id="@+id/elementLList_lock"
             android:visibility="invisible"
             android:src="@drawable/element_lock_icon_dark"
@@ -78,7 +81,7 @@
             android:layout_width="wrap_content"
             android:gravity="center_vertical|right"
             android:textSize="14sp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginRight="16dp"
             android:id="@+id/elementList_date"
             android:fontFamily="sans-serif" />

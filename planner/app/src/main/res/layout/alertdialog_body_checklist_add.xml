@@ -11,8 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
+        android:imeOptions="actionDone"
         android:hint="@string/new_checklist_item"
-        android:ems="10"
+        android:maxLines="1"
         android:id="@+id/checklist_add_element_title"
         />
 </LinearLayout>

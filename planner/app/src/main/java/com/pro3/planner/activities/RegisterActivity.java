@@ -3,6 +3,7 @@ package com.pro3.planner.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -24,7 +25,10 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.pro3.planner.BaseApplication;
 import com.pro3.planner.R;
+import com.pro3.planner.baseClasses.ChecklistElement;
+import com.pro3.planner.baseClasses.Element;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -69,10 +73,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     //User is signed in/registered successfully
-                    user.sendEmailVerification();
                     loadDefaultData(user);
-                    Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
-                    startActivity(i);
                 } else {
                     // User is signed out
                 }
@@ -80,9 +81,82 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         };
     }
 
-    private void loadDefaultData(FirebaseUser user) {
+    private void loadDefaultData(final FirebaseUser user) {
         DatabaseReference mReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
-        mReference.child("categories").child(getString(R.string.default_category)).setValue(getString(R.string.default_category));
+
+        //Add Elements
+        Element firstChecklist = new Element("checklist", getString(R.string.example_checklist));
+        Element firstNote = new Element("note", getString(R.string.example_note));
+        Element firstBundle = new Element("bundle", getString(R.string.example_bundle));
+
+        DatabaseReference dRef = mReference.child("elements").child("main").push();
+        firstChecklist.setElementID(dRef.getKey());
+        firstChecklist.setCategoryID("general");
+        firstChecklist.setColor(ContextCompat.getColor(this, R.color.note_color_1));
+        firstChecklist.setCategoryName(getString(R.string.category_general));
+        dRef.setValue(firstChecklist);
+
+        dRef = mReference.child("elements").child("main").push();
+        firstNote.setElementID(dRef.getKey());
+        firstNote.setCategoryID("general");
+        firstNote.setColor(ContextCompat.getColor(this, R.color.note_color_4));
+        firstNote.setCategoryName(getString(R.string.category_general));
+        dRef.setValue(firstNote);
+
+        dRef = mReference.child("elements").child("main").push();
+        firstBundle.setElementID(dRef.getKey());
+        firstBundle.setCategoryID("general");
+        firstBundle.setColor(ContextCompat.getColor(this, R.color.note_color_7));
+        firstBundle.setCategoryName(getString(R.string.category_general));
+        dRef.setValue(firstBundle);
+
+        //Add Checklist Elements
+        ChecklistElement checklistElement = new ChecklistElement(getString(R.string.example_checklist_element));
+
+        dRef = mReference.child("contents").child(firstChecklist.getElementID()).child("elements").push();
+        checklistElement.setElementID(dRef.getKey());
+        dRef.setValue(checklistElement);
+
+        dRef = mReference.child("contents").child(firstChecklist.getElementID()).child("elements").push();
+        checklistElement.setElementID(dRef.getKey());
+        dRef.setValue(checklistElement);
+
+        dRef = mReference.child("contents").child(firstChecklist.getElementID()).child("elements").push();
+        checklistElement.setElementID(dRef.getKey());
+        dRef.setValue(checklistElement);
+
+        //Add Bundle Items
+        Element bundleChecklist = new Element("checklist", getString(R.string.example_checklist));
+        Element bundleNote = new Element("note", getString(R.string.example_note));
+
+        dRef = mReference.child("elements").child("bundles").child(firstBundle.getElementID()).push();
+        bundleChecklist.setElementID(dRef.getKey());
+        bundleChecklist.setCategoryID("general");
+        bundleChecklist.setColor(ContextCompat.getColor(this, R.color.note_color_2));
+        bundleChecklist.setCategoryName(getString(R.string.category_general));
+        dRef.setValue(bundleChecklist);
+
+        dRef = mReference.child("elements").child("bundles").child(firstBundle.getElementID()).push();
+        bundleNote.setElementID(dRef.getKey());
+        bundleNote.setCategoryID("general");
+        bundleNote.setColor(ContextCompat.getColor(this, R.color.note_color_6));
+        bundleNote.setCategoryName(getString(R.string.category_general));
+        dRef.setValue(bundleNote);
+
+        //Set Registered
+        mReference.child("settings").child("registered").setValue(true);
+
+        //Add Note Content
+        mReference.child("contents").child(firstNote.getElementID()).child("text").setValue(getString(R.string.example_note_text)).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                user.sendEmailVerification();
+                mAuth.signOut();
+                Toast.makeText(RegisterActivity.this, R.string.register_success, Toast.LENGTH_LONG).show();
+                Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     @Override
@@ -109,38 +183,40 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         //TODO: Strip strings, Passwort Komplexität prüfen
 
         if (emailValid(email)) {
-            if (passwordSecure(password)) {
-                if (password.equals(passwordAgain)) {
-                    mAuth.createUserWithEmailAndPassword(email, password)
-                            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    // If sign in fails, display a message to the user. If sign in succeeds
-                                    // the auth state listener will be notified and logic to handle the
-                                    // signed in user can be handled in the listener.
-                                    if (!task.isSuccessful()) {
-                                        try {
-                                            throw task.getException();
-                                        } catch (FirebaseAuthWeakPasswordException e) {
-                                            Toast.makeText(RegisterActivity.this, R.string.error_register_password_weak, Toast.LENGTH_SHORT).show();
-                                        } catch (FirebaseAuthInvalidCredentialsException e) {
-                                            Toast.makeText(RegisterActivity.this, R.string.error_register_invalid_email, Toast.LENGTH_SHORT).show();
-                                        } catch (FirebaseAuthUserCollisionException e) {
-                                            Toast.makeText(RegisterActivity.this, R.string.error_register_user_already_exists, Toast.LENGTH_SHORT).show();
-                                        } catch (Exception e) {
-                                            Log.e("RegisterError", e.getMessage());
-                                        }
+            if (password.equals(passwordAgain)) {
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                // If sign in fails, display a message to the user. If sign in succeeds
+                                // the auth state listener will be notified and logic to handle the
+                                // signed in user can be handled in the listener.
+                                if (!task.isSuccessful()) {
+                                    try {
+                                        throw task.getException();
+                                    } catch (FirebaseAuthWeakPasswordException e) {
+                                        Toast.makeText(RegisterActivity.this, R.string.error_register_password_weak, Toast.LENGTH_SHORT).show();
+                                        registerButton.setText(getString(R.string.register_button));
+                                    } catch (FirebaseAuthInvalidCredentialsException e) {
+                                        Toast.makeText(RegisterActivity.this, R.string.error_register_invalid_email, Toast.LENGTH_SHORT).show();
+                                        registerButton.setText(getString(R.string.register_button));
+                                    } catch (FirebaseAuthUserCollisionException e) {
+                                        Toast.makeText(RegisterActivity.this, R.string.error_register_user_already_exists, Toast.LENGTH_SHORT).show();
+                                        registerButton.setText(getString(R.string.register_button));
+                                    } catch (Exception e) {
+                                        Log.e("RegisterError", e.getMessage());
+                                        registerButton.setText(getString(R.string.register_button));
                                     }
                                 }
-                            });
-                } else {
-                    Toast.makeText(this, R.string.error_password_match, Toast.LENGTH_SHORT).show();
-                }
+                            }
+                        });
             } else {
-                Toast.makeText(this, R.string.error_password_security, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.error_password_match, Toast.LENGTH_SHORT).show();
+                registerButton.setText(getString(R.string.register_button));
             }
         } else {
             Toast.makeText(this, R.string.error_register_invalid_characters, Toast.LENGTH_LONG).show();
+            registerButton.setText(getString(R.string.register_button));
         }
     }
 
@@ -186,17 +262,23 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.registerSubmitButton) {
-            String sEmail = email.getText().toString();
-            String sPassword = password.getText().toString();
-            String sPasswordAgain = passwordAgain.getText().toString();
+        if (((BaseApplication) getApplicationContext()).getInternetConnected()) {
+            if (v.getId() == R.id.registerSubmitButton) {
+                registerButton.setText(getString(R.string.register_loading));
+                String sEmail = email.getText().toString();
+                String sPassword = password.getText().toString();
+                String sPasswordAgain = passwordAgain.getText().toString();
 
-            //Check if a field is empty
-            if (sEmail.length() > 0 && sPassword.length() > 0 && sPasswordAgain.length() > 0) {
-                register(sEmail, sPassword, sPasswordAgain);
-            } else {
-                Toast.makeText(this, R.string.error_register_empty, Toast.LENGTH_SHORT).show();
+                //Check if a field is empty
+                if (sEmail.length() > 0 && sPassword.length() > 0 && sPasswordAgain.length() > 0) {
+                    register(sEmail, sPassword, sPasswordAgain);
+                } else {
+                    Toast.makeText(this, R.string.error_register_empty, Toast.LENGTH_SHORT).show();
+                    registerButton.setText(getString(R.string.register_button));
+                }
             }
+        } else {
+            Toast.makeText(this, R.string.need_connection, Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -10,30 +10,33 @@
         android:id="@+id/menu_settings"
         android:icon="@drawable/checklist_menu_settings_icon"
         app:showAsAction="ifRoom"
+        android:orderInCategory="100"
         />
     <item
         android:id="@+id/menu_lock"
         android:title="@string/lock"
         android:icon="@drawable/element_lock_icon"
-        app:showAsAction="ifRoom" />
-    <item
-        android:title="Edit Checklist"
-        android:id="@+id/bundle_menu_delete"
-        android:orderInCategory="400"
-        android:icon="@drawable/checklist_menu_delete_icon"
-        app:showAsAction="never"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="200"
         />
-
-
 
     <item
         android:id="@+id/bundle_menu_bin"
         android:title="@string/bin"
         android:orderInCategory="300"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_delete_white_24dp"
+        />
     <item
         android:id="@+id/menu_reminder"
         android:title="@string/add_reminder"
-        android:orderInCategory="100"
+        android:orderInCategory="500"
+        />
+    <item
+        android:id="@+id/menu_share"
+        android:title="@string/share"
+        android:orderInCategory="400"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_share_white_24dp"
         />
 </menu>

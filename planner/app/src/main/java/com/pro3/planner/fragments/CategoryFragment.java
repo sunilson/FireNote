@@ -59,11 +59,9 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CategoryVisibilityView categoryVisibilityView = (CategoryVisibilityView) view;
                 if (categoryVisibilityView.isChecked()) {
-                    Log.i("Linus", "Checked false");
                     categoryVisibilityView.setChecked(false);
                     LocalSettingsManager.getInstance().setCategoryVisibility((mainActivityInterface.getListCategoryVisibilityAdapter().getItem(position)).getCategoryID(), 1);
                 } else {
-                    Log.i("Linus", "Checked true");
                     categoryVisibilityView.setChecked(true);
                     LocalSettingsManager.getInstance().setCategoryVisibility(mainActivityInterface.getListCategoryVisibilityAdapter().getItem(position).getCategoryID(), -1);
                 }

@@ -17,6 +17,7 @@ import com.pro3.planner.Interfaces.ItemTouchHelperAdapter;
 import com.pro3.planner.Interfaces.MainActivityInterface;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
+import com.pro3.planner.activities.MainActivity;
 import com.pro3.planner.baseClasses.Element;
 
 import java.text.DateFormat;
@@ -24,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -41,20 +43,24 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
     private final View.OnClickListener mOnClickListener;
     private final View.OnLongClickListener mOnLongClickListener;
     private Context context;
+    private Activity activity;
+    private int lastPosition = -1;
+    RecyclerView recyclerView;
 
-    public ElementRecyclerAdapter(Context context, View.OnClickListener onClickListener, View.OnLongClickListener onLongClickListener) {
+    public ElementRecyclerAdapter(Context context, View.OnClickListener onClickListener, View.OnLongClickListener onLongClickListener, RecyclerView recyclerView) {
         super();
         this.context = context;
         this.mOnLongClickListener = onLongClickListener;
         this.mOnClickListener = onClickListener;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.activity = (Activity) context;
+        this.recyclerView = recyclerView;
     }
 
     public void clear() {
-        int listEnd = list.size();
         list.clear();
         allItems.clear();
-        notifyItemRangeChanged(0, listEnd);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -64,6 +70,34 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
 
     public List<Element> getList() {
         return allItems;
+    }
+
+    @Override
+    public String toString() {
+        String result = "";
+
+        Iterator<Element> it = list.iterator();
+
+        while (it.hasNext()) {
+            Element element = it.next();
+
+            String noteType = "";
+
+            switch (element.getNoteType()) {
+                case "checklist":
+                    noteType = context.getString(R.string.element_checklist);
+                    break;
+                case "note":
+                    noteType = context.getString(R.string.element_note);
+                    break;
+                default:
+                    break;
+            }
+
+            result += "- " +  noteType + ": " + element.getTitle() + "\n";
+        }
+
+        return result;
     }
 
     @Override
@@ -84,7 +118,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView elementTitle, elementDate, elementCategory;
         public ImageView elementIcon, lockIcon;
-        public LinearLayout iconHolder, content;
+        public LinearLayout iconHolder, content, container;
 
         public ViewHolder (View itemView) {
             super(itemView);
@@ -95,13 +129,14 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
             iconHolder = (LinearLayout) itemView.findViewById(R.id.elementList_icon_holder);
             content = (LinearLayout) itemView.findViewById(R.id.elementList_content);
             lockIcon = (ImageView) itemView.findViewById(R.id.elementLList_lock);
+            container = (LinearLayout) itemView.findViewById(R.id.container);
         }
     }
 
     public class SwipeableViewHolder extends RecyclerView.ViewHolder {
         public TextView elementTitle, elementDate, elementCategory;
         public ImageView elementIcon, lockIcon;
-        public LinearLayout iconHolder, content;
+        public LinearLayout iconHolder, content, container;
 
         public SwipeableViewHolder (View itemView) {
             super(itemView);
@@ -112,6 +147,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
             iconHolder = (LinearLayout) itemView.findViewById(R.id.elementList_icon_holder);
             content = (LinearLayout) itemView.findViewById(R.id.elementList_content);
             lockIcon = (ImageView) itemView.findViewById(R.id.elementLList_lock);
+            container = (LinearLayout) itemView.findViewById(R.id.container);
         }
     }
 
@@ -147,7 +183,13 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
                 viewHolder.elementIcon.setImageResource(R.drawable.element_bundle_icon);
             }
 
-            DateFormat df = new SimpleDateFormat("dd. MMM.", Locale.getDefault());
+            Date currentDate = new Date();
+            DateFormat df = null;
+            if (currentDate.getYear() == element.getCreationDate().getYear()) {
+                df = new SimpleDateFormat("dd.MMM", Locale.getDefault());
+            } else {
+                df = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+            }
             viewHolder.elementDate.setText(df.format(element.getCreationDate()));
 
             int elementColor = element.getColor();
@@ -157,8 +199,9 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
             if (element.getLocked()) {
                 viewHolder.lockIcon.setVisibility(View.VISIBLE);
             } else {
-                viewHolder.lockIcon.setVisibility(View.INVISIBLE);
+                viewHolder.lockIcon.setVisibility(View.GONE);
             }
+
         } else {
             SwipeableViewHolder viewHolder = (SwipeableViewHolder) holder;
             viewHolder.elementTitle.setText(element.getTitle());
@@ -173,7 +216,14 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
                 viewHolder.elementIcon.setImageResource(R.drawable.element_bundle_icon);
             }
 
-            DateFormat df = new SimpleDateFormat("dd. MMM.", Locale.getDefault());
+            Date currentDate = new Date();
+            DateFormat df = null;
+            if (currentDate.getYear() == element.getCreationDate().getYear()) {
+                df = new SimpleDateFormat("dd.MMM", Locale.getDefault());
+            } else {
+                df = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+            }
+
             viewHolder.elementDate.setText(df.format(element.getCreationDate()));
 
             int elementColor = element.getColor();
@@ -183,11 +233,9 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
             if (element.getLocked()) {
                 viewHolder.lockIcon.setVisibility(View.VISIBLE);
             } else {
-                viewHolder.lockIcon.setVisibility(View.INVISIBLE);
+                viewHolder.lockIcon.setVisibility(View.GONE);
             }
         }
-
-
     }
 
     @Override
@@ -226,26 +274,54 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         return list.get(position);
     }
 
-    public void add(Element element) {
-        if (LocalSettingsManager.getInstance().getCategoryVisibility(element.getCategoryName()) != -1 || LocalSettingsManager.getInstance().getColorVisibility(element.getColor()) != -1) {
+    public int add(Element element) {
+        if (activity instanceof MainActivity) {
+            int position = 0;
+            if (LocalSettingsManager.getInstance().getCategoryVisibility(element.getCategoryID()) != -1 && LocalSettingsManager.getInstance().getColorVisibility(element.getColor()) != -1) {
+                list.add(element);
+                String sort = LocalSettingsManager.getInstance().getSortingMethod();
+                if (sort != null) {
+                    sort(LocalSettingsManager.getInstance().getSortingMethod());
+                } else {
+                    sort(context.getString(R.string.sort_ascending_name));
+                }
+                position = list.indexOf(element);
+                notifyItemInserted(position);
+            }
+            allItems.add(element);
+            return position;
+        } else {
             list.add(element);
+            sort(context.getString(R.string.sort_ascending_name));
+            int position = list.indexOf(element);
+            notifyItemInserted(position);
+            return position;
         }
-        allItems.add(element);
-        sort(LocalSettingsManager.getInstance().getSortingMethod());
-        notifyDataSetChanged();
     }
 
     public void hideElements() {
         list.clear();
+        boolean changed = false;
+
         for (Element e: allItems) {
             if (LocalSettingsManager.getInstance().getCategoryVisibility(e.getCategoryID()) == -1 || LocalSettingsManager.getInstance().getColorVisibility(e.getColor()) == -1) {
                 list.remove(e);
+                changed = true;
             } else {
                 list.add(e);
+                changed = true;
             }
         }
-        sort(LocalSettingsManager.getInstance().getSortingMethod());
-        notifyDataSetChanged();
+
+        if (changed) {
+            String sort = LocalSettingsManager.getInstance().getSortingMethod();
+            if (sort != null) {
+                sort(LocalSettingsManager.getInstance().getSortingMethod());
+            } else {
+                sort(context.getString(R.string.sort_ascending_name));
+            }
+            notifyDataSetChanged();
+        }
     }
 
     public void update(Element element, String noteID) {
@@ -273,8 +349,11 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         notifyDataSetChanged();
     }
 
-    public void remove(String noteID) {
-        removeFromAllItems(noteID);
+    public int remove(String noteID) {
+        if (activity instanceof MainActivity) {
+            removeFromAllItems(noteID);
+        }
+
         Iterator<Element> it = list.iterator();
         int index = 0;
 
@@ -286,7 +365,17 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
             }
             index++;
         }
-        notifyItemRemoved(index);
+
+        if (index == 0) {
+            recyclerView.getLayoutManager().scrollToPosition(index);
+        }
+
+        if (index == list.size()) {
+            notifyDataSetChanged();
+        } else {
+            notifyItemRemoved(index);
+        }
+        return index;
     }
 
     private void removeFromAllItems(String noteID) {
@@ -319,9 +408,9 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
             @Override
             public int compare(Element o1, Element o2) {
 
-                if (o1.getCategoryName().compareTo(o2.getCategoryName()) < 0) {
+                if (o1.getCategoryName().compareToIgnoreCase(o2.getCategoryName()) < 0) {
                     return -1;
-                } else if (o1.getCategoryName().compareTo(o2.getCategoryName()) > 0) {
+                } else if (o1.getCategoryName().compareToIgnoreCase(o2.getCategoryName()) > 0) {
                     return 1;
                 }
                 return 0;
@@ -329,7 +418,6 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         };
 
         Collections.sort(list, comp);
-        notifyDataSetChanged();
     }
 
     private void sortByDateDescending() {
@@ -348,7 +436,6 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         };
 
         Collections.sort(list, comp);
-        notifyDataSetChanged();
     }
 
     private void sortByDateAscending() {
@@ -366,7 +453,6 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         };
 
         Collections.sort(list, comp);
-        notifyDataSetChanged();
     }
 
     private void sortByNameDescending() {
@@ -374,9 +460,9 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
             @Override
             public int compare(Element o1, Element o2) {
 
-                if (o1.getTitle().compareTo(o2.getTitle()) < 0) {
+                if (o1.getTitle().compareToIgnoreCase(o2.getTitle()) < 0) {
                     return 1;
-                } else if (o1.getTitle().compareTo(o2.getTitle()) > 0) {
+                } else if (o1.getTitle().compareToIgnoreCase(o2.getTitle()) > 0) {
                     return -1;
                 }
                 return 0;
@@ -384,7 +470,6 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         };
 
         Collections.sort(list, comp);
-        notifyDataSetChanged();
     }
 
     private void sortByNameAscending() {
@@ -392,9 +477,9 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
             @Override
             public int compare(Element o1, Element o2) {
 
-                if (o1.getTitle().compareTo(o2.getTitle()) < 0) {
+                if (o1.getTitle().compareToIgnoreCase(o2.getTitle()) < 0) {
                     return -1;
-                } else if (o1.getTitle().compareTo(o2.getTitle()) > 0) {
+                } else if (o1.getTitle().compareToIgnoreCase(o2.getTitle()) > 0) {
                     return 1;
                 }
                 return 0;
@@ -402,6 +487,5 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         };
 
         Collections.sort(list, comp);
-        notifyDataSetChanged();
     }
 }

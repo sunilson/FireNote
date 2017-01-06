@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Webview der Android-App FireNote.">
+    <meta name="author" content="Linus Weiss, Jasmin Schachner">
+    <meta name="keywords" content="Planner, Checklist, Note, App, Android, Bundles, Organizer, Notebook, FireNote, Synchronisation, Notizbuch, Checkliste">
+    <title>FireNote.</title>
+
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>    
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">    <!--Einbindung eigenes Stylesheet-->
+    <link rel="stylesheet" href="firenote.css">
+    <!--Link Roboto-Font-->
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <!-- Link Google Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+            <header class="headerbackground">
+                <div class="row">
+                   <div class="col-xs-7 col-xs-offset-1 col-md-5 col-md-offset-1 col-lg-5 col-lg-offset-2">
+                       <h1 id="firenote">FireNote.</h1>
+                   </div>
+                    <nav class="dropdown col-xs-1 col-md-1 col-md-offset-1 col-lg-1">
+                        <h1 id="sortnav" class=" material-icons dropdown-toggle" data-toggle="dropdown">swap_vert</h1>
+                        <ul class="dropdown-menu navelements">
+                            <li class="dropdownheader">Sort elements</li>
+                            <li><a href="#"> <img src="icons/ic_date_range_black_24px.svg" alt="date range icon"> &nbsp; Sort by Date Ascending</a></li>
+                            <li><a href="#"> <img src="icons/ic_date_range_black_24px.svg" alt="date range icon"> &nbsp; Sort by Date Descending</a></li>
+                            <li><a href="#"> <img src="icons/ic_text_fields_black_24px.svg" alt="text fields icon"> &nbsp; Sort by Name Ascending</a></li>
+                            <li><a href="#"> <img src="icons/ic_text_fields_black_24px.svg" alt="text fields icon"> &nbsp; Sort by Name Descending</a></li>
+                        </ul>
+                    </nav>
+                    <nav class=" col-xs-1 dropdown col-md-1 col-lg-1">
+                        <h1 id="visibilitynav" class="material-icons dropdown-toggle" data-toggle="dropdown">visibility</h1>
+                        <ul class="dropdown-menu checkbox-menu">
+                            <li class="navli"><a href="#">categories</a>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" value="">General</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" value="">School</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" value="">Finances</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" value="">Project</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" value="">Sport</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" value="">Shopping</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" value="">Business</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" value="">Holidays</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" value="">Presents</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" value="">Events</label>
+                                </div>
+                                <div class="checkbox">
+                                    <label><input type="checkbox" value="">Family</label>
+                                </div>
+                            </li>
+                            <li class="navli"><a href="#">colors</a>
+                                <ul class="list-unstyled">
+                                    <li class="colorlist colorchoiceRedBrown chosen"><img src="icons/ic_check_circle_white_24px.svg" class="placecenter" alt="checked icon"></li>
+                                    <li class="colorlist colorchoicePink chosen "><img src="icons/ic_check_circle_white_24px.svg" class="placecenter" alt="checked icon"></li>
+                                    <li class="colorlist colorchoiceViolet"><img src="icons/ic_check_circle_white_24px.svg" class="invisible" alt="checked icon"></li>
+                                    <li class="colorlist colorchoiceBlue"><img src="icons/ic_check_circle_white_24px.svg" class="invisible" alt="checked icon"></li>
+                                    <li class="colorlist colorchoiceGreen"><img src="icons/ic_check_circle_white_24px.svg" class="invisible" alt="checked icon"></li>
+                                    <li class="colorlist colorchoiceBlueGreen"><img src="icons/ic_check_circle_white_24px.svg" class="invisible" alt="checked icon"></li>
+                                    <li class="colorlist colorchoiceYellow chosen"><img src="icons/ic_check_circle_white_24px.svg" class="placecenter" alt="checked icon"></li>
+                                    <li class="colorlist colorchoiceOrange"><img src="icons/ic_check_circle_white_24px.svg" class="invisible" alt="checked icon"></li>
+                                    <li class="colorlist colorchoiceBrown"><img src="icons/ic_check_circle_white_24px.svg" class="invisible" alt="checked icon"></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                    <nav class="dropdown col-xs-1 col-md-1 col-lg-1">
+                        <h1 id="morenav" class="dropdown-toggle material-icons md-light" data-toggle="dropdown">more_vert</h1>
+                        <ul class="dropdown-menu navelements">
+                            <li><a href="#">Delete all</a></li>
+                            <li><a href="recyclebin.html">Recycle Bin</a></li>
+                            <li><a href="settings.html">Settings</a></li>
+                            <li><a href="login.html">Log out</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+
+            <main>
+                <div class="sortteller">
+                    List not sorted yet
+                </div>
+                <div class="row ">
+                    <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-5 col-md-offset-1 col-lg-3 col-lg-offset-2 noteoverview">
+                        <div class="note brightGreen">
+                            <div class="row">
+                                <div class="col-xs-1 col-sm-1 col-md-3 col-lg-2 colorchoiceGreen iconframe"><img src="icons/ic_done_all_white_24px.svg" class="placecenter" alt="done all icon">
+                                </div>
+                                <div class="col-xs-8 col-sm-8 col-md-6 col-lg-7">
+                                    <div class="row">
+                                        <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 notename">Checklist1</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 notecategory">category</div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="row">
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 notedate">10.Dez</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="note brightPink">
+                            <div class="row">
+                                <div class="col-xs-1 col-sm-1 col-md-3 col-lg-2 colorchoicePink iconframe"><img src="icons/ic_note_white_24px.svg" class="placecenter" alt="note icon">
+                                </div>
+                                <div class="col-xs-8 col-sm-8 col-md-6 col-lg-7">
+                                    <div class="row">
+                                        <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 notename">Note1</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 notecategory">category</div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="row">
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 notedate">15.Dez</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="note brightBlue">
+                            <div class="row">
+                                <div class="col-xs-1 col-sm-1 col-md-3 col-lg-2 colorchoiceBlue iconframe"><img src="icons/ic_list_white_24px.svg" class="placecenter" alt="list icon">
+                                </div>
+                                <div class="col-xs-8 col-sm-8 col-md-6 col-lg-7">
+                                    <div class="row">
+                                        <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 notename">Bundle1</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 notecategory">category</div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                                    <div class="row">
+                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 notedate">15.Dez</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       </div>
+                    <div class="col-xs-9 col-xs-offset-2 col-sm-9 col-sm-offset-2 col-md-5 col-md-offset-0 col-lg-7 col-lg-offset-0 notecontents">
+                        <div class="row">
+                            <div class="col-xs-10 col-xs-offset-3 col-sm-10 col-sm-offset-3 col-md-12 col-md-offset-2 col-lg-5 col-lg-offset-0">
+                                <div class="row colorchoiceGreen">
+                                    <div class="col-xs-8 col-sm-8 col-md-7 col-lg-7"><h3 class="colorchoiceGreen contentheader">Checklist1</h3></div>
+
+                                    <!--elements that appear when pencil-icon is pressed - toggle between the two icons-->
+                                    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 material-icons hidden"><img class="headericon" src="icons/ic_check_white_24px.svg" alt="check icon"></div>
+                                    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 material-icons hidden"><img class="headericon" src="icons/ic_settings_white_24px.svg" alt="settings icon"></div>
+
+                                    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 material-icons"><img class="headericon" src="icons/ic_mode_edit_white_24px.svg" alt="mode edit icon"></div>
+                                    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 material-icons"><img class="headericon" src="icons/ic_delete_white_24px.svg" alt="delete icon"></div>
+                                    <nav class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown">
+                                        <div class="dropdown-toggle material-icons" data-toggle="dropdown"><img class="headericon" src="icons/ic_more_vert_white_24px.svg" alt="more icon"></div>
+                                        <ul class="dropdown-menu navelements">
+                                            <li><a href="#">Add Element</a></li>
+                                            <li><a href="#">Lock/Unlock</a></li>
+                                            <li><a href="#">Add Reminder</a></li>
+                                            <li><a href="#">Sort elements</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                                <div class="contentmain brightGreen">
+                                    <div class=" checklistelement">
+                                        <div class="row ">
+                                            <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2"><img src="icons/ic_check_box_black_24px.svg" alt="checked checkbox icon">
+                                            </div>
+                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 checklistdata checked">
+                                                Apples
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" checklistelement">
+                                        <div class="row ">
+                                            <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2"><img src="icons/ic_check_box_outline_blank_black_24px.svg" alt="unchecked checkbox icon">
+                                            </div>
+                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 checklistdata unchecked">
+                                                Bread
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class=" checklistelement">
+                                        <div class="row ">
+                                            <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2"><img src="icons/ic_check_box_outline_blank_black_24px.svg" alt="unchecked checkbox icon">
+                                            </div>
+                                            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 checklistdata unchecked">
+                                                Beer
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-10 col-xs-offset-3 col-sm-10 col-sm-offset-3 col-md-12 col-md-offset-2 col-lg-5 col-lg-offset-0">
+                                <div class="row colorchoicePink">
+                                    <div class="col-xs-8 col-sm-8 col-md-7 col-lg-7"><h3 class=" contentheader colorchoicePink">Note1</h3></div>
+
+                                    <!--elements that appear when pencil-icon is pressed - toggle between the two icons-->
+                                    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 material-icons hidden"><img class="headericon" src="icons/ic_check_white_24px.svg" alt="check icon"></div>
+                                    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 material-icons hidden"><img class="headericon" src="icons/ic_settings_white_24px.svg" alt="settings icon"></div>
+
+                                    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 material-icons"><img class="headericon" src="icons/ic_mode_edit_white_24px.svg" alt="mode edit icon"></div>
+                                    <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 material-icons"><img class="headericon" src="icons/ic_delete_white_24px.svg" alt="delete icon"></div>
+                                    <nav class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown">
+                                        <div class="dropdown-toggle material-icons " data-toggle="dropdown"><img class="headericon" src="icons/ic_more_vert_white_24px.svg" alt="more icon"></div>
+                                        <ul class="dropdown-menu navelements">
+                                            <li><a href="#">Lock/Unlock</a></li>
+                                            <li><a href="#">Add Reminder</a></li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                                <div class="contentmain brightPink">Hier hab ich allerlei Notizen stehn. Hier hab ich allerlei Notizen stehn. Hier hab ich allerlei Notizen stehn. Hier hab ich allerlei Notizen stehn. </div>
+                            </div>
+                            <div class="col-xs-10 col-xs-offset-3 col-sm-10 col-sm-offset-3 col-md-12 col-md-offset-2 col-lg-5 col-lg-offset-0">
+                                <div class="row colorchoiceBlue">
+                                    <div class="col-xs-10 col-sm-10 col-md-9 col-lg-9"><h3 class="contentheader colorchoiceBlue ">Bundle1</h3></div>
+                                        <nav class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                                            <div class="dropdown-toggle material-icons" data-toggle="dropdown"><img class="headericon" src="icons/ic_more_vert_white_24px.svg" alt="more icon"></div>
+                                            <ul class="dropdown-menu navelements">
+                                                <li><a href="#">Add Element</a></li>
+                                                <li><a href="bundlerecyclebin.html">Bundle Recycle Bin</a></li>
+                                                <li><a href="#">Add Reminder</a></li>
+                                            </ul>
+                                        </nav>
+                                </div>
+                                <div class="contentmain brightBlue">
+                                    <div class="note brightYellow">
+                                        <div class="row">
+                                            <div class="col-xs-2 col-sm-2 col-md-3 col-lg-3 colorchoiceYellow iconframe"><img src="icons/ic_done_all_white_24px.svg" class="placecenter" alt="done all icon">
+                                            </div>
+                                            <div class="col-xs-7 col-sm-7 col-md-6 col-lg-7">
+                                                <div class="row">
+                                                    <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 bundlenotename">BundleChecklist1</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bundlenotecategory">category</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2">
+                                                <div class="row">
+                                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 bundlenotedate">10.Dez</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="note brightBlueGreen">
+                                        <div class="row">
+                                            <div class="col-xs-2 col-sm-2 col-md-3 col-lg-3 colorchoiceBlueGreen iconframe"><img src="icons/ic_note_white_24px.svg" class="placecenter" alt="note icon">
+                                            </div>
+                                            <div class="col-xs-7 col-sm-7 col-md-6 col-lg-7">
+                                                <div class="row">
+                                                    <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 bundlenotename">BundleNote1</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bundlenotecategory">category</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2">
+                                                <div class="row">
+                                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 bundlenotedate">10.Dez</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="note colorchoicePink clicked">
+                                        <div class="row">
+                                            <div class="col-xs-2 col-sm-2 col-md-3 col-lg-3 colorchoicePink iconframe"><img src="icons/ic_note_white_24px.svg" class="placecenter" alt="note icon">
+                                            </div>
+                                            <div class="col-xs-7 col-sm-7 col-md-6 col-lg-7">
+                                                <div class="row">
+                                                    <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7 bundlenotename clicked">Note1</div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 bundlenotecategory clicked">category</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2">
+                                                <div class="row">
+                                                    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 bundlenotedate clicked">15.Dez</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                            <div class="row bundledata brightPink">
+                                                <div class="col-md-12 brightpink">Diese Notiz ist angeklickt worden, deshalb wird hier der Inhalt aufgeklappt</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="addelement"><img src="icons/ic_add_white_24dp/ic_add_white_24dp/web/ic_add_white_24dp_2x.png" alt="add icon"></div>
+            </main>
+            </div>
+</body>
+</html>

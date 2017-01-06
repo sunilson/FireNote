@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pro3.planner.Interfaces.ChecklistInterface;
@@ -30,32 +31,49 @@ public class ChecklistRecyclerAdapter extends RecyclerView.Adapter implements It
     private final View.OnClickListener mOnClickListener;
     private final View.OnLongClickListener mOnLongClickListener;
     private LayoutInflater inflater;
+    private RecyclerView recyclerView;
 
-    public ChecklistRecyclerAdapter(Context context, View.OnClickListener onClickListener, View.OnLongClickListener onLongClickListener) {
+    public ChecklistRecyclerAdapter(Context context, View.OnClickListener onClickListener, View.OnLongClickListener onLongClickListener, RecyclerView recyclerView) {
         this.context = context;
         this.mOnLongClickListener = onLongClickListener;
         this.mOnClickListener = onClickListener;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.recyclerView = recyclerView;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView elementText;
         public CheckBox checkBox;
+        public LinearLayout container;
 
         public ViewHolder(View itemView) {
             super(itemView);
             elementText = (TextView) itemView.findViewById(R.id.checkList_element_text);
             checkBox = (CheckBox) itemView.findViewById(R.id.checkList_element_checkBox);
+            container = (LinearLayout) itemView.findViewById(R.id.container);
 
             itemView.setTag(this);
         }
     }
 
+    public String toString() {
+        String result = "";
+
+        Iterator<ChecklistElement> it = list.iterator();
+
+        while (it.hasNext()) {
+            ChecklistElement element = it.next();
+
+            result += "- " + element.getText() + "\n";
+        }
+
+        return result;
+    }
+
     public void clear() {
-        int listEnd = list.size();
         list.clear();
-        notifyItemRangeChanged(0, listEnd);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -80,19 +98,6 @@ public class ChecklistRecyclerAdapter extends RecyclerView.Adapter implements It
         CheckBox checkBox = viewHolder.checkBox;
         TextView textView = viewHolder.elementText;
 
-        /*
-        imageView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
-                    onStartDragListener.onStartDrag(holder);
-                }
-
-                return false;
-            }
-        });
-        */
-
         textView.setText(checklistElement.getText());
 
         if (checklistElement.isFinished()) {
@@ -104,6 +109,7 @@ public class ChecklistRecyclerAdapter extends RecyclerView.Adapter implements It
             textView.setPaintFlags(textView.getPaintFlags() & ~(Paint.STRIKE_THRU_TEXT_FLAG));
             textView.setTextColor(context.getResources().getColor(R.color.primary_text_color));
         }
+
     }
 
     public ChecklistElement getItem(int position) {
@@ -129,7 +135,32 @@ public class ChecklistRecyclerAdapter extends RecyclerView.Adapter implements It
             index++;
         }
 
-        notifyItemRemoved(index);
+        if (index == 0) {
+            recyclerView.getLayoutManager().scrollToPosition(index);
+        }
+
+        if (index == list.size()) {
+            notifyDataSetChanged();
+        } else {
+            notifyItemRemoved(index);
+        }
+    }
+
+    public List<ChecklistElement> getList() {
+        return list;
+    }
+
+    public ChecklistElement getItemWithID(String id) {
+        Iterator<ChecklistElement> it = list.iterator();
+
+        while (it.hasNext()) {
+            ChecklistElement checklistElement = it.next();
+            if (checklistElement.getElementID().equals(id)) {
+                return checklistElement;
+            }
+        }
+
+        return null;
     }
 
     public void update(ChecklistElement element) {
