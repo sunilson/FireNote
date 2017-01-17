@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.pro3.planner.BaseApplication;
+import com.pro3.planner.Interfaces.MainActivityInterface;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
 import com.pro3.planner.baseClasses.Category;
@@ -47,6 +49,18 @@ public class CategoryVisibilityAdapter extends ArrayAdapter {
         Collections.sort(list, comparator);
     }
 
+    public void uncheckAll() {
+        MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
+
+        for (int i = 0; i < getCount(); i++) {
+            CategoryVisibilityView categoryVisibilityView = (CategoryVisibilityView) getView(i, null, null);
+            LocalSettingsManager.getInstance().setCategoryVisibility((getItem(i)).getCategoryID(), -1);
+            mainActivityInterface.getElementAdapter().hideElements();
+        }
+
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -54,7 +68,7 @@ public class CategoryVisibilityAdapter extends ArrayAdapter {
 
         CategoryVisibilityAdapter.ElementHolder elementHolder;
 
-        if(row == null) {
+        if (row == null) {
             row = new CategoryVisibilityView(getContext());
             elementHolder = new CategoryVisibilityAdapter.ElementHolder();
             elementHolder.elementText = (TextView) row.findViewById(R.id.category_element_text);

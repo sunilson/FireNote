@@ -1,11 +1,11 @@
 package com.pro3.planner.fragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.pro3.planner.BaseApplication;
@@ -23,6 +23,7 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
     // Store instance variables
     private String title;
     private int page;
+    private Button toggleAll;
 
     // newInstance constructor for creating fragment with arguments
     public static CategoryFragment newInstance(int page, String title) {
@@ -47,13 +48,9 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_category, container, false);
-
         ListView categoryListView = (ListView) view.findViewById(R.id.fragment_category_listview);
-
         final MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication)getContext().getApplicationContext()).mainContext;
-
         categoryListView.setAdapter(mainActivityInterface.getListCategoryVisibilityAdapter());
-
         categoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -67,6 +64,14 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
                 }
 
                 mainActivityInterface.getElementAdapter().hideElements();
+            }
+        });
+
+        toggleAll = (Button) view.findViewById(R.id.toggleAll);
+        toggleAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainActivityInterface.getListCategoryVisibilityAdapter().uncheckAll();
             }
         });
 

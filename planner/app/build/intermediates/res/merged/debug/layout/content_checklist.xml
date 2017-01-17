@@ -13,13 +13,18 @@
     tools:context="com.pro3.planner.activities.ChecklistActivity"
     tools:showIn="@layout/activity_checklist">
 
-    <android.support.v7.widget.RecyclerView
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipeContainerChecklist"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:divider="@drawable/list_divider"
-        android:choiceMode="multipleChoice"
-        android:id="@+id/checkListView" />
+        android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/checkListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:choiceMode="multipleChoice"
+            android:divider="@drawable/list_divider" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

@@ -65,7 +65,15 @@ public class ChecklistRecyclerAdapter extends RecyclerView.Adapter implements It
         while (it.hasNext()) {
             ChecklistElement element = it.next();
 
-            result += "- " + element.getText() + "\n";
+            String checkbox = "";
+
+            if (element.isFinished()) {
+                checkbox = "☒";
+            } else {
+                checkbox = "☐";
+            }
+
+            result += checkbox + " " + element.getText() + "\n";
         }
 
         return result;
@@ -176,7 +184,7 @@ public class ChecklistRecyclerAdapter extends RecyclerView.Adapter implements It
         }
 
         list.set(index, element);
-        notifyItemChanged(index);
+        notifyDataSetChanged();
     }
 
     @Override

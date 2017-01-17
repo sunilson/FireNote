@@ -8,6 +8,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -37,6 +38,8 @@ import com.pro3.planner.dialogs.PasswordDialog;
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator;
 
+import static com.pro3.planner.R.id.swipeContainerBundle;
+
 public class BundleActivity extends BaseElementActivity implements BundleInterface, ConfirmDialogResult {
 
     private RecyclerView bundleList;
@@ -49,12 +52,14 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
     private boolean started;
     private LinearLayoutManager linearLayoutManager;
     private String restoredElement = "";
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.activity_bundle);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(swipeContainerBundle);
 
         if (mElementReference != null) {
             //Recyclerview Initialization
@@ -79,6 +84,17 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
 
             mElementsReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("elements").child("bundles").child(elementID);
             mBinReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("bin").child("bundles").child(elementID);
+
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    mElementsReference.removeEventListener(mElementsListener);
+                    bundleRecyclerAdapter.clear();
+                    mElementsReference.addChildEventListener(mElementsListener);
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            });
+
         }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -127,7 +143,8 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
                 if (element.getNoteType() != null) {
                    int position = bundleRecyclerAdapter.add(element);
                     if (element.getElementID().equals(restoredElement)) {
-                        linearLayoutManager.scrollToPosition(position);
+                        bundleList.smoothScrollToPosition(position);
+                        restoredElement = "";
                     }
                 } else {
                     mElementsReference.child(dataSnapshot.getKey()).removeValue();

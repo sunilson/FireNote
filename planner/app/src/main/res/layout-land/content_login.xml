@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/tint_white"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/content_login"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:background="@color/main_background_color"
+        android:clipToPadding="false"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/login_activity_horizontal_margin"
+        android:paddingRight="@dimen/login_activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="com.pro3.planner.activities.LoginActivity"
+        tools:showIn="@layout/activity_login">
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:paddingBottom="20dp"
+            android:text="@string/login_title"
+            android:textColor="@color/title_text_color"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/loginEmail"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/login_edit_text_land_height"
+            android:background="@drawable/login_edit_text"
+            android:drawableLeft="@drawable/email_login"
+            android:ems="10"
+            android:hint="@string/enter_email"
+            android:inputType="textEmailAddress|textAutoCorrect|textAutoComplete"
+            android:nextFocusDown="@+id/loginPassword"
+            android:nextFocusForward="@+id/loginPassword"
+            android:nextFocusLeft="@+id/loginEmail"
+            android:nextFocusRight="@+id/loginPassword"
+            android:nextFocusUp="@+id/loginEmail"
+            android:theme="@style/loginEditTextLand"
+
+            />
+
+        <EditText
+            android:id="@+id/loginPassword"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/login_edit_text_land_height"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/login_edit_text"
+            android:drawableLeft="@drawable/lock_login"
+            android:ems="10"
+            android:fontFamily="sans-serif"
+            android:hint="@string/enter_password"
+            android:inputType="textPassword"
+            android:theme="@style/loginEditTextLand" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <Button
+                android:id="@+id/loginButton"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0px"
+                android:layout_height="40dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/login_button_drawable"
+                android:text="@string/login_button"
+                android:textColor="@color/tint_white"
+                android:textSize="12sp" />
+
+            <LinearLayout
+                android:id="@+id/google_sign_in"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0px"
+                android:layout_weight="1"
+                android:layout_height="40dp"
+                android:background="@drawable/google_login_button"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/google_icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/google_sign_in"
+                    android:id="@+id/google_sign_in_text"
+                    android:textSize="12sp"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    android:textColor="@color/secondary_text_color" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/forgotPasswordLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/forgot_password_link"
+            android:textColor="@color/title_text_color" />
+
+
+    </LinearLayout>
+</ScrollView>

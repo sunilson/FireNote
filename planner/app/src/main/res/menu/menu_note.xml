@@ -20,6 +20,13 @@
         android:id="@+id/menu_reminder"
         android:title="@string/add_reminder"
         android:orderInCategory="400"
+        app:showAsAction="never"
+        />
+    <item
+        android:id="@+id/menu_text_to_speech"
+        android:title="@string/text_to_speech"
+        android:orderInCategory="500"
+        app:showAsAction="never"
         />
     <item
         android:id="@+id/menu_share"

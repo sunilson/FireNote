@@ -154,7 +154,11 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
                     element.setElementID(element.getElementID());
                     mElementsRefernce.child(element.getElementID()).setValue(element);
                 } else {
-                    mContentsReference.child(element.getElementID()).removeValue();
+                    if (element.getNoteType().equals("bundle")) {
+                        mReference.child("elements").child("bundles").child(element.getElementID()).removeValue();
+                    } else {
+                        mContentsReference.child(element.getElementID()).removeValue();
+                    }
                 }
 
                 Snackbar snackbar = Snackbar

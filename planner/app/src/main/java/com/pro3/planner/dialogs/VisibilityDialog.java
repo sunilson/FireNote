@@ -9,8 +9,8 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 import com.pro3.planner.R;
 import com.pro3.planner.adapters.VisibilityPagerAdapter;
@@ -35,9 +35,7 @@ public class VisibilityDialog extends SuperDialog {
         dialog.getWindow().setAttributes(layoutParams);
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
-        TextView titleText = (TextView) title.findViewById(R.id.dialog_title);
-        titleText.setText("title");
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         return dialog;
     }

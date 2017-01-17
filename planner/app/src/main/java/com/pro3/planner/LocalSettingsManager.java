@@ -2,9 +2,10 @@ package com.pro3.planner;
 
 import android.content.SharedPreferences;
 
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
@@ -89,9 +90,7 @@ public class LocalSettingsManager {
     }
 
 
-    public String getMD5Hash(String masterPasswordHash) throws UnsupportedEncodingException, NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(masterPasswordHash.getBytes());
-        return new BigInteger(1, md.digest()).toString();
+    public String getSHA1Hash(String masterPasswordHash) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+        return new String(Hex.encodeHex(DigestUtils.sha1(masterPasswordHash)));
     }
 }

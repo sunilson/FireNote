@@ -1,13 +1,14 @@
 package com.pro3.planner.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -16,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +51,8 @@ import java.util.List;
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator;
 
+import static com.pro3.planner.R.id.swipeContainer;
+
 public class MainActivity extends BaseActivity implements MainActivityInterface, ConfirmDialogResult {
 
     private DatabaseReference mReference, mElementsReference, mBinReference;
@@ -70,6 +72,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
     private LinearLayoutManager linearLayoutManager;
     private String restoredElement = "";
     private DialogFragment addEditDialog;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     /*
     ------------------------
@@ -83,13 +86,16 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle(R.string.app_name);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        //toolbar.setTitle(R.string.app_name);
 
         //Set Main Context of BaseApplication, so we can use it in the other Activities
         ((BaseApplication) getApplicationContext()).mainContext = this;
 
         currentSortingMethod = (TextView) findViewById(R.id.current_sorting_method);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.activity_main);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(swipeContainer);
+
 
         //Initialize the Firebase Auth System and the User
         user = mAuth.getCurrentUser();
@@ -147,6 +153,14 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                         dialog.show(getSupportFragmentManager(), "dialog");
                     }
                 });
+
+                swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        refreshListeners();
+                    }
+                });
+
             }
         }
 
@@ -187,18 +201,6 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         intent.addCategory(Intent.CATEGORY_HOME);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        if (addEditDialog != null && addEditDialog.getDialog() != null) {
-            if (addEditDialog.getDialog().isShowing()) {
-                addEditDialog.dismiss();
-                addEditDialog.show(getSupportFragmentManager(), "dialog");
-            }
-        }
     }
 
     /*
@@ -302,48 +304,70 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Element element = dataSnapshot.getValue(Element.class);
-                element.setElementID(dataSnapshot.getKey());
-                if (element.getNoteType() != null) {
-                   int position = elementRecyclerAdapter.add(element);
-                    if (element.getElementID().equals(restoredElement)) {
-                        recyclerView.smoothScrollToPosition(position);
-                        restoredElement = "";
+                if (element != null) {
+                    element.setElementID(dataSnapshot.getKey());
+                    if (element.getNoteType() != null) {
+                        int position = elementRecyclerAdapter.add(element);
+                        if (element.getElementID().equals(restoredElement)) {
+                            recyclerView.smoothScrollToPosition(position);
+                            restoredElement = "";
+                        }
+                    } else {
+                        mElementsReference.child(dataSnapshot.getKey()).removeValue();
                     }
-                } else {
-                    mElementsReference.child(dataSnapshot.getKey()).removeValue();
                 }
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Element element = dataSnapshot.getValue(Element.class);
-                element.setElementID(dataSnapshot.getKey());
-                if (element.getNoteType() != null) {
-                    elementRecyclerAdapter.update(element, element.getElementID());
+                if (element != null) {
+                    element.setElementID(dataSnapshot.getKey());
+                    if (element.getNoteType() != null) {
+                        elementRecyclerAdapter.update(element, element.getElementID());
+                    } else {
+                        mElementsReference.child(dataSnapshot.getKey()).removeValue();
+                    }
                 }
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 final Element element = dataSnapshot.getValue(Element.class);
-                element.setElementID(dataSnapshot.getKey());
-                if (element.getNoteType() != null) {
-                    elementRecyclerAdapter.remove(element.getElementID());
-                    mBinReference.child(element.getElementID()).setValue(element);
-                    Snackbar snackbar = Snackbar
-                            .make(coordinatorLayout, R.string.moved_to_bin, 4000)
-                            .setAction(R.string.undo, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    Snackbar snackbar1 = Snackbar.make(coordinatorLayout, R.string.element_restored, Snackbar.LENGTH_SHORT);
-                                    snackbar1.show();
-                                    mBinReference.child(element.getElementID()).removeValue();
-                                    mElementsReference.child(element.getElementID()).setValue(element);
-                                    restoredElement = element.getElementID();
-                                }
-                            });
+                if (element != null) {
+                    element.setElementID(dataSnapshot.getKey());
+                    if (element.getNoteType() != null) {
 
-                    snackbar.show();
+                        //Check if open Activity is child of Bundle and removed element is a bundle
+                        //If yes, start Main Activity to finish all other activities
+                        if (element.getNoteType().equals("bundle")) {
+                            Activity currentActivity = ((BaseApplication)getApplicationContext()).getCurrentActivity();
+                            if(currentActivity instanceof  NoteActivity || currentActivity instanceof ChecklistActivity) {
+                                BaseElementActivity baseElementActivity = (BaseElementActivity) currentActivity;
+                                if (baseElementActivity.parentID != null) {
+                                    Intent i = new Intent(baseElementActivity, MainActivity.class);
+                                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(i);
+                                }
+                            }
+                        }
+
+                        elementRecyclerAdapter.remove(element.getElementID());
+                        mBinReference.child(element.getElementID()).setValue(element);
+                        Snackbar snackbar = Snackbar
+                                .make(coordinatorLayout, R.string.moved_to_bin, 4000)
+                                .setAction(R.string.undo, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Snackbar snackbar1 = Snackbar.make(coordinatorLayout, R.string.element_restored, Snackbar.LENGTH_SHORT);
+                                        snackbar1.show();
+                                        mBinReference.child(element.getElementID()).removeValue();
+                                        mElementsReference.child(element.getElementID()).setValue(element);
+                                        restoredElement = element.getElementID();
+                                    }
+                                });
+                        snackbar.show();
+                    }
                 }
             }
 
@@ -420,6 +444,19 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
     }
 
     @Override
+    public void refreshListeners() {
+        if (mElementsListener != null) {
+            mElementsReference.removeEventListener(mElementsListener);
+            elementRecyclerAdapter.clear();
+            mElementsReference.addChildEventListener(mElementsListener);
+        }
+
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+    @Override
     public void removeListeners() {
         if (mElementsListener != null) {
             mElementsReference.removeEventListener(mElementsListener);
@@ -431,7 +468,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         return spinnerCategoryAdapter;
     }
 
-    public ArrayAdapter<Category> getListCategoryVisibilityAdapter() {
+    public CategoryVisibilityAdapter getListCategoryVisibilityAdapter() {
         return listCategoryVisibilityAdapter;
     }
 
@@ -452,6 +489,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                     i = new Intent(MainActivity.this, NoteActivity.class);
                 } else if (element.getNoteType().equals("bundle")) {
                     i = new Intent(MainActivity.this, BundleActivity.class);
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 }
                 i.putExtra("elementID", element.getElementID());
                 i.putExtra("elementTitle", element.getTitle());

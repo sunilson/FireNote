@@ -10,7 +10,6 @@ import com.pro3.planner.adapters.ChecklistRecyclerAdapter;
 public interface ChecklistInterface {
 
     public DatabaseReference getElementsReference();
-
     public ChecklistRecyclerAdapter getCheckListRecyclerAdapter();
 
 }

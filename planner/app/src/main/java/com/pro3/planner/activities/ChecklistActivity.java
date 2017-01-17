@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.CalendarContract;
+import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,15 +35,17 @@ import com.pro3.planner.R;
 import com.pro3.planner.adapters.ChecklistRecyclerAdapter;
 import com.pro3.planner.baseClasses.ChecklistElement;
 import com.pro3.planner.dialogs.ConfirmDialog;
+import com.pro3.planner.dialogs.ImportFromTextDialog;
 import com.pro3.planner.dialogs.ListAlertDialog;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
-import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator;
 
 import static com.pro3.planner.R.id.checkListView;
+import static com.pro3.planner.R.id.swipeContainerChecklist;
 
 public class ChecklistActivity extends BaseElementActivity implements ChecklistInterface, ConfirmDialogResult {
 
@@ -52,6 +56,9 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
     private ChecklistRecyclerAdapter checklistRecyclerAdapter;
     private LinearLayoutManager linearLayoutManager;
     private ItemTouchHelper itemTouchHelper;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private TextToSpeech textToSpeech;
+    private boolean started = false;
 
     /*
     ------------------------
@@ -63,15 +70,29 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(swipeContainerChecklist);
+
+
         if (mElementReference != null) {
-            //Checklist Content Listener
             mContentReference = mContentReference.child("elements");
+            //Checklist Content Listener initialization
             initializeContentsListener();
+
+            swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    mContentReference.removeEventListener(mContentsListener);
+                    checklistRecyclerAdapter.clear();
+                    mContentReference.addChildEventListener(mContentsListener);
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            });
         }
 
         //Initialize the Listview and it's adapter and it's onClick Handler
         setUpListView();
 
+        //Floating action button for adding checklist elements
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,40 +101,55 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
             }
         });
 
-        FloatingActionButton fab2 = (FloatingActionButton) findViewById(R.id.fab2);
-        fab2.setOnClickListener(new View.OnClickListener() {
+        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
-            public void onClick(View view) {
-                DialogFragment dialogFragment = ConfirmDialog.newInstance(getString(R.string.remove_checked_items_title), getString(R.string.remove_checked_items), "sweep", null);
-                dialogFragment.show(getSupportFragmentManager(), "dialog");
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    textToSpeech.setLanguage(Locale.getDefault());
+                }
             }
         });
-
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mContentReference.addChildEventListener(mContentsListener);
-            }
-        }, 200);
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        if (mContentsListener != null) {
-            mContentReference.removeEventListener(mContentsListener);
+        if(!started) {
+            started = true;
+            //Delay Animation for 200 ms so they are displayed correctly
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mContentReference.addChildEventListener(mContentsListener);
+                }
+            }, 200);
         }
 
-        checklistRecyclerAdapter.clear();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (textToSpeech != null) {
+            textToSpeech.shutdown();
+        }
+
+        if (mContentsListener != null) {
+            //Remove Content Listener
+            mContentReference.removeEventListener(mContentsListener);
+        }
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+        }
     }
 
     /*
@@ -129,7 +165,6 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == android.R.id.home) {
             this.finish();
             return true;
@@ -151,6 +186,36 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
             calIntent.putExtra(CalendarContract.Events.TITLE, elementTitle + " - " + getString(R.string.app_name));
             calIntent.putExtra(CalendarContract.Events.DESCRIPTION, shareBody);
             startActivityForResult(calIntent, 123);
+        } else if (id == R.id.clean_checklist) {
+            DialogFragment dialogFragment = ConfirmDialog.newInstance(getString(R.string.remove_checked_items_title), getString(R.string.remove_checked_items), "sweep", null);
+            dialogFragment.show(getSupportFragmentManager(), "dialog");
+        } else if (id == R.id.menu_text_to_speech) {
+            List<ChecklistElement> list = checklistRecyclerAdapter.getList();
+
+            Iterator<ChecklistElement> it = list.iterator();
+
+            while (it.hasNext()) {
+                ChecklistElement element = it.next();
+                textToSpeech.speak(element.getText(), TextToSpeech.QUEUE_ADD, null);
+                textToSpeech.playSilence(200, TextToSpeech.QUEUE_ADD, null);
+                if (element.isFinished()) {
+                    textToSpeech.speak(getString(R.string.done), TextToSpeech.QUEUE_ADD, null);
+                } else {
+                    textToSpeech.speak(getString(R.string.not_done), TextToSpeech.QUEUE_ADD, null);
+                }
+                textToSpeech.playSilence(200, TextToSpeech.QUEUE_ADD, null);
+            }
+        } else if (id == R.id.menu_import) {
+            DialogFragment dialogFragment = ImportFromTextDialog.newInstance();
+            dialogFragment.show(getSupportFragmentManager(), "dialog");
+        } else if (id == R.id.check_checklist) {
+            List<ChecklistElement> list = checklistRecyclerAdapter.getList();
+            Iterator<ChecklistElement> it = list.iterator();
+
+            while (it.hasNext()) {
+                ChecklistElement element = it.next();
+                mContentReference.child(element.getElementID()).child("finished").setValue(true);
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -168,10 +233,12 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
     -----------------------------
      */
 
+    //Checklist content listener
     private void initializeContentsListener() {
         mContentsListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                //New checklist element added. Add to adapter
                 ChecklistElement element = dataSnapshot.getValue(ChecklistElement.class);
                 element.setElementID(dataSnapshot.getKey());
                 checklistRecyclerAdapter.add(element);
@@ -179,6 +246,7 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                //Checklist element changed. Update Adapter
                 ChecklistElement element = dataSnapshot.getValue(ChecklistElement.class);
                 element.setElementID(dataSnapshot.getKey());
                 checklistRecyclerAdapter.update(element);
@@ -186,6 +254,7 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
+                //Checklist element removed. Remove from Adapter
                 String elementKey = dataSnapshot.getKey();
                 checklistRecyclerAdapter.remove(elementKey);
             }
@@ -202,12 +271,15 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         };
     }
 
+    //Click on Checklist Element
     private void initializeRecyclerOnClickListener() {
         recycleOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Get Position of Element
                 int itemPosition = recyclerView.getChildLayoutPosition(v);
                 ChecklistElement checklistElement = checklistRecyclerAdapter.getItem(itemPosition);
+                //Reverse finished state and set value to database
                 boolean finished = checklistElement.isFinished();
                 finished = !finished;
                 mContentReference.child(checklistElement.getElementID()).child("finished").setValue(finished);
@@ -215,12 +287,15 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         };
     }
 
+    //Long Click on Checklist Element
     private void initializeRecyclerOnLongClickListener() {
         recycleOnLongClickListener = new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                //Get Position of Element
                 int itemPosition = recyclerView.getChildLayoutPosition(v);
                 ChecklistElement element = checklistRecyclerAdapter.getItem(itemPosition);
+                //Start new Dialog with edit and delete
                 DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editChecklistElement", element.getElementID(), null);
                 dialog.show(getSupportFragmentManager(), "dialog");
                 return true;
@@ -228,7 +303,11 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         };
     }
 
+    /**
+     * Dialog to add new Element to the Checklist
+     */
     private void initializeAddChecklistElementDialog() {
+        //Create new AlertDialog
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
         LayoutInflater inflater = getLayoutInflater();
@@ -242,6 +321,7 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         alert.setView(content);
         alert.setPositiveButton(R.string.confirm_add_dialog, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
+                //Create Checklist Element and add it to database
                 String entry = elementTitle.getText().toString();
                 DatabaseReference dRef = mContentReference.push();
                 ChecklistElement checklistElement = new ChecklistElement(entry);
@@ -254,9 +334,14 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
             }
         });
         final AlertDialog dialog = alert.create();
+
+        //Open keyboard
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        //Set Dialog animation
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimation;
 
+        //Press positive button on keyboard "enter"
         elementTitle.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -283,15 +368,23 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         recyclerView.setHasFixedSize(true);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
+
+        //Initialize Click Listeners
         initializeRecyclerOnClickListener();
         initializeRecyclerOnLongClickListener();
+
+        //Create adapter and add to List
         checklistRecyclerAdapter = new ChecklistRecyclerAdapter(this, recycleOnClickListener, recycleOnLongClickListener, recyclerView);
-        AlphaInAnimationAdapter alphaInAnimationAdapter = new AlphaInAnimationAdapter(checklistRecyclerAdapter);
-        alphaInAnimationAdapter.setFirstOnly(false);
-        alphaInAnimationAdapter.setDuration(200);
-        recyclerView.setAdapter(alphaInAnimationAdapter);
+        recyclerView.setAdapter(checklistRecyclerAdapter);
+        //AlphaInAnimationAdapter alphaInAnimationAdapter = new AlphaInAnimationAdapter(checklistRecyclerAdapter);
+        //alphaInAnimationAdapter.setFirstOnly(false);
+        //alphaInAnimationAdapter.setDuration(200);
+
+        //Set ListView animations
         recyclerView.setItemAnimator(new ScaleInAnimator(new OvershootInterpolator(1f)));
         recyclerView.getItemAnimator().setAddDuration(400);
+
+        //Set ItemToucHelper for Swipe
         ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallbackChecklist(checklistRecyclerAdapter);
         itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerView);

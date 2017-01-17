@@ -1,5 +1,6 @@
 package com.pro3.planner.activities;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -38,6 +39,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.pro3.planner.BaseApplication;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
 
@@ -59,6 +61,7 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
     private GoogleApiClient mGoogleApiClient;
     private String reAuthType = "";
     private AlertDialog reAuthDialog;
+    protected BaseApplication baseApplication;
 
     /*
     ------------------------
@@ -95,6 +98,33 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
         ImageView view = (ImageView)findViewById(android.R.id.home);
         if (view != null) {
             view.setPadding(0, 0, 0, 0);
+        }
+
+        baseApplication = (BaseApplication)this.getApplicationContext();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        baseApplication.setCurrentActivity(this);
+    }
+
+    @Override
+    protected void onPause() {
+        clearReferences();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        clearReferences();
+        super.onDestroy();
+    }
+
+    private void clearReferences() {
+        Activity currActivity = baseApplication.getCurrentActivity();
+        if (this.equals(currActivity)) {
+            baseApplication.setCurrentActivity(null);
         }
     }
 
@@ -174,7 +204,9 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                if (dataSnapshot.getKey().equals("masterPassword")) {
+                    LocalSettingsManager.getInstance().setMasterPassword(dataSnapshot.getValue(String.class));
+                }
             }
 
             @Override

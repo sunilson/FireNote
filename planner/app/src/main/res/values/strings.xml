@@ -136,9 +136,13 @@
     <string name="old_password_error">Old password not correct</string>
     <string name="password_changed">Password changed</string>
     <string name="share">Share</string>
+    <string name="share_export">Share/Export to text</string>
+    <string name="import_text_checklist">Add a line for each element you want to add (max. 20). Add "*" or "☒" in the front of lines which are already finished.</string>
     <string name="colors">Colors</string>
+    <string name="check_all">Check all</string>
     <string name="categories">Categories</string>
     <string name="logged_in_as">Logged in as </string>
+    <string name="new_notification_title">New Notification from FireNote</string>
     <string name="choose_element_category">Choose Element category:</string>
     <string name="choose_element_title">Choose Element title:</string>
     <string name="choose_element_color">Choose Element color:</string>
@@ -148,6 +152,12 @@
     <string name="example_bundle">Example Bundle</string>
     <string name="example_checklist_element">Example Checklist Element</string>
     <string name="reminder">A reminder for your</string>
+    <string name="import_from_textfile">Import from Text</string>
+    <string name="uncheck_all">Uncheck all</string>
+    <string name="text_to_speech">Text to speech</string>
+    <string name="done">Done</string>
+    <string name="not_done">Not Done</string>
+    <string name="login_title">Login to FireNote</string>
     <string name="remove_checked_items_title">Clean checklist</string>
     <string name="remove_checked_items">Do you really want to delete all checked items?</string>
     <string name="example_note_text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.</string>

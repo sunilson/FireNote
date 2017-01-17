@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
@@ -26,12 +25,7 @@ public class AuthenticateDialog extends SuperDialog {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
-
-        TextView titleText = (TextView) title.findViewById(R.id.dialog_title);
+        super.onCreateDialog(savedInstanceState);
         titleText.setText(getString(R.string.enter_password));
         builder.setCustomTitle(title);
 
@@ -85,10 +79,6 @@ public class AuthenticateDialog extends SuperDialog {
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
 
     public static PasswordDialog newInstance(String type) {
         PasswordDialog dialog = new PasswordDialog();

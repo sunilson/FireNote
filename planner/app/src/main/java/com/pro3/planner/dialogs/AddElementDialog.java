@@ -1,15 +1,12 @@
 package com.pro3.planner.dialogs;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.pro3.planner.BaseApplication;
@@ -34,33 +31,21 @@ public class AddElementDialog extends SuperDialog {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        super.onCreateDialog(savedInstanceState);
+
         mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
 
         content = new AddElementView(getActivity(), mainActivityInterface.getSpinnerCategoryAdapter());
-
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        final Activity activity = getActivity();
-        View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
         final String elementType = getArguments().getString("elementType");
 
-        TextView titleText = (TextView) title.findViewById(R.id.dialog_title);
         titleText.setText(getArguments().getString("title"));
         builder.setCustomTitle(title);
+
+        if (savedInstanceState != null) {
+            content.setColor(savedInstanceState.getInt("color"));
+        }
+
         builder.setView(content);
-
-        if (savedTitle != null && !savedTitle.equals("")) {
-            content.setTitle(savedTitle);
-        }
-
-        if (savedCategoryID != null) {
-            content.setCategory(savedCategoryID);
-        }
-
-        if (savedColor != 0) {
-            content.setColor(savedColor);
-        }
 
         builder.setPositiveButton(getString(R.string.confirm_add_dialog), new DialogInterface.OnClickListener() {
             @Override
@@ -107,15 +92,6 @@ public class AddElementDialog extends SuperDialog {
         return dialog;
     }
 
-    @Override
-    public void onDismiss(DialogInterface dialog) {
-        savedTitle = content.getTitle();
-        savedCategoryID = content.getCategory().getCategoryID();
-        savedColor = content.getColor();
-
-        super.onDismiss(dialog);
-    }
-
     private void setDialogLayoutParams(Dialog dialog) {
         WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
@@ -125,6 +101,27 @@ public class AddElementDialog extends SuperDialog {
         dialog.getWindow().setAttributes(lp);
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
+    @Override
+    public void onDestroyView() {
+        Dialog dialog = getDialog();
+
+        if (dialog != null && getRetainInstance()) {
+            dialog.setDismissMessage(null);
+        }
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("color", content.getColor());
+    }
 
     public static AddElementDialog newInstance(String title, String elementType) {
         AddElementDialog dialog = new AddElementDialog();
