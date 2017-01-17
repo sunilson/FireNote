@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,8 +49,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private EditText loginEmail, loginPassword;
-    private TextView forgotPassword;
-    private Button loginButton, googleButton;
+    private TextView forgotPassword, googleButtonText;
+    private Button loginButton;
+    private LinearLayout googleButton;
     private GoogleApiClient mGoogleApiClient;
     private int googleSignInRequestCode = 1;
     private FirebaseUser user;
@@ -71,8 +73,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginEmail = (EditText) findViewById(R.id.loginEmail);
         loginPassword = (EditText) findViewById(R.id.loginPassword);
         loginButton = (Button) findViewById(R.id.loginButton);
-        googleButton = (Button) findViewById(R.id.google_sign_in);
+        googleButton = (LinearLayout) findViewById(R.id.google_sign_in);
         forgotPassword = (TextView) findViewById(R.id.forgotPasswordLink);
+        googleButtonText = (TextView) findViewById(R.id.google_sign_in_text);
 
         loginEmail.setText(LoginActivity.this.getSharedPreferences("general", MODE_PRIVATE).getString("lastEmail", ""));
 
@@ -168,7 +171,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             }
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
-                                googleButton.setText(getString(R.string.google_sign_in));
+                                googleButtonText.setText(getString(R.string.google_sign_in));
                                 loginButton.setText(getString(R.string.login_button));
                             }
                         });
@@ -180,7 +183,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         startActivity(i);
                     }
                 } else {
-                    googleButton.setText(getString(R.string.google_sign_in));
+                    googleButtonText.setText(getString(R.string.google_sign_in));
                     loginButton.setText(getString(R.string.login_button));
                     //User is signed out. Do nothing
                 }
@@ -206,7 +209,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 signInEmail(email, password);
                 loginButton.setText(getResources().getString(R.string.login_loading));
             } else {
-                Toast.makeText(LoginActivity.this, R.string.error_register_empty, Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, R.string.error_register_empty, Toast.LENGTH_SHORT).show();
             }
         } else if (v.getId() == R.id.google_sign_in) {
             //Start the google sign in proccess
@@ -237,7 +240,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 //On success, listener is called
                 if(!task.isSuccessful()) {
                     //Sign in failed
-                    Toast.makeText(LoginActivity.this, "Sign in Failed", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, "Sign in Failed", Toast.LENGTH_SHORT).show();
                     loginButton.setText(getResources().getString(R.string.login_button));
                 }
             }
@@ -281,7 +284,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();
             firebaseAuthWithGoogle(acct);
-            googleButton.setText(getString(R.string.login_loading));
+            googleButtonText.setText(getString(R.string.login_loading));
         } else {
             // Signed out, show unauthenticated UI.
         }

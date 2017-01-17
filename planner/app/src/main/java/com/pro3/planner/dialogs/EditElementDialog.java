@@ -5,11 +5,9 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.pro3.planner.BaseApplication;
@@ -17,7 +15,6 @@ import com.pro3.planner.Interfaces.BundleInterface;
 import com.pro3.planner.Interfaces.ElementInterface;
 import com.pro3.planner.Interfaces.MainActivityInterface;
 import com.pro3.planner.R;
-import com.pro3.planner.activities.BaseElementActivity;
 import com.pro3.planner.views.EditElementView;
 
 /**
@@ -30,13 +27,11 @@ public class EditElementDialog extends SuperDialog {
     private BundleInterface bundleInterface;
     private DatabaseReference elementReference;
     private EditElementView content;
-    private String savedTitle, savedCategoryID;
-    private int savedColor = 0;
-
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        super.onCreateDialog(savedInstanceState);
         mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
         String elementType = getArguments().getString("elementType");
         String elementID = getArguments().getString("elementID");
@@ -55,32 +50,14 @@ public class EditElementDialog extends SuperDialog {
             elementReference = mainActivityInterface.getElementsReference().child(elementID);
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
-
-        TextView titleText = (TextView) title.findViewById(R.id.dialog_title);
         titleText.setText(getArguments().getString("title"));
-
-        if (activity instanceof BaseElementActivity) {
-            (title.findViewById(R.id.dialog_title_container)).setBackgroundColor(((BaseElementActivity) activity).getElementColor());
-        }
 
         builder.setCustomTitle(title);
 
         content = new EditElementView(getContext(), mainActivityInterface.getSpinnerCategoryAdapter(), elementType, elementID);
 
-        if (savedTitle != null && !savedTitle.equals("")) {
-            content.setTitle(savedTitle);
-        }
-
-        if (savedCategoryID != null) {
-            content.setCategory(savedCategoryID);
-        }
-
-        if (savedColor != 0) {
-            content.setColor(savedColor);
+        if (savedInstanceState != null) {
+            content.setColor(savedInstanceState.getInt("color"));
         }
 
         builder.setView(content);
@@ -112,12 +89,19 @@ public class EditElementDialog extends SuperDialog {
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog) {
-        savedTitle = content.getTitle();
-        savedCategoryID = content.getCategory().getCategoryID();
-        savedColor = content.getColor();
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
 
-        super.onDismiss(dialog);
+    @Override
+    public void onDestroyView() {
+        Dialog dialog = getDialog();
+
+        if (dialog != null && getRetainInstance()) {
+            dialog.setDismissMessage(null);
+        }
+        super.onDestroyView();
     }
 
     private void setDialogLayoutParams(Dialog dialog) {
@@ -129,6 +113,11 @@ public class EditElementDialog extends SuperDialog {
         dialog.getWindow().setAttributes(lp);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("color", content.getColor());
+    }
 
     public static EditElementDialog newInstance(String title, String elementType, String elementID) {
         EditElementDialog dialog = new EditElementDialog();

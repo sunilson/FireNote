@@ -2,12 +2,13 @@ package com.pro3.planner.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.provider.CalendarContract;
+import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
 import android.text.InputType;
 import android.text.util.Linkify;
 import android.view.GestureDetector;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -23,6 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.pro3.planner.R;
 
+import java.util.Locale;
+
 import static com.pro3.planner.R.id.notepad;
 
 public class NoteActivity extends BaseElementActivity {
@@ -33,6 +36,7 @@ public class NoteActivity extends BaseElementActivity {
     private ValueEventListener mContentsListener;
     private FloatingActionButton fab;
     private RelativeLayout content;
+    private TextToSpeech textToSpeech;
 
     /*
     ------------------------
@@ -86,12 +90,25 @@ public class NoteActivity extends BaseElementActivity {
                 }
             }
         });
+
+        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR) {
+                    textToSpeech.setLanguage(Locale.getDefault());
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
     }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-
         stopEditMode();
     }
 
@@ -105,27 +122,27 @@ public class NoteActivity extends BaseElementActivity {
     protected void onStop() {
         super.onStop();
         if (mContentsListener != null) {
+            mContentReference.setValue(notePad.getText().toString());
             mContentReference.removeEventListener(mContentsListener);
         }
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (editMode) {
-                stopEditMode();
-                return true;
-            }
-        }
+    protected void onDestroy() {
+        super.onDestroy();
 
-        return super.onKeyDown(keyCode, event);
+        if (textToSpeech != null) {
+            textToSpeech.shutdown();
+        }
     }
 
     @Override
-    protected void titleEditStarted() {
-        super.titleEditStarted();
-        startEditMode();
-        titleEditText.requestFocus();
+    protected void onPause() {
+        super.onPause();
+
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+        }
     }
 
     /*
@@ -171,6 +188,9 @@ public class NoteActivity extends BaseElementActivity {
             calIntent.putExtra(CalendarContract.Events.TITLE, elementTitle + " - " + getString(R.string.app_name));
             calIntent.putExtra(CalendarContract.Events.DESCRIPTION, shareBody);
             startActivityForResult(calIntent, 123);
+        } else if (id == R.id.menu_text_to_speech) {
+            String toSpeak = notePad.getText().toString();
+            textToSpeech.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
         }
 
         return super.onOptionsItemSelected(item);
@@ -187,8 +207,8 @@ public class NoteActivity extends BaseElementActivity {
         mContentsListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String text = dataSnapshot.getValue(String.class);
-                notePad.setText(text);
+                    String text = dataSnapshot.getValue(String.class);
+                    notePad.setText(text);
             }
 
             @Override
@@ -220,7 +240,6 @@ public class NoteActivity extends BaseElementActivity {
             notePad.setAutoLinkMask(0);
             notePad.setText(notePad.getText().toString());
             notePad.setSelection(notePad.getText().length());
-            Toast.makeText(this, R.string.start_edit_mode, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -241,6 +260,15 @@ public class NoteActivity extends BaseElementActivity {
             mContentReference.setValue(notePad.getText().toString());
             Toast.makeText(this, R.string.stop_edit_mode, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void titleEditStarted() {
+        super.titleEditStarted();
+        if (!editMode) {
+            startEditMode();
+        }
+        titleEditText.requestFocus();
     }
 
     @Override

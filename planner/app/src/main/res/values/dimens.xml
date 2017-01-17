@@ -22,4 +22,5 @@
     <dimen name="settings_element_padding_vertical">16dp</dimen>
     <dimen name="settings_element_padding_horizontal">16dp</dimen>
     <dimen name="login_edit_text_height">50dp</dimen>
+    <dimen name="login_edit_text_land_height">40dp</dimen>
 </resources>

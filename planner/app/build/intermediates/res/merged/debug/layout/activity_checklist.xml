@@ -65,31 +65,4 @@
         app:srcCompat="@drawable/ic_add_white_24dp"
         app:backgroundTint="@color/colorPrimary" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_invisible"
-        android:layout_width="@dimen/fab_margin"
-        android:layout_height="@dimen/fab_margin"
-        android:layout_gravity="top|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:visibility="invisible"
-        app:layout_anchor="@id/fab"
-        app:layout_anchorGravity="top" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/delete_all_icon"
-        app:backgroundTint="@color/colorAccent"
-        android:tint="@color/tint_white"
-        app:layout_anchor="@id/fab_invisible"
-        app:layout_anchorGravity="top"
-        />
-
-
-
-
-
 </android.support.design.widget.CoordinatorLayout>

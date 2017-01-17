@@ -85,6 +85,7 @@
     <string name="delete_note_title">Notiz löschen</string>
     <string name="dialog_enter_category">Kategorie hier wählen</string>
     <string name="dialog_enter_title">Titel hier eingeben</string>
+    <string name="done">Fertig</string>
     <string name="edit">Bearbeiten</string>
     <string name="edit_Bundle_Title">Sammlung bearbeiten</string>
     <string name="edit_Note_Title">Notiz bearbeiten</string>
@@ -123,6 +124,8 @@
     <string name="logged_in_as">Eingeloggt als</string>
     <string name="login_button">Einloggen</string>
     <string name="login_loading">Bitte warten...</string>
+    <string name="login_title">In FireNote einloggen</string>
+    <string name="master_password_changed">Master Passwort wurde geändert</string>
     <string name="master_password_description">Das Master Passwort wird verwendet um Ihre Elemente zu sperren. Es ist nicht Ihr Login Passwort!</string>
     <string name="master_password_new2_hint">Neues Passwort wiederholen</string>
     <string name="master_password_new_hint">Neues Passwort eingeben</string>
@@ -131,9 +134,10 @@
     <string name="menu_delete_all">Alle löschen</string>
     <string name="menu_log_out">Ausloggen</string>
     <string name="menu_sort">Elemente sortieren</string>
-    <string name="moved_to_bin">Element in Papierkorb verschoben</string>
+    <string name="moved_to_bin">Element gelöscht</string>
     <string name="need_connection">Sie brauchen eine Internetverbindung für diese Funktion!</string>
     <string name="new_checklist_item">Text hier eingeben</string>
+    <string name="not_done">Nicht fertig</string>
     <string name="note_hint">Doppelt antippen oder auf \"Bearbeiten\" klicken</string>
     <string name="old_password_error">Altes Passwort nicht korrekt</string>
     <string name="password_changed">Passwort geändert</string>

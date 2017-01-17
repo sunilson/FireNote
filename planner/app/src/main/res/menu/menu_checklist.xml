@@ -19,14 +19,42 @@
     <item
         android:id="@+id/menu_reminder"
         android:title="@string/add_reminder"
-        android:orderInCategory="400"
+        android:orderInCategory="800"
         app:showAsAction="never"
         />
 
     <item
-        android:id="@+id/menu_share"
-        android:title="@string/share"
+        android:id="@+id/menu_import"
+        android:title="@string/import_from_textfile"
+        android:orderInCategory="500"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/menu_text_to_speech"
+        android:title="@string/text_to_speech"
+        android:orderInCategory="700"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/clean_checklist"
+        android:title="@string/remove_checked_items_title"
         android:orderInCategory="300"
+        android:icon="@drawable/clear_checklist_icon"
+        app:showAsAction="ifRoom"
+        />
+    <item
+        android:id="@+id/check_checklist"
+        android:title="@string/check_all"
+        android:orderInCategory="400"
+        android:icon="@drawable/ic_check_circle_white_24dp"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
+        android:id="@+id/menu_share"
+        android:title="@string/share_export"
+        android:orderInCategory="600"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_share_white_24dp"
         />

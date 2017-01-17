@@ -64,7 +64,6 @@ public class ElementDialogView extends LinearLayout implements AdapterView.OnIte
         imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         colorAdapter = new ColorAddAdapter(getContext(), R.layout.color_list_layout);
-
         colorAdapter.add(new NoteColor("note_color_1", ContextCompat.getColor(getContext(), R.color.note_color_1)));
         colorAdapter.add(new NoteColor("note_color_2", ContextCompat.getColor(getContext(), R.color.note_color_2)));
         colorAdapter.add(new NoteColor("note_color_3", ContextCompat.getColor(getContext(), R.color.note_color_3)));
@@ -164,6 +163,8 @@ public class ElementDialogView extends LinearLayout implements AdapterView.OnIte
     protected void selectColor(int position) {
         colorAdapter.setCheckedPosition(position);
         ((ColorElementView) colorAdapter.getView(position, null, null)).setChecked(true);
-        selectedColor = colorAdapter.getItem(position).getColor();
+        if (colorAdapter.getItem(position) != null) {
+            selectedColor = colorAdapter.getItem(position).getColor();
+        }
     }
 }

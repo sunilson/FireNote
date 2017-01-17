@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import com.pro3.planner.BaseApplication;
+import com.pro3.planner.Interfaces.MainActivityInterface;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
 import com.pro3.planner.baseClasses.NoteColor;
@@ -45,6 +47,18 @@ public class ColorVisibilityAdapter extends ArrayAdapter<NoteColor> {
         return list.size();
     }
 
+    public void uncheckAll() {
+        MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
+
+        for (int i = 0; i < getCount(); i++) {
+            ColorElementView colorElementView = (ColorElementView) getView(i, null, null);
+            LocalSettingsManager.getInstance().setColorVisibility((getItem(i)).getColor(), -1);
+            mainActivityInterface.getElementAdapter().hideElements();
+        }
+
+        notifyDataSetChanged();
+    }
+
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -65,7 +79,7 @@ public class ColorVisibilityAdapter extends ArrayAdapter<NoteColor> {
         NoteColor noteColor = getItem(position);
         row.setBackgroundColor(noteColor.getColor());
 
-        elementHolder.icon.setImageResource(R.drawable.color_list_negative_icon);
+        elementHolder.icon.setImageResource(R.drawable.ic_cancel_white_24dp);
 
         if (LocalSettingsManager.getInstance().getColorVisibility(noteColor.getColor()) == -1) {
             row.setChecked(true);

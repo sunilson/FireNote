@@ -24,23 +24,26 @@
         tools:context="com.pro3.planner.activities.LoginActivity"
         tools:showIn="@layout/activity_login">
 
-        <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_gravity="center"
-            android:src="@drawable/logo" />
-
         <LinearLayout
             android:layout_width="0px"
             android:layout_height="0px"
             android:focusable="true"
             android:focusableInTouchMode="true" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:paddingBottom="50dp"
+            android:text="@string/login_title"
+            android:textColor="@color/title_text_color"
+            android:textSize="24sp" />
+
         <EditText
             android:id="@+id/loginEmail"
             android:layout_width="match_parent"
             android:layout_height="@dimen/login_edit_text_height"
-            android:layout_marginTop="40dp"
             android:background="@drawable/login_edit_text"
             android:drawableLeft="@drawable/email_login"
             android:ems="10"
@@ -76,15 +79,33 @@
             android:text="@string/login_button"
             android:textColor="@color/tint_white" />
 
-        <Button
+        <LinearLayout
+            android:orientation="horizontal"
             android:id="@+id/google_sign_in"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:gravity="center"
             android:layout_marginTop="10dp"
             android:background="@drawable/google_login_button"
-            android:text="@string/google_sign_in"
-            android:textColor="@color/secondary_text_color" />
+            >
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/google_icon"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/google_sign_in"
+                android:textAllCaps="true"
+                android:id="@+id/google_sign_in_text"
+                android:textColor="@color/secondary_text_color"
+                android:textStyle="bold"
+                />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/forgotPasswordLink"

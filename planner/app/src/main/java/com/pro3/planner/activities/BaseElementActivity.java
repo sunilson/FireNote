@@ -8,12 +8,14 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,8 +35,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.pro3.planner.BaseApplication;
 import com.pro3.planner.Interfaces.ConfirmDialogResult;
 import com.pro3.planner.Interfaces.ElementInterface;
+import com.pro3.planner.Interfaces.MainActivityInterface;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
 import com.pro3.planner.baseClasses.Element;
@@ -100,6 +104,7 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
             @Override
             public void onClick(View view) {
                 if (!titleEdit) {
+                    titleEditStarted();
                     startTitleEdit();
                 }
             }
@@ -173,8 +178,7 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
         titleEditText.setBackgroundColor(ContextCompat.getColor(BaseElementActivity.this, R.color.tint_white));
         titleEditText.setTextColor(ContextCompat.getColor(BaseElementActivity.this, R.color.title_text_color));
         titleDoneButton.setVisibility(View.VISIBLE);
-        imm.showSoftInput(titleEditText, InputMethodManager.SHOW_IMPLICIT);
-        titleEditStarted();
+        imm.showSoftInput(titleEditText, InputMethodManager.SHOW_FORCED);
     }
 
     protected void stopTitleEdit() {
@@ -191,6 +195,11 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
         titleEditStopped();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
+
     protected void titleEditStarted() {
 
     }
@@ -202,6 +211,29 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
     @Override
     protected void onStart() {
         super.onStart();
+
+        //Check if parent has been deleted
+        if (parentID != null) {
+            DatabaseReference dRef = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid()).child("elements").child("main").child(parentID);
+            dRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Element element = dataSnapshot.getValue(Element.class);
+                    if (element == null) {
+                        finish();
+                    } else {
+                        if (element.getNoteType() == null) {
+                            finish();
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
 
         if (locked) {
             if (lockButton != null) {
@@ -220,6 +252,7 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
     protected void onStop() {
         super.onStop();
 
+        mElementReference.child("title").setValue(titleEditText.getText().toString());
         if (mElementListener != null) {
             mElementReference.removeEventListener(mElementListener);
         }
@@ -266,7 +299,18 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Element element = dataSnapshot.getValue(Element.class);
                 if (element != null) {
-                    updateElement(element);
+                    if (element.getNoteType() != null) {
+                        updateElement(element);
+                    } else {
+                        mElementReference.removeValue();
+                        ((MainActivityInterface) ((BaseApplication) getApplicationContext()).mainContext).refreshListeners();
+                        finish();
+                        Log.i("Linus", "finish");
+                    }
+                } else {
+                    ((MainActivityInterface) ((BaseApplication) getApplicationContext()).mainContext).refreshListeners();
+                    finish();
+                    Log.i("Linus", "finish");
                 }
             }
 
@@ -372,6 +416,13 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
     @Override
     public String getElementCategoryID() {
         return categoryID;
+    }
+
+    @Override
+    public void stopListeners() {
+        if (mElementListener != null) {
+            mElementReference.removeEventListener(mElementListener);
+        }
     }
 
     @Override

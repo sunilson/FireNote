@@ -5,22 +5,27 @@
     android:id="@+id/content_bundle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="false"
     android:paddingBottom="@dimen/element_list_vertical_margin"
     android:paddingLeft="@dimen/element_list_horizontal_margin"
     android:paddingRight="@dimen/element_list_horizontal_margin"
-    android:clipToPadding="false"
     android:paddingTop="@dimen/element_list_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.pro3.planner.activities.BundleActivity"
     tools:showIn="@layout/activity_bundle">
 
-    <android.support.v7.widget.RecyclerView
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swipeContainerBundle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        android:divider="@null"
-        android:dividerHeight="0px"
-        android:id="@+id/bundleList"
-        />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/bundleList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:divider="@null"
+            android:dividerHeight="0px" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

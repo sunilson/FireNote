@@ -1,5 +1,6 @@
 package com.pro3.planner;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -14,6 +15,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class BaseApplication extends Application {
 
     public Context mainContext = null;
+    private Activity myCurrentActivity = null;
 
     @Override
     public void onCreate() {
@@ -28,5 +30,12 @@ public class BaseApplication extends Application {
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    public Activity getCurrentActivity(){
+        return myCurrentActivity;
+    }
+    public void setCurrentActivity(Activity mCurrentActivity){
+        this.myCurrentActivity = mCurrentActivity;
     }
 }

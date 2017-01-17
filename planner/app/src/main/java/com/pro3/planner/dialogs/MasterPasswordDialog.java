@@ -6,11 +6,9 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,14 +30,9 @@ public class MasterPasswordDialog extends SuperDialog {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        super.onCreateDialog(savedInstanceState);
         final SettingsInterface settings = (SettingsInterface) getActivity();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-
-        View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
-        TextView titleText = (TextView) title.findViewById(R.id.dialog_title);
         titleText.setText(getString(R.string.set_master_password));
         builder.setCustomTitle(title);
 
@@ -51,16 +44,13 @@ public class MasterPasswordDialog extends SuperDialog {
         }
 
         builder.setView(content);
-
         builder.setPositiveButton(R.string.confirm_clear_bin_dialog, null);
-
         builder.setNegativeButton(R.string.cancel_add_dialog, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
             }
         });
 
         final AlertDialog dialog = builder.create();
-
         return dialog;
     }
 
@@ -86,8 +76,8 @@ public class MasterPasswordDialog extends SuperDialog {
                     String newHash = "";
 
                     try {
-                        oldHash = LocalSettingsManager.getInstance().getMD5Hash(old);
-                        newHash = LocalSettingsManager.getInstance().getMD5Hash(newS);
+                        oldHash = LocalSettingsManager.getInstance().getSHA1Hash(old);
+                        newHash = LocalSettingsManager.getInstance().getSHA1Hash(newS);
                     } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
                         e.printStackTrace();
                     }

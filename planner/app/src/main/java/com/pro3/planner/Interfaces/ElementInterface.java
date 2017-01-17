@@ -13,5 +13,6 @@ public interface ElementInterface {
     String getElementTitle();
     int getElementColor();
     String getElementCategoryID();
+    void stopListeners();
 
 }

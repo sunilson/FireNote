@@ -26,27 +26,45 @@ public class EditElementView extends ElementDialogView{
         Activity activity = (Activity) getContext();
 
         if (activity instanceof BundleInterface && !type.equals("bundle")) {
+            int position = 0;
+            int positionColor = 0;
             BundleInterface bundleInterface = (BundleInterface) getContext();
             Element element = bundleInterface.getElementAdapter().getElement(id);
-            title.setText(element.getTitle());
-            int position = mainActivityInterface.getSpinnerCategoryAdapter().getPositionWithID(element.getCategoryID());
+
+            if (element != null) {
+                if (element.getTitle() != null) {
+                    title.setText(element.getTitle());
+                }
+                if (element.getCategoryID() != null) {
+                    position = mainActivityInterface.getSpinnerCategoryAdapter().getPositionWithID(element.getCategoryID());
+                }
+                positionColor = colorAdapter.getPositionWithColor(element.getColor());
+            }
+
             categorySpinner.setSelection(position);
-            position = colorAdapter.getPositionWithColor(element.getColor());
             selectColor(position);
+
         } else if (activity instanceof ElementInterface) {
             ElementInterface elementInterface = (ElementInterface) getContext();
-            title.setText(elementInterface.getElementTitle());
-            int position = mainActivityInterface.getSpinnerCategoryAdapter().getPositionWithID(elementInterface.getElementCategoryID());
+            int position = 0;
+            if (elementInterface.getElementTitle() != null) {
+                title.setText(elementInterface.getElementTitle());
+            }
+            if (elementInterface.getElementCategoryID() != null) {
+                position = mainActivityInterface.getSpinnerCategoryAdapter().getPositionWithID(elementInterface.getElementCategoryID());
+            }
             categorySpinner.setSelection(position);
             position = colorAdapter.getPositionWithColor(elementInterface.getElementColor());
             selectColor(position);
         } else if (activity instanceof MainActivityInterface) {
-            title.setText(mainActivityInterface.getElementAdapter().getElement(id).getTitle());
-            Element element = mainActivityInterface.getElementAdapter().getElement(id);
-            int position = mainActivityInterface.getSpinnerCategoryAdapter().getPositionWithID(element.getCategoryID());
-            categorySpinner.setSelection(position);
-            position = colorAdapter.getPositionWithColor(element.getColor());
-            selectColor(position);
+            if (mainActivityInterface.getElementAdapter().getElement(id) != null) {
+                title.setText(mainActivityInterface.getElementAdapter().getElement(id).getTitle());
+                Element element = mainActivityInterface.getElementAdapter().getElement(id);
+                int position = mainActivityInterface.getSpinnerCategoryAdapter().getPositionWithID(element.getCategoryID());
+                categorySpinner.setSelection(position);
+                position = colorAdapter.getPositionWithColor(element.getColor());
+                selectColor(position);
+            }
         }
 
         title.setSelection(title.getText().length());

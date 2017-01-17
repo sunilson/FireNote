@@ -26,7 +26,6 @@ import com.pro3.planner.Interfaces.MainActivityInterface;
 import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
 import com.pro3.planner.activities.BaseElementActivity;
-import com.pro3.planner.activities.MainActivity;
 import com.pro3.planner.adapters.DialogMenuAdapter;
 
 /**
@@ -44,23 +43,14 @@ public class ListAlertDialog extends SuperDialog {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        super.onCreateDialog(savedInstanceState);
         String type = getArguments().getString("type");
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View title = inflater.inflate(R.layout.alertdialog_custom_title, null);
         View content = inflater.inflate(R.layout.alertdialog_menu_listview, null);
 
-        TextView titleText = (TextView) title.findViewById(R.id.dialog_title);
         ListView contentListView = (ListView) content.findViewById(R.id.dialog_menu_listview);
 
         titleText.setText(getArguments().getString("title"));
         builder.setCustomTitle(title);
-
-        Activity activity = getActivity();
-        if (activity instanceof BaseElementActivity) {
-            (title.findViewById(R.id.dialog_title_container)).setBackgroundColor(((BaseElementActivity) activity).getElementColor());
-        }
 
         dialogAdapter = new DialogMenuAdapter(getActivity(), R.layout.alertdialog_menu_list_layout);
         contentListView.setAdapter(dialogAdapter);
@@ -184,21 +174,20 @@ public class ListAlertDialog extends SuperDialog {
 
                     if (activity instanceof BundleInterface && !elementType.equals("bundle")) {
                         elementReference = bundleInterface.getElementsReference().child(elementID);
+                        ElementInterface elementInterface = (ElementInterface) activity;
+                        elementInterface.stopListeners();
+                        elementReference.removeValue();
+                        activity.finish();
                     } else if (activity instanceof ElementInterface) {
                         ElementInterface elementInterface = (ElementInterface) activity;
                         elementReference = elementInterface.getElementReference();
+                        elementInterface.stopListeners();
+                        elementReference.removeValue();
+                        activity.finish();
                     } else {
                         elementReference = mainActivityInterface.getElementsReference().child(elementID);
+                        elementReference.removeValue();
                     }
-
-                    if (activity instanceof MainActivity) {
-
-                    } else if (activity instanceof BundleInterface && !elementType.equals("bundle")) {
-
-                    } else {
-                        activity.finish();
-                    }
-                    elementReference.removeValue();
                 } else {
                     Bundle bundle = new Bundle();
                     bundle.putString("elementType", elementType);
