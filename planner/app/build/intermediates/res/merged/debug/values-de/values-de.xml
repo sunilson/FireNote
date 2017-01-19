@@ -45,6 +45,7 @@
     <string name="change_font_size"/>
     <string name="change_password">Login Passwort ändern</string>
     <string name="change_password_description">Hier können Sie Ihr Login Passowrt ändern. Sie müssen sich zuerst neu einloggen um Ihre Identität zu bestätigen.</string>
+    <string name="check_all">Alle anhaken</string>
     <string name="choose_element_category">Element Kategorie wählen:</string>
     <string name="choose_element_color">Element Farbe wählen:</string>
     <string name="choose_element_title">Element Titel wählen:</string>
@@ -119,6 +120,8 @@
     <string name="from_app">von FireNote</string>
     <string name="google_auth_failed">Google Authentifizierung fehlgeschlagen!</string>
     <string name="google_sign_in">Einloggen mit Google</string>
+    <string name="import_from_textfile">Von Text importieren</string>
+    <string name="import_text_checklist">Fügen Sie für jedes Element eine neue Zeile ein (max. 20). Um ein Element als fertig zu markieren \"*\" oder \"☒\" vor die Zeile einfügen.</string>
     <string name="lock">Sperren/Entsperren</string>
     <string name="locked">Gesperrt</string>
     <string name="logged_in_as">Eingeloggt als</string>
@@ -137,6 +140,7 @@
     <string name="moved_to_bin">Element gelöscht</string>
     <string name="need_connection">Sie brauchen eine Internetverbindung für diese Funktion!</string>
     <string name="new_checklist_item">Text hier eingeben</string>
+    <string name="new_notification_title">Neue Benachrichtigung von FireNote</string>
     <string name="not_done">Nicht fertig</string>
     <string name="note_hint">Doppelt antippen oder auf \"Bearbeiten\" klicken</string>
     <string name="old_password_error">Altes Passwort nicht korrekt</string>
@@ -162,6 +166,7 @@
     <string name="send_mail">Link senden!</string>
     <string name="set_master_password">Master Passwort ändern</string>
     <string name="share">Teilen</string>
+    <string name="share_export">Teilen/Text exportieren</string>
     <string name="sort_ascending_date">Datum aufsteigend</string>
     <string name="sort_ascending_name">Name aufsteigend</string>
     <string name="sort_by">Sortieren nach</string>
@@ -172,6 +177,7 @@
     <string name="start_edit_mode">Element wird bearbeitet</string>
     <string msgid="2869576371154716097" name="status_bar_notification_info_overflow">"999+"</string>
     <string name="stop_edit_mode">Bearbeitung beendet</string>
+    <string name="text_to_speech">Text vorlesen lassen</string>
     <string name="title_activity_bin">Papierkorb</string>
     <string name="title_activity_bundle">Sammlung</string>
     <string name="title_activity_category">Kategorie</string>
@@ -184,6 +190,7 @@
     <string name="title_activity_reset_password">Passwort zurücksetzen</string>
     <string name="title_activity_settings">Einstellungen</string>
     <string name="title_activity_start">FireNote</string>
+    <string name="uncheck_all">Alle abwählen</string>
     <string name="undo">Rückgängig</string>
     <string name="unlock">Entsperren</string>
     <string name="unlocked">Entsperrt</string>

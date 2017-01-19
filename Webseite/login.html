@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Login-Page der Webview der Android-App FireNote.">
+    <meta name="author" content="Linus Weiss, Jasmin Schachner">
+    <meta name="keywords" content="Planner, Checklist, Note, App, Android, Bundles, Organizer, Notebook, FireNote, Synchronisation, Notizbuch, Checkliste, Login">
+    <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
+    <title>FireNote Login</title>
+
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+
+    <!-- For IE 9 and below. ICO should be 32x32 pixels in size -->
+    <!--[if IE]><link rel="shortcut icon" href="img/favicon.ico"><![endif]-->
+
+    <!-- Firefox, Chrome, Safari, IE 11+ and Opera. 196x196 pixels in size. -->
+    <link rel="icon" href="img/favicon.png">
+
+    <!--Scripts-->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>   
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+    <script type='text/javascript' src="js/sha1-min.js"></script>
+    <script type='text/javascript' src="js/fnL.js"></script>
+    <script type='text/javascript' src="js/jquery.localize.min.js"></script>
+    <!--CSS-->
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> 
+    <link rel="stylesheet" href="css/firenoteLogin.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+<body>
+<div class="container" id ="firenote-mobile">
+        <div class="row" style="margin: 0; margin-top: -30px">
+            <div class="mobileContainer">
+                <img width="50px" src="img/fire.png" id="fireLogoMobile" />
+            </div>
+            <div class="mobileContainer">
+                <h1 id="mobileTitle" data-localize="getApp">Get FireNote on the Play store</h1>
+            </div>
+            <div class="mobileContainer">
+                    <a href='http://play.google.com/store/?pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width="150px" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
+            </div>
+        </div>
+    </div>
+<div class="container" id="firenote"> 
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <img class="logo" src="img/fire.png" width="36px" alt="firebase logo">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h1 class="title">FireNote WebView</h1>
+            </div>
+            <div class="col-md-8 col-md-offset-2">
+                <div class="description" data-localize="loginDescription">Login to view your FireNote elements. Editing is currently not available in browser!</div>
+            </div>
+        </div>
+        <div class="row login">
+            <div class="col-md-8 col-md-offset-2">
+                <form>
+                    <input type="email" id="email" placeholder="Enter E-Mail adress" name="email" class="loginInput"><br>
+                    <input type="password" id="password" placeholder="Enter password" name="pwd" class="loginInput"><br>
+                </form>
+                <div style="display: flex; justify-content: center;">
+                    <div id="login" class="loginButton">Login</div>
+                </div>
+                <div style="display: flex; justify-content: center;">
+                    <div id="googleLogin" class="loginButton"><img src="img/google_icon.png" style="margin-right: 10px" width="25px"/><span data-localize="google">Sign in with Google</span></div>
+                </div>
+                <div style="display: flex; justify-content: center" class="register">
+                    <a href="http://play.google.com/store/?pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1" data-localize="register">No account yet?</a>
+                </div>
+                <!--
+                <div style="text-align: center;">No account yet? <a href="register.html">Register here!</a></div>
+                -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>

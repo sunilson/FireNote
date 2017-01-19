@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Login-Page der Webview der Android-App FireNote.">
+    <meta name="author" content="Linus Weiss, Jasmin Schachner">
+    <meta name="keywords" content="Planner, Checklist, Note, App, Android, Bundles, Organizer, Notebook, FireNote, Synchronisation, Notizbuch, Checkliste, Login">
+    <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
+    <title>FireNote</title>
+
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+
+    <!-- For IE 9 and below. ICO should be 32x32 pixels in size -->
+    <!--[if IE]><link rel="shortcut icon" href="img/favicon.ico"><![endif]-->
+
+    <!-- Firefox, Chrome, Safari, IE 11+ and Opera. 196x196 pixels in size. -->
+    <link rel="icon" href="img/favicon.png">
+
+    <!--Scripts-->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>   
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+    <script type='text/javascript' src="js/m.js"></script>
+    <!--CSS-->
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> 
+    <link rel="stylesheet" href="css/firenoteLogin.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+</head>
+<body>
+
+    <!-- VERIFIED -->
+
+    <div class="container" id="verified" style="display:none">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <img class="logo" src="img/fire.png" width="36px" alt="firebase logo">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h1 class="title">Your E-Mail has been verified!</h1>
+            </div>
+            <div class="col-md-8 col-md-offset-2">
+                <div class="description">You can now login to the FireNote app and to the FireNote WebView</div>
+            </div>
+        </div>
+        <div class="row login">
+            <div class="col-md-8 col-md-offset-2">
+                <div style="display: flex; justify-content: center;">
+                    <div id="login" class="loginButton">Go to WebView!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOT VERIFIED -->
+
+    <div class="container" id="notVerified" style="display:none">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <img class="logo" src="img/fire.png" width="36px" alt="firebase logo">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="title">Verification failed!</div>
+            </div>
+            <div class="col-md-8 col-md-offset-2">
+                <div class="description">Code may have expired. Please try again. If the error persits contact us at support@firenote.at</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESET PASSWORD -->
+
+    <div class="container" id="reset" style="display:none">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <img class="logo" src="img/fire.png" width="36px" alt="firebase logo">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h1 class="title" >Reset your password</h1>
+            </div>
+            <div class="col-md-8 col-md-offset-2">
+                <div class="description" id="resetEmail">Code may have expired. Please try again. If the error persits contact us at support@firenote.at</div>
+            </div>
+        </div>
+        <div class="row login">
+            <div class="col-md-8 col-md-offset-2" id="resetForm">
+                <input type="password" id="password" placeholder="Enter New Password" name="pwd" class="loginInput"><br>
+                <input type="password" id="password2" placeholder="Repeat New Password" name="pwd2" class="loginInput"><br>
+                <div style="display: flex; justify-content: center;">
+                    <div id="confirm" class="loginButton">Confirm</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="resetInvalid" style="display:none">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <img class="logo" src="img/fire.png" width="36px" alt="firebase logo">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h1 class="title">Reset your password</h1>
+            </div>
+            <div class="col-md-8 col-md-offset-2">
+                <div class="description error" id="resetEmail">Code may have expired. Please try again. If the error persits contact us at support@firenote.at</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
