@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.CalendarContract;
-import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -40,7 +39,6 @@ import com.pro3.planner.dialogs.ListAlertDialog;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator;
 
@@ -57,7 +55,6 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
     private LinearLayoutManager linearLayoutManager;
     private ItemTouchHelper itemTouchHelper;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private TextToSpeech textToSpeech;
     private boolean started = false;
 
     /*
@@ -101,6 +98,7 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
             }
         });
 
+        /*
         textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -109,6 +107,7 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
                 }
             }
         });
+        */
     }
 
     @Override
@@ -132,10 +131,6 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
     protected void onDestroy() {
         super.onDestroy();
 
-        if (textToSpeech != null) {
-            textToSpeech.shutdown();
-        }
-
         if (mContentsListener != null) {
             //Remove Content Listener
             mContentReference.removeEventListener(mContentsListener);
@@ -146,10 +141,6 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
     @Override
     protected void onPause() {
         super.onPause();
-
-        if (textToSpeech != null) {
-            textToSpeech.stop();
-        }
     }
 
     /*
@@ -169,9 +160,7 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
             this.finish();
             return true;
         } else if (id == R.id.menu_share) {
-
-            String shareBody = getString(R.string.element_checklist) + " \"" + elementTitle + "\" " + getString(R.string.from_app) + ": " + "\n" + checklistRecyclerAdapter.toString();
-
+            String shareBody = checklistRecyclerAdapter.toString();
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
             sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, elementTitle);
@@ -179,7 +168,6 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
             startActivity(Intent.createChooser(sharingIntent, ""));
         } else if (id == R.id.menu_reminder) {
             String shareBody = getString(R.string.element_checklist) + " \"" + elementTitle + "\" " + getString(R.string.from_app) + ": " + "\n" + checklistRecyclerAdapter.toString();
-
             Intent calIntent = new Intent(Intent.ACTION_INSERT);
             calIntent.setData(CalendarContract.Events.CONTENT_URI);
             calIntent.setType("vnd.android.cursor.item/event");
@@ -189,35 +177,17 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         } else if (id == R.id.clean_checklist) {
             DialogFragment dialogFragment = ConfirmDialog.newInstance(getString(R.string.remove_checked_items_title), getString(R.string.remove_checked_items), "sweep", null);
             dialogFragment.show(getSupportFragmentManager(), "dialog");
-        } else if (id == R.id.menu_text_to_speech) {
-            List<ChecklistElement> list = checklistRecyclerAdapter.getList();
-
-            Iterator<ChecklistElement> it = list.iterator();
-
-            while (it.hasNext()) {
-                ChecklistElement element = it.next();
-                textToSpeech.speak(element.getText(), TextToSpeech.QUEUE_ADD, null);
-                textToSpeech.playSilence(200, TextToSpeech.QUEUE_ADD, null);
-                if (element.isFinished()) {
-                    textToSpeech.speak(getString(R.string.done), TextToSpeech.QUEUE_ADD, null);
-                } else {
-                    textToSpeech.speak(getString(R.string.not_done), TextToSpeech.QUEUE_ADD, null);
-                }
-                textToSpeech.playSilence(200, TextToSpeech.QUEUE_ADD, null);
-            }
         } else if (id == R.id.menu_import) {
             DialogFragment dialogFragment = ImportFromTextDialog.newInstance();
             dialogFragment.show(getSupportFragmentManager(), "dialog");
         } else if (id == R.id.check_checklist) {
             List<ChecklistElement> list = checklistRecyclerAdapter.getList();
             Iterator<ChecklistElement> it = list.iterator();
-
             while (it.hasNext()) {
                 ChecklistElement element = it.next();
                 mContentReference.child(element.getElementID()).child("finished").setValue(true);
             }
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -376,9 +346,6 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         //Create adapter and add to List
         checklistRecyclerAdapter = new ChecklistRecyclerAdapter(this, recycleOnClickListener, recycleOnLongClickListener, recyclerView);
         recyclerView.setAdapter(checklistRecyclerAdapter);
-        //AlphaInAnimationAdapter alphaInAnimationAdapter = new AlphaInAnimationAdapter(checklistRecyclerAdapter);
-        //alphaInAnimationAdapter.setFirstOnly(false);
-        //alphaInAnimationAdapter.setDuration(200);
 
         //Set ListView animations
         recyclerView.setItemAnimator(new ScaleInAnimator(new OvershootInterpolator(1f)));

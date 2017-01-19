@@ -11,7 +11,14 @@
                     "endOffset": 205
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 4,
+                        "startOffset": 55,
+                        "endColumn": 104,
+                        "endOffset": 155
+                    }
                 }
             },
             {
@@ -23,7 +30,14 @@
                     "endOffset": 313
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 160,
+                        "endColumn": 107,
+                        "endOffset": 263
+                    }
                 }
             },
             {
@@ -35,7 +49,14 @@
                     "endOffset": 436
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 268,
+                        "endColumn": 122,
+                        "endOffset": 386
+                    }
                 }
             },
             {
@@ -47,7 +68,14 @@
                     "endOffset": 534
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 391,
+                        "endColumn": 97,
+                        "endOffset": 484
+                    }
                 }
             },
             {
@@ -59,7 +87,14 @@
                     "endOffset": 646
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 489,
+                        "endColumn": 111,
+                        "endOffset": 596
+                    }
                 }
             },
             {
@@ -71,7 +106,14 @@
                     "endOffset": 732
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 4,
+                        "startOffset": 601,
+                        "endColumn": 85,
+                        "endOffset": 682
+                    }
                 }
             },
             {
@@ -83,7 +125,14 @@
                     "endOffset": 837
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 4,
+                        "startOffset": 687,
+                        "endColumn": 104,
+                        "endOffset": 787
+                    }
                 }
             },
             {
@@ -95,7 +144,14 @@
                     "endOffset": 952
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml",
+                    "position": {
+                        "startLine": 9,
+                        "startColumn": 4,
+                        "startOffset": 792,
+                        "endColumn": 114,
+                        "endOffset": 902
+                    }
                 }
             },
             {
@@ -107,7 +163,14 @@
                     "endOffset": 1029
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml",
+                    "position": {
+                        "startLine": 10,
+                        "startColumn": 4,
+                        "startOffset": 907,
+                        "endColumn": 76,
+                        "endOffset": 979
+                    }
                 }
             },
             {
@@ -119,7 +182,14 @@
                     "endOffset": 1105
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml",
+                    "position": {
+                        "startLine": 11,
+                        "startColumn": 4,
+                        "startOffset": 984,
+                        "endColumn": 75,
+                        "endOffset": 1055
+                    }
                 }
             },
             {
@@ -131,7 +201,14 @@
                     "endOffset": 1187
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml",
+                    "position": {
+                        "startLine": 12,
+                        "startColumn": 4,
+                        "startOffset": 1060,
+                        "endColumn": 81,
+                        "endOffset": 1137
+                    }
                 }
             },
             {
@@ -143,7 +220,14 @@
                     "endOffset": 1298
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml",
+                    "position": {
+                        "startLine": 13,
+                        "startColumn": 4,
+                        "startOffset": 1142,
+                        "endColumn": 110,
+                        "endOffset": 1248
+                    }
                 }
             },
             {
@@ -155,7 +239,14 @@
                     "endOffset": 1401
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml",
+                    "position": {
+                        "startLine": 14,
+                        "startColumn": 4,
+                        "startOffset": 1253,
+                        "endColumn": 102,
+                        "endOffset": 1351
+                    }
                 }
             },
             {
@@ -167,7 +258,14 @@
                     "endOffset": 1500
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml",
+                    "position": {
+                        "startLine": 15,
+                        "startColumn": 4,
+                        "startOffset": 1356,
+                        "endColumn": 98,
+                        "endOffset": 1450
+                    }
                 }
             },
             {
@@ -179,7 +277,14 @@
                     "endOffset": 1611
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml",
+                    "position": {
+                        "startLine": 16,
+                        "startColumn": 4,
+                        "startOffset": 1455,
+                        "endColumn": 110,
+                        "endOffset": 1561
+                    }
                 }
             },
             {
@@ -191,7 +296,14 @@
                     "endOffset": 1713
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml",
+                    "position": {
+                        "startLine": 17,
+                        "startColumn": 4,
+                        "startOffset": 1566,
+                        "endColumn": 101,
+                        "endOffset": 1663
+                    }
                 }
             },
             {
@@ -203,7 +315,14 @@
                     "endOffset": 1820
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml",
+                    "position": {
+                        "startLine": 18,
+                        "startColumn": 4,
+                        "startOffset": 1668,
+                        "endColumn": 106,
+                        "endOffset": 1770
+                    }
                 }
             },
             {
@@ -215,7 +334,14 @@
                     "endOffset": 1942
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml",
+                    "position": {
+                        "startLine": 19,
+                        "startColumn": 4,
+                        "startOffset": 1775,
+                        "endColumn": 121,
+                        "endOffset": 1892
+                    }
                 }
             },
             {
@@ -227,7 +353,14 @@
                     "endOffset": 2044
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml",
+                    "position": {
+                        "startLine": 20,
+                        "startColumn": 4,
+                        "startOffset": 1897,
+                        "endColumn": 101,
+                        "endOffset": 1994
+                    }
                 }
             },
             {
@@ -239,7 +372,14 @@
                     "endOffset": 2145
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 3,
+                        "startColumn": 4,
+                        "startOffset": 104,
+                        "endColumn": 100,
+                        "endOffset": 200
+                    }
                 }
             },
             {
@@ -251,7 +391,14 @@
                     "endOffset": 2199
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 61,
+                        "startColumn": 4,
+                        "startOffset": 3959,
+                        "endColumn": 53,
+                        "endOffset": 4008
+                    }
                 }
             },
             {
@@ -263,7 +410,14 @@
                     "endOffset": 2251
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 60,
+                        "startColumn": 4,
+                        "startOffset": 3906,
+                        "endColumn": 51,
+                        "endOffset": 3953
+                    }
                 }
             },
             {
@@ -275,7 +429,14 @@
                     "endOffset": 2309
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 59,
+                        "startColumn": 4,
+                        "startOffset": 3847,
+                        "endColumn": 57,
+                        "endOffset": 3900
+                    }
                 }
             },
             {
@@ -287,7 +448,14 @@
                     "endOffset": 2369
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 58,
+                        "startColumn": 4,
+                        "startOffset": 3786,
+                        "endColumn": 59,
+                        "endOffset": 3841
+                    }
                 }
             },
             {
@@ -299,7 +467,14 @@
                     "endOffset": 2441
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 57,
+                        "startColumn": 4,
+                        "startOffset": 3713,
+                        "endColumn": 71,
+                        "endOffset": 3780
+                    }
                 }
             },
             {
@@ -311,7 +486,14 @@
                     "endOffset": 2508
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 56,
+                        "startColumn": 4,
+                        "startOffset": 3645,
+                        "endColumn": 66,
+                        "endOffset": 3707
+                    }
                 }
             },
             {
@@ -323,7 +505,14 @@
                     "endOffset": 2572
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 55,
+                        "startColumn": 4,
+                        "startOffset": 3580,
+                        "endColumn": 63,
+                        "endOffset": 3639
+                    }
                 }
             },
             {
@@ -335,7 +524,14 @@
                     "endOffset": 2642
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 206,
+                        "endColumn": 69,
+                        "endOffset": 271
+                    }
                 }
             },
             {
@@ -347,7 +543,14 @@
                     "endOffset": 2688
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 4,
+                        "startOffset": 57,
+                        "endColumn": 45,
+                        "endOffset": 98
+                    }
                 }
             },
             {
@@ -359,7 +562,14 @@
                     "endOffset": 2731
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 31,
+                        "startColumn": 4,
+                        "startOffset": 1853,
+                        "endColumn": 42,
+                        "endOffset": 1891
+                    }
                 }
             },
             {
@@ -371,7 +581,14 @@
                     "endOffset": 2787
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 30,
+                        "startColumn": 4,
+                        "startOffset": 1796,
+                        "endColumn": 55,
+                        "endOffset": 1847
+                    }
                 }
             },
             {
@@ -383,7 +600,14 @@
                     "endOffset": 2837
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 136,
+                        "startColumn": 4,
+                        "startOffset": 9482,
+                        "endColumn": 49,
+                        "endOffset": 9527
+                    }
                 }
             },
             {
@@ -395,7 +619,14 @@
                     "endOffset": 2896
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 29,
+                        "startColumn": 4,
+                        "startOffset": 1736,
+                        "endColumn": 58,
+                        "endOffset": 1790
+                    }
                 }
             },
             {
@@ -407,7 +638,14 @@
                     "endOffset": 2956
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 28,
+                        "startColumn": 4,
+                        "startOffset": 1675,
+                        "endColumn": 59,
+                        "endOffset": 1730
+                    }
                 }
             },
             {
@@ -419,7 +657,14 @@
                     "endOffset": 3011
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 27,
+                        "startColumn": 4,
+                        "startOffset": 1619,
+                        "endColumn": 54,
+                        "endOffset": 1669
+                    }
                 }
             },
             {
@@ -431,7 +676,14 @@
                     "endOffset": 3066
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 26,
+                        "startColumn": 4,
+                        "startOffset": 1563,
+                        "endColumn": 54,
+                        "endOffset": 1613
+                    }
                 }
             },
             {
@@ -443,7 +695,14 @@
                     "endOffset": 3119
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 25,
+                        "startColumn": 4,
+                        "startOffset": 1509,
+                        "endColumn": 52,
+                        "endOffset": 1557
+                    }
                 }
             },
             {
@@ -455,7 +714,14 @@
                     "endOffset": 3172
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 24,
+                        "startColumn": 4,
+                        "startOffset": 1455,
+                        "endColumn": 52,
+                        "endOffset": 1503
+                    }
                 }
             },
             {
@@ -467,7 +733,14 @@
                     "endOffset": 3223
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 23,
+                        "startColumn": 4,
+                        "startOffset": 1403,
+                        "endColumn": 50,
+                        "endOffset": 1449
+                    }
                 }
             },
             {
@@ -479,7 +752,14 @@
                     "endOffset": 3277
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 62,
+                        "startColumn": 4,
+                        "startOffset": 4014,
+                        "endColumn": 53,
+                        "endOffset": 4063
+                    }
                 }
             },
             {
@@ -491,7 +771,14 @@
                     "endOffset": 3326
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 63,
+                        "startColumn": 4,
+                        "startOffset": 4069,
+                        "endColumn": 48,
+                        "endOffset": 4113
+                    }
                 }
             },
             {
@@ -503,7 +790,14 @@
                     "endOffset": 3381
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 64,
+                        "startColumn": 4,
+                        "startOffset": 4119,
+                        "endColumn": 54,
+                        "endOffset": 4169
+                    }
                 }
             },
             {
@@ -515,7 +809,14 @@
                     "endOffset": 3419
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 111,
+                        "startColumn": 4,
+                        "startOffset": 7350,
+                        "endColumn": 45,
+                        "endOffset": 7391
+                    }
                 }
             },
             {
@@ -527,7 +828,14 @@
                     "endOffset": 3485
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 65,
+                        "startColumn": 4,
+                        "startOffset": 4175,
+                        "endColumn": 65,
+                        "endOffset": 4236
+                    }
                 }
             },
             {
@@ -539,7 +847,14 @@
                     "endOffset": 3654
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 112,
+                        "startColumn": 4,
+                        "startOffset": 7397,
+                        "endColumn": 168,
+                        "endOffset": 7561
+                    }
                 }
             },
             {
@@ -551,7 +866,14 @@
                     "endOffset": 3705
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 154,
+                        "startColumn": 4,
+                        "startOffset": 10882,
+                        "endColumn": 50,
+                        "endOffset": 10928
+                    }
                 }
             },
             {
@@ -563,7 +885,14 @@
                     "endOffset": 3783
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 133,
+                        "startColumn": 4,
+                        "startOffset": 9259,
+                        "endColumn": 77,
+                        "endOffset": 9332
+                    }
                 }
             },
             {
@@ -575,7 +904,14 @@
                     "endOffset": 3854
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 134,
+                        "startColumn": 4,
+                        "startOffset": 9338,
+                        "endColumn": 70,
+                        "endOffset": 9404
+                    }
                 }
             },
             {
@@ -587,7 +923,14 @@
                     "endOffset": 3925
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 135,
+                        "startColumn": 4,
+                        "startOffset": 9410,
+                        "endColumn": 70,
+                        "endOffset": 9476
+                    }
                 }
             },
             {
@@ -599,7 +942,14 @@
                     "endOffset": 4016
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 66,
+                        "startColumn": 4,
+                        "startOffset": 4242,
+                        "endColumn": 90,
+                        "endOffset": 4328
+                    }
                 }
             },
             {
@@ -611,7 +961,14 @@
                     "endOffset": 4078
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 32,
+                        "startColumn": 4,
+                        "startOffset": 1897,
+                        "endColumn": 61,
+                        "endOffset": 1954
+                    }
                 }
             },
             {
@@ -623,7 +980,14 @@
                     "endOffset": 4120
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 137,
+                        "startColumn": 4,
+                        "startOffset": 9533,
+                        "endColumn": 41,
+                        "endOffset": 9570
+                    }
                 }
             },
             {
@@ -635,7 +999,14 @@
                     "endOffset": 4231
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 0,
+                        "startOffset": 283,
+                        "endColumn": 106,
+                        "endOffset": 389
+                    }
                 }
             },
             {
@@ -647,7 +1018,14 @@
                     "endOffset": 4427
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 0,
+                        "startOffset": 390,
+                        "endColumn": 195,
+                        "endOffset": 585
+                    }
                 }
             },
             {
@@ -659,7 +1037,14 @@
                     "endOffset": 4557
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 0,
+                        "startOffset": 586,
+                        "endColumn": 125,
+                        "endOffset": 711
+                    }
                 }
             },
             {
@@ -671,7 +1056,14 @@
                     "endOffset": 4671
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 0,
+                        "startOffset": 712,
+                        "endColumn": 109,
+                        "endOffset": 821
+                    }
                 }
             },
             {
@@ -683,7 +1075,14 @@
                     "endOffset": 4908
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 0,
+                        "startOffset": 822,
+                        "endColumn": 236,
+                        "endOffset": 1058
+                    }
                 }
             },
             {
@@ -695,7 +1094,14 @@
                     "endOffset": 5041
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml",
+                    "position": {
+                        "startLine": 9,
+                        "startColumn": 0,
+                        "startOffset": 1059,
+                        "endColumn": 128,
+                        "endOffset": 1187
+                    }
                 }
             },
             {
@@ -707,7 +1113,14 @@
                     "endOffset": 5189
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml",
+                    "position": {
+                        "startLine": 10,
+                        "startColumn": 0,
+                        "startOffset": 1188,
+                        "endColumn": 143,
+                        "endOffset": 1331
+                    }
                 }
             },
             {
@@ -719,7 +1132,14 @@
                     "endOffset": 5393
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-basement\\10.0.1\\res\\values-de\\values.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-basement\\10.0.1\\res\\values-de\\values.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 0,
+                        "startOffset": 285,
+                        "endColumn": 203,
+                        "endOffset": 488
+                    }
                 }
             },
             {
@@ -731,7 +1151,14 @@
                     "endOffset": 5632
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml",
+                    "position": {
+                        "startLine": 11,
+                        "startColumn": 0,
+                        "startOffset": 1332,
+                        "endColumn": 238,
+                        "endOffset": 1570
+                    }
                 }
             },
             {
@@ -743,7 +1170,14 @@
                     "endOffset": 5746
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml",
+                    "position": {
+                        "startLine": 12,
+                        "startColumn": 0,
+                        "startOffset": 1571,
+                        "endColumn": 109,
+                        "endOffset": 1680
+                    }
                 }
             },
             {
@@ -755,7 +1189,14 @@
                     "endOffset": 5946
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml",
+                    "position": {
+                        "startLine": 13,
+                        "startColumn": 0,
+                        "startOffset": 1681,
+                        "endColumn": 199,
+                        "endOffset": 1880
+                    }
                 }
             },
             {
@@ -767,7 +1208,14 @@
                     "endOffset": 6079
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml",
+                    "position": {
+                        "startLine": 14,
+                        "startColumn": 0,
+                        "startOffset": 1881,
+                        "endColumn": 128,
+                        "endOffset": 2009
+                    }
                 }
             },
             {
@@ -779,7 +1227,14 @@
                     "endOffset": 6300
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml",
+                    "position": {
+                        "startLine": 15,
+                        "startColumn": 0,
+                        "startOffset": 2010,
+                        "endColumn": 220,
+                        "endOffset": 2230
+                    }
                 }
             },
             {
@@ -791,7 +1246,14 @@
                     "endOffset": 6506
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml",
+                    "position": {
+                        "startLine": 16,
+                        "startColumn": 0,
+                        "startOffset": 2231,
+                        "endColumn": 201,
+                        "endOffset": 2432
+                    }
                 }
             },
             {
@@ -803,7 +1265,14 @@
                     "endOffset": 6607
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml",
+                    "position": {
+                        "startLine": 17,
+                        "startColumn": 0,
+                        "startOffset": 2433,
+                        "endColumn": 96,
+                        "endOffset": 2529
+                    }
                 }
             },
             {
@@ -815,7 +1284,14 @@
                     "endOffset": 6700
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml",
+                    "position": {
+                        "startLine": 18,
+                        "startColumn": 0,
+                        "startOffset": 2530,
+                        "endColumn": 88,
+                        "endOffset": 2618
+                    }
                 }
             },
             {
@@ -827,7 +1303,14 @@
                     "endOffset": 6809
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.google.android.gms\\play-services-base\\10.0.1\\res\\values-de\\values.xml",
+                    "position": {
+                        "startLine": 19,
+                        "startColumn": 0,
+                        "startOffset": 2619,
+                        "endColumn": 104,
+                        "endOffset": 2723
+                    }
                 }
             },
             {
@@ -839,7 +1322,14 @@
                     "endOffset": 6863
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 33,
+                        "startColumn": 4,
+                        "startOffset": 1960,
+                        "endColumn": 53,
+                        "endOffset": 2009
+                    }
                 }
             },
             {
@@ -851,7 +1341,14 @@
                     "endOffset": 6927
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 34,
+                        "startColumn": 4,
+                        "startOffset": 2015,
+                        "endColumn": 63,
+                        "endOffset": 2074
+                    }
                 }
             },
             {
@@ -863,7 +1360,14 @@
                     "endOffset": 7093
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 149,
+                        "startColumn": 4,
+                        "startOffset": 10476,
+                        "endColumn": 165,
+                        "endOffset": 10637
+                    }
                 }
             },
             {
@@ -875,7 +1379,14 @@
                     "endOffset": 7151
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 35,
+                        "startColumn": 4,
+                        "startOffset": 2080,
+                        "endColumn": 57,
+                        "endOffset": 2133
+                    }
                 }
             },
             {
@@ -887,7 +1398,14 @@
                     "endOffset": 7223
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 36,
+                        "startColumn": 4,
+                        "startOffset": 2139,
+                        "endColumn": 71,
+                        "endOffset": 2206
+                    }
                 }
             },
             {
@@ -899,7 +1417,14 @@
                     "endOffset": 7287
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 37,
+                        "startColumn": 4,
+                        "startOffset": 2212,
+                        "endColumn": 63,
+                        "endOffset": 2271
+                    }
                 }
             },
             {
@@ -911,7 +1436,14 @@
                     "endOffset": 7332
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 113,
+                        "startColumn": 4,
+                        "startOffset": 7567,
+                        "endColumn": 52,
+                        "endOffset": 7615
+                    }
                 }
             },
             {
@@ -923,7 +1455,14 @@
                     "endOffset": 7391
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 38,
+                        "startColumn": 4,
+                        "startOffset": 2277,
+                        "endColumn": 58,
+                        "endOffset": 2331
+                    }
                 }
             },
             {
@@ -935,7 +1474,14 @@
                     "endOffset": 7554
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 148,
+                        "startColumn": 4,
+                        "startOffset": 10312,
+                        "endColumn": 162,
+                        "endOffset": 10470
+                    }
                 }
             },
             {
@@ -947,7 +1493,14 @@
                     "endOffset": 7619
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 4,
+                        "startOffset": 391,
+                        "endColumn": 64,
+                        "endOffset": 451
+                    }
                 }
             },
             {
@@ -959,7 +1512,14 @@
                     "endOffset": 7680
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 329,
+                        "endColumn": 60,
+                        "endOffset": 385
+                    }
                 }
             },
             {
@@ -971,7 +1531,14 @@
                     "endOffset": 7750
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 67,
+                        "startColumn": 4,
+                        "startOffset": 4334,
+                        "endColumn": 69,
+                        "endOffset": 4399
+                    }
                 }
             },
             {
@@ -983,7 +1550,14 @@
                     "endOffset": 7850
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 68,
+                        "startColumn": 4,
+                        "startOffset": 4405,
+                        "endColumn": 99,
+                        "endOffset": 4500
+                    }
                 }
             },
             {
@@ -995,7 +1569,14 @@
                     "endOffset": 7901
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 277,
+                        "endColumn": 50,
+                        "endOffset": 323
+                    }
                 }
             },
             {
@@ -1007,7 +1588,14 @@
                     "endOffset": 7961
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 42,
+                        "startColumn": 4,
+                        "startOffset": 2523,
+                        "endColumn": 59,
+                        "endOffset": 2578
+                    }
                 }
             },
             {
@@ -1019,7 +1607,14 @@
                     "endOffset": 8033
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 41,
+                        "startColumn": 4,
+                        "startOffset": 2450,
+                        "endColumn": 71,
+                        "endOffset": 2517
+                    }
                 }
             },
             {
@@ -1031,7 +1626,14 @@
                     "endOffset": 8100
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 40,
+                        "startColumn": 4,
+                        "startOffset": 2382,
+                        "endColumn": 66,
+                        "endOffset": 2444
+                    }
                 }
             },
             {
@@ -1043,7 +1645,14 @@
                     "endOffset": 8140
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 153,
+                        "startColumn": 4,
+                        "startOffset": 10841,
+                        "endColumn": 39,
+                        "endOffset": 10876
+                    }
                 }
             },
             {
@@ -1055,7 +1664,14 @@
                     "endOffset": 8184
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 39,
+                        "startColumn": 4,
+                        "startOffset": 2337,
+                        "endColumn": 43,
+                        "endOffset": 2376
+                    }
                 }
             },
             {
@@ -1067,7 +1683,14 @@
                     "endOffset": 8250
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 69,
+                        "startColumn": 4,
+                        "startOffset": 4506,
+                        "endColumn": 65,
+                        "endOffset": 4567
+                    }
                 }
             },
             {
@@ -1079,7 +1702,14 @@
                     "endOffset": 8311
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 21,
+                        "startColumn": 4,
+                        "startOffset": 1269,
+                        "endColumn": 60,
+                        "endOffset": 1325
+                    }
                 }
             },
             {
@@ -1091,7 +1721,14 @@
                     "endOffset": 8384
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 147,
+                        "startColumn": 4,
+                        "startOffset": 10238,
+                        "endColumn": 72,
+                        "endOffset": 10306
+                    }
                 }
             },
             {
@@ -1103,7 +1740,14 @@
                     "endOffset": 8455
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 22,
+                        "startColumn": 4,
+                        "startOffset": 1331,
+                        "endColumn": 70,
+                        "endOffset": 1397
+                    }
                 }
             },
             {
@@ -1115,7 +1759,14 @@
                     "endOffset": 8521
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 4,
+                        "startOffset": 457,
+                        "endColumn": 65,
+                        "endOffset": 518
+                    }
                 }
             },
             {
@@ -1127,7 +1778,14 @@
                     "endOffset": 8594
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 114,
+                        "startColumn": 4,
+                        "startOffset": 7621,
+                        "endColumn": 72,
+                        "endOffset": 7689
+                    }
                 }
             },
             {
@@ -1139,7 +1797,14 @@
                     "endOffset": 8646
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 9,
+                        "startColumn": 4,
+                        "startOffset": 524,
+                        "endColumn": 51,
+                        "endOffset": 571
+                    }
                 }
             },
             {
@@ -1151,7 +1816,14 @@
                     "endOffset": 8703
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 20,
+                        "startColumn": 4,
+                        "startOffset": 1211,
+                        "endColumn": 56,
+                        "endOffset": 1263
+                    }
                 }
             },
             {
@@ -1163,7 +1835,14 @@
                     "endOffset": 8750
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 19,
+                        "startColumn": 4,
+                        "startOffset": 1163,
+                        "endColumn": 46,
+                        "endOffset": 1205
+                    }
                 }
             },
             {
@@ -1175,7 +1854,14 @@
                     "endOffset": 8822
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 18,
+                        "startColumn": 4,
+                        "startOffset": 1090,
+                        "endColumn": 71,
+                        "endOffset": 1157
+                    }
                 }
             },
             {
@@ -1187,7 +1873,14 @@
                     "endOffset": 8864
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 115,
+                        "startColumn": 4,
+                        "startOffset": 7695,
+                        "endColumn": 49,
+                        "endOffset": 7740
+                    }
                 }
             },
             {
@@ -1199,7 +1892,14 @@
                     "endOffset": 8928
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 16,
+                        "startColumn": 4,
+                        "startOffset": 949,
+                        "endColumn": 63,
+                        "endOffset": 1008
+                    }
                 }
             },
             {
@@ -1211,7 +1911,14 @@
                     "endOffset": 9003
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 17,
+                        "startColumn": 4,
+                        "startOffset": 1014,
+                        "endColumn": 74,
+                        "endOffset": 1084
+                    }
                 }
             },
             {
@@ -1223,7 +1930,14 @@
                     "endOffset": 9074
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 15,
+                        "startColumn": 4,
+                        "startOffset": 877,
+                        "endColumn": 70,
+                        "endOffset": 943
+                    }
                 }
             },
             {
@@ -1235,7 +1949,14 @@
                     "endOffset": 9154
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 14,
+                        "startColumn": 4,
+                        "startOffset": 796,
+                        "endColumn": 79,
+                        "endOffset": 871
+                    }
                 }
             },
             {
@@ -1247,7 +1968,14 @@
                     "endOffset": 9215
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 49,
+                        "startColumn": 4,
+                        "startOffset": 3200,
+                        "endColumn": 60,
+                        "endOffset": 3256
+                    }
                 }
             },
             {
@@ -1259,7 +1987,14 @@
                     "endOffset": 9298
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 50,
+                        "startColumn": 4,
+                        "startOffset": 3262,
+                        "endColumn": 82,
+                        "endOffset": 3340
+                    }
                 }
             },
             {
@@ -1271,7 +2006,14 @@
                     "endOffset": 9343
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 51,
+                        "startColumn": 4,
+                        "startOffset": 3346,
+                        "endColumn": 52,
+                        "endOffset": 3394
+                    }
                 }
             },
             {
@@ -1283,7 +2025,14 @@
                     "endOffset": 9421
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 43,
+                        "startColumn": 4,
+                        "startOffset": 2584,
+                        "endColumn": 77,
+                        "endOffset": 2657
+                    }
                 }
             },
             {
@@ -1295,7 +2044,14 @@
                     "endOffset": 9573
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 44,
+                        "startColumn": 4,
+                        "startOffset": 2663,
+                        "endColumn": 151,
+                        "endOffset": 2810
+                    }
                 }
             },
             {
@@ -1307,7 +2063,14 @@
                     "endOffset": 9686
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 45,
+                        "startColumn": 4,
+                        "startOffset": 2816,
+                        "endColumn": 112,
+                        "endOffset": 2924
+                    }
                 }
             },
             {
@@ -1319,7 +2082,14 @@
                     "endOffset": 9768
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 46,
+                        "startColumn": 4,
+                        "startOffset": 2930,
+                        "endColumn": 81,
+                        "endOffset": 3007
+                    }
                 }
             },
             {
@@ -1331,7 +2101,14 @@
                     "endOffset": 9889
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 47,
+                        "startColumn": 4,
+                        "startOffset": 3013,
+                        "endColumn": 120,
+                        "endOffset": 3129
+                    }
                 }
             },
             {
@@ -1343,7 +2120,14 @@
                     "endOffset": 9950
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 138,
+                        "startColumn": 4,
+                        "startOffset": 9576,
+                        "endColumn": 60,
+                        "endOffset": 9632
+                    }
                 }
             },
             {
@@ -1355,7 +2139,14 @@
                     "endOffset": 10016
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 139,
+                        "startColumn": 4,
+                        "startOffset": 9638,
+                        "endColumn": 65,
+                        "endOffset": 9699
+                    }
                 }
             },
             {
@@ -1367,7 +2158,14 @@
                     "endOffset": 10099
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 140,
+                        "startColumn": 4,
+                        "startOffset": 9705,
+                        "endColumn": 82,
+                        "endOffset": 9783
+                    }
                 }
             },
             {
@@ -1379,7 +2177,14 @@
                     "endOffset": 10155
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 141,
+                        "startColumn": 4,
+                        "startOffset": 9789,
+                        "endColumn": 55,
+                        "endOffset": 9840
+                    }
                 }
             },
             {
@@ -1391,7 +2196,14 @@
                     "endOffset": 10194
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 142,
+                        "startColumn": 4,
+                        "startOffset": 9846,
+                        "endColumn": 46,
+                        "endOffset": 9888
+                    }
                 }
             },
             {
@@ -1403,7 +2215,14 @@
                     "endOffset": 10263
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 10,
+                        "startColumn": 4,
+                        "startOffset": 577,
+                        "endColumn": 68,
+                        "endOffset": 641
+                    }
                 }
             },
             {
@@ -1415,7 +2234,14 @@
                     "endOffset": 10313
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 11,
+                        "startColumn": 4,
+                        "startOffset": 647,
+                        "endColumn": 49,
+                        "endOffset": 692
+                    }
                 }
             },
             {
@@ -1427,7 +2253,14 @@
                     "endOffset": 10401
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 144,
+                        "startColumn": 4,
+                        "startOffset": 9956,
+                        "endColumn": 87,
+                        "endOffset": 10039
+                    }
                 }
             },
             {
@@ -1439,7 +2272,14 @@
                     "endOffset": 10465
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 48,
+                        "startColumn": 4,
+                        "startOffset": 3135,
+                        "endColumn": 63,
+                        "endOffset": 3194
+                    }
                 }
             },
             {
@@ -1451,7 +2291,14 @@
                     "endOffset": 10535
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 159,
+                        "startColumn": 4,
+                        "startOffset": 11207,
+                        "endColumn": 69,
+                        "endOffset": 11272
+                    }
                 }
             },
             {
@@ -1482,7 +2329,14 @@
                     "endOffset": 10776
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 12,
+                        "startColumn": 4,
+                        "startOffset": 698,
+                        "endColumn": 51,
+                        "endOffset": 745
+                    }
                 }
             },
             {
@@ -1494,7 +2348,14 @@
                     "endOffset": 10820
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 13,
+                        "startColumn": 4,
+                        "startOffset": 751,
+                        "endColumn": 43,
+                        "endOffset": 790
+                    }
                 }
             },
             {
@@ -1506,7 +2367,14 @@
                     "endOffset": 10876
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 104,
+                        "startColumn": 4,
+                        "startOffset": 6827,
+                        "endColumn": 55,
+                        "endOffset": 6878
+                    }
                 }
             },
             {
@@ -1518,7 +2386,14 @@
                     "endOffset": 10927
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 102,
+                        "startColumn": 4,
+                        "startOffset": 6716,
+                        "endColumn": 50,
+                        "endOffset": 6762
+                    }
                 }
             },
             {
@@ -1530,7 +2405,14 @@
                     "endOffset": 10985
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 103,
+                        "startColumn": 4,
+                        "startOffset": 6768,
+                        "endColumn": 57,
+                        "endOffset": 6821
+                    }
                 }
             },
             {
@@ -1542,7 +2424,14 @@
                     "endOffset": 11047
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 150,
+                        "startColumn": 4,
+                        "startOffset": 10643,
+                        "endColumn": 61,
+                        "endOffset": 10700
+                    }
                 }
             },
             {
@@ -1554,7 +2443,14 @@
                     "endOffset": 11130
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 151,
+                        "startColumn": 4,
+                        "startOffset": 10706,
+                        "endColumn": 82,
+                        "endOffset": 10784
+                    }
                 }
             },
             {
@@ -1566,7 +2462,14 @@
                     "endOffset": 11283
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 116,
+                        "startColumn": 4,
+                        "startOffset": 7746,
+                        "endColumn": 152,
+                        "endOffset": 7894
+                    }
                 }
             },
             {
@@ -1578,7 +2481,14 @@
                     "endOffset": 11364
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 105,
+                        "startColumn": 4,
+                        "startOffset": 6884,
+                        "endColumn": 80,
+                        "endOffset": 6960
+                    }
                 }
             },
             {
@@ -1590,7 +2500,14 @@
                     "endOffset": 11441
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 106,
+                        "startColumn": 4,
+                        "startOffset": 6966,
+                        "endColumn": 76,
+                        "endOffset": 7038
+                    }
                 }
             },
             {
@@ -1602,7 +2519,14 @@
                     "endOffset": 11558
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 107,
+                        "startColumn": 4,
+                        "startOffset": 7044,
+                        "endColumn": 116,
+                        "endOffset": 7156
+                    }
                 }
             },
             {
@@ -1614,7 +2538,14 @@
                     "endOffset": 11635
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 108,
+                        "startColumn": 4,
+                        "startOffset": 7162,
+                        "endColumn": 76,
+                        "endOffset": 7234
+                    }
                 }
             },
             {
@@ -1626,7 +2557,14 @@
                     "endOffset": 11692
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 109,
+                        "startColumn": 4,
+                        "startOffset": 7240,
+                        "endColumn": 56,
+                        "endOffset": 7292
+                    }
                 }
             },
             {
@@ -1638,7 +2576,14 @@
                     "endOffset": 11743
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 110,
+                        "startColumn": 4,
+                        "startOffset": 7298,
+                        "endColumn": 50,
+                        "endOffset": 7344
+                    }
                 }
             },
             {
@@ -1650,7 +2595,14 @@
                     "endOffset": 11800
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 73,
+                        "startColumn": 4,
+                        "startOffset": 4801,
+                        "endColumn": 56,
+                        "endOffset": 4853
+                    }
                 }
             },
             {
@@ -1662,7 +2614,14 @@
                     "endOffset": 11858
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 72,
+                        "startColumn": 4,
+                        "startOffset": 4742,
+                        "endColumn": 57,
+                        "endOffset": 4795
+                    }
                 }
             },
             {
@@ -1674,7 +2633,14 @@
                     "endOffset": 11959
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 71,
+                        "startColumn": 4,
+                        "startOffset": 4640,
+                        "endColumn": 100,
+                        "endOffset": 4736
+                    }
                 }
             },
             {
@@ -1686,7 +2652,14 @@
                     "endOffset": 12025
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 70,
+                        "startColumn": 4,
+                        "startOffset": 4573,
+                        "endColumn": 65,
+                        "endOffset": 4634
+                    }
                 }
             },
             {
@@ -1698,7 +2671,14 @@
                     "endOffset": 12111
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 155,
+                        "startColumn": 4,
+                        "startOffset": 10934,
+                        "endColumn": 85,
+                        "endOffset": 11015
+                    }
                 }
             },
             {
@@ -1710,7 +2690,14 @@
                     "endOffset": 12161
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 152,
+                        "startColumn": 4,
+                        "startOffset": 10790,
+                        "endColumn": 49,
+                        "endOffset": 10835
+                    }
                 }
             },
             {
@@ -1722,7 +2709,14 @@
                     "endOffset": 12248
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 117,
+                        "startColumn": 4,
+                        "startOffset": 7900,
+                        "endColumn": 86,
+                        "endOffset": 7982
+                    }
                 }
             },
             {
@@ -1734,7 +2728,14 @@
                     "endOffset": 12324
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 118,
+                        "startColumn": 4,
+                        "startOffset": 7988,
+                        "endColumn": 75,
+                        "endOffset": 8059
+                    }
                 }
             },
             {
@@ -1746,7 +2747,14 @@
                     "endOffset": 12387
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 52,
+                        "startColumn": 4,
+                        "startOffset": 3400,
+                        "endColumn": 62,
+                        "endOffset": 3458
+                    }
                 }
             },
             {
@@ -1758,7 +2766,14 @@
                     "endOffset": 12483
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 119,
+                        "startColumn": 4,
+                        "startOffset": 8065,
+                        "endColumn": 95,
+                        "endOffset": 8156
+                    }
                 }
             },
             {
@@ -1770,7 +2785,14 @@
                     "endOffset": 12558
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 120,
+                        "startColumn": 4,
+                        "startOffset": 8162,
+                        "endColumn": 74,
+                        "endOffset": 8232
+                    }
                 }
             },
             {
@@ -1782,7 +2804,14 @@
                     "endOffset": 12631
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 121,
+                        "startColumn": 4,
+                        "startOffset": 8238,
+                        "endColumn": 72,
+                        "endOffset": 8306
+                    }
                 }
             },
             {
@@ -1794,7 +2823,14 @@
                     "endOffset": 12688
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 53,
+                        "startColumn": 4,
+                        "startOffset": 3464,
+                        "endColumn": 56,
+                        "endOffset": 3516
+                    }
                 }
             },
             {
@@ -1806,7 +2842,14 @@
                     "endOffset": 12745
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 54,
+                        "startColumn": 4,
+                        "startOffset": 3522,
+                        "endColumn": 56,
+                        "endOffset": 3574
+                    }
                 }
             },
             {
@@ -1818,7 +2861,14 @@
                     "endOffset": 12806
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 143,
+                        "startColumn": 4,
+                        "startOffset": 9894,
+                        "endColumn": 60,
+                        "endOffset": 9950
+                    }
                 }
             },
             {
@@ -1830,7 +2880,14 @@
                     "endOffset": 12943
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 122,
+                        "startColumn": 4,
+                        "startOffset": 8312,
+                        "endColumn": 136,
+                        "endOffset": 8444
+                    }
                 }
             },
             {
@@ -1842,7 +2899,14 @@
                     "endOffset": 13013
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 123,
+                        "startColumn": 4,
+                        "startOffset": 8450,
+                        "endColumn": 69,
+                        "endOffset": 8515
+                    }
                 }
             },
             {
@@ -1854,7 +2918,14 @@
                     "endOffset": 13128
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 145,
+                        "startColumn": 4,
+                        "startOffset": 10045,
+                        "endColumn": 114,
+                        "endOffset": 10155
+                    }
                 }
             },
             {
@@ -1866,7 +2937,14 @@
                     "endOffset": 13204
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 146,
+                        "startColumn": 4,
+                        "startOffset": 10161,
+                        "endColumn": 75,
+                        "endOffset": 10232
+                    }
                 }
             },
             {
@@ -1878,7 +2956,14 @@
                     "endOffset": 13269
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 124,
+                        "startColumn": 4,
+                        "startOffset": 8521,
+                        "endColumn": 64,
+                        "endOffset": 8581
+                    }
                 }
             },
             {
@@ -1890,7 +2975,14 @@
                     "endOffset": 13383
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 125,
+                        "startColumn": 4,
+                        "startOffset": 8587,
+                        "endColumn": 113,
+                        "endOffset": 8696
+                    }
                 }
             },
             {
@@ -1902,7 +2994,14 @@
                     "endOffset": 13456
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 126,
+                        "startColumn": 4,
+                        "startOffset": 8702,
+                        "endColumn": 72,
+                        "endOffset": 8770
+                    }
                 }
             },
             {
@@ -1914,7 +3013,14 @@
                     "endOffset": 13527
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 127,
+                        "startColumn": 4,
+                        "startOffset": 8776,
+                        "endColumn": 70,
+                        "endOffset": 8842
+                    }
                 }
             },
             {
@@ -1926,7 +3032,14 @@
                     "endOffset": 13635
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 128,
+                        "startColumn": 4,
+                        "startOffset": 8848,
+                        "endColumn": 107,
+                        "endOffset": 8951
+                    }
                 }
             },
             {
@@ -1938,7 +3051,14 @@
                     "endOffset": 13704
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 74,
+                        "startColumn": 4,
+                        "startOffset": 4859,
+                        "endColumn": 68,
+                        "endOffset": 4923
+                    }
                 }
             },
             {
@@ -1950,7 +3070,14 @@
                     "endOffset": 13809
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 129,
+                        "startColumn": 4,
+                        "startOffset": 8957,
+                        "endColumn": 104,
+                        "endOffset": 9057
+                    }
                 }
             },
             {
@@ -1962,7 +3089,14 @@
                     "endOffset": 13891
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml",
+                    "position": {
+                        "startLine": 21,
+                        "startColumn": 4,
+                        "startOffset": 1999,
+                        "endColumn": 81,
+                        "endOffset": 2076
+                    }
                 }
             },
             {
@@ -1974,7 +3108,14 @@
                     "endOffset": 13942
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 130,
+                        "startColumn": 4,
+                        "startOffset": 9063,
+                        "endColumn": 50,
+                        "endOffset": 9109
+                    }
                 }
             },
             {
@@ -1986,7 +3127,14 @@
                     "endOffset": 14013
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 87,
+                        "startColumn": 4,
+                        "startOffset": 5763,
+                        "endColumn": 70,
+                        "endOffset": 5829
+                    }
                 }
             },
             {
@@ -1998,7 +3146,14 @@
                     "endOffset": 14054
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 88,
+                        "startColumn": 4,
+                        "startOffset": 5835,
+                        "endColumn": 40,
+                        "endOffset": 5871
+                    }
                 }
             },
             {
@@ -2010,7 +3165,14 @@
                     "endOffset": 14119
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 158,
+                        "startColumn": 4,
+                        "startOffset": 11141,
+                        "endColumn": 64,
+                        "endOffset": 11201
+                    }
                 }
             },
             {
@@ -2022,7 +3184,14 @@
                     "endOffset": 14185
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 89,
+                        "startColumn": 4,
+                        "startOffset": 5877,
+                        "endColumn": 65,
+                        "endOffset": 5938
+                    }
                 }
             },
             {
@@ -2034,7 +3203,14 @@
                     "endOffset": 14250
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 90,
+                        "startColumn": 4,
+                        "startOffset": 5944,
+                        "endColumn": 64,
+                        "endOffset": 6004
+                    }
                 }
             },
             {
@@ -2046,7 +3222,14 @@
                     "endOffset": 14301
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 91,
+                        "startColumn": 4,
+                        "startOffset": 6010,
+                        "endColumn": 50,
+                        "endOffset": 6056
+                    }
                 }
             },
             {
@@ -2058,7 +3241,14 @@
                     "endOffset": 14363
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 92,
+                        "startColumn": 4,
+                        "startOffset": 6062,
+                        "endColumn": 61,
+                        "endOffset": 6119
+                    }
                 }
             },
             {
@@ -2070,7 +3260,14 @@
                     "endOffset": 14429
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 93,
+                        "startColumn": 4,
+                        "startOffset": 6125,
+                        "endColumn": 65,
+                        "endOffset": 6186
+                    }
                 }
             },
             {
@@ -2082,7 +3279,14 @@
                     "endOffset": 14494
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 94,
+                        "startColumn": 4,
+                        "startOffset": 6192,
+                        "endColumn": 64,
+                        "endOffset": 6252
+                    }
                 }
             },
             {
@@ -2094,7 +3298,14 @@
                     "endOffset": 14557
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 95,
+                        "startColumn": 4,
+                        "startOffset": 6258,
+                        "endColumn": 62,
+                        "endOffset": 6316
+                    }
                 }
             },
             {
@@ -2106,7 +3317,14 @@
                     "endOffset": 14625
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 96,
+                        "startColumn": 4,
+                        "startOffset": 6322,
+                        "endColumn": 67,
+                        "endOffset": 6385
+                    }
                 }
             },
             {
@@ -2118,7 +3336,14 @@
                     "endOffset": 14726
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\values-de\\values-de.xml",
+                    "position": {
+                        "startLine": 22,
+                        "startColumn": 4,
+                        "startOffset": 2081,
+                        "endColumn": 100,
+                        "endOffset": 2177
+                    }
                 }
             },
             {
@@ -2130,7 +3355,14 @@
                     "endOffset": 14789
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 97,
+                        "startColumn": 4,
+                        "startOffset": 6391,
+                        "endColumn": 62,
+                        "endOffset": 6449
+                    }
                 }
             },
             {
@@ -2142,7 +3374,14 @@
                     "endOffset": 14853
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 156,
+                        "startColumn": 4,
+                        "startOffset": 11021,
+                        "endColumn": 63,
+                        "endOffset": 11080
+                    }
                 }
             },
             {
@@ -2154,7 +3393,14 @@
                     "endOffset": 14911
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 98,
+                        "startColumn": 4,
+                        "startOffset": 6455,
+                        "endColumn": 57,
+                        "endOffset": 6508
+                    }
                 }
             },
             {
@@ -2166,7 +3412,14 @@
                     "endOffset": 14970
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 99,
+                        "startColumn": 4,
+                        "startOffset": 6514,
+                        "endColumn": 58,
+                        "endOffset": 6568
+                    }
                 }
             },
             {
@@ -2178,7 +3431,14 @@
                     "endOffset": 15032
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 131,
+                        "startColumn": 4,
+                        "startOffset": 9115,
+                        "endColumn": 61,
+                        "endOffset": 9172
+                    }
                 }
             },
             {
@@ -2190,7 +3450,14 @@
                     "endOffset": 15096
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 100,
+                        "startColumn": 4,
+                        "startOffset": 6574,
+                        "endColumn": 63,
+                        "endOffset": 6633
+                    }
                 }
             },
             {
@@ -2202,7 +3469,14 @@
                     "endOffset": 15176
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 132,
+                        "startColumn": 4,
+                        "startOffset": 9178,
+                        "endColumn": 79,
+                        "endOffset": 9253
+                    }
                 }
             },
             {
@@ -2214,7 +3488,14 @@
                     "endOffset": 15252
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 101,
+                        "startColumn": 4,
+                        "startOffset": 6639,
+                        "endColumn": 75,
+                        "endOffset": 6710
+                    }
                 }
             },
             {
@@ -2226,7 +3507,14 @@
                     "endOffset": 15306
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 76,
+                        "startColumn": 4,
+                        "startOffset": 4988,
+                        "endColumn": 53,
+                        "endOffset": 5037
+                    }
                 }
             },
             {
@@ -2238,7 +3526,14 @@
                     "endOffset": 15364
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 75,
+                        "startColumn": 4,
+                        "startOffset": 4929,
+                        "endColumn": 57,
+                        "endOffset": 4982
+                    }
                 }
             },
             {
@@ -2250,7 +3545,14 @@
                     "endOffset": 15438
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 77,
+                        "startColumn": 4,
+                        "startOffset": 5043,
+                        "endColumn": 73,
+                        "endOffset": 5112
+                    }
                 }
             },
             {
@@ -2262,7 +3564,14 @@
                     "endOffset": 15518
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 78,
+                        "startColumn": 4,
+                        "startOffset": 5118,
+                        "endColumn": 79,
+                        "endOffset": 5193
+                    }
                 }
             },
             {
@@ -2274,7 +3583,14 @@
                     "endOffset": 15584
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 79,
+                        "startColumn": 4,
+                        "startOffset": 5199,
+                        "endColumn": 65,
+                        "endOffset": 5260
+                    }
                 }
             },
             {
@@ -2286,7 +3602,14 @@
                     "endOffset": 15642
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 80,
+                        "startColumn": 4,
+                        "startOffset": 5266,
+                        "endColumn": 57,
+                        "endOffset": 5319
+                    }
                 }
             },
             {
@@ -2298,7 +3621,14 @@
                     "endOffset": 15696
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 157,
+                        "startColumn": 4,
+                        "startOffset": 11086,
+                        "endColumn": 53,
+                        "endOffset": 11135
+                    }
                 }
             },
             {
@@ -2310,7 +3640,14 @@
                     "endOffset": 15740
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 81,
+                        "startColumn": 4,
+                        "startOffset": 5325,
+                        "endColumn": 43,
+                        "endOffset": 5364
+                    }
                 }
             },
             {
@@ -2322,7 +3659,14 @@
                     "endOffset": 15786
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 82,
+                        "startColumn": 4,
+                        "startOffset": 5370,
+                        "endColumn": 45,
+                        "endOffset": 5411
+                    }
                 }
             },
             {
@@ -2334,7 +3678,14 @@
                     "endOffset": 15833
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 83,
+                        "startColumn": 4,
+                        "startOffset": 5417,
+                        "endColumn": 46,
+                        "endOffset": 5459
+                    }
                 }
             },
             {
@@ -2346,7 +3697,14 @@
                     "endOffset": 15938
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 84,
+                        "startColumn": 4,
+                        "startOffset": 5465,
+                        "endColumn": 104,
+                        "endOffset": 5565
+                    }
                 }
             },
             {
@@ -2358,7 +3716,14 @@
                     "endOffset": 16067
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 85,
+                        "startColumn": 4,
+                        "startOffset": 5571,
+                        "endColumn": 128,
+                        "endOffset": 5695
+                    }
                 }
             },
             {
@@ -2370,7 +3735,14 @@
                     "endOffset": 16128
                 },
                 "from": {
-                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml"
+                    "file": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\values-de\\strings.xml",
+                    "position": {
+                        "startLine": 86,
+                        "startColumn": 4,
+                        "startOffset": 5701,
+                        "endColumn": 60,
+                        "endOffset": 5757
+                    }
                 }
             }
         ]

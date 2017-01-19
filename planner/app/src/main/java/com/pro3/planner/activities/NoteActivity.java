@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.provider.CalendarContract;
-import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
 import android.text.InputType;
 import android.text.util.Linkify;
@@ -24,8 +23,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.pro3.planner.R;
 
-import java.util.Locale;
-
 import static com.pro3.planner.R.id.notepad;
 
 public class NoteActivity extends BaseElementActivity {
@@ -36,7 +33,6 @@ public class NoteActivity extends BaseElementActivity {
     private ValueEventListener mContentsListener;
     private FloatingActionButton fab;
     private RelativeLayout content;
-    private TextToSpeech textToSpeech;
 
     /*
     ------------------------
@@ -90,15 +86,6 @@ public class NoteActivity extends BaseElementActivity {
                 }
             }
         });
-
-        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if(status != TextToSpeech.ERROR) {
-                    textToSpeech.setLanguage(Locale.getDefault());
-                }
-            }
-        });
     }
 
     @Override
@@ -130,19 +117,11 @@ public class NoteActivity extends BaseElementActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        if (textToSpeech != null) {
-            textToSpeech.shutdown();
-        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
-        if (textToSpeech != null) {
-            textToSpeech.stop();
-        }
     }
 
     /*
@@ -171,9 +150,7 @@ public class NoteActivity extends BaseElementActivity {
             }
             return true;
         } else if (id == R.id.menu_share) {
-
-            String shareBody = getString(R.string.element_note) + " \"" + elementTitle + "\" " + getString(R.string.from_app) + ": " + "\n" + notePad.getText().toString().trim();
-
+            String shareBody = notePad.getText().toString().trim();
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
             sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, elementTitle);
@@ -181,18 +158,13 @@ public class NoteActivity extends BaseElementActivity {
             startActivity(Intent.createChooser(sharingIntent, ""));
         } else if (id == R.id.menu_reminder) {
             String shareBody = getString(R.string.element_note) + " \"" + elementTitle + "\" " + getString(R.string.from_app) + ": " + "\n" + notePad.getText().toString().trim();
-
             Intent calIntent = new Intent(Intent.ACTION_INSERT);
             calIntent.setData(CalendarContract.Events.CONTENT_URI);
             calIntent.setType("vnd.android.cursor.item/event");
             calIntent.putExtra(CalendarContract.Events.TITLE, elementTitle + " - " + getString(R.string.app_name));
             calIntent.putExtra(CalendarContract.Events.DESCRIPTION, shareBody);
             startActivityForResult(calIntent, 123);
-        } else if (id == R.id.menu_text_to_speech) {
-            String toSpeak = notePad.getText().toString();
-            textToSpeech.speak(toSpeak, TextToSpeech.QUEUE_FLUSH, null);
         }
-
         return super.onOptionsItemSelected(item);
     }
 
