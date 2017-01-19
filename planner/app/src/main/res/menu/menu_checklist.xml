@@ -39,14 +39,14 @@
     <item
         android:id="@+id/clean_checklist"
         android:title="@string/remove_checked_items_title"
-        android:orderInCategory="300"
+        android:orderInCategory="400"
         android:icon="@drawable/clear_checklist_icon"
         app:showAsAction="ifRoom"
         />
     <item
         android:id="@+id/check_checklist"
         android:title="@string/check_all"
-        android:orderInCategory="400"
+        android:orderInCategory="300"
         android:icon="@drawable/ic_check_circle_white_24dp"
         app:showAsAction="ifRoom"
         />
