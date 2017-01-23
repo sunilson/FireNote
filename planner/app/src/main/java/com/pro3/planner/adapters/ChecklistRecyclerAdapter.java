@@ -21,13 +21,13 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created by linus_000 on 24.11.2016.
+ * @author Linus Weiss
  */
 
 public class ChecklistRecyclerAdapter extends RecyclerView.Adapter implements ItemTouchHelperAdapter {
 
-    private List<ChecklistElement> list = new ArrayList();
-    Context context;
+    private List<ChecklistElement> list = new ArrayList<>();
+    private Context context;
     private final View.OnClickListener mOnClickListener;
     private final View.OnLongClickListener mOnLongClickListener;
     private LayoutInflater inflater;
@@ -41,13 +41,13 @@ public class ChecklistRecyclerAdapter extends RecyclerView.Adapter implements It
         this.recyclerView = recyclerView;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    private class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView elementText;
-        public CheckBox checkBox;
-        public LinearLayout container;
+        TextView elementText;
+        CheckBox checkBox;
+        LinearLayout container;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             elementText = (TextView) itemView.findViewById(R.id.checkList_element_text);
             checkBox = (CheckBox) itemView.findViewById(R.id.checkList_element_checkBox);
@@ -60,12 +60,8 @@ public class ChecklistRecyclerAdapter extends RecyclerView.Adapter implements It
     public String toString() {
         String result = "";
 
-        Iterator<ChecklistElement> it = list.iterator();
-
-        while (it.hasNext()) {
-            ChecklistElement element = it.next();
-
-            String checkbox = "";
+        for (ChecklistElement element : list) {
+            String checkbox;
 
             if (element.isFinished()) {
                 checkbox = "☒";
@@ -89,13 +85,7 @@ public class ChecklistRecyclerAdapter extends RecyclerView.Adapter implements It
         View v = inflater.inflate(R.layout.checklist_list_layout, parent, false);
         v.setOnClickListener(mOnClickListener);
         v.setOnLongClickListener(mOnLongClickListener);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
-    }
-
-
-    public void checkItem(int position) {
-
+        return new ViewHolder(v);
     }
 
     @Override
@@ -159,10 +149,8 @@ public class ChecklistRecyclerAdapter extends RecyclerView.Adapter implements It
     }
 
     public ChecklistElement getItemWithID(String id) {
-        Iterator<ChecklistElement> it = list.iterator();
 
-        while (it.hasNext()) {
-            ChecklistElement checklistElement = it.next();
+        for (ChecklistElement checklistElement : list) {
             if (checklistElement.getElementID().equals(id)) {
                 return checklistElement;
             }

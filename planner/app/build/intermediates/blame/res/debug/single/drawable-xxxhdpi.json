@@ -4,28 +4,16 @@
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_delete_sweep_white_24dp.png"
     },
     {
-        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_add_white_24dp.png",
-        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_add_white_24dp.png"
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_info_white_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_info_white_24dp.png"
     },
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_arrow_back_black_24dp.png",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_arrow_back_black_24dp.png"
     },
     {
-        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_lock_white_24dp.png",
-        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_lock_white_24dp.png"
-    },
-    {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_date_range_black_24dp.png",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_date_range_black_24dp.png"
-    },
-    {
-        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_settings_black_24dp.png",
-        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_settings_black_24dp.png"
-    },
-    {
-        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_clear_black_24dp.png",
-        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_clear_black_24dp.png"
     },
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_reorder_black_24dp.png",
@@ -48,16 +36,8 @@
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_share_white_24dp.png"
     },
     {
-        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_settings_white_24dp.png",
-        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_settings_white_24dp.png"
-    },
-    {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_email_white_24dp.png",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_email_white_24dp.png"
-    },
-    {
-        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_cancel_white_24dp.png",
-        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_cancel_white_24dp.png"
     },
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_more_vert_black_24dp.png",
@@ -72,16 +52,84 @@
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_text_fields_black_24dp.png"
     },
     {
-        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_add_black_24dp.png",
-        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_add_black_24dp.png"
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_list_black_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_list_black_24dp.png"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_list_white_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_list_white_24dp.png"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_lock_outline_black_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_lock_outline_black_24dp.png"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\icon.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\icon.png"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_delete_sweep_black_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_delete_sweep_black_24dp.png"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_lock_open_white_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_lock_open_white_24dp.png"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_toc_black_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_toc_black_24dp.png"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_add_circle_black_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_add_circle_black_24dp.png"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_swap_vert_white_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_swap_vert_white_24dp.png"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_room_service_white_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_room_service_white_24dp.png"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_indeterminate_check_box_white_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_indeterminate_check_box_white_24dp.png"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_add_white_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_add_white_24dp.png"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_lock_white_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_lock_white_24dp.png"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_clear_black_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_clear_black_24dp.png"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_settings_black_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_settings_black_24dp.png"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_check_box_white_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_check_box_white_24dp.png"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_settings_white_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_settings_white_24dp.png"
+    },
+    {
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_cancel_white_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_cancel_white_24dp.png"
     },
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_email_black_24dp.png",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_email_black_24dp.png"
     },
     {
-        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_list_black_24dp.png",
-        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_list_black_24dp.png"
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_add_black_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_add_black_24dp.png"
     },
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_cancel_black_24dp.png",
@@ -108,24 +156,12 @@
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_done_black_24dp.png"
     },
     {
-        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_list_white_24dp.png",
-        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_list_white_24dp.png"
-    },
-    {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_visibility_black_24dp.png",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_visibility_black_24dp.png"
     },
     {
-        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_lock_outline_black_24dp.png",
-        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_lock_outline_black_24dp.png"
-    },
-    {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_folder_black_24dp.png",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_folder_black_24dp.png"
-    },
-    {
-        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\icon.png",
-        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\icon.png"
     },
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_done_all_white_24dp.png",
@@ -134,14 +170,6 @@
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_lock_black_24dp.png",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_lock_black_24dp.png"
-    },
-    {
-        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_delete_sweep_black_24dp.png",
-        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_delete_sweep_black_24dp.png"
-    },
-    {
-        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_lock_open_white_24dp.png",
-        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_lock_open_white_24dp.png"
     },
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_mode_edit_black_24dp.png",
@@ -156,8 +184,8 @@
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_swap_vert_black_24dp.png"
     },
     {
-        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_toc_black_24dp.png",
-        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_toc_black_24dp.png"
+        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_title_black_24dp.png",
+        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_title_black_24dp.png"
     },
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_note_white_24dp.png",
@@ -166,14 +194,6 @@
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_label_black_24dp.png",
         "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_label_black_24dp.png"
-    },
-    {
-        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_add_circle_black_24dp.png",
-        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_add_circle_black_24dp.png"
-    },
-    {
-        "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_swap_vert_white_24dp.png",
-        "source": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\src\\main\\res\\drawable-xxxhdpi\\ic_swap_vert_white_24dp.png"
     },
     {
         "merged": "C:\\Users\\linus_000\\Documents\\GitHub\\Pro3\\planner\\app\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_restore_black_24dp.png",

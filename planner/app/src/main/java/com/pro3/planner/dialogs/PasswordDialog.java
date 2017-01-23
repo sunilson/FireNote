@@ -20,7 +20,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * Created by linus_000 on 07.12.2016.
+ * @author  Linus Weiss
  */
 
 public class PasswordDialog extends SuperDialog {
@@ -31,7 +31,6 @@ public class PasswordDialog extends SuperDialog {
         super.onCreateDialog(savedInstanceState);
         titleText.setText(getString(R.string.enter_password));
         builder.setCustomTitle(title);
-
         View content = inflater.inflate(R.layout.alertdialog_body_password, null);
         final EditText password = (EditText) content.findViewById(R.id.password);
         builder.setView(content);
@@ -88,8 +87,9 @@ public class PasswordDialog extends SuperDialog {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        if (getDialog().getWindow() != null) {
+            getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        }
     }
 
     @Override

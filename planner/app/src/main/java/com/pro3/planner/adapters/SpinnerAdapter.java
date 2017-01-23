@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created by linus_000 on 25.11.2016.
+ * @author Linus Weiss
  */
 
 public class SpinnerAdapter extends ArrayAdapter {

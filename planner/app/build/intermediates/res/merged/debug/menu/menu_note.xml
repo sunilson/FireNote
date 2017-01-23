@@ -23,12 +23,6 @@
         app:showAsAction="never"
         />
     <item
-        android:id="@+id/menu_text_to_speech"
-        android:title="@string/text_to_speech"
-        android:orderInCategory="500"
-        app:showAsAction="never"
-        />
-    <item
         android:id="@+id/menu_share"
         android:title="@string/share"
         android:orderInCategory="300"

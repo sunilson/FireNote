@@ -21,17 +21,17 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * Created by linus_000 on 01.12.2016.
+ * @author Linus Weiss
  */
 
 public class MasterPasswordDialog extends SuperDialog {
 
     View content;
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
-        final SettingsInterface settings = (SettingsInterface) getActivity();
 
         titleText.setText(getString(R.string.set_master_password));
         builder.setCustomTitle(title);
@@ -50,8 +50,7 @@ public class MasterPasswordDialog extends SuperDialog {
             }
         });
 
-        final AlertDialog dialog = builder.create();
-        return dialog;
+        return builder.create();
     }
 
     @Override
@@ -83,7 +82,7 @@ public class MasterPasswordDialog extends SuperDialog {
                     }
 
                     if (newS.equals(newS2) && !newS.equals("")) {
-                        if (LocalSettingsManager.getInstance().getMasterPassword() != "") {
+                        if (!LocalSettingsManager.getInstance().getMasterPassword().equals("")) {
                             if (oldHash.equals(LocalSettingsManager.getInstance().getMasterPassword())) {
                                 final Activity activity = getActivity();
                                 settings.getSettingsReference().child("masterPassword").setValue(newHash).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -116,7 +115,9 @@ public class MasterPasswordDialog extends SuperDialog {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        if (getDialog().getWindow() != null) {
+            getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        }
     }
 
     public static MasterPasswordDialog newInstance() {

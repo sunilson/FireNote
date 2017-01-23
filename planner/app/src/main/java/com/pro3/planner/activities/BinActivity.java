@@ -29,7 +29,6 @@ import com.pro3.planner.Interfaces.MainActivityInterface;
 import com.pro3.planner.ItemTouchHelper.SimpleItemTouchHelperCallbackMain;
 import com.pro3.planner.R;
 import com.pro3.planner.adapters.BinRecyclerAdapter;
-import com.pro3.planner.adapters.CategoryVisibilityAdapter;
 import com.pro3.planner.baseClasses.Element;
 import com.pro3.planner.dialogs.ConfirmDialog;
 
@@ -50,7 +49,6 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
     private Element currentlySelectedElement;
     private String elementID, elementName;
     private MainActivityInterface mainActivityInterface;
-    private CategoryVisibilityAdapter CategoryVisibilityAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +56,11 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
         setContentView(R.layout.activity_bin);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         mainActivityInterface = (MainActivityInterface) ((BaseApplication) getApplicationContext()).mainContext;
-        CategoryVisibilityAdapter = (CategoryVisibilityAdapter) mainActivityInterface.getListCategoryVisibilityAdapter();
-
         user = mAuth.getCurrentUser();
 
         Intent i = getIntent();
@@ -153,6 +151,10 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
                 if (restore) {
                     element.setElementID(element.getElementID());
                     mElementsRefernce.child(element.getElementID()).setValue(element);
+                    Snackbar snackbar = Snackbar
+                            .make(coordinatorLayout, R.string.element_restored, 6000);
+                    snackbar.show();
+                    restore = false;
                 } else {
                     if (element.getNoteType().equals("bundle")) {
                         mReference.child("elements").child("bundles").child(element.getElementID()).removeValue();
@@ -160,12 +162,6 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
                         mContentsReference.child(element.getElementID()).removeValue();
                     }
                 }
-
-                Snackbar snackbar = Snackbar
-                        .make(coordinatorLayout, R.string.element_restored, 6000);
-                snackbar.show();
-
-                restore = false;
             }
 
 

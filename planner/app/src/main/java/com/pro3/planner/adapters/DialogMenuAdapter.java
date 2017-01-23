@@ -16,13 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by linus_000 on 10.11.2016.
+ * @author Linus Weiss
  */
 
 public class DialogMenuAdapter extends ArrayAdapter {
 
     private List<MenuItem> list = new ArrayList<>();
-    int resource;
+    private int resource;
 
     public DialogMenuAdapter(Context context, int resource) {
         super(context, resource);
@@ -68,13 +68,14 @@ public class DialogMenuAdapter extends ArrayAdapter {
         }
 
         MenuItem item = (MenuItem) getItem(position);
-        elementHolder.text.setText(item.getText());
-        elementHolder.icon.setImageResource(item.getIconDrawable());
-
+        if (item != null) {
+            elementHolder.text.setText(item.getText());
+            elementHolder.icon.setImageResource(item.getIconDrawable());
+        }
         return row;
     }
 
-    static class ElementHolder {
+    private static class ElementHolder {
         TextView text;
         ImageView icon;
     }
@@ -96,7 +97,7 @@ public class DialogMenuAdapter extends ArrayAdapter {
             this.text = text;
         }
 
-        public int getIconDrawable() {
+        int getIconDrawable() {
             return iconDrawable;
         }
 

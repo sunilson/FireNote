@@ -32,27 +32,24 @@ import java.util.ListIterator;
 import java.util.Locale;
 
 /**
- * Created by linus_000 on 23.11.2016.
+ * @author Linus Weiss
  */
 
 public class ElementRecyclerAdapter extends RecyclerView.Adapter implements ItemTouchHelperAdapter {
 
-    private List<Element> list = new ArrayList();
+    private List<Element> list = new ArrayList<>();
     private List<Element> allItems = new ArrayList<>();
-    private LayoutInflater inflater;
     private final View.OnClickListener mOnClickListener;
     private final View.OnLongClickListener mOnLongClickListener;
     private Context context;
     private Activity activity;
-    private int lastPosition = -1;
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
 
     public ElementRecyclerAdapter(Context context, View.OnClickListener onClickListener, View.OnLongClickListener onLongClickListener, RecyclerView recyclerView) {
         super();
         this.context = context;
         this.mOnLongClickListener = onLongClickListener;
         this.mOnClickListener = onClickListener;
-        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.activity = (Activity) context;
         this.recyclerView = recyclerView;
     }
@@ -76,11 +73,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
     public String toString() {
         String result = "";
 
-        Iterator<Element> it = list.iterator();
-
-        while (it.hasNext()) {
-            Element element = it.next();
-
+        for (Element element : list) {
             String noteType = "";
 
             switch (element.getNoteType()) {
@@ -94,7 +87,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
                     break;
             }
 
-            result += "- " +  noteType + ": " + element.getTitle() + "\n";
+            result += "- " + noteType + ": " + element.getTitle() + "\n";
         }
 
         return result;
@@ -115,12 +108,12 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView elementTitle, elementDate, elementCategory;
-        public ImageView elementIcon, lockIcon;
-        public LinearLayout iconHolder, content, container;
+    private class ViewHolder extends RecyclerView.ViewHolder {
+        TextView elementTitle, elementDate, elementCategory;
+        ImageView elementIcon, lockIcon;
+        LinearLayout iconHolder, content, container;
 
-        public ViewHolder (View itemView) {
+        ViewHolder (View itemView) {
             super(itemView);
             elementTitle = (TextView) itemView.findViewById(R.id.elementList_title);
             elementDate = (TextView) itemView.findViewById(R.id.elementList_date);
@@ -134,11 +127,11 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
     }
 
     public class SwipeableViewHolder extends RecyclerView.ViewHolder {
-        public TextView elementTitle, elementDate, elementCategory;
-        public ImageView elementIcon, lockIcon;
-        public LinearLayout iconHolder, content, container;
+        TextView elementTitle, elementDate, elementCategory;
+        ImageView elementIcon, lockIcon;
+        LinearLayout iconHolder, content, container;
 
-        public SwipeableViewHolder (View itemView) {
+        SwipeableViewHolder (View itemView) {
             super(itemView);
             elementTitle = (TextView) itemView.findViewById(R.id.elementList_title);
             elementDate = (TextView) itemView.findViewById(R.id.elementList_date);
@@ -175,12 +168,16 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
             viewHolder.elementCategory.setText(element.getCategoryName());
 
 
-            if (element.getNoteType().equals("checklist")) {
-                viewHolder.elementIcon.setImageResource(R.drawable.ic_done_all_white_24dp);
-            } else if (element.getNoteType().equals("note")) {
-                viewHolder.elementIcon.setImageResource(R.drawable.ic_note_white_24dp);
-            } else {
-                viewHolder.elementIcon.setImageResource(R.drawable.ic_list_white_24dp);
+            switch (element.getNoteType()) {
+                case "checklist":
+                    viewHolder.elementIcon.setImageResource(R.drawable.ic_done_all_white_24dp);
+                    break;
+                case "note":
+                    viewHolder.elementIcon.setImageResource(R.drawable.ic_note_white_24dp);
+                    break;
+                default:
+                    viewHolder.elementIcon.setImageResource(R.drawable.ic_list_white_24dp);
+                    break;
             }
 
             Date currentDate = new Date();
@@ -208,16 +205,20 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
 
             viewHolder.elementCategory.setText(element.getCategoryName());
 
-            if (element.getNoteType().equals("checklist")) {
-                viewHolder.elementIcon.setImageResource(R.drawable.ic_done_all_white_24dp);
-            } else if (element.getNoteType().equals("note")) {
-                viewHolder.elementIcon.setImageResource(R.drawable.ic_note_white_24dp);
-            } else {
-                viewHolder.elementIcon.setImageResource(R.drawable.ic_list_white_24dp);
+            switch (element.getNoteType()) {
+                case "checklist":
+                    viewHolder.elementIcon.setImageResource(R.drawable.ic_done_all_white_24dp);
+                    break;
+                case "note":
+                    viewHolder.elementIcon.setImageResource(R.drawable.ic_note_white_24dp);
+                    break;
+                default:
+                    viewHolder.elementIcon.setImageResource(R.drawable.ic_list_white_24dp);
+                    break;
             }
 
             Date currentDate = new Date();
-            DateFormat df = null;
+            DateFormat df;
             if (currentDate.getYear() == element.getCreationDate().getYear()) {
                 df = new SimpleDateFormat("dd.MMM", Locale.getDefault());
             } else {
@@ -257,10 +258,8 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
 
     public Element getElement(String elementID) {
         Element result = null;
-        Iterator<Element> it = list.iterator();
 
-        while (it.hasNext()) {
-            Element element = it.next();
+        for (Element element : list) {
             if (element.getElementID().equals(elementID)) {
                 result = element;
                 break;

@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.pro3.planner.BaseApplication;
@@ -23,7 +23,7 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
     // Store instance variables
     private String title;
     private int page;
-    private Button toggleAll;
+    private ImageButton uncheckAll, checkAll;
 
     // newInstance constructor for creating fragment with arguments
     public static CategoryFragment newInstance(int page, String title) {
@@ -67,11 +67,19 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
             }
         });
 
-        toggleAll = (Button) view.findViewById(R.id.toggleAll);
-        toggleAll.setOnClickListener(new View.OnClickListener() {
+        uncheckAll = (ImageButton) view.findViewById(R.id.uncheckAll);
+        checkAll = (ImageButton) view.findViewById(R.id.checkAll);
+
+        uncheckAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mainActivityInterface.getListCategoryVisibilityAdapter().uncheckAll();
+            }
+        });
+        checkAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainActivityInterface.getListCategoryVisibilityAdapter().checkAll();
             }
         });
 

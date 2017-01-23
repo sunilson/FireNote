@@ -5,36 +5,55 @@
     android:orientation="vertical"
     android:paddingLeft="@dimen/dialog_margin_horizontal"
     android:paddingRight="@dimen/dialog_margin_horizontal"
-    android:paddingTop="8dp"
-    >
+    android:paddingTop="8dp">
 
     <EditText
+        android:id="@+id/loginEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/loginEmail"
+        android:drawableLeft="@drawable/email_login"
+        android:fontFamily="sans-serif"
         android:hint="@string/enter_email"
         android:inputType="textEmailAddress"
-        android:fontFamily="sans-serif"
-        />
+        android:theme="@style/dialog_edittext" />
 
     <EditText
+        android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/password"
+        android:drawableLeft="@drawable/lock_login"
+        android:fontFamily="sans-serif"
         android:hint="@string/enter_password"
         android:inputType="textPassword"
-        android:fontFamily="sans-serif"
-        />
+        android:theme="@style/dialog_edittext" />
 
-    <Button
+    <LinearLayout
         android:id="@+id/google_sign_in"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="@string/google_sign_in"
         android:layout_marginTop="10dp"
-        style="?android:attr/borderlessButtonStyle"
-        android:background="@drawable/google_login_button_dark"
-        android:textColor="@color/white_text_color"
-        />
+        android:background="@drawable/google_login_button_dark_drawable"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:textColor="@color/white_text_color">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/google_icon_white" />
+
+        <TextView
+            android:id="@+id/google_sign_in_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/google_sign_in"
+            android:textAllCaps="true"
+            android:textColor="@color/white_text_color"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </LinearLayout>

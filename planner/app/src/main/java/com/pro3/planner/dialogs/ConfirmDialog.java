@@ -3,6 +3,7 @@ package com.pro3.planner.dialogs;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,6 +16,7 @@ import com.pro3.planner.R;
 
 public class ConfirmDialog extends SuperDialog {
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);

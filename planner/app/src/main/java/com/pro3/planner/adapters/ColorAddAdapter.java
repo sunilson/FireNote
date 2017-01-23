@@ -15,13 +15,13 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created by linus_000 on 17.11.2016.
+ * @author Linus Weiss
  */
 
 public class ColorAddAdapter extends ArrayAdapter<NoteColor> {
 
     private List<NoteColor> list = new ArrayList<>();
-    int checked = -1;
+    private int checked = -1;
 
     public ColorAddAdapter(Context context, int resource) {
         super(context, resource);
@@ -85,7 +85,9 @@ public class ColorAddAdapter extends ArrayAdapter<NoteColor> {
         }
 
         NoteColor noteColor = getItem(position);
-        row.setBackgroundColor(noteColor.getColor());
+        if (noteColor != null) {
+            row.setBackgroundColor(noteColor.getColor());
+        }
 
         if (position != checked) {
             row.setChecked(false);
@@ -96,7 +98,7 @@ public class ColorAddAdapter extends ArrayAdapter<NoteColor> {
         return row;
     }
 
-    static class ElementHolder {
+    private static class ElementHolder {
 
     }
 }

@@ -37,6 +37,7 @@
     <string name="category_finances">Finanzen</string>
     <string name="category_general">Allgemein</string>
     <string name="category_hobbies">Hobbies</string>
+    <string name="category_holidays">Urlaub</string>
     <string name="category_project">Projekt</string>
     <string name="category_school">Schule</string>
     <string name="category_shopping">Einkauf</string>
@@ -115,19 +116,21 @@
     <string name="example_checklist">Beispiel Checkliste</string>
     <string name="example_checklist_element">Beispiel Checklisten Element</string>
     <string name="example_note">Beispiel Notiz</string>
-    <string name="example_note_text"/>
+    <string name="example_note_text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.</string>
     <string name="forgot_password_link">Passwort vergessen?</string>
+    <string name="format_recipe">Rezept formatieren</string>
     <string name="from_app">von FireNote</string>
     <string name="google_auth_failed">Google Authentifizierung fehlgeschlagen!</string>
     <string name="google_sign_in">Einloggen mit Google</string>
     <string name="import_from_textfile">Von Text importieren</string>
-    <string name="import_text_checklist">Fügen Sie für jedes Element eine neue Zeile ein (max. 20). Um ein Element als fertig zu markieren \"*\" oder \"☒\" vor die Zeile einfügen.</string>
+    <string name="import_text_checklist">Fügen Sie für jedes Element eine neue Zeile ein oder fügen Sie einen kopierten Text ein (max. 20 Zeilen)</string>
+    <string name="insert_multiple_items">Mehrere Elemente gleichzeitig einfügen? Hier klicken!</string>
     <string name="lock">Sperren/Entsperren</string>
     <string name="locked">Gesperrt</string>
     <string name="logged_in_as">Eingeloggt als</string>
     <string name="login_button">Einloggen</string>
     <string name="login_loading">Bitte warten...</string>
-    <string name="login_title">In FireNote einloggen</string>
+    <string name="login_title">Login</string>
     <string name="master_password_changed">Master Passwort wurde geändert</string>
     <string name="master_password_description">Das Master Passwort wird verwendet um Ihre Elemente zu sperren. Es ist nicht Ihr Login Passwort!</string>
     <string name="master_password_new2_hint">Neues Passwort wiederholen</string>
@@ -153,6 +156,7 @@
     <string name="register_loading">Bitte warten...</string>
     <string name="register_success">Registrierung erfolgreich! Bitte prüfen Sie Ihren E-Mail Eingang für den Aktivierungs Link.</string>
     <string name="register_title">Neuen Account registrieren</string>
+    <string name="reminder">Eine Erinnerung für dich</string>
     <string name="remove_checked_items">Wollen Sie wirklich alle erledigten Checklisten Elemente löschen?</string>
     <string name="remove_checked_items_title">Checkliste aufräumen</string>
     <string name="repeat_password">Passwort wiederholen</string>
@@ -164,6 +168,7 @@
     <string name="restore_element_question">Wollen Sie dieses Element wirklich wiederherstelen?</string>
     <string msgid="146198913615257606" name="search_menu_title">"Suchen"</string>
     <string name="send_mail">Link senden!</string>
+    <string name="session_expired"/>
     <string name="set_master_password">Master Passwort ändern</string>
     <string name="share">Teilen</string>
     <string name="share_export">Teilen/Text exportieren</string>

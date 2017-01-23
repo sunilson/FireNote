@@ -692,6 +692,7 @@
     <string name="category_finances">Finances</string>
     <string name="category_general">General</string>
     <string name="category_hobbies">Hobbies</string>
+    <string name="category_holidays">Holidays</string>
     <string name="category_project">Project</string>
     <string name="category_school">School</string>
     <string name="category_shopping">Shopping</string>
@@ -776,6 +777,8 @@
     <string name="example_note_text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.</string>
     <string name="firebase_database_url" translatable="false">https://pro3-48b05.firebaseio.com</string>
     <string name="forgot_password_link">Forgot your password?</string>
+    <string name="format_recipe">Format recipe</string>
+    <string name="format_recipe_info">Copy a recipe ingridient list from any website and paste it into the textfield. Then press the \"Format recipe\" button.</string>
     <string name="from_app">from FireNote</string>
     <string name="gcm_defaultSenderId" translatable="false">376414129715</string>
     <string name="google_api_key" translatable="false">AIzaSyDbNRf8ylGaCAYqlLSujU-G4WFsryhCvjI</string>
@@ -785,14 +788,15 @@
     <string name="google_sign_in">Sign in with Google</string>
     <string name="google_storage_bucket" translatable="false">pro3-48b05.appspot.com</string>
     <string name="import_from_textfile">Import from Text</string>
-    <string name="import_text_checklist">Add a line for each element you want to add (max. 20). Add "*" or "☒" in the front of lines which are already finished.</string>
+    <string name="import_text_checklist">Add a line for each element you want to add or paste a copied text (max. 20 lines).</string>
+    <string name="insert_multiple_items">Want to insert multiple items? Click here!</string>
     <string name="lock">Lock/Unlock</string>
     <string name="locked">Locked</string>
     <string name="logged_in_as">Logged in as </string>
     <string name="login_button">Login</string>
     <string name="login_loading">Logging in...</string>
     <string name="login_register_text">No account yet? &lt;font color=#0000EE>Register here!</string>
-    <string name="login_title">Login to FireNote</string>
+    <string name="login_title">Login</string>
     <string name="master_password_changed">Master Password has been changed</string>
     <string name="master_password_description">The master password is used to lock your Notes and Checklists. It is not your login password!</string>
     <string name="master_password_new2_hint">Repeat new password</string>
@@ -830,6 +834,7 @@
     <string name="restore_element_question">Do you really want to restore this element?</string>
     <string name="search_menu_title">Search</string>
     <string name="send_mail">Send mail!</string>
+    <string name="session_expired">Session Expired</string>
     <string name="set_master_password">Set master password</string>
     <string name="share">Share</string>
     <string name="share_export">Share/Export to text</string>
@@ -2394,6 +2399,20 @@
     <style name="dialogAnimation">
         <item name="android:windowEnterAnimation">@anim/anim_in</item>
         <item name="android:windowExitAnimation">@anim/anim_out</item>
+    </style>
+    <style name="dialog_edittext">
+        <item name="android:drawablePadding">10dp</item>
+        <item name="android:textColorHint">@color/colorAccent</item>
+        <item name="android:textColor">@color/title_text_color</item>
+        <item name="colorControlNormal">#dadada</item>
+        <item name="colorControlActivated">#dadada</item>
+        <item name="android:paddingBottom">15dp</item>
+    </style>
+    <style name="dialog_spinner">
+        <!-- Color when pressed -->
+        <item name="colorAccent">@color/colorAccent</item>
+        <!-- Default color for the dropdown arrow and line -->
+        <item name="colorControlNormal">#dadada</item>
     </style>
     <style name="dialog_title_textview">
         <item name="android:textColor">?android:attr/textColorPrimaryInverse</item>

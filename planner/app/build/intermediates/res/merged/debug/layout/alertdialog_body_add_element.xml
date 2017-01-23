@@ -4,10 +4,10 @@
     android:id="@+id/add_element_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clickable="true"
     android:descendantFocusability="beforeDescendants"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
-    android:clickable="true"
     android:paddingLeft="@dimen/dialog_margin_horizontal"
     android:paddingRight="@dimen/dialog_margin_horizontal"
     android:paddingTop="@dimen/dialog_margin_vertically"
@@ -26,6 +26,7 @@
         android:hint="@string/dialog_enter_title"
         android:imeOptions="actionDone"
         android:inputType="textPersonName"
+        android:theme="@style/dialog_edittext"
         android:maxLines="1"
         android:textSize="18sp" />
 
@@ -45,8 +46,9 @@
             android:id="@+id/add_element_categorySpinner"
             style="@style/Base.Widget.AppCompat.Spinner.Underlined"
             android:layout_width="0px"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             android:layout_marginLeft="-4dp"
+            android:theme="@style/dialog_spinner"
             android:layout_weight="1"
             android:gravity="center" />
 
@@ -62,6 +64,6 @@
         android:id="@+id/colorlist"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="@dimen/dialog_margin_vertically" />
+        android:layout_marginTop="@dimen/dialog_margin_vertically"
+        android:layout_weight="1" />
 </LinearLayout>

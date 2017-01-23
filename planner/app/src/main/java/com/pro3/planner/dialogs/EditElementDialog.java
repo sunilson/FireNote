@@ -18,12 +18,11 @@ import com.pro3.planner.R;
 import com.pro3.planner.views.EditElementView;
 
 /**
- * Created by linus_000 on 05.01.2017.
+ * @author Linus Weiss
  */
 
 public class EditElementDialog extends SuperDialog {
 
-    private MainActivityInterface mainActivityInterface;
     private BundleInterface bundleInterface;
     private DatabaseReference elementReference;
     private EditElementView content;
@@ -32,28 +31,29 @@ public class EditElementDialog extends SuperDialog {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
-        mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
+        MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
         String elementType = getArguments().getString("elementType");
         String elementID = getArguments().getString("elementID");
 
-        final Activity activity = (Activity) getContext();
+        Activity activity = (Activity) getContext();
+
         if (activity instanceof BundleInterface) {
             bundleInterface = (BundleInterface) activity;
         }
 
-        if (activity instanceof BundleInterface && !elementType.equals("bundle")) {
-            elementReference = bundleInterface.getElementsReference().child(elementID);
-        } else if (activity instanceof ElementInterface) {
-            ElementInterface elementInterface = (ElementInterface) activity;
-            elementReference = elementInterface.getElementReference();
-        } else {
-            elementReference = mainActivityInterface.getElementsReference().child(elementID);
+        if (elementType != null && elementID != null) {
+            if (activity instanceof BundleInterface && !elementType.equals("bundle")) {
+                elementReference = bundleInterface.getElementsReference().child(elementID);
+            } else if (activity instanceof ElementInterface) {
+                ElementInterface elementInterface = (ElementInterface) activity;
+                elementReference = elementInterface.getElementReference();
+            } else {
+                elementReference = mainActivityInterface.getElementsReference().child(elementID);
+            }
         }
 
         titleText.setText(getArguments().getString("title"));
-
         builder.setCustomTitle(title);
-
         content = new EditElementView(getContext(), mainActivityInterface.getSpinnerCategoryAdapter(), elementType, elementID);
 
         if (savedInstanceState != null) {
@@ -84,7 +84,10 @@ public class EditElementDialog extends SuperDialog {
 
         AlertDialog dialog = builder.create();
         setDialogLayoutParams(dialog);
-        dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimation;
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimation;
+
+        }
         return dialog;
     }
 
@@ -105,12 +108,14 @@ public class EditElementDialog extends SuperDialog {
     }
 
     private void setDialogLayoutParams(Dialog dialog) {
-        WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
-        dialog.getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        dialog.getWindow().setAttributes(lp);
+        if (dialog.getWindow() != null) {
+            WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
+            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+            lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+            dialog.getWindow().setSoftInputMode(
+                    WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+            dialog.getWindow().setAttributes(lp);
+        }
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.pro3.planner.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -46,7 +45,7 @@ import com.pro3.planner.dialogs.EditElementDialog;
 import com.pro3.planner.dialogs.ListAlertDialog;
 
 /**
- * Created by linus_000 on 09.12.2016.
+ * @author Linus Weiss
  */
 
 public abstract class BaseElementActivity extends BaseActivity implements ElementInterface, ConfirmDialogResult {
@@ -92,8 +91,9 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
 
         titleDoneButton = (ImageView) toolbar.findViewById(R.id.title_done_button);
         titleEditText = (EditText) toolbar.findViewById(R.id.title_edittext);
@@ -155,17 +155,6 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
         }
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        if (addEditDialog != null && addEditDialog.getDialog() != null) {
-            if (addEditDialog.getDialog().isShowing()) {
-                addEditDialog.dismiss();
-                addEditDialog.show(getSupportFragmentManager(), "dialog");
-            }
-        }
-    }
 
 
     protected void startTitleEdit() {
@@ -258,16 +247,20 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
         }
     }
 
+    /*
     public void removeListeners() {
         if (mElementListener != null) {
             mElementReference.removeEventListener(mElementListener);
         }
     }
+    */
 
     protected void setColors() {
         ColorDrawable colorDrawable = new ColorDrawable();
         colorDrawable.setColor(elementColor);
-        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setBackgroundDrawable(colorDrawable);
+        }
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if (fab != null) {
             fab.setBackgroundTintList(ColorStateList.valueOf(elementColor));
@@ -363,7 +356,7 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
         int id = item.getItemId();
 
         if (id == R.id.menu_lock) {
-            if (LocalSettingsManager.getInstance().getMasterPassword() != "") {
+            if (!LocalSettingsManager.getInstance().getMasterPassword().equals("")) {
                 mElementReference.child("locked").setValue(!locked);
             } else {
                 Toast.makeText(this, R.string.master_password_not_set, Toast.LENGTH_LONG).show();
