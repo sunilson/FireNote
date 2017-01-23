@@ -209,21 +209,27 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
                     dialogFragment.show(getSupportFragmentManager(), "dialog");
                 } else {
                     Intent i = null;
-                    if (element.getNoteType().equals("checklist")) {
-                        i = new Intent(BundleActivity.this, ChecklistActivity.class);
-                    } else if (element.getNoteType().equals("note")) {
-                        i = new Intent(BundleActivity.this, NoteActivity.class);
-                    } else if (element.getNoteType().equals("bundle")) {
-                        i = new Intent(BundleActivity.this, BundleActivity.class);
+                    switch (element.getNoteType()) {
+                        case "checklist":
+                            i = new Intent(BundleActivity.this, ChecklistActivity.class);
+                            break;
+                        case "note":
+                            i = new Intent(BundleActivity.this, NoteActivity.class);
+                            break;
+                        case "bundle":
+                            i = new Intent(BundleActivity.this, BundleActivity.class);
+                            break;
                     }
 
-                    i.putExtra("elementID", element.getElementID());
-                    i.putExtra("elementTitle", element.getTitle());
-                    i.putExtra("elementColor", element.getColor());
-                    i.putExtra("elementType", element.getNoteType());
-                    i.putExtra("parentID", elementID);
-                    i.putExtra("categoryID", element.getCategoryID());
-                    startActivity(i);
+                    if (i != null) {
+                        i.putExtra("elementID", element.getElementID());
+                        i.putExtra("elementTitle", element.getTitle());
+                        i.putExtra("elementColor", element.getColor());
+                        i.putExtra("elementType", element.getNoteType());
+                        i.putExtra("parentID", elementID);
+                        i.putExtra("categoryID", element.getCategoryID());
+                        startActivity(i);
+                    }
                 }
             }
         };
@@ -309,45 +315,53 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
     public void confirmDialogResult(boolean bool, String type, Bundle args) {
         super.confirmDialogResult(bool, type, args);
 
-        if (type.equals("passwordOpenElement")) {
-            if (bool) {
-                Intent i = null;
-                if (args.getString("elementType").equals("checklist")) {
-                    i = new Intent(BundleActivity.this, ChecklistActivity.class);
-                } else if (args.getString("elementType").equals("note")) {
-                    i = new Intent(BundleActivity.this, NoteActivity.class);
-                }
+        switch (type) {
+            case "passwordOpenElement":
+                if (bool) {
+                    Intent i = null;
+                    if (args.getString("elementType").equals("checklist")) {
+                        i = new Intent(BundleActivity.this, ChecklistActivity.class);
+                    } else if (args.getString("elementType").equals("note")) {
+                        i = new Intent(BundleActivity.this, NoteActivity.class);
+                    }
 
-                i.putExtra("elementID", args.getString("elementID"));
-                i.putExtra("elementTitle", args.getString("elementTitle"));
-                i.putExtra("elementColor", args.getInt("elementColor"));
-                i.putExtra("elementType", args.getString("elementType"));
-                i.putExtra("parentID", elementID);
-                i.putExtra("categoryID", categoryID);
-                startActivity(i);
-            } else {
-                Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
-            }
-        } else if (type.equals("passwordEditElement")) {
-            if (bool) {
-                DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", null, null);
-                dialog.show(getSupportFragmentManager(), "dialog");
-            } else {
-                Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
-            }
-        } else if (type.equals("delete")) {
-            if (bool) {
-                if (mElementsListener != null) {
-                    mElementsReference.removeEventListener(mElementsListener);
+                    if (i != null) {
+                        i.putExtra("elementID", args.getString("elementID"));
+                        i.putExtra("elementTitle", args.getString("elementTitle"));
+                        i.putExtra("elementColor", args.getInt("elementColor"));
+                        i.putExtra("elementType", args.getString("elementType"));
+                        i.putExtra("parentID", elementID);
+                        i.putExtra("categoryID", categoryID);
+                        startActivity(i);
+                    }
+
+                } else {
+                    Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
                 }
-                mElementReference.removeValue();
-                finish();
-            }
-        } else if (type.equals("addElement")) {
-            if (bool) {
-                addEditDialog = AddElementDialog.newInstance(getString(R.string.add_Element_Title), args.getString("elementType"));
-                addEditDialog.show(getSupportFragmentManager(), "dialog");
-            }
+                break;
+            case "passwordEditElement":
+                if (bool) {
+                    DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", null, null);
+                    dialog.show(getSupportFragmentManager(), "dialog");
+                } else {
+                    Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case "delete":
+                if (bool) {
+                    if (mElementsListener != null) {
+                        mElementsReference.removeEventListener(mElementsListener);
+                    }
+                    mElementReference.removeValue();
+                    finish();
+                }
+                break;
+            case "addElement":
+                if (bool) {
+                    addEditDialog = AddElementDialog.newInstance(getString(R.string.add_Element_Title), args.getString("elementType"));
+                    addEditDialog.show(getSupportFragmentManager(), "dialog");
+                }
+                break;
         }
     }
 }

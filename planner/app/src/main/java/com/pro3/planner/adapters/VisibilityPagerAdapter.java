@@ -10,7 +10,7 @@ import com.pro3.planner.fragments.CategoryFragment;
 import com.pro3.planner.fragments.ColorFragment;
 
 /**
- * Created by linus_000 on 17.11.2016.
+ * @author Linus Weiss
  */
 
 public class VisibilityPagerAdapter extends FragmentPagerAdapter {

@@ -20,22 +20,20 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created by linus_000 on 26.11.2016.
+ * @author Linus Weiss
  */
 
 public class BinRecyclerAdapter extends RecyclerView.Adapter implements ItemTouchHelperAdapter{
 
-    private List<Element> list = new ArrayList();
+    private List<Element> list = new ArrayList<>();
     private final View.OnClickListener mOnClickListener;
     private final View.OnLongClickListener mOnLongClickListener;
     private Context context;
-    private LayoutInflater inflater;
 
     public BinRecyclerAdapter(Context context, View.OnClickListener onClickListener, View.OnLongClickListener onLongClickListener) {
         this.context = context;
         this.mOnLongClickListener = onLongClickListener;
         this.mOnClickListener = onClickListener;
-        this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -43,8 +41,7 @@ public class BinRecyclerAdapter extends RecyclerView.Adapter implements ItemTouc
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.bin_list_layout, parent, false);
         v.setOnClickListener(mOnClickListener);
         v.setOnLongClickListener(mOnLongClickListener);
-        ViewHolder vh = new ViewHolder(v);
-        return vh;
+        return new ViewHolder(v);
     }
 
     public Element getItem(int position) {
@@ -59,12 +56,16 @@ public class BinRecyclerAdapter extends RecyclerView.Adapter implements ItemTouc
         viewHolder.elementTitle.setText(element.getTitle());
         viewHolder.elementCategory.setText(element.getCategoryName());
 
-        if (element.getNoteType().equals("checklist")) {
-            viewHolder.elementIcon.setImageResource(R.drawable.ic_done_all_white_24dp);
-        } else if (element.getNoteType().equals("note")) {
-            viewHolder.elementIcon.setImageResource(R.drawable.ic_note_white_24dp);
-        } else {
-            viewHolder.elementIcon.setImageResource(R.drawable.ic_list_white_24dp);
+        switch (element.getNoteType()) {
+            case "checklist":
+                viewHolder.elementIcon.setImageResource(R.drawable.ic_done_all_white_24dp);
+                break;
+            case "note":
+                viewHolder.elementIcon.setImageResource(R.drawable.ic_note_white_24dp);
+                break;
+            default:
+                viewHolder.elementIcon.setImageResource(R.drawable.ic_list_white_24dp);
+                break;
         }
 
         int elementColor = element.getColor();
@@ -115,12 +116,12 @@ public class BinRecyclerAdapter extends RecyclerView.Adapter implements ItemTouc
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        public TextView elementTitle, elementCategory;
-        public ImageView elementIcon;
-        public LinearLayout iconHolder, content;
+    private class ViewHolder extends RecyclerView.ViewHolder{
+        TextView elementTitle, elementCategory;
+        ImageView elementIcon;
+        LinearLayout iconHolder, content;
 
-        public ViewHolder (View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             elementTitle = (TextView) itemView.findViewById(R.id.binList_title);
             elementCategory = (TextView) itemView.findViewById(R.id.binList_category);

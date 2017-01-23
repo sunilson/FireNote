@@ -53,9 +53,25 @@ public class CategoryVisibilityAdapter extends ArrayAdapter {
         MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
 
         for (int i = 0; i < getCount(); i++) {
-            CategoryVisibilityView categoryVisibilityView = (CategoryVisibilityView) getView(i, null, null);
-            LocalSettingsManager.getInstance().setCategoryVisibility((getItem(i)).getCategoryID(), -1);
-            mainActivityInterface.getElementAdapter().hideElements();
+            Category category = getItem(i);
+            if (category != null) {
+                LocalSettingsManager.getInstance().setCategoryVisibility(category.getCategoryID(), -1);
+                mainActivityInterface.getElementAdapter().hideElements();
+            }
+        }
+
+        notifyDataSetChanged();
+    }
+
+    public void checkAll() {
+        MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
+
+        for (int i = 0; i < getCount(); i++) {
+            Category category = getItem(i);
+            if (category != null) {
+                LocalSettingsManager.getInstance().setCategoryVisibility(category.getCategoryID(), 1);
+                mainActivityInterface.getElementAdapter().hideElements();
+            }
         }
 
         notifyDataSetChanged();
@@ -78,18 +94,20 @@ public class CategoryVisibilityAdapter extends ArrayAdapter {
         }
 
         Category category = getItem(position);
-        elementHolder.elementText.setText(category.getCategoryName());
+        if (category != null) {
+            elementHolder.elementText.setText(category.getCategoryName());
 
-        if (LocalSettingsManager.getInstance().getCategoryVisibility(category.getCategoryID()) == 1) {
-            row.setChecked(false);
-        } else {
-            row.setChecked(true);
+            if (LocalSettingsManager.getInstance().getCategoryVisibility(category.getCategoryID()) == 1) {
+                row.setChecked(false);
+            } else {
+                row.setChecked(true);
+            }
         }
 
         return row;
     }
 
-    static class ElementHolder {
+    private static class ElementHolder {
         TextView elementText;
     }
 }

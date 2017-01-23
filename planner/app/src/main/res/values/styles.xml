@@ -95,6 +95,22 @@
         <item name="android:textColor">@color/text_crossed_out</item>
     </style>
 
+    <style name="dialog_spinner">
+        <!-- Color when pressed -->
+        <item name="colorAccent">@color/colorAccent</item>
+        <!-- Default color for the dropdown arrow and line -->
+        <item name="colorControlNormal">#dadada</item>
+    </style>
+
+    <style name="dialog_edittext">
+        <item name="android:drawablePadding">10dp</item>
+        <item name="android:textColorHint">@color/colorAccent</item>
+        <item name="android:textColor">@color/title_text_color</item>
+        <item name="colorControlNormal">#dadada</item>
+        <item name="colorControlActivated">#dadada</item>
+        <item name="android:paddingBottom">15dp</item>
+    </style>
+
     <style name="loginEditText">
         <item name="android:padding">10dp</item>
         <item name="android:drawablePadding">10dp</item>

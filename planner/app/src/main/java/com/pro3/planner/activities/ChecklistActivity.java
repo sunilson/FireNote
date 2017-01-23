@@ -37,7 +37,6 @@ import com.pro3.planner.dialogs.ConfirmDialog;
 import com.pro3.planner.dialogs.ImportFromTextDialog;
 import com.pro3.planner.dialogs.ListAlertDialog;
 
-import java.util.Iterator;
 import java.util.List;
 
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator;
@@ -182,9 +181,7 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
             dialogFragment.show(getSupportFragmentManager(), "dialog");
         } else if (id == R.id.check_checklist) {
             List<ChecklistElement> list = checklistRecyclerAdapter.getList();
-            Iterator<ChecklistElement> it = list.iterator();
-            while (it.hasNext()) {
-                ChecklistElement element = it.next();
+            for (ChecklistElement element : list) {
                 mContentReference.child(element.getElementID()).child("finished").setValue(true);
             }
         }
@@ -306,7 +303,9 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         final AlertDialog dialog = alert.create();
 
         //Open keyboard
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        }
 
         //Set Dialog animation
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimation;
@@ -381,10 +380,7 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
             if (type.equals("sweep")) {
                 List<ChecklistElement> list = checklistRecyclerAdapter.getList();
 
-                Iterator<ChecklistElement> it = list.iterator();
-
-                while (it.hasNext()) {
-                    ChecklistElement element = it.next();
+                for (ChecklistElement element : list) {
                     if (element.isFinished()) {
                         mContentReference.child(element.getElementID()).removeValue();
                     }

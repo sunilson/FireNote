@@ -133,7 +133,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                 recyclerView.setAdapter(alphaInAnimationAdapter);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setItemAnimator(new ScaleInAnimator(new OvershootInterpolator(1f)));
-                recyclerView.getItemAnimator().setAddDuration(500);
+                recyclerView.getItemAnimator().setAddDuration(400);
                 ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallbackMain(elementRecyclerAdapter);
                 ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
                 itemTouchHelper.attachToRecyclerView(recyclerView);
@@ -261,20 +261,26 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                     dialogFragment.show(getSupportFragmentManager(), "dialog");
                 } else {
                     Intent i = null;
-                    if (element.getNoteType().equals("checklist")) {
-                        i = new Intent(MainActivity.this, ChecklistActivity.class);
-                    } else if (element.getNoteType().equals("note")) {
-                        i = new Intent(MainActivity.this, NoteActivity.class);
-                    } else if (element.getNoteType().equals("bundle")) {
-                        i = new Intent(MainActivity.this, BundleActivity.class);
+                    switch (element.getNoteType()) {
+                        case "checklist":
+                            i = new Intent(MainActivity.this, ChecklistActivity.class);
+                            break;
+                        case "note":
+                            i = new Intent(MainActivity.this, NoteActivity.class);
+                            break;
+                        case "bundle":
+                            i = new Intent(MainActivity.this, BundleActivity.class);
+                            break;
                     }
 
-                    i.putExtra("elementID", element.getElementID());
-                    i.putExtra("elementTitle", element.getTitle());
-                    i.putExtra("elementColor", element.getColor());
-                    i.putExtra("elementType", element.getNoteType());
-                    i.putExtra("categoryID", element.getCategoryID());
-                    startActivity(i);
+                    if (i != null) {
+                        i.putExtra("elementID", element.getElementID());
+                        i.putExtra("elementTitle", element.getTitle());
+                        i.putExtra("elementColor", element.getColor());
+                        i.putExtra("elementType", element.getNoteType());
+                        i.putExtra("categoryID", element.getCategoryID());
+                        startActivity(i);
+                    }
                 }
             }
         };
@@ -393,10 +399,12 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         categories.add(new Category(getString(R.string.category_finances), "finances"));
         categories.add(new Category(getString(R.string.category_general), "general"));
         categories.add(new Category(getString(R.string.category_hobbies), "hobbies"));
+        categories.add(new Category(getString(R.string.category_holidays), "holidays"));
         categories.add(new Category(getString(R.string.category_project), "project"));
         categories.add(new Category(getString(R.string.category_school), "school"));
         categories.add(new Category(getString(R.string.category_shopping), "shopping"));
         categories.add(new Category(getString(R.string.category_sport), "sport"));
+
 
         Comparator<Category> comparator = new Comparator<Category>() {
             @Override
@@ -479,44 +487,56 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
 
     @Override
     public void confirmDialogResult(boolean bool, String type, Bundle args) {
-        if (type.equals("passwordOpenElement")) {
-            if (bool) {
-                Intent i = null;
-                Element element = elementRecyclerAdapter.getElement(args.getString("elementID"));
-                if (element.getNoteType().equals("checklist")) {
-                    i = new Intent(MainActivity.this, ChecklistActivity.class);
-                } else if (element.getNoteType().equals("note")) {
-                    i = new Intent(MainActivity.this, NoteActivity.class);
-                } else if (element.getNoteType().equals("bundle")) {
-                    i = new Intent(MainActivity.this, BundleActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        switch (type) {
+            case "passwordOpenElement":
+                if (bool) {
+                    Intent i = null;
+                    Element element = elementRecyclerAdapter.getElement(args.getString("elementID"));
+                    switch (element.getNoteType()) {
+                        case "checklist":
+                            i = new Intent(MainActivity.this, ChecklistActivity.class);
+                            break;
+                        case "note":
+                            i = new Intent(MainActivity.this, NoteActivity.class);
+                            break;
+                        case "bundle":
+                            i = new Intent(MainActivity.this, BundleActivity.class);
+                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            break;
+                    }
+
+                    if (i != null) {
+                        i.putExtra("elementID", element.getElementID());
+                        i.putExtra("elementTitle", element.getTitle());
+                        i.putExtra("elementColor", element.getColor());
+                        i.putExtra("elementType", element.getNoteType());
+                        i.putExtra("categoryID", element.getCategoryID());
+                        startActivity(i);
+                    }
+                } else {
+                    Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
                 }
-                i.putExtra("elementID", element.getElementID());
-                i.putExtra("elementTitle", element.getTitle());
-                i.putExtra("elementColor",element.getColor());
-                i.putExtra("elementType", element.getNoteType());
-                i.putExtra("categoryID", element.getCategoryID());
-                startActivity(i);
-            } else {
-                Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
-            }
-        } else if (type.equals("passwordEditElement")) {
-            if (bool) {
-                DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", args.getString("elementID"), args.getString("elementType"));
-                dialog.show(getSupportFragmentManager(), "dialog");
-            } else {
-                Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
-            }
-        } else if (type.equals("addElement")) {
-            if (bool) {
-                addEditDialog = AddElementDialog.newInstance(getString(R.string.add_Element_Title), args.getString("elementType"));
-                addEditDialog.show(getSupportFragmentManager(), "dialog");
-            }
-        } else if (type.equals("editElement")) {
-            if (bool) {
-                addEditDialog = EditElementDialog.newInstance(getString(R.string.edit_element_title), args.getString("elementType"), args.getString("elementID"));
-                addEditDialog.show(getSupportFragmentManager(), "dialog");
-            }
+                break;
+            case "passwordEditElement":
+                if (bool) {
+                    DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", args.getString("elementID"), args.getString("elementType"));
+                    dialog.show(getSupportFragmentManager(), "dialog");
+                } else {
+                    Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case "addElement":
+                if (bool) {
+                    addEditDialog = AddElementDialog.newInstance(getString(R.string.add_Element_Title), args.getString("elementType"));
+                    addEditDialog.show(getSupportFragmentManager(), "dialog");
+                }
+                break;
+            case "editElement":
+                if (bool) {
+                    addEditDialog = EditElementDialog.newInstance(getString(R.string.edit_element_title), args.getString("elementType"), args.getString("elementID"));
+                    addEditDialog.show(getSupportFragmentManager(), "dialog");
+                }
+                break;
         }
     }
 }

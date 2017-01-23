@@ -3,13 +3,11 @@ package com.pro3.planner.activities;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +15,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +43,10 @@ import com.pro3.planner.LocalSettingsManager;
 import com.pro3.planner.R;
 
 /**
- * Created by linus_000 on 05.11.2016.
+ * @author Linus Weiss
+ * @
+ *
+ * Created by Linus Weiss on 05.11.2016.
  */
 
 public abstract class BaseActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
@@ -59,9 +61,9 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
     protected LayoutInflater inflater;
     private int googleSignInRequestCode = 1;
     private GoogleApiClient mGoogleApiClient;
-    private String reAuthType = "";
     private AlertDialog reAuthDialog;
     protected BaseApplication baseApplication;
+    private String reAuthType = "";
 
     /*
     ------------------------
@@ -100,12 +102,17 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
             view.setPadding(0, 0, 0, 0);
         }
 
+        //Get the baseApplication and store it for usage in all other activities
         baseApplication = (BaseApplication)this.getApplicationContext();
+
+        //Settings Listener anlegen
+        initializeSettingsListener();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        //If App is resumed, send current Activity to BaseApplication
         baseApplication.setCurrentActivity(this);
     }
 
@@ -122,6 +129,7 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
     }
 
     private void clearReferences() {
+        //Remove currentActivity from BaseApplication
         Activity currActivity = baseApplication.getCurrentActivity();
         if (this.equals(currActivity)) {
             baseApplication.setCurrentActivity(null);
@@ -129,38 +137,34 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        invalidateOptionsMenu();
-        invalidateOptionsMenu();
-    }
-
-    @Override
     protected void onStart() {
         super.onStart();
-        //Auth Listener zu Instanz hinzufügen
+        //Auth Listener starten
         mAuth.addAuthStateListener(mAuthListener);
 
+        //If user is logged in
         if (mAuth.getCurrentUser() != null) {
-            initializeSettingsListener();
+            //Add settingsListener to settingsReference
             mSettingsReference = FirebaseDatabase.getInstance().getReference().child("users").child(mAuth.getCurrentUser().getUid()).child("settings");
             mSettingsReference.addChildEventListener(mSettingsListener);
+
+            //Add connectedListener to connectedReference
             mConnectedRef.addValueEventListener(mConnectedRefListener);
         }
     }
 
+    //Wenn App is paused/stopped or Activity is closed
     @Override
     protected void onStop() {
         super.onStop();
+
+        //Remove all Listeners
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
-
         if (mSettingsListener != null) {
             mSettingsReference.removeEventListener(mSettingsListener);
         }
-
         if (mConnectedRefListener != null) {
             mConnectedRef.removeEventListener(mConnectedRefListener);
         }
@@ -172,27 +176,22 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
     -----------------------------
      */
 
+    //Checks if we are still connected to Firebase Database
     private void initializeOnlineListener() {
         mConnectedRefListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 connected = snapshot.getValue(Boolean.class);
-                if (connected) {
-                    Log.i("Linus", "connected");
-                } else {
-                    Log.i("Linus", "disconnected");
-                }
-
                 connectionChanged();
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
-                System.err.println("Listener was cancelled");
             }
         };
     }
 
+    //Listens to changes to the "Settings" part of the Database
     private void initializeSettingsListener() {
         mSettingsListener = new ChildEventListener() {
             @Override
@@ -228,10 +227,7 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
         };
     }
 
-    public boolean getConnected() {
-        return connected;
-    }
-
+    //Listening to changes to the Authentication state of the current Firebase Session
     private void initializeAuthListener() {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -242,7 +238,7 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
                     //Check if user has verified his email
                     if (user.isEmailVerified()) {
                         //User is signed in and verified. Do nothing
-                        user.getToken(false);
+                        //user.getToken(true);
                     } else {
                         //If not verified, sign user out and switch to login activity
                         mAuth.signOut();
@@ -260,10 +256,29 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
         };
     }
 
+    /**
+     * Getter for connected value
+     *
+     * @return If Application is connected to Firebase Database
+     */
+    public boolean getConnected() {
+        return connected;
+    }
+
+    /**
+     * Gets called when connection state of Firebase Database changes. Can be
+     * overwritten by children classes
+     */
     protected void connectionChanged() {
 
     }
 
+    /**
+     * Provides a starting point for creating an AlertDialog
+     *
+     * @param title Title of the AlertDialog
+     * @return Builder which can be used to create an AlertDialog
+     */
     protected AlertDialog.Builder setupDialog(String title) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View header = inflater.inflate(R.layout.alertdialog_custom_title, null);
@@ -275,6 +290,10 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
         return builder;
     }
 
+    /**
+     * Starts an AlertDialog which asks the user to reAuthenticate.
+     *
+     */
     protected void authenticateDialog(String type) {
         reAuthType = type;
         AlertDialog.Builder builder = setupDialog(getString(R.string.reauth_title));
@@ -329,7 +348,7 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
                     }
                 });
 
-                final Button googleButton = (Button) content.findViewById(R.id.google_sign_in);
+                final LinearLayout googleButton = (LinearLayout) content.findViewById(R.id.google_sign_in);
                 googleButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -349,7 +368,10 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
             }
         });
 
-        dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimation;
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimation;
+        }
 
         dialog.show();
     }
@@ -387,15 +409,12 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
      * @param result
      */
     private void handleSignInResult(GoogleSignInResult result) {
-        Log.d("Google", "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
-            Log.i("Linus", "Passt");
             GoogleSignInAccount acct = result.getSignInAccount();
             firebaseAuthWithGoogle(acct);
         } else {
-            Log.i("Linus", "Passt ned");
-            // Signed out, show unauthenticated UI.
+            Toast.makeText(BaseActivity.this, R.string.reauth_failed, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -430,6 +449,10 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
         Toast.makeText(this, R.string.google_auth_failed, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Called after user successfully reAuthenticated
+     *
+     */
     protected void reAuthenticated(String type) {
         Toast.makeText(this, R.string.reauth_success, Toast.LENGTH_SHORT).show();
     }

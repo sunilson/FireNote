@@ -118,11 +118,12 @@
     <string name="category_finances">Finances</string>
     <string name="category_shopping">Shopping</string>
     <string name="category_business">Business</string>
+    <string name="category_holidays">Holidays</string>
     <string name="category_events">Events</string>
     <string name="category_hobbies">Hobbies</string>
     <string name="register_title">Register a new account</string>
     <string name="reset_password_title">Reset your password</string>
-    <string name="about">Created by Linus Weiss and Jasmin Schachner for FH Hagenberg</string>
+    <string name="about">Created by Linus Weiss and Jasmin Schachner for FH Hagenberg. If you have feedback or a bug report  for us, please contact support@firenote.at</string>
     <string name="title_activity_profile">Profile</string>
     <string name="delete_account">Delete Account</string>
     <string name="change_email">Change E-Mail</string>
@@ -137,7 +138,7 @@
     <string name="password_changed">Password changed</string>
     <string name="share">Share</string>
     <string name="share_export">Share/Export to text</string>
-    <string name="import_text_checklist">Add a line for each element you want to add (max. 20). Add "*" or "☒" in the front of lines which are already finished.</string>
+    <string name="import_text_checklist">Add a line for each element you want to add or paste a copied text (max. 20 lines).</string>
     <string name="colors">Colors</string>
     <string name="check_all">Check all</string>
     <string name="categories">Categories</string>
@@ -156,8 +157,12 @@
     <string name="uncheck_all">Uncheck all</string>
     <string name="text_to_speech">Text to speech</string>
     <string name="done">Done</string>
+    <string name="session_expired">Session Expired</string>
     <string name="not_done">Not Done</string>
-    <string name="login_title">Login to FireNote</string>
+    <string name="format_recipe">Format recipe</string>
+    <string name="format_recipe_info">Copy a recipe ingridient list from any website and paste it into the textfield. Then press the \"Format recipe\" button.</string>
+    <string name="login_title">Login</string>
+    <string name="insert_multiple_items">Want to insert multiple items? Click here!</string>
     <string name="remove_checked_items_title">Clean checklist</string>
     <string name="remove_checked_items">Do you really want to delete all checked items?</string>
     <string name="example_note_text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.</string>

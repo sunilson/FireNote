@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.pro3.planner.BaseApplication;
@@ -25,7 +25,7 @@ public class ColorFragment extends android.support.v4.app.Fragment {
 
     // Store instance variables
     private String title;
-    private Button toggleAll;
+    private ImageButton uncheckAll, checkAll;
 
     public static ColorFragment newInstance(String title) {
         ColorFragment colorFragment = new ColorFragment();
@@ -77,8 +77,16 @@ public class ColorFragment extends android.support.v4.app.Fragment {
             }
         });
 
-        toggleAll = (Button) view.findViewById(R.id.toggleAll);
-        toggleAll.setOnClickListener(new View.OnClickListener() {
+        uncheckAll = (ImageButton) view.findViewById(R.id.uncheckAll);
+        checkAll = (ImageButton) view.findViewById(R.id.checkAll);
+
+        checkAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                colorVisibilityAdapter.checkAll();
+            }
+        });
+        uncheckAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 colorVisibilityAdapter.uncheckAll();

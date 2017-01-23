@@ -49,7 +49,9 @@ public class SettingsActivity extends BaseActivity implements SettingsInterface,
         setContentView(R.layout.activity_settings);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         masterPassword = (LinearLayout) findViewById(R.id.master_password);
         about = (LinearLayout) findViewById(R.id.about);
@@ -88,11 +90,7 @@ public class SettingsActivity extends BaseActivity implements SettingsInterface,
 
     @Override
     public boolean getConnected() {
-        if (connected && ((BaseApplication) getApplicationContext()).getInternetConnected()) {
-            return true;
-        }
-
-        return false;
+        return connected && ((BaseApplication) getApplicationContext()).getInternetConnected();
     }
 
     @Override
@@ -145,7 +143,9 @@ public class SettingsActivity extends BaseActivity implements SettingsInterface,
         });
 
         final AlertDialog dialog = builder.create();
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        }
         dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimation;
         dialog.show();
     }
@@ -172,8 +172,10 @@ public class SettingsActivity extends BaseActivity implements SettingsInterface,
         builder.setNegativeButton(R.string.cancel_add_dialog, null);
 
         final AlertDialog dialog = builder.create();
-        dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimation;
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().getAttributes().windowAnimations = R.style.dialogAnimation;
+            dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        }
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {

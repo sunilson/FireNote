@@ -51,8 +51,18 @@ public class ColorVisibilityAdapter extends ArrayAdapter<NoteColor> {
         MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
 
         for (int i = 0; i < getCount(); i++) {
-            ColorElementView colorElementView = (ColorElementView) getView(i, null, null);
             LocalSettingsManager.getInstance().setColorVisibility((getItem(i)).getColor(), -1);
+            mainActivityInterface.getElementAdapter().hideElements();
+        }
+
+        notifyDataSetChanged();
+    }
+
+    public void checkAll() {
+        MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
+
+        for (int i = 0; i < getCount(); i++) {
+            LocalSettingsManager.getInstance().setColorVisibility((getItem(i)).getColor(), 1);
             mainActivityInterface.getElementAdapter().hideElements();
         }
 

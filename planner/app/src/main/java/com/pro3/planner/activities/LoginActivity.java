@@ -204,7 +204,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             String password = loginPassword.getText().toString();
 
             //Überprüfen von Username und Passwort
-            //TODO: genauere Überprüfung und Stripping von unerwünschten Zeichen
             if(email.length() != 0 && password.length() != 0) {
                 signInEmail(email, password);
                 loginButton.setText(getResources().getString(R.string.login_loading));
@@ -286,7 +285,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             firebaseAuthWithGoogle(acct);
             googleButtonText.setText(getString(R.string.login_loading));
         } else {
-            // Signed out, show unauthenticated UI.
+            googleButtonText.setText(getString(R.string.google_sign_in));
         }
     }
 
@@ -302,7 +301,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (!task.isSuccessful()) {
-                            //Sign in Failed
+                            googleButtonText.setText(getString(R.string.google_sign_in));
                         }
                     }
                 });

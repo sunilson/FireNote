@@ -180,79 +180,39 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
      */
 
     private void register(String email, String password, String passwordAgain) {
-        //TODO: Strip strings, Passwort Komplexität prüfen
-
-        if (emailValid(email)) {
-            if (password.equals(passwordAgain)) {
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
-                                if (!task.isSuccessful()) {
-                                    try {
-                                        throw task.getException();
-                                    } catch (FirebaseAuthWeakPasswordException e) {
-                                        Toast.makeText(RegisterActivity.this, R.string.error_register_password_weak, Toast.LENGTH_SHORT).show();
-                                        registerButton.setText(getString(R.string.register_button));
-                                    } catch (FirebaseAuthInvalidCredentialsException e) {
-                                        Toast.makeText(RegisterActivity.this, R.string.error_register_invalid_email, Toast.LENGTH_SHORT).show();
-                                        registerButton.setText(getString(R.string.register_button));
-                                    } catch (FirebaseAuthUserCollisionException e) {
-                                        Toast.makeText(RegisterActivity.this, R.string.error_register_user_already_exists, Toast.LENGTH_SHORT).show();
-                                        registerButton.setText(getString(R.string.register_button));
-                                    } catch (Exception e) {
-                                        Log.e("RegisterError", e.getMessage());
-                                        registerButton.setText(getString(R.string.register_button));
-                                    }
+        if (password.equals(passwordAgain)) {
+            mAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            // If sign in fails, display a message to the user. If sign in succeeds
+                            // the auth state listener will be notified and logic to handle the
+                            // signed in user can be handled in the listener.
+                            if (!task.isSuccessful()) {
+                                try {
+                                    throw task.getException();
+                                } catch (FirebaseAuthWeakPasswordException e) {
+                                    Toast.makeText(RegisterActivity.this, R.string.error_register_password_weak, Toast.LENGTH_SHORT).show();
+                                    registerButton.setText(getString(R.string.register_button));
+                                } catch (FirebaseAuthInvalidCredentialsException e) {
+                                    Toast.makeText(RegisterActivity.this, R.string.error_register_invalid_email, Toast.LENGTH_SHORT).show();
+                                    registerButton.setText(getString(R.string.register_button));
+                                } catch (FirebaseAuthUserCollisionException e) {
+                                    Toast.makeText(RegisterActivity.this, R.string.error_register_user_already_exists, Toast.LENGTH_SHORT).show();
+                                    registerButton.setText(getString(R.string.register_button));
+                                } catch (Exception e) {
+                                    Log.e("RegisterError", e.getMessage());
+                                    registerButton.setText(getString(R.string.register_button));
                                 }
                             }
-                        });
-            } else {
-                Toast.makeText(this, R.string.error_password_match, Toast.LENGTH_SHORT).show();
-                registerButton.setText(getString(R.string.register_button));
-            }
+                        }
+                    });
         } else {
-            Toast.makeText(this, R.string.error_register_invalid_characters, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.error_password_match, Toast.LENGTH_SHORT).show();
             registerButton.setText(getString(R.string.register_button));
         }
     }
 
-    /**
-     * Check password for security criteria
-     *
-     * @param input
-     * @return
-     */
-    private boolean passwordSecure(String input) {
-        if (input.length() < 8) {
-            return false;
-        }
-
-        //Check for security criteria
-        String hasUpperCase = ".*[A-Z].*";
-        String hasLowerCase = ".*[a-z].*";
-        String hasNumbers = ".*\\d.*";
-
-        if (input.matches(hasUpperCase) && input.matches(hasLowerCase) && input.matches(hasNumbers)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * Check if only allowed characters are in the email string. Only for user comfort. More complex test is done by Firebase itself
-     *
-     * @param input
-     * @return
-     */
-    private boolean emailValid(String input) {
-        String pattern = "^[a-zA-Z0-9.@-]*$";
-        return input.matches(pattern);
-    }
 
     /*
     -----------------------------

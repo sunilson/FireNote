@@ -44,6 +44,35 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/master_password"
+            style="@style/settingsLinearMasterLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                style="@style/settingsElementsHolder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    style="@style/settingsTextview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/set_master_password" />
+
+                <TextView
+                    style="@style/settingsTextviewSubtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/master_password_description" />
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/settingsDivider"
+                android:layout_width="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
             style="@style/settingsLinearMasterLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -72,34 +101,7 @@
                 android:layout_width="match_parent" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/master_password"
-            style="@style/settingsLinearMasterLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
 
-            <LinearLayout
-                style="@style/settingsElementsHolder"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    style="@style/settingsTextview"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/set_master_password" />
-
-                <TextView
-                    style="@style/settingsTextviewSubtitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/master_password_description" />
-            </LinearLayout>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                style="@style/settingsDivider"
-                android:layout_width="match_parent" />
-        </LinearLayout>
 
 
         <LinearLayout

@@ -94,7 +94,7 @@
                 android:layout_width="0px"
                 android:layout_weight="1"
                 android:layout_height="40dp"
-                android:background="@drawable/google_login_button"
+                android:background="@drawable/google_login_button_drawable"
                 android:gravity="center"
                 android:orientation="horizontal">
 

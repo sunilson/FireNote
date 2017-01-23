@@ -2,11 +2,11 @@ package com.pro3.planner.views;
 
 import android.app.Activity;
 import android.content.Context;
-import android.widget.ArrayAdapter;
 
 import com.pro3.planner.Interfaces.BundleInterface;
 import com.pro3.planner.Interfaces.ElementInterface;
 import com.pro3.planner.Interfaces.MainActivityInterface;
+import com.pro3.planner.adapters.SpinnerAdapter;
 import com.pro3.planner.baseClasses.Element;
 
 /**
@@ -17,7 +17,7 @@ public class EditElementView extends ElementDialogView{
 
     String type, id;
 
-    public EditElementView(Context context, final ArrayAdapter<CharSequence> categoryAdapter, String type, String id) {
+    public EditElementView(Context context, final SpinnerAdapter categoryAdapter, String type, String id) {
         super(context, categoryAdapter);
 
         this.type = type;
