@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/element_list_horizontal_margin"
     android:paddingTop="@dimen/element_list_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.pro3.planner.activities.BinActivity"
+    tools:context="com.sunilson.firenote.activities.BinActivity"
     tools:showIn="@layout/activity_bin">
 
     <android.support.v7.widget.RecyclerView

@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.pro3.planner.activities.MainActivity">
+    tools:context="com.sunilson.firenote.activities.MainActivity">
     <item
         android:id="@+id/main_element_sort"
         android:icon="@drawable/main_menu_sort_icon"
@@ -15,6 +15,7 @@
         android:title="Visibility"
         app:showAsAction="ifRoom"
         android:orderInCategory="200"
+        android:actionViewClass="android.widget.ImageButton"
         />
     <item
         android:id="@+id/action_logOut"

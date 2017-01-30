@@ -49,6 +49,50 @@
           "status": 2
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:376414129715:android:1b2ef7d009205deb",
+        "android_client_info": {
+          "package_name": "com.sunilson.firenote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "376414129715-bkec1firaq7usi24a1b8j1andfqhghab.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sunilson.firenote",
+            "certificate_hash": "799FE5C1FB08F7B3F26DA3ED3ECE211CD02C5EB2"
+          }
+        },
+        {
+          "client_id": "376414129715-ehhkuv1f9acftujtvuk0r9biir5c98v2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbNRf8ylGaCAYqlLSujU-G4WFsryhCvjI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "376414129715-ehhkuv1f9acftujtvuk0r9biir5c98v2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
     }
   ],
   "configuration_version": "1"

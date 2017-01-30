@@ -10,7 +10,7 @@
     android:paddingRight="@dimen/checklist_list_horizontal_margin"
     android:paddingTop="@dimen/element_list_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.pro3.planner.activities.ChecklistActivity"
+    tools:context="com.sunilson.firenote.activities.ChecklistActivity"
     tools:showIn="@layout/activity_checklist">
 
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"

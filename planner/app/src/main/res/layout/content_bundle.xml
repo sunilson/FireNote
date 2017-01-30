@@ -11,7 +11,7 @@
     android:paddingRight="@dimen/element_list_horizontal_margin"
     android:paddingTop="@dimen/element_list_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.pro3.planner.activities.BundleActivity"
+    tools:context="com.sunilson.firenote.activities.BundleActivity"
     tools:showIn="@layout/activity_bundle">
 
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"

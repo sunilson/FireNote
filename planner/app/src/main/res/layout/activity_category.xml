@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.pro3.planner.activities.CategoryActivity">
+    tools:context="com.sunilson.firenote.activities.CategoryActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

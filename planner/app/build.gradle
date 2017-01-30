@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
     defaultConfig {
-        applicationId "com.pro3.planner"
+        applicationId "com.sunilson.firenote"
         minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
@@ -36,6 +36,7 @@ dependencies {
     compile 'com.android.support:support-v4:25.0.1'
     compile 'com.android.support:support-vector-drawable:25.0.1'
     compile 'jp.wasabeef:recyclerview-animators:2.2.5'
+    compile 'com.github.amlcurran.showcaseview:library:5.4.3'
     testCompile 'junit:junit:4.12'
     compile files('libs/commons-codec-1.9.jar')
 }

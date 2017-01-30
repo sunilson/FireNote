@@ -12,7 +12,7 @@
     android:paddingRight="@dimen/element_list_horizontal_margin"
     android:paddingTop="@dimen/element_list_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.pro3.planner.activities.MainActivity"
+    tools:context="com.sunilson.firenote.activities.MainActivity"
     tools:showIn="@layout/activity_main">
 
     <LinearLayout
