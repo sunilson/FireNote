@@ -132,5 +132,21 @@
         <item name="colorControlNormal">@color/title_text_color</item>
         <item name="colorControlActivated">@color/title_text_color</item>
     </style>
+    
+    <style name="ShowCaseViewStyle" parent="ShowcaseView.Light">
+        <item name="sv_backgroundColor">@color/note_color_6</item>
+        <item name="sv_buttonText">Okay</item>
+        <item name="sv_titleTextAppearance">@style/ShowCaseTitleStyle</item>
+        <item name="sv_detailTextAppearance">@style/ShowCaseTextStyle</item>
+    </style>
+
+    <style name="ShowCaseTitleStyle" parent="TextAppearance.ShowcaseView.Title.Light">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/tint_white</item>
+    </style>
+
+    <style name="ShowCaseTextStyle" parent="ShowCaseTextStyle">
+        <item name="android:textColor">@color/white_text_color_sub</item>
+    </style>
 
 </resources>

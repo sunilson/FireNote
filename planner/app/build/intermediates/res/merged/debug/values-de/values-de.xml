@@ -19,9 +19,10 @@
     <string msgid="3421042268587513524" name="abc_shareactionprovider_share_with">"Freigeben für"</string>
     <string msgid="7165123711973476752" name="abc_shareactionprovider_share_with_application">"Freigeben für %s"</string>
     <string msgid="1603543279005712093" name="abc_toolbar_collapse_description">"Minimieren"</string>
-    <string name="about">Erstellt von Linus Weiss und Jasmin Schachner für die FH Hagenberg</string>
+    <string name="about">Erstellt von Linus Weiss und Jasmin Schachner für die FH Hagenberg. Feedback und Bug Reports an support@firenote.at</string>
     <string name="about_title">Über FireNote</string>
-    <string name="action_logOut">Ausloggen</string>
+    <string name="account_deleted">Account wurde gelöscht!</string>
+    <string name="action_logOut">Ausgeloggt</string>
     <string name="action_settings">Einstellungen</string>
     <string name="add_Element_Title">Neues Element</string>
     <string name="add_category_placeholder">Kategorie eingeben</string>
@@ -94,6 +95,7 @@
     <string name="edit_checklist_item_title">Element bearbeiten</string>
     <string name="edit_checklist_title">Checkliste bearbeiten</string>
     <string name="edit_element_title">Element bearbeiten</string>
+    <string name="edit_no_connection">Keine Internet Verbindung! Das Update wird angewendet sobald diese wiederhergestellt wurde.</string>
     <string name="edit_user_profile">Benutzer Profil bearbeiten</string>
     <string name="element_bundle">Sammlung</string>
     <string name="element_checklist">Checkliste</string>
@@ -116,15 +118,17 @@
     <string name="example_checklist">Beispiel Checkliste</string>
     <string name="example_checklist_element">Beispiel Checklisten Element</string>
     <string name="example_note">Beispiel Notiz</string>
-    <string name="example_note_text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.</string>
+    <string name="example_note_text">Das ist eine Notiz! Zum Bearbeiten klicke mich einfach doppelt an.</string>
     <string name="forgot_password_link">Passwort vergessen?</string>
     <string name="format_recipe">Rezept formatieren</string>
+    <string name="format_recipe_info">Kopiere die Zutatenliste eines Rezepts von jeder Website und füge sie hier ein. Drücke danach den \"Rezept formatieren\" Button</string>
     <string name="from_app">von FireNote</string>
     <string name="google_auth_failed">Google Authentifizierung fehlgeschlagen!</string>
     <string name="google_sign_in">Einloggen mit Google</string>
     <string name="import_from_textfile">Von Text importieren</string>
     <string name="import_text_checklist">Fügen Sie für jedes Element eine neue Zeile ein oder fügen Sie einen kopierten Text ein (max. 20 Zeilen)</string>
     <string name="insert_multiple_items">Mehrere Elemente gleichzeitig einfügen? Hier klicken!</string>
+    <string name="listener_no_connection">Derzeit keine Internet Verbindung! Neue Daten werden geladen sobald Internet verfügbar ist.</string>
     <string name="lock">Sperren/Entsperren</string>
     <string name="locked">Gesperrt</string>
     <string name="logged_in_as">Eingeloggt als</string>
@@ -168,7 +172,7 @@
     <string name="restore_element_question">Wollen Sie dieses Element wirklich wiederherstelen?</string>
     <string msgid="146198913615257606" name="search_menu_title">"Suchen"</string>
     <string name="send_mail">Link senden!</string>
-    <string name="session_expired"/>
+    <string name="session_expired">Session abgelaufen</string>
     <string name="set_master_password">Master Passwort ändern</string>
     <string name="share">Teilen</string>
     <string name="share_export">Teilen/Text exportieren</string>
@@ -195,11 +199,33 @@
     <string name="title_activity_reset_password">Passwort zurücksetzen</string>
     <string name="title_activity_settings">Einstellungen</string>
     <string name="title_activity_start">FireNote</string>
+    <string name="tutorial_add_bundle_element">\"Eine Sammlung ist ein Container für Notizen und Checklisten. Klicke hier um der Sammlung ein neues Element hinzuzufügen!</string>
+    <string name="tutorial_add_checklist_element">Klicke hier um ein neues Checklisten Element zu erstellen</string>
+    <string name="tutorial_add_elements">Klicke hier um neue Elemente hinzuzufügen</string>
+    <string name="tutorial_bundle_element">Du kannst so viele Element in einer Sammlung erstellen wie du möchtest</string>
+    <string name="tutorial_bundle_element_title">Das ist ein Sammlungs Element</string>
+    <string name="tutorial_checklist_box">Klicke hier um das Checklisten Element als fertig zu markieren</string>
+    <string name="tutorial_checklist_box_title">Element abhaken</string>
+    <string name="tutorial_checklist_edit_title">Klicke hier um den Title der Checkliste zu bearbeiten</string>
+    <string name="tutorial_checklist_title_edit_title">Titel bearbeiten</string>
+    <string name="tutorial_edit_element">Klicke hier um das Element zu bearbeiten</string>
+    <string name="tutorial_edit_element_title">Element bearbeiten</string>
+    <string name="tutorial_edit_note">Klicke hier um die Notiz zu bearbeiten</string>
+    <string name="tutorial_hide">Hier kannst du deine Element anzeigen/verstecken</string>
+    <string name="tutorial_lock_element">Klicke hier um ein Element zu sperren (zuerst Master Passwort unter \"Einstellungen\" setzen)</string>
+    <string name="tutorial_lock_element_title">Element sperren</string>
+    <string name="tutorial_sort">Hier kannst du alle Elemente sortieren</string>
+    <string name="tutorial_title_hide">Elemente ausblenden</string>
+    <string name="tutorial_title_sort">Elemente sortieren</string>
     <string name="uncheck_all">Alle abwählen</string>
     <string name="undo">Rückgängig</string>
     <string name="unlock">Entsperren</string>
     <string name="unlocked">Entsperrt</string>
     <string name="user_profile_description">Hier können Sie die Daten Ihres Accounts bearbeiten</string>
     <string name="verification_error">Account nicht bestätigt. Bitte zuerst den Bestätigungslink in der E-Mail klicken!</string>
+    <string name="welcome_to_bundle">Diess ist eine Sammlung!</string>
+    <string name="welcome_to_checklist">Dies ist eine Checkliste!</string>
+    <string name="welcome_to_firenote">Willkommen bei FireNote!</string>
+    <string name="welcome_to_note">Dies ist eine Notiz!</string>
     <string name="wrong_password">Falsches Passwort</string>
 </resources>

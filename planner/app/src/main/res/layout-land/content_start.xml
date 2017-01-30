@@ -11,7 +11,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@color/main_background_color"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.pro3.planner.activities.StartActivity"
+    tools:context="com.sunilson.firenote.activities.StartActivity"
     tools:showIn="@layout/activity_start">
 
     <ImageView
@@ -48,6 +48,7 @@
             android:layout_height="40dp"
             style="?android:attr/borderlessButtonStyle"
             android:background="@drawable/login_button_drawable"
+            android:foreground="?selectableItemBackground"
             android:textColor="@color/tint_white"
             android:id="@+id/go_to_login"
             android:textSize="12sp"
@@ -60,6 +61,7 @@
             android:layout_marginTop="10dp"
             style="?android:attr/borderlessButtonStyle"
             android:background="@drawable/register_button_drawable"
+            android:foreground="?selectableItemBackground"
             android:textColor="@color/tint_white"
             android:id="@+id/go_to_register"
             android:textSize="12sp"

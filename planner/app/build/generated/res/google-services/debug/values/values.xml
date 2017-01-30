@@ -4,7 +4,7 @@
     <string name="firebase_database_url" translatable="false">https://pro3-48b05.firebaseio.com</string>
     <string name="gcm_defaultSenderId" translatable="false">376414129715</string>
     <string name="google_api_key" translatable="false">AIzaSyDbNRf8ylGaCAYqlLSujU-G4WFsryhCvjI</string>
-    <string name="google_app_id" translatable="false">1:376414129715:android:c611371682d25ad1</string>
+    <string name="google_app_id" translatable="false">1:376414129715:android:1b2ef7d009205deb</string>
     <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDbNRf8ylGaCAYqlLSujU-G4WFsryhCvjI</string>
     <string name="google_storage_bucket" translatable="false">pro3-48b05.appspot.com</string>
 </resources>

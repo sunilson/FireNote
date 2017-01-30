@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.pro3.planner.activities.NoteActivity">
+    tools:context="com.sunilson.firenote.activities.NoteActivity">
     <item
         android:title="Note Settings"
         android:id="@+id/menu_settings"

@@ -5,47 +5,33 @@
     density="420dpi"
     format="8"
     plugin-version="2.2.3"
-    timestamp="218225237133150"
+    timestamp="265731211598188"
     token="-1276383515429520973"
-    verifier="COLD_SWAP_REQUESTED" >
+    verifier="FULL_BUILD_REQUESTED" >
 
     <task
         name="javac"
-        duration="3328" />
+        duration="5735" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="72" />
+        duration="2938" />
     <task
         name="verifier"
-        duration="17" />
+        duration="1378" />
 
     <artifact
-        location="C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_4\classes.dex"
-        type="DEX" />
+        location="C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\build\outputs\apk\app-debug.apk"
+        type="MAIN" />
 
     <build
-        timestamp="217763009247980"
+        timestamp="265731211598188"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
             location="C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\build\outputs\apk\app-debug.apk"
             type="MAIN" />
-    </build>
-    <build
-        timestamp="217930812960967"
-        verifier="COLD_SWAP_REQUESTED" >
-        <artifact
-            location="C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\build\intermediates\instant-run-resources\resources-debug.ir.ap_"
-            type="RESOURCES" />
-    </build>
-    <build
-        timestamp="218225237133150"
-        verifier="COLD_SWAP_REQUESTED" >
-        <artifact
-            location="C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\build\intermediates\transforms\dex\debug\folders\1000\5\slice_4\classes.dex"
-            type="DEX" />
     </build>
 
 </instant-run>

@@ -42,7 +42,7 @@
             android:id="@+id/add_element_category_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/add_dialog_menu_margin_vertical"
+            android:layout_marginTop="8dp"
             android:text="@string/choose_element_category" />
 
         <LinearLayout
@@ -54,7 +54,7 @@
                 android:id="@+id/add_element_categorySpinner"
                 style="@style/Base.Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="0px"
-                android:layout_height="55dp"
+                android:layout_height="40dp"
                 android:layout_marginLeft="-4dp"
                 android:theme="@style/dialog_spinner"
                 android:layout_weight="1"

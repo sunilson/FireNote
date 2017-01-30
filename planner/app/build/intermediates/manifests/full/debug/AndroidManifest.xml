@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.pro3.planner"
+    package="com.sunilson.firenote"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -14,13 +14,13 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <permission
-        android:name="com.pro3.planner.permission.C2D_MESSAGE"
+        android:name="com.sunilson.firenote.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.pro3.planner.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.sunilson.firenote.permission.C2D_MESSAGE" />
 
     <application
-        android:name="com.pro3.planner.BaseApplication"
+        android:name="com.sunilson.firenote.BaseApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/icon"
@@ -28,49 +28,49 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.pro3.planner.activities.MainActivity"
+            android:name="com.sunilson.firenote.activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.pro3.planner.activities.LoginActivity"
+            android:name="com.sunilson.firenote.activities.LoginActivity"
             android:configChanges="keyboardHidden|screenSize"
             android:label="@string/app_name"
-            android:parentActivityName="com.pro3.planner.activities.StartActivity"
+            android:parentActivityName="com.sunilson.firenote.activities.StartActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.pro3.planner.activities.RegisterActivity"
+            android:name="com.sunilson.firenote.activities.RegisterActivity"
             android:configChanges="keyboardHidden|screenSize"
             android:label="@string/app_name"
-            android:parentActivityName="com.pro3.planner.activities.LoginActivity"
+            android:parentActivityName="com.sunilson.firenote.activities.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.pro3.planner.activities.ChecklistActivity"
+            android:name="com.sunilson.firenote.activities.ChecklistActivity"
             android:label="@string/app_name"
-            android:parentActivityName="com.pro3.planner.activities.MainActivity"
+            android:parentActivityName="com.sunilson.firenote.activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.pro3.planner.activities.NoteActivity"
+            android:name="com.sunilson.firenote.activities.NoteActivity"
             android:label="@string/app_name"
-            android:parentActivityName="com.pro3.planner.activities.MainActivity"
+            android:parentActivityName="com.sunilson.firenote.activities.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateUnchanged|stateAlwaysHidden" />
         <activity
-            android:name="com.pro3.planner.activities.BinActivity"
+            android:name="com.sunilson.firenote.activities.BinActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name="com.pro3.planner.activities.SettingsActivity"
+            android:name="com.sunilson.firenote.activities.SettingsActivity"
             android:label="@string/app_name"
             android:theme="@style/SettingsTheme" />
         <activity
-            android:name="com.pro3.planner.activities.BundleActivity"
+            android:name="com.sunilson.firenote.activities.BundleActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
-            android:name="com.pro3.planner.activities.StartActivity"
+            android:name="com.sunilson.firenote.activities.StartActivity"
             android:configChanges="keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" >
@@ -81,10 +81,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.pro3.planner.activities.ResetPasswordActivity"
+            android:name="com.sunilson.firenote.activities.ResetPasswordActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
-            android:parentActivityName="com.pro3.planner.activities.LoginActivity"
+            android:parentActivityName="com.sunilson.firenote.activities.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <!--
          Set custom default icon. This is used when no icon is set for incoming notification messages.
@@ -101,7 +101,7 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
 
-        <service android:name="com.pro3.planner.MessagingService" >
+        <service android:name="com.sunilson.firenote.MessagingService" >
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -164,7 +164,7 @@ Service handling Google Sign-In user revocation. For apps that do not integrate 
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-                <category android:name="com.pro3.planner" />
+                <category android:name="com.sunilson.firenote" />
             </intent-filter>
         </receiver>
         <!--
@@ -188,7 +188,7 @@ Service handling Google Sign-In user revocation. For apps that do not integrate 
 
         <provider
             android:name="com.google.firebase.provider.FirebaseInitProvider"
-            android:authorities="com.pro3.planner.firebaseinitprovider"
+            android:authorities="com.sunilson.firenote.firebaseinitprovider"
             android:exported="false"
             android:initOrder="100" />
 
