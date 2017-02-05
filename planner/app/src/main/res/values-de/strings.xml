@@ -164,7 +164,7 @@
     <string name="edit_no_connection">Keine Internet Verbindung! Das Update wird angewendet sobald diese wiederhergestellt wurde.</string>
     <string name="format_recipe_info">Kopiere die Zutatenliste eines Rezepts von jeder Website und füge sie hier ein. Drücke danach den \"Rezept formatieren\" Button</string>
     <string name="listener_no_connection">Derzeit keine Internet Verbindung! Neue Daten werden geladen sobald Internet verfügbar ist.</string>
-    <string name="tutorial_add_bundle_element">\"Eine Sammlung ist ein Container für Notizen und Checklisten. Klicke hier um der Sammlung ein neues Element hinzuzufügen!</string>
+    <string name="tutorial_add_bundle_element">Eine Sammlung ist ein Container für Notizen und Checklisten. Klicke hier um der Sammlung ein neues Element hinzuzufügen!</string>
     <string name="tutorial_add_checklist_element">Klicke hier um ein neues Checklisten Element zu erstellen</string>
     <string name="tutorial_add_elements">Klicke hier um neue Elemente hinzuzufügen</string>
     <string name="tutorial_bundle_element">Du kannst so viele Element in einer Sammlung erstellen wie du möchtest</string>
@@ -182,7 +182,7 @@
     <string name="tutorial_sort">Hier kannst du alle Elemente sortieren</string>
     <string name="tutorial_title_hide">Elemente ausblenden</string>
     <string name="tutorial_title_sort">Elemente sortieren</string>
-    <string name="welcome_to_bundle">Diess ist eine Sammlung!</string>
+    <string name="welcome_to_bundle">Dies ist eine Sammlung!</string>
     <string name="welcome_to_checklist">Dies ist eine Checkliste!</string>
     <string name="welcome_to_firenote">Willkommen bei FireNote!</string>
     <string name="welcome_to_note">Dies ist eine Notiz!</string>

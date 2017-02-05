@@ -192,15 +192,17 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
     protected void onStart() {
         super.onStart();
         if (!started) {
-            mElementsReference.addChildEventListener(mElementsListener);
-            started = true;
-            Handler myHandler = new Handler();
-            myHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    showTutorial();
-                }
-            }, 500);
+            if (mElementsReference != null) {
+                mElementsReference.addChildEventListener(mElementsListener);
+                started = true;
+                Handler myHandler = new Handler();
+                myHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showTutorial();
+                    }
+                }, 500);
+            }
         }
     }
 

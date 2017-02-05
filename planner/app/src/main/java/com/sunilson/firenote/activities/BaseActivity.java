@@ -177,10 +177,11 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
-        if (mSettingsListener != null) {
+
+        if (mSettingsListener != null && mSettingsReference != null) {
             mSettingsReference.removeEventListener(mSettingsListener);
         }
-        if (mConnectedRefListener != null) {
+        if (mConnectedRefListener != null && mConnectedRef != null) {
             mConnectedRef.removeEventListener(mConnectedRefListener);
         }
     }
@@ -276,13 +277,12 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
                         //If not verified, sign user out and switch to login activity
                         mAuth.signOut();
                         Toast.makeText(getApplicationContext(), R.string.verification_error, Toast.LENGTH_LONG).show();
-                        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                        Intent i = new Intent(getApplicationContext(), StartActivity.class);
                         startActivity(i);
                     }
                 } else {
                     //User is signed out. Go to login
-                    Toast.makeText(getApplicationContext(), R.string.action_logOut, Toast.LENGTH_LONG).show();
-                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                    Intent i = new Intent(getApplicationContext(), StartActivity.class);
                     startActivity(i);
                 }
             }
