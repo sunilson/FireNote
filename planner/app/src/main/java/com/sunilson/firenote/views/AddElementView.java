@@ -4,9 +4,12 @@ import android.content.Context;
 import android.widget.ArrayAdapter;
 
 /**
- * Created by linus_000 on 14.11.2016.
+ * @author Linus Weiss
  */
 
+/**
+ * View used as content of Add element Dialog
+ */
 public class AddElementView extends ElementDialogView {
 
     public AddElementView(final Context context, final ArrayAdapter<CharSequence> categoryAdapter) {

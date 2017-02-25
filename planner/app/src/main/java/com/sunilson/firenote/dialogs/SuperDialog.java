@@ -18,6 +18,9 @@ import com.sunilson.firenote.activities.BaseElementActivity;
  *
  */
 
+/**
+ * Base class of all dialogs
+ */
 public class SuperDialog extends DialogFragment {
 
     protected TextView titleText;

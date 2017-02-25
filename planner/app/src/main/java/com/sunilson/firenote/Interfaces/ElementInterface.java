@@ -3,11 +3,13 @@ package com.sunilson.firenote.Interfaces;
 import com.google.firebase.database.DatabaseReference;
 
 /**
- * Created by linus_000 on 12.11.2016.
+ * @author Linus Weiss
  */
 
+/**
+ * Implemented by all Activities that represent an Element Type
+ */
 public interface ElementInterface {
-
     DatabaseReference getElementReference();
     DatabaseReference getContentsReference();
     String getElementTitle();

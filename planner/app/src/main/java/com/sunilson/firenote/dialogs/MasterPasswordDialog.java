@@ -24,6 +24,9 @@ import java.security.NoSuchAlgorithmException;
  * @author Linus Weiss
  */
 
+/**
+ * Dialog to enter new Master Password
+ */
 public class MasterPasswordDialog extends SuperDialog {
 
     View content;
@@ -33,12 +36,15 @@ public class MasterPasswordDialog extends SuperDialog {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
 
+        //Title
         titleText.setText(getString(R.string.set_master_password));
         builder.setCustomTitle(title);
 
+        //Content
         content = inflater.inflate(R.layout.alertdialog_body_master_password, null);
         final EditText pwOld = ((EditText) content.findViewById(R.id.master_password_old));
 
+        //If no password has been set, no old password field should be displayed
         if (LocalSettingsManager.getInstance().getMasterPassword().equals("")) {
             pwOld.setVisibility(View.GONE);
         }
@@ -67,6 +73,7 @@ public class MasterPasswordDialog extends SuperDialog {
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Check for internet connection
                 if (settings.getConnected()) {
                     String old = pwOld.getText().toString();
                     String newS = pwNew.getText().toString().trim();
@@ -81,10 +88,12 @@ public class MasterPasswordDialog extends SuperDialog {
                         e.printStackTrace();
                     }
 
+                    //Check for errors
                     if (newS.equals(newS2) && !newS.equals("")) {
                         if (!LocalSettingsManager.getInstance().getMasterPassword().equals("")) {
                             if (oldHash.equals(LocalSettingsManager.getInstance().getMasterPassword())) {
                                 final Activity activity = getActivity();
+                                //Updated password in database
                                 settings.getSettingsReference().child("masterPassword").setValue(newHash).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -115,11 +124,17 @@ public class MasterPasswordDialog extends SuperDialog {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        //Open Keyboard on Dialg opening
         if (getDialog().getWindow() != null) {
             getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         }
     }
 
+    /**
+     * Get new Instance of MasterPasswordDialog
+     *
+     * @return New DialogFragment
+     */
     public static MasterPasswordDialog newInstance() {
         MasterPasswordDialog masterPasswordDialog = new MasterPasswordDialog();
         Bundle args = new Bundle();

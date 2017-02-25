@@ -59,6 +59,11 @@ public class ChecklistRecyclerAdapter extends RecyclerView.Adapter implements It
         }
     }
 
+    /**
+     * Convert adapter to string
+     *
+     * @return String containing all elements and their finished state
+     */
     public String toString() {
         String result = "";
 
@@ -77,6 +82,9 @@ public class ChecklistRecyclerAdapter extends RecyclerView.Adapter implements It
         return result;
     }
 
+    /**
+     * Clear list and notify data change
+     */
     public void clear() {
         list.clear();
         notifyDataSetChanged();
@@ -122,7 +130,12 @@ public class ChecklistRecyclerAdapter extends RecyclerView.Adapter implements It
         notifyItemInserted(position);
     }
 
+    /**
+     * Remove first element with given ID
+     * @param elementID ID of element to be deleted
+     */
     public void remove(String elementID) {
+        //Iterate over list and remove item
         Iterator<ChecklistElement> it = list.iterator();
         int index = 0;
 
@@ -135,9 +148,11 @@ public class ChecklistRecyclerAdapter extends RecyclerView.Adapter implements It
             index++;
         }
 
+        //Fixes for deleting first or last item (bugs with adapter animations)
         if (index == 0) {
             recyclerView.getLayoutManager().scrollToPosition(index);
         }
+
 
         if (index == list.size()) {
             notifyDataSetChanged();
@@ -146,22 +161,31 @@ public class ChecklistRecyclerAdapter extends RecyclerView.Adapter implements It
         }
     }
 
+    /**
+     * List with contents of adapter
+     *
+     * @return ArrayList containing all Checklist Elements of adapter
+     */
     public List<ChecklistElement> getList() {
         return list;
     }
 
     public ChecklistElement getItemWithID(String id) {
-
         for (ChecklistElement checklistElement : list) {
             if (checklistElement.getElementID().equals(id)) {
                 return checklistElement;
             }
         }
-
         return null;
     }
 
+    /**
+     * Replace element in adapter (compared by ID)
+     *
+     * @param element New element
+     */
     public void update(ChecklistElement element) {
+        //Iterate to element and replace it, else return null
         Iterator<ChecklistElement> it = list.iterator();
         int index = 0;
 
@@ -198,9 +222,14 @@ public class ChecklistRecyclerAdapter extends RecyclerView.Adapter implements It
         return true;
     }
 
-
+    /**
+     * Called when element is swiped
+     *
+     * @param position Position of element
+     */
     @Override
     public void onItemDismiss(int position) {
+        //Remove element
         ChecklistInterface checklistInterface = (ChecklistInterface) context;
         checklistInterface.getElementsReference().child(getItem(position).getElementID()).removeValue();
         if(!((BaseApplication) context.getApplicationContext()).getInternetConnected()) {

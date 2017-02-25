@@ -44,11 +44,19 @@ public class CategoryVisibilityAdapter extends ArrayAdapter {
         return list.size();
     }
 
+    /**
+     * Sort adapter with given Comparator
+     *
+     * @param comparator Comparator for sorting ArrayList
+     */
     @Override
     public void sort(@NonNull Comparator comparator) {
         Collections.sort(list, comparator);
     }
 
+    /**
+     * Set all elements of adapter to unchecked
+     */
     public void uncheckAll() {
         MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
 
@@ -63,6 +71,9 @@ public class CategoryVisibilityAdapter extends ArrayAdapter {
         notifyDataSetChanged();
     }
 
+    /**
+     * Set all elements of adapter to checked
+     */
     public void checkAll() {
         MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
 

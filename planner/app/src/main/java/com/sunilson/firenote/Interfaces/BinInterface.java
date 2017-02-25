@@ -3,11 +3,12 @@ package com.sunilson.firenote.Interfaces;
 import com.google.firebase.database.DatabaseReference;
 
 /**
- * Created by linus_000 on 27.11.2016.
+ * @author Linus Weiss
  */
 
+/**
+ * Implemented by Bin Activity
+ */
 public interface BinInterface {
-
     DatabaseReference getBinReference();
-
 }

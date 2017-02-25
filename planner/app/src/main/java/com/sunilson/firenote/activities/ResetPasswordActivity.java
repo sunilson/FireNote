@@ -1,6 +1,5 @@
 package com.sunilson.firenote.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +15,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.sunilson.firenote.R;
 
 public class ResetPasswordActivity extends AppCompatActivity {
@@ -24,7 +22,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Button confirm;
     private EditText email;
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +34,6 @@ public class ResetPasswordActivity extends AppCompatActivity {
         email = (EditText) findViewById(R.id.resetPasswordEmail);
 
         mAuth = FirebaseAuth.getInstance();
-        initializeAuthListener();
 
         email.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -49,10 +45,11 @@ public class ResetPasswordActivity extends AppCompatActivity {
             }
         });
 
+        //Send password request
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (email.getText() != null) {
+                if (email.getText() != null && !email.getText().toString().isEmpty()) {
                     mAuth.sendPasswordResetEmail(email.getText().toString()).addOnCompleteListener(ResetPasswordActivity.this, new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -66,48 +63,9 @@ public class ResetPasswordActivity extends AppCompatActivity {
                         }
                     });
                 } else {
-                    Toast.makeText(ResetPasswordActivity.this, R.string.error_register_empty, Toast.LENGTH_LONG).show();
+                    Toast.makeText(ResetPasswordActivity.this, R.string.error_register_empty, Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        mAuth.addAuthStateListener(mAuthListener);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
-    }
-
-    private void initializeAuthListener() {
-        mAuthListener = new FirebaseAuth.AuthStateListener(){
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    //Check if user has verified his email
-                    if(user.isEmailVerified()) {
-                        //User is signed in and verified. Continue
-                        Intent i = new Intent(ResetPasswordActivity.this, MainActivity.class);
-                        startActivity(i);
-                    } else {
-                        //User is not verified. Do nothing
-                    }
-                } else {
-                    //User is signed out. Do nothing
-                }
-            }
-        };
-    }
-
 }

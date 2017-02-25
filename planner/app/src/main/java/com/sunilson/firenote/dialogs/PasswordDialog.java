@@ -23,14 +23,21 @@ import java.security.NoSuchAlgorithmException;
  * @author  Linus Weiss
  */
 
+/**
+ * Dialog used to ask for the MasterPassword
+ */
 public class PasswordDialog extends SuperDialog {
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
+
+        //Title
         titleText.setText(getString(R.string.enter_password));
         builder.setCustomTitle(title);
+
+        //Content
         View content = inflater.inflate(R.layout.alertdialog_body_password, null);
         final EditText password = (EditText) content.findViewById(R.id.password);
         builder.setView(content);
@@ -39,12 +46,14 @@ public class PasswordDialog extends SuperDialog {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String pw = "";
 
+                //Get stored Master Password
                 try {
                     pw = LocalSettingsManager.getInstance().getSHA1Hash(password.getText().toString());
                 } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
                     e.printStackTrace();
                 }
 
+                //Call interface method from confirmDialogResult with the result
                 if (pw.equals(LocalSettingsManager.getInstance().getMasterPassword())) {
                     ConfirmDialogResult confirmDialogResult = (ConfirmDialogResult) getActivity();
                     confirmDialogResult.confirmDialogResult(true, getArguments().getString("type"), getArguments());
@@ -97,6 +106,16 @@ public class PasswordDialog extends SuperDialog {
         super.onStart();
     }
 
+    /**
+     * Create new Password Dialog
+     *
+     * @param type Who called, with what purpose
+     * @param elementType Type of element
+     * @param elementID ID of element
+     * @param elementTitle Title of element
+     * @param elementColor Color of element
+     * @return New DialogFragment
+     */
     public static PasswordDialog newInstance(String type, String elementType, String elementID, String elementTitle, int elementColor) {
         PasswordDialog dialog = new PasswordDialog();
         Bundle args = new Bundle();

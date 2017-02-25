@@ -12,7 +12,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.sunilson.firenote.activities.MainActivity;
 
 /**
- * Created by linus_000 on 13.01.2017.
+ * @author Linus Weiss
  */
 
 /**

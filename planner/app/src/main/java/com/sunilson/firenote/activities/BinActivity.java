@@ -64,21 +64,21 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
         mainActivityInterface = (MainActivityInterface) ((BaseApplication) getApplicationContext()).mainContext;
         user = mAuth.getCurrentUser();
 
+        //Get passed arguments
         Intent i = getIntent();
         elementID = i.getStringExtra("elementID");
         elementName = i.getStringExtra("elementName");
 
+        //If logged in
         if (user != null) {
             mReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
             coordinatorLayout = (CoordinatorLayout) findViewById(R.id.activity_bin);
 
+            //Initialize List
             binList = (RecyclerView) findViewById(R.id.binList);
             binList.setHasFixedSize(true);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
             binList.setLayoutManager(linearLayoutManager);
-
-            initializeOnClickListener();
-            initializeOnLongClickListener();
             binRecyclerAdapter = new BinRecyclerAdapter(this, recycleOnClickListener, recycleOnLongClickListener);
             AlphaInAnimationAdapter alphaInAnimationAdapter = new AlphaInAnimationAdapter(binRecyclerAdapter);
             alphaInAnimationAdapter.setFirstOnly(false);
@@ -90,6 +90,12 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
             itemTouchHelper.attachToRecyclerView(binList);
             initializeBinListener();
+
+            //Click listeners
+            initializeOnClickListener();
+            initializeOnLongClickListener();
+
+            //Get reference (bundle or not)
             if (elementID == null) {
                 mElementsRefernce = mReference.child("elements").child("main");
                 mBinReference = mReference.child("bin").child("main");
@@ -130,6 +136,9 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
         binRecyclerAdapter.clear();
     }
 
+    /**
+     * Listener for bin elements
+     */
     private void initializeBinListener() {
         mBinListener = new ChildEventListener() {
             @Override
@@ -149,7 +158,9 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
                 Element element = dataSnapshot.getValue(Element.class);
                 binRecyclerAdapter.remove(element.getElementID());
 
+                //If element was removed by a restore request
                 if (restore) {
+                    //Move element to "elements" and display "restored"-message
                     element.setElementID(element.getElementID());
                     mElementsRefernce.child(element.getElementID()).setValue(element);
                     Snackbar snackbar = Snackbar
@@ -157,6 +168,7 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
                     snackbar.show();
                     restore = false;
                 } else {
+                    //If element was deleted from bin, also delete its contents
                     if (element.getNoteType().equals("bundle")) {
                         mReference.child("elements").child("bundles").child(element.getElementID()).removeValue();
                     } else {
@@ -178,6 +190,9 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
         };
     }
 
+    /**
+     * Display Restore dialog on long click
+     */
     private void initializeOnLongClickListener() {
         recycleOnLongClickListener = new View.OnLongClickListener() {
             @Override
@@ -194,7 +209,9 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
         };
     }
 
-
+    /**
+     * Dislay restore dialog on click
+     */
     private void initializeOnClickListener() {
         recycleOnClickListener = new View.OnClickListener() {
             @Override
@@ -224,17 +241,29 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Create wipe confirm dialog
+     */
     private void initializeDeleteAllDialog() {
         DialogFragment dialogFragment = ConfirmDialog.newInstance(getString(R.string.clear_bin_title), getString(R.string.clear_bin_question), "clear", null);
         dialogFragment.show(getSupportFragmentManager(), "dialog");
     }
 
+    /**
+     * Get results from confirm dialog
+     *
+     * @param result
+     * @param type
+     * @param args
+     */
     @Override
     public void confirmDialogResult(boolean result, String type, Bundle args) {
         if (result) {
             if (type.equals("clear")) {
+                //Remove all entries in the bin
                 mBinReference.removeValue();
             } else if (type.equals("restore")) {
+                //Restore single element of bin
                 if (currentlySelectedElement != null) {
                     mBinReference.child(currentlySelectedElement.getElementID()).removeValue();
                     if(!((BaseApplication) getApplicationContext()).getInternetConnected()) {
@@ -253,6 +282,11 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
         return true;
     }
 
+    /**
+     * Get reference to all bin elements
+     *
+     * @return All elements that are currently in bin
+     */
     @Override
     public DatabaseReference getBinReference() {
         return mBinReference;

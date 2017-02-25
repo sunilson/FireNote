@@ -19,15 +19,16 @@ import com.sunilson.firenote.baseClasses.Element;
 import com.sunilson.firenote.views.AddElementView;
 
 /**
- * Created by linus_000 on 05.01.2017.
+ * @author Linus Weiss
  */
 
+/**
+ * Dialog for adding new Elements
+ */
 public class AddElementDialog extends SuperDialog {
 
     private MainActivityInterface mainActivityInterface;
     private AddElementView content;
-    private String savedTitle, savedCategoryID;
-    private int savedColor = 0;
 
     @NonNull
     @Override
@@ -36,18 +37,22 @@ public class AddElementDialog extends SuperDialog {
 
         mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
 
+        //Set dialog content
         content = new AddElementView(getActivity(), mainActivityInterface.getSpinnerCategoryAdapter());
         final String elementType = getArguments().getString("elementType");
 
+        //Set dialog title
         titleText.setText(getArguments().getString("title"));
         builder.setCustomTitle(title);
 
+        //Restore state of dialog after orientation change
         if (savedInstanceState != null) {
             content.setColor(savedInstanceState.getInt("color"));
         }
 
         builder.setView(content);
 
+        //On confirm, create new element
         builder.setPositiveButton(getString(R.string.confirm_add_dialog), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -64,6 +69,7 @@ public class AddElementDialog extends SuperDialog {
 
                 element.setColor(content.getColor());
 
+                //Push new element to the correct database reference (depending on if we are in a Bundle or not)
                 DatabaseReference dRef = null;
                 if (activity instanceof MainActivity) {
                     dRef = mainActivityInterface.getElementsReference().push();
@@ -127,6 +133,13 @@ public class AddElementDialog extends SuperDialog {
         outState.putInt("color", content.getColor());
     }
 
+    /**
+     * Create new instance of AddElementDialog
+     *
+     * @param title Title of dialog window
+     * @param elementType Element Type that should be created
+     * @return New DialogFragment
+     */
     public static AddElementDialog newInstance(String title, String elementType) {
         AddElementDialog dialog = new AddElementDialog();
         Bundle args = new Bundle();

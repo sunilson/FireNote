@@ -18,15 +18,24 @@ import com.sunilson.firenote.baseClasses.NoteColor;
 import com.sunilson.firenote.views.ColorElementView;
 
 /**
- * Created by linus_000 on 17.11.2016.
+ * @author Linus Weiss
  */
 
+/**
+ * List of Categories with checkboxes displaying if category is visible or not
+ */
 public class ColorFragment extends android.support.v4.app.Fragment {
 
     // Store instance variables
     private String title;
     private ImageButton uncheckAll, checkAll;
 
+    /**
+     * New Fragment instance
+     *
+     * @param title Title of Fragment
+     * @return new ColorFragment
+     */
     public static ColorFragment newInstance(String title) {
         ColorFragment colorFragment = new ColorFragment();
         Bundle args = new Bundle();
@@ -50,6 +59,7 @@ public class ColorFragment extends android.support.v4.app.Fragment {
         final MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication)getContext().getApplicationContext()).mainContext;
         final ColorVisibilityAdapter colorVisibilityAdapter = new ColorVisibilityAdapter(getContext(), R.layout.color_list_layout);
 
+        //Populate adapter
         colorVisibilityAdapter.add(new NoteColor("note_color_1", ContextCompat.getColor(getContext(), R.color.note_color_1)));
         colorVisibilityAdapter.add(new NoteColor("note_color_2", ContextCompat.getColor(getContext(), R.color.note_color_2)));
         colorVisibilityAdapter.add(new NoteColor("note_color_3", ContextCompat.getColor(getContext(), R.color.note_color_3)));
@@ -61,6 +71,7 @@ public class ColorFragment extends android.support.v4.app.Fragment {
         colorVisibilityAdapter.add(new NoteColor("note_color_9", ContextCompat.getColor(getContext(), R.color.note_color_9)));
         colorListView.setAdapter(colorVisibilityAdapter);
 
+        //Toggle visibility
         colorListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -77,9 +88,9 @@ public class ColorFragment extends android.support.v4.app.Fragment {
             }
         });
 
+        //Uncheck and Check all buttons
         uncheckAll = (ImageButton) view.findViewById(R.id.uncheckAll);
         checkAll = (ImageButton) view.findViewById(R.id.checkAll);
-
         checkAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

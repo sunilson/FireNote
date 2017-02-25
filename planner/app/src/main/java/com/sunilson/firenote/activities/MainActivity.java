@@ -80,12 +80,6 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
     private SwipeRefreshLayout swipeRefreshLayout;
     private Boolean deletedElement = false;
 
-    /*
-    ------------------------
-    ---- Android Events ----
-    ------------------------
-     */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,16 +173,6 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if(findViewById(R.id.main_element_visibility)!=null) {
-
-        }
-
-
-    }
-
-    @Override
     protected void onStart() {
         super.onStart();
         if (!started) {
@@ -209,14 +193,18 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        //Clear list
         elementRecyclerAdapter.clear();
 
+        //Remove listener
         if (mElementsReference != null) {
             mElementsReference.removeEventListener(mElementsListener);
         }
     }
 
+    /**
+     * Go to home screen on back press
+     */
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -225,18 +213,10 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         startActivity(intent);
     }
 
-    /*
-    ----------------------
-    ---- Options Menu ----
-    ----------------------
-     */
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
-
         return true;
     }
 
@@ -257,7 +237,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         } else if (id == R.id.main_element_visibility) {
             VisibilityDialog visibilityDialog = new VisibilityDialog();
             visibilityDialog.show(getSupportFragmentManager(), "dialog");
-        }  else if (id == R.id.action_bin) {
+        } else if (id == R.id.action_bin) {
             Intent i = new Intent(MainActivity.this, BinActivity.class);
             startActivity(i);
         } else if (id == R.id.action_settings) {
@@ -267,23 +247,23 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         return super.onOptionsItemSelected(item);
     }
 
-
-    /*
-    -----------------------------
-    --- Listener Initializing ---
-    -----------------------------
+    /**
+     * Click listener for the element list
      */
-
     private void initializeRecyclerOnClickListener() {
         recycleOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Get element at click position from list adapter
                 int itemPosition = recyclerView.getChildLayoutPosition(v);
                 Element element = elementRecyclerAdapter.getItem(itemPosition);
+
+                //Check if element is locked
                 if (element.getLocked()) {
                     DialogFragment dialogFragment = PasswordDialog.newInstance("passwordOpenElement", null, element.getElementID(), null, 0);
                     dialogFragment.show(getSupportFragmentManager(), "dialog");
                 } else {
+                    //Start correct activity
                     Intent i = null;
                     switch (element.getNoteType()) {
                         case "checklist":
@@ -297,6 +277,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                             break;
                     }
 
+                    //Put element data into the intent and start it
                     if (i != null) {
                         i.putExtra("elementID", element.getElementID());
                         i.putExtra("elementTitle", element.getTitle());
@@ -310,6 +291,9 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         };
     }
 
+    /**
+     * Show edit dialog on long click
+     */
     private void initializeRecyclerOnLongClickListener() {
         recycleOnLongClickListener = new View.OnLongClickListener() {
             @Override
@@ -329,6 +313,9 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         };
     }
 
+    /**
+     * Listener for the main element list
+     */
     private void initializeElementsListener() {
         mElementsListener = new ChildEventListener() {
             @Override
@@ -336,8 +323,10 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                 Element element = dataSnapshot.getValue(Element.class);
                 if (element != null) {
                     element.setElementID(dataSnapshot.getKey());
+                    //Check if element is valid, else remove it
                     if (element.getNoteType() != null) {
                         int position = elementRecyclerAdapter.add(element);
+                        //If element was restored, scroll to position of element
                         if (element.getElementID().equals(restoredElement)) {
                             recyclerView.smoothScrollToPosition(position);
                             restoredElement = "";
@@ -353,6 +342,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                 Element element = dataSnapshot.getValue(Element.class);
                 if (element != null) {
                     element.setElementID(dataSnapshot.getKey());
+                    //Check if element is valid, else remove it
                     if (element.getNoteType() != null) {
                         elementRecyclerAdapter.update(element, element.getElementID());
                     } else {
@@ -370,8 +360,8 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                         //Check if open Activity is child of Bundle and removed element is a bundle
                         //If yes, start Main Activity to finish all other activities
                         if (element.getNoteType().equals("bundle")) {
-                            Activity currentActivity = ((BaseApplication)getApplicationContext()).getCurrentActivity();
-                            if(currentActivity instanceof  NoteActivity || currentActivity instanceof ChecklistActivity) {
+                            Activity currentActivity = ((BaseApplication) getApplicationContext()).getCurrentActivity();
+                            if (currentActivity instanceof NoteActivity || currentActivity instanceof ChecklistActivity) {
                                 BaseElementActivity baseElementActivity = (BaseElementActivity) currentActivity;
                                 if (baseElementActivity.parentID != null) {
                                     Intent i = new Intent(baseElementActivity, MainActivity.class);
@@ -381,8 +371,11 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                             }
                         }
 
+                        //Remove element from list
                         elementRecyclerAdapter.remove(element.getElementID());
+                        //Add element to bin
                         mBinReference.child(element.getElementID()).setValue(element);
+                        //If element was deleted by us, show restore snackbar dialog
                         if (deletedElement) {
                             deletedElement = false;
                             Snackbar snackbar = Snackbar
@@ -390,6 +383,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                                     .setAction(R.string.undo, new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
+                                            //Undo deletion. Remove from bin and add to "elements"
                                             Snackbar snackbar1 = Snackbar.make(coordinatorLayout, R.string.element_restored, Snackbar.LENGTH_SHORT);
                                             snackbar1.show();
                                             mBinReference.child(element.getElementID()).removeValue();
@@ -415,6 +409,9 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         };
     }
 
+    /**
+     * Set up the category list
+     */
     private void initializeCategories() {
         categories = new ArrayList<>();
 
@@ -429,7 +426,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         categories.add(new Category(getString(R.string.category_shopping), "shopping"));
         categories.add(new Category(getString(R.string.category_sport), "sport"));
 
-
+        //Sort the categories by name (needed because of translations)
         Comparator<Category> comparator = new Comparator<Category>() {
             @Override
             public int compare(Category category, Category t1) {
@@ -441,19 +438,12 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                 return 0;
             }
         };
-
         Collections.sort(categories, comparator);
 
         spinnerCategoryAdapter = new SpinnerAdapter(this, R.layout.spinner_item, categories);
         spinnerCategoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         listCategoryVisibilityAdapter = new CategoryVisibilityAdapter(this, R.layout.category_list_layout, categories);
     }
-
-    /*
-    ---------------------------
-    ---- Interface methods ----
-    ---------------------------
-     */
 
     @Override
     public ElementRecyclerAdapter getElementAdapter() {
@@ -475,10 +465,13 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         return mReference;
     }
 
+    /**
+     * Clears element list and re-attaches the listener so new data will be loaded
+     */
     @Override
     public void refreshListeners() {
         if (mElementsListener != null) {
-            if(!((BaseApplication) getApplicationContext()).getInternetConnected()) {
+            if (!((BaseApplication) getApplicationContext()).getInternetConnected()) {
                 Toast.makeText(this, R.string.listener_no_connection, Toast.LENGTH_LONG).show();
             }
             mElementsReference.removeEventListener(mElementsListener);
@@ -512,9 +505,17 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         return mBinReference;
     }
 
+    /**
+     * Result from confirm dialog
+     *
+     * @param bool
+     * @param type
+     * @param args
+     */
     @Override
     public void confirmDialogResult(boolean bool, String type, Bundle args) {
         switch (type) {
+            //Open element after password was entered correctly
             case "passwordOpenElement":
                 if (bool) {
                     Intent i = null;
@@ -544,6 +545,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                     Toast.makeText(this, R.string.wrong_password, Toast.LENGTH_SHORT).show();
                 }
                 break;
+            //Edit element after password was entered correctly
             case "passwordEditElement":
                 if (bool) {
                     DialogFragment dialog = ListAlertDialog.newInstance(getResources().getString(R.string.edit_element_title), "editElement", args.getString("elementID"), args.getString("elementType"));
@@ -567,12 +569,9 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         }
     }
 
-    /*
-    ---------------------------
-    ---- Other methods ----
-    ---------------------------
+    /**
+     * Starting tutorial at first app start
      */
-
     private void showTutorial() {
         ShowcaseView.Builder showCaseView = new ShowcaseView.Builder(this)
                 .withMaterialShowcase()

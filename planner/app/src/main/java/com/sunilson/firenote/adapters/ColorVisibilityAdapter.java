@@ -47,9 +47,13 @@ public class ColorVisibilityAdapter extends ArrayAdapter<NoteColor> {
         return list.size();
     }
 
+    /**
+     * Uncheck all elements of the Adapter
+     */
     public void uncheckAll() {
         MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
 
+        //Iterate over list
         for (int i = 0; i < getCount(); i++) {
             LocalSettingsManager.getInstance().setColorVisibility((getItem(i)).getColor(), -1);
             mainActivityInterface.getElementAdapter().hideElements();
@@ -58,9 +62,13 @@ public class ColorVisibilityAdapter extends ArrayAdapter<NoteColor> {
         notifyDataSetChanged();
     }
 
+    /**
+     * Check all elements of the Adapter
+     */
     public void checkAll() {
         MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
 
+        //Iterate over list
         for (int i = 0; i < getCount(); i++) {
             LocalSettingsManager.getInstance().setColorVisibility((getItem(i)).getColor(), 1);
             mainActivityInterface.getElementAdapter().hideElements();

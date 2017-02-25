@@ -31,14 +31,15 @@ import com.sunilson.firenote.activities.BaseElementActivity;
 import com.sunilson.firenote.adapters.DialogMenuAdapter;
 
 /**
- * Created by linus_000 on 11.11.2016.
+ * @author Linus Weiss
  */
 
+/**
+ * Dialog used to display lists of menu choices
+ */
 public class ListAlertDialog extends SuperDialog {
 
     private DialogMenuAdapter dialogAdapter;
-    //private AlertDialog dialog;
-    private String elementType;
     private MainActivityInterface mainActivityInterface;
     private BundleInterface bundleInterface;
     private DatabaseReference elementReference;
@@ -47,17 +48,21 @@ public class ListAlertDialog extends SuperDialog {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
+
+        //Dialog ocntent
         String type = getArguments().getString("type");
         View content = inflater.inflate(R.layout.alertdialog_menu_listview, null);
-
         ListView contentListView = (ListView) content.findViewById(R.id.dialog_menu_listview);
 
+        //Dialog title
         titleText.setText(getArguments().getString("title"));
         builder.setCustomTitle(title);
 
+        //Dialog list
         dialogAdapter = new DialogMenuAdapter(getActivity(), R.layout.alertdialog_menu_list_layout);
         contentListView.setAdapter(dialogAdapter);
 
+        //Add the correct menu items to the dialog
         if (type.equals("sort")) {
             dialogAdapter.add(getResources().getString(R.string.sort_by) + " " + getResources().getString(R.string.sort_ascending_date), R.drawable.ic_date_range_black_24dp);
             dialogAdapter.add(getResources().getString(R.string.sort_by) + " " + getResources().getString(R.string.sort_descending_date), R.drawable.ic_date_range_black_24dp);
@@ -82,6 +87,7 @@ public class ListAlertDialog extends SuperDialog {
         builder.setView(content);
         AlertDialog dialog = builder.create();
 
+        //Initialize the correct click listener for the dialog
         if (type.equals("sort")) {
             initializeSortItemListener(contentListView);
         } else if (type.equals("addElement") || type.equals("addElementBundle")) {
@@ -101,6 +107,15 @@ public class ListAlertDialog extends SuperDialog {
         super.onActivityCreated(savedInstanceState);
     }
 
+    /**
+     * Create new ListAlertDialog
+     *
+     * @param title Window title
+     * @param type Dialog type
+     * @param elementID Element ID (when started from element)
+     * @param elementType Element Type (when started from element)
+     * @return new ListAlertDialog instance
+     */
     public static ListAlertDialog newInstance(String title, String type, String elementID, String elementType) {
         ListAlertDialog dialog = new ListAlertDialog();
         Bundle args = new Bundle();
@@ -116,10 +131,16 @@ public class ListAlertDialog extends SuperDialog {
         return dialog;
     }
 
+    /**
+     * Set sorting method main element list
+     *
+     * @param contentListView
+     */
     private void initializeSortItemListener(ListView contentListView) {
         contentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Cast current activity to Interface "HasSortableList"
                 HasSortableList hasSortingAdapter = (HasSortableList) getActivity();
 
                 String strName = dialogAdapter.getName(position);
@@ -146,6 +167,11 @@ public class ListAlertDialog extends SuperDialog {
         });
     }
 
+    /**
+     * On click on list element, start new AddElementDialog with correct type
+     *
+     * @param contentListView
+     */
     private void initializeAddElementItemListener(ListView contentListView) {
         contentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -159,6 +185,13 @@ public class ListAlertDialog extends SuperDialog {
         });
     }
 
+    /**
+     * On click on list element, start new EditElementDialog with correct type and ID or delete it
+     *
+     * @param contentListView
+     * @param elementID ID of element to be edited
+     * @param elementType Type of element to be edited
+     */
     private void initializeEditElementItemListener(ListView contentListView, final String elementID, final String elementType) {
         contentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -167,14 +200,14 @@ public class ListAlertDialog extends SuperDialog {
                 final Activity activity = getActivity();
                 String strName = dialogAdapter.getName(position);
 
+                //Delete selected element
                 if (strName.equals(getResources().getString(R.string.delete_element))) {
-
                     if (activity instanceof BundleInterface) {
                         bundleInterface = (BundleInterface) activity;
                     }
-
                     mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
 
+                    //Get the correct reference to the element
                     if (activity instanceof BundleInterface && !elementType.equals("bundle")) {
                         elementReference = bundleInterface.getElementsReference().child(elementID);
                         bundleInterface.setDeletedElement(true);
@@ -200,6 +233,7 @@ public class ListAlertDialog extends SuperDialog {
                         Toast.makeText(getActivity(), R.string.edit_no_connection, Toast.LENGTH_LONG).show();
                     }
                 } else {
+                    //Start new EditElementDialog
                     Bundle bundle = new Bundle();
                     bundle.putString("elementType", elementType);
                     bundle.putString("elementID", elementID);
@@ -210,6 +244,12 @@ public class ListAlertDialog extends SuperDialog {
         });
     }
 
+    /**
+     * On click on list element, start new AlertDialog for the selected ChecklistElement with correct type and ID or delete element
+     *
+     * @param contentListView
+     * @param elementID
+     */
     private void initializeEditChecklistElementItemListener(ListView contentListView, final String elementID) {
         contentListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -220,9 +260,11 @@ public class ListAlertDialog extends SuperDialog {
 
                 getDialog().dismiss();
 
+                //Delete element
                 if (strName.equals(getResources().getString(R.string.delete_checklist_element))) {
                     checklistInterface.getElementsReference().child(elementID).removeValue();
                 } else if (strName.equals(getString(R.string.edit))) {
+                    //Start new Edit Dialog of Checklist Element
                     final Activity activity = getActivity();
                     AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
 

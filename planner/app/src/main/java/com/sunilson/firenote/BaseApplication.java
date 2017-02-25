@@ -9,9 +9,12 @@ import android.net.NetworkInfo;
 import com.google.firebase.database.FirebaseDatabase;
 
 /**
- * Created by linus_000 on 05.11.2016.
+ * @author Linus Weiss
  */
 
+/**
+ * FireNote Application
+ */
 public class BaseApplication extends Application {
 
     public Context mainContext = null;
@@ -25,6 +28,11 @@ public class BaseApplication extends Application {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
 
+    /**
+     * Returns current internet state
+     *
+     * @return True if internet is available, false if not
+     */
     public boolean getInternetConnected() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);

@@ -3,7 +3,7 @@ package com.sunilson.firenote.baseClasses;
 import java.util.Date;
 
 /**
- * Created by linus_000 on 02.11.2016.
+ * @author Linus Weiss
  */
 
 public class Element {

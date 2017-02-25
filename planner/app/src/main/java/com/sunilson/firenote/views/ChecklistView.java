@@ -12,9 +12,12 @@ import android.widget.TextView;
 import com.sunilson.firenote.R;
 
 /**
- * Created by linus_000 on 07.11.2016.
+ * @author LInus Weiss
  */
 
+/**
+ * View for a checklist element in a Checklist. Can be checked.
+ */
 public class ChecklistView extends LinearLayout implements Checkable {
 
     public View v;
@@ -40,10 +43,12 @@ public class ChecklistView extends LinearLayout implements Checkable {
         this.checked = checked;
 
         if (isChecked()) {
+            //Strike through text and show disabled color
             textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             textView.setTextColor(getResources().getColor(R.color.text_crossed_out));
             checkBox.setChecked(true);
         } else {
+            //Display text normally
             textView.setPaintFlags(textView.getPaintFlags() & ~(Paint.STRIKE_THRU_TEXT_FLAG));
             textView.setTextColor(getResources().getColor(R.color.primary_text_color));
             checkBox.setChecked(false);

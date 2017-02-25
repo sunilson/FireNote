@@ -12,9 +12,12 @@ import android.widget.TextView;
 import com.sunilson.firenote.R;
 
 /**
- * Created by linus_000 on 18.11.2016.
+ * @author Linus Weiss
  */
 
+/**
+ * View used for elements in a list of categories. Implements Checkable, so it can be easily selected
+ */
 public class CategoryVisibilityView extends LinearLayout implements Checkable {
 
     private View v;
@@ -31,6 +34,10 @@ public class CategoryVisibilityView extends LinearLayout implements Checkable {
         checkBox = (CheckBox) v.findViewById(R.id.category_element_checkBox);
     }
 
+    /**
+     * Set element to given checked state
+     * @param checked True or false
+     */
     @Override
     public void setChecked(boolean checked) {
         this.checked = checked;

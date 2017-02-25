@@ -10,6 +10,13 @@ import android.widget.EditText;
 
 import com.sunilson.firenote.R;
 
+/**
+ * @author Linus Weiss
+ */
+
+/**
+ * EditText with Lines (used for Notepad)
+ */
 public class LinedEditText extends EditText {
     private Rect mRect;
     private Paint mPaint;
@@ -29,6 +36,7 @@ public class LinedEditText extends EditText {
         int height = getHeight();
         int line_height = getLineHeight();
 
+        //Calculate how many lines the EditText currently has
         int count = height / line_height;
 
         if (getLineCount() > count)
@@ -38,6 +46,7 @@ public class LinedEditText extends EditText {
         Paint paint = mPaint;
         int baseline = getLineBounds(0, r);
 
+        //Draw a line for each visible line
         for (int i = 0; i < count; i++) {
             canvas.drawLine(r.left, baseline + 1, r.right, baseline + 1, paint);
             baseline += getLineHeight();

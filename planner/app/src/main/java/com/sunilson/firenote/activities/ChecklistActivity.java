@@ -65,12 +65,6 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
     private SwipeRefreshLayout swipeRefreshLayout;
     private boolean started = false;
 
-    /*
-    ------------------------
-    ---- Android Events ----
-    ------------------------
-     */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,24 +99,13 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
                 initializeAddChecklistElementDialog();
             }
         });
-
-        /*
-        textToSpeech = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
-            @Override
-            public void onInit(int status) {
-                if(status != TextToSpeech.ERROR) {
-                    textToSpeech.setLanguage(Locale.getDefault());
-                }
-            }
-        });
-        */
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        if(!started) {
+        if (!started) {
             started = true;
             //Delay Animation for 200 ms so they are displayed correctly
             Handler handler = new Handler();
@@ -135,6 +118,7 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         }
 
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -150,12 +134,6 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
     protected void onPause() {
         super.onPause();
     }
-
-    /*
-    ----------------------
-    ---- Options Menu ----
-    ----------------------
-     */
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -202,12 +180,6 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         getMenuInflater().inflate(R.menu.menu_checklist, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
-    /*
-    -----------------------------
-    --- Listener Initializing ---
-    -----------------------------
-     */
 
     //Checklist content listener
     private void initializeContentsListener() {
@@ -302,7 +274,7 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
                 DatabaseReference dRef = mContentReference.push();
                 ChecklistElement checklistElement = new ChecklistElement(entry);
                 dRef.setValue(checklistElement);
-                if(!((BaseApplication) getApplicationContext()).getInternetConnected()) {
+                if (!((BaseApplication) getApplicationContext()).getInternetConnected()) {
                     Toast.makeText(ChecklistActivity.this, R.string.edit_no_connection, Toast.LENGTH_LONG).show();
                 }
             }
@@ -336,12 +308,6 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         dialog.show();
     }
 
-    /*
-    -------------------------------
-    ---- Listview Initializing ----
-    -------------------------------
-     */
-
     private void setUpListView() {
 
         //RecyclerView Initialization
@@ -368,12 +334,6 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    /*
-    ---------------------------
-    ---- Interface methods ----
-    ---------------------------
-     */
-
     @Override
     public DatabaseReference getElementsReference() {
         return mContentReference;
@@ -390,6 +350,7 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
 
         if (bool) {
             if (type.equals("sweep")) {
+                //Delete all finished elements from Checklist
                 List<ChecklistElement> list = checklistRecyclerAdapter.getList();
 
                 for (ChecklistElement element : list) {
@@ -398,7 +359,7 @@ public class ChecklistActivity extends BaseElementActivity implements ChecklistI
                     }
                 }
 
-                if(!((BaseApplication) getApplicationContext()).getInternetConnected()) {
+                if (!((BaseApplication) getApplicationContext()).getInternetConnected()) {
                     Toast.makeText(this, R.string.edit_no_connection, Toast.LENGTH_LONG).show();
                 }
             }

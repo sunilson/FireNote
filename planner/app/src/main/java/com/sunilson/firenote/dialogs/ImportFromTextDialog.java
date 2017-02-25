@@ -28,6 +28,9 @@ import java.util.Scanner;
  * @author Linus Weiss
  */
 
+/**
+ * Dialog used to import text to a Checklist
+ */
 public class ImportFromTextDialog extends SuperDialog {
 
     private ChecklistInterface checklistInterface;
@@ -44,9 +47,11 @@ public class ImportFromTextDialog extends SuperDialog {
             checklistInterface = (ChecklistInterface) activity;
         }
 
+        //Title
         titleText.setText(getContext().getString(R.string.import_from_textfile));
         builder.setCustomTitle(title);
 
+        //Content
         View content = inflater.inflate(R.layout.alertdialog_body_import_text, null);
         LinearLayout recipe = (LinearLayout) content.findViewById(R.id.format_recipe);
         LinearLayout recipeInfo = (LinearLayout) content.findViewById(R.id.format_recipe_info);
@@ -56,6 +61,7 @@ public class ImportFromTextDialog extends SuperDialog {
         editText = (EditText) content.findViewById(R.id.import_text);
         builder.setView(content);
 
+        //Confirm button
         builder.setPositiveButton(R.string.confirm_clear_bin_dialog, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 int counter = 0;
@@ -114,10 +120,12 @@ public class ImportFromTextDialog extends SuperDialog {
         super.onActivityCreated(savedInstanceState);
     }
 
+    //Format the "Format Recipe" button
     private View.OnClickListener initializeRecipeInfoListener() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Change height, depending on toggle state
                 if (!recipeToggle) {
                     LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recipeContainer.getLayoutParams();
                     params.height *= 2;
@@ -147,6 +155,11 @@ public class ImportFromTextDialog extends SuperDialog {
         };
     }
 
+    /**
+     * Format a given recipe, so every ingridient is in a new line and can safely be converted to checklist items
+     * @param input Recipe String
+     * @return Compatible Recipe String
+     */
     private String formatRecipe(String input) {
         String result = "";
         BufferedReader bufferedReader = new BufferedReader(new StringReader(input.trim()));

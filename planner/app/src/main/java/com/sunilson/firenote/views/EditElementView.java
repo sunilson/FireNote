@@ -10,9 +10,12 @@ import com.sunilson.firenote.adapters.SpinnerAdapter;
 import com.sunilson.firenote.baseClasses.Element;
 
 /**
- * Created by linus_000 on 24.12.2016.
+ * @author Linus Weiss
  */
 
+/**
+ * View for content of Edit Element Dialog
+ */
 public class EditElementView extends ElementDialogView{
 
     String type, id;
@@ -25,9 +28,9 @@ public class EditElementView extends ElementDialogView{
 
         Activity activity = (Activity) getContext();
 
+        //Check if element is inside of bundle and if we are in an element of that bundle
         if (activity instanceof BundleInterface && !type.equals("bundle")) {
             int position = 0;
-            int positionColor = 0;
             BundleInterface bundleInterface = (BundleInterface) getContext();
             Element element = bundleInterface.getElementAdapter().getElement(id);
 
@@ -38,13 +41,13 @@ public class EditElementView extends ElementDialogView{
                 if (element.getCategoryID() != null) {
                     position = mainActivityInterface.getSpinnerCategoryAdapter().getPositionWithID(element.getCategoryID());
                 }
-                positionColor = colorAdapter.getPositionWithColor(element.getColor());
             }
 
             categorySpinner.setSelection(position);
             selectColor(position);
 
         } else if (activity instanceof ElementInterface) {
+            //If we just are in an element
             ElementInterface elementInterface = (ElementInterface) getContext();
             int position = 0;
             if (elementInterface.getElementTitle() != null) {
@@ -57,6 +60,7 @@ public class EditElementView extends ElementDialogView{
             position = colorAdapter.getPositionWithColor(elementInterface.getElementColor());
             selectColor(position);
         } else if (activity instanceof MainActivityInterface) {
+            //If we are on the start page
             if (mainActivityInterface.getElementAdapter().getElement(id) != null) {
                 title.setText(mainActivityInterface.getElementAdapter().getElement(id).getTitle());
                 Element element = mainActivityInterface.getElementAdapter().getElement(id);

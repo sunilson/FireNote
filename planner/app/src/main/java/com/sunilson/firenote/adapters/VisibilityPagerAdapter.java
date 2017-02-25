@@ -13,6 +13,9 @@ import com.sunilson.firenote.fragments.ColorFragment;
  * @author Linus Weiss
  */
 
+/**
+ * ViewPager Adapter of the Frames from the Visibility Dialog
+ */
 public class VisibilityPagerAdapter extends FragmentPagerAdapter {
 
     private static int NUM_ITEMS = 2;
@@ -23,12 +26,18 @@ public class VisibilityPagerAdapter extends FragmentPagerAdapter {
         this.context = context;
     }
 
+    /**
+     * Returns the correct Fragment of the current page
+     *
+     * @param position Position in ViewPager
+     * @return New Fragment
+     */
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0: // Fragment # 0 - This will show FirstFragment
+            case 0:
                 return CategoryFragment.newInstance(1, "Page # 1");
-            case 1: // Fragment # 0 - This will show FirstFragment different title
+            case 1:
                 return ColorFragment.newInstance("Page # 2");
             default:
                 return null;

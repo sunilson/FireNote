@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,6 +78,11 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
     ------------------------
      */
 
+    /**
+     * When Activity is created
+     *
+     * @param savedInstanceState saved values from previous state (for example on rotation)
+     */
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -168,7 +172,9 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
         }
     }
 
-    //Wenn App is stopped or Activity is closed
+    /**
+     * Wenn App is stopped or Activity is closed
+     */
     @Override
     protected void onStop() {
         super.onStop();
@@ -192,13 +198,15 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
     -----------------------------
      */
 
-    //Checks if we are still connected to Firebase Database
+    /**
+     * Checks if we are still connected to Firebase Database and calls connectionChanged() which can be
+     * overwritten by child Activities
+     */
     private void initializeOnlineListener() {
         mConnectedRefListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 connected = snapshot.getValue(Boolean.class);
-                Log.i("Linus", Boolean.toString(connected));
                 connectionChanged();
             }
 
@@ -208,15 +216,20 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
         };
     }
 
-    //Listens to changes to the "Settings" part of the Database
+    /**
+     * Listens to changes to the "Settings" part of the Database
+     */
     private void initializeSettingsListener() {
         mSettingsListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                //Master Password Update stored in the local preferences
                 if (dataSnapshot.getKey().equals("masterPassword")) {
                     LocalSettingsManager.getInstance().setMasterPassword(dataSnapshot.getValue(String.class));
                 }
 
+                //If account was deleted, remove all entries and sign out after
                 if (dataSnapshot.getKey().equals("deleted")) {
                     if (dataSnapshot.getValue(Boolean.class)) {
                         if (mAuth.getCurrentUser() != null) {
@@ -261,7 +274,9 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
         };
     }
 
-    //Listening to changes to the Authentication state of the current Firebase Session
+    /**
+     * Initializing the Auth Listener for all Activities. Go to start if not logged in or verified
+     */
     private void initializeAuthListener() {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override

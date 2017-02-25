@@ -94,12 +94,17 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         return result;
     }
 
+    /**
+     * Swipe Dismiss of Element
+     *
+     * @param position Position of swiped element
+     */
     @Override
     public void onItemDismiss(int position) {
-        //Löschen durch swipe
         Element element = getItem(position);
         Activity activity = (Activity) context;
 
+        //Check if in Bundle or on Main Page and delete the correct Reference
         if (activity instanceof MainActivityInterface) {
             MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication)activity.getApplicationContext()).mainContext;
             mainActivityInterface.setDeletedElement(true);
@@ -115,6 +120,9 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         }
     }
 
+    /**
+     * Custom ViewHolder for the RecyclerView
+     */
     private class ViewHolder extends RecyclerView.ViewHolder {
         TextView elementTitle, elementDate, elementCategory;
         ImageView elementIcon, lockIcon;
@@ -133,6 +141,9 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         }
     }
 
+    /**
+     * Custom ViewHolder for Items that can be deleted via Swipe
+     */
     public class SwipeableViewHolder extends RecyclerView.ViewHolder {
         TextView elementTitle, elementDate, elementCategory;
         ImageView elementIcon, lockIcon;
@@ -168,6 +179,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
 
         Element element = list.get(position);
 
+        //Get the correct Viewholder, depending on if the item is locked or not
         if (element.getLocked()) {
             ViewHolder viewHolder = (ViewHolder) holder;
             viewHolder.elementTitle.setText(element.getTitle());
@@ -198,6 +210,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
 
             int elementColor = element.getColor();
             viewHolder.iconHolder.setBackgroundColor(elementColor);
+            //Set Background of element to 80% Opacity
             viewHolder.content.setBackgroundColor(ColorUtils.setAlphaComponent(elementColor, 80));
 
             if (element.getLocked()) {
@@ -263,6 +276,11 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         return list.size();
     }
 
+    /**
+     * Get Element from Adapter by ID
+     * @param elementID ID of the element
+     * @return First Element with given ID
+     */
     public Element getElement(String elementID) {
         Element result = null;
 
@@ -280,6 +298,12 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         return list.get(position);
     }
 
+    /**
+     * Add new Element to Adapater and notify data change
+     *
+     * @param element Element to add
+     * @return Position of new Element
+     */
     public int add(Element element) {
         if (activity instanceof MainActivity) {
             int position = 0;
@@ -305,11 +329,15 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         }
     }
 
+    /**
+     * Hide all elements that are set to invisible in local settings
+     */
     public void hideElements() {
         list.clear();
         boolean changed = false;
 
         for (Element e: allItems) {
+            //If Invisible, remove them from the visible list and set changed to true
             if (LocalSettingsManager.getInstance().getCategoryVisibility(e.getCategoryID()) == -1 || LocalSettingsManager.getInstance().getColorVisibility(e.getColor()) == -1) {
                 list.remove(e);
                 changed = true;
@@ -319,6 +347,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
             }
         }
 
+        //If something has changed, sort the list and notify that the data has changed
         if (changed) {
             String sort = LocalSettingsManager.getInstance().getSortingMethod();
             if (sort != null) {
@@ -330,6 +359,12 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         }
     }
 
+    /**
+     * Update an Element in the Adapter
+     *
+     * @param element New Element
+     * @param noteID Id of Element that should be updated
+     */
     public void update(Element element, String noteID) {
 
         ListIterator<Element> it = list.listIterator();
@@ -355,6 +390,12 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         notifyDataSetChanged();
     }
 
+    /**
+     * Remove Element from Adapter by ID
+     *
+     * @param noteID ID of element that should be removed
+     * @return Position of removed Item
+     */
     public int remove(String noteID) {
         if (activity instanceof MainActivity) {
             removeFromAllItems(noteID);
@@ -395,6 +436,11 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         }
     }
 
+    /**
+     * Sort Adapter by given Sorting method
+     *
+     * @param sortMethod Short Name of Sorting Method
+     */
     public void sort(String sortMethod) {
         if (sortMethod.equals(context.getResources().getString(R.string.sort_descending_date))) {
             sortByDateDescending();

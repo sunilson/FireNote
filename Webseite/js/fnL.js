@@ -7,12 +7,14 @@ var config = {
   };
      
 $("document").ready(function() {
-
+  //Initialisierung von Lokalisation
   $("[data-localize]").localize("local");
   firebase.initializeApp(config);
+    //Checken ob User bereits eingeloggt ist
     firebase.auth().onAuthStateChanged(function(firebaseUser){
             if(firebaseUser) {
                 if(firebaseUser.emailVerified == true) {
+                    //Auf Startseite weiterleiten
                     window.location.replace('/');
                 }
             } else {
@@ -23,11 +25,13 @@ $("document").ready(function() {
   const txtPassword = document.getElementById('password');
   const btnLogin = document.getElementById('login');
 
+  //Login Button Click Listener
   $("#login").click(function() {
       const auth = firebase.auth();
-
       $(this).text("Loading...");
+      //Sign In durchführen
       const promise = auth.signInWithEmailAndPassword($("#email").val(), $("#password").val());
+      //Promise auf Errors überprüfen
       promise.catch(function(e){
         $("#login").text("Login");
         $(".description").addClass("error");
@@ -35,27 +39,21 @@ $("document").ready(function() {
       });
   });
 
+  //Google Login Click Listener
   $("#googleLogin").click(function() {
     var provider = new firebase.auth.GoogleAuthProvider();
 
+    //Sign In Starten und auf Resultat warten
     firebase.auth().signInWithPopup(provider).then(function(result) {
         // This gives you a Google Access Token. You can use it to access the Google API.
         var token = result.credential.accessToken;
         // The signed-in user info.
         var user = result.user;
-        // ...
       }).catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // The email of the user's account used.
-        var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
-        // ...
+        //Error handling
+        $(".description").addClass("error");
+        $(".description").html(error.message);
       });
-
   });
-
 });
 

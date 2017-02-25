@@ -57,12 +57,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseUser user;
     private DatabaseReference mReference;
 
-    /*
-    ------------------------
-    ---- Android Events ----
-    ------------------------
-     */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,12 +130,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
-
-    /*
-    -----------------------------
-    --- Listener Initializing ---
-    -----------------------------
-     */
 
     private void initializeAuthListener() {
         mAuthListener = new FirebaseAuth.AuthStateListener(){
@@ -226,12 +214,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    /*
-    ---------------------------
-    ---- sign in functions ----
-    ---------------------------
+    /**
+     * Sign in to firebase with given email and password
+     *
+     * @param email
+     * @param password
      */
-
     private void signInEmail(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -307,6 +295,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
     }
 
+    /**
+     * Give user a set of default data, if this is the first login
+     *
+     * @param user The logging in user
+     */
     private void loadDefaultData(final FirebaseUser user) {
         DatabaseReference mReference = FirebaseDatabase.getInstance().getReference().child("users").child(user.getUid());
 

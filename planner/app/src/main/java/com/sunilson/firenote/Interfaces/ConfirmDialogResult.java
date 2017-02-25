@@ -3,10 +3,12 @@ package com.sunilson.firenote.Interfaces;
 import android.os.Bundle;
 
 /**
- * Created by linus_000 on 29.11.2016.
+ * @author Linus Weiss
  */
 
+/**
+ * Implemented by all Activities that open a Confirm Dialog
+ */
 public interface ConfirmDialogResult {
-
     public void confirmDialogResult(boolean bool, String type, Bundle args);
 }

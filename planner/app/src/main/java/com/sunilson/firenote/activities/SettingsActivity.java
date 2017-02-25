@@ -37,12 +37,6 @@ public class SettingsActivity extends BaseActivity implements SettingsInterface,
     private DatabaseReference mReference;
     private FirebaseUser user;
 
-    /*
-    ------------------------
-    ---- Android Events ----
-    ------------------------
-     */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +91,11 @@ public class SettingsActivity extends BaseActivity implements SettingsInterface,
         return mSettingsReference;
     }
 
+    /**
+     * Catch onClick events
+     *
+     * @param view View that was clicked
+     */
     @Override
     public void onClick(View view) {
         int id = view.getId();
@@ -130,6 +129,9 @@ public class SettingsActivity extends BaseActivity implements SettingsInterface,
         }
     }
 
+    /**
+     * AlertDialog with information about the project
+     */
     private void aboutDialog() {
         AlertDialog.Builder builder = setupDialog(getString(R.string.about_title));
 
@@ -149,6 +151,11 @@ public class SettingsActivity extends BaseActivity implements SettingsInterface,
         dialog.show();
     }
 
+    /**
+     * Callback when user has re-authenticated himself
+     *
+     * @param type What was the purpose of the re-authentication
+     */
     @Override
     protected void reAuthenticated(String type) {
         if (type.equals("change_password")) {
@@ -159,6 +166,9 @@ public class SettingsActivity extends BaseActivity implements SettingsInterface,
         }
     }
 
+    /**
+     * AlertDialog that is used to change the Login Password
+     */
     private void changePasswordDialog() {
         AlertDialog.Builder builder = setupDialog(getString(R.string.enter_password));
 
@@ -185,7 +195,9 @@ public class SettingsActivity extends BaseActivity implements SettingsInterface,
                         String newPW = newPassword.getText().toString();
                         String newPW2 = newPasswordAgain.getText().toString();
 
+                        //Check if passwords are equal and not empty
                         if (newPW.equals(newPW2) && !newPW.equals("")) {
+                            //Update password of user
                             user.updatePassword(newPW).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {

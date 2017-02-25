@@ -24,6 +24,10 @@ public class SpinnerAdapter extends ArrayAdapter {
         list = entries;
     }
 
+    /**
+     * Sort the data of the adapter
+     * @param comparator Comparator to sort the ArrayList
+     */
     @Override
     public void sort(Comparator comparator) {
         Collections.sort(list, comparator);
@@ -44,6 +48,12 @@ public class SpinnerAdapter extends ArrayAdapter {
         return list.get(position);
     }
 
+    /**
+     * Get position in List from element ID
+     *
+     * @param categoryID ID of the element
+     * @return Position of the element
+     */
     public int getPositionWithID(String categoryID) {
         Iterator<Category> it = list.iterator();
         int count = 0;

@@ -80,6 +80,7 @@ public class DialogMenuAdapter extends ArrayAdapter {
         ImageView icon;
     }
 
+    //Viewholder class
     class MenuItem {
         private String text;
         private int iconDrawable;

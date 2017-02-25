@@ -20,6 +20,9 @@ import com.sunilson.firenote.adapters.VisibilityPagerAdapter;
  * @author  Linus Weiss
  */
 
+/**
+ * Dialog for hiding and showing elements in the main list
+ */
 public class VisibilityDialog extends SuperDialog {
 
     FragmentPagerAdapter adapterViewPager;
@@ -32,6 +35,8 @@ public class VisibilityDialog extends SuperDialog {
         if (dialog.getWindow() != null) {
             layoutParams.copyFrom(dialog.getWindow().getAttributes());
         }
+
+        //Dialog height and width
         layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         dialog.getWindow().setAttributes(layoutParams);
@@ -56,6 +61,7 @@ public class VisibilityDialog extends SuperDialog {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //View Pager containing the Category and Color Fragments
         adapterViewPager = new VisibilityPagerAdapter(getChildFragmentManager(), getActivity());
         View content = inflater.inflate(R.layout.alertdialog_body_visibility, container);
         ViewPager vpPager = (ViewPager) content.findViewById(R.id.menu_visibility_pager);

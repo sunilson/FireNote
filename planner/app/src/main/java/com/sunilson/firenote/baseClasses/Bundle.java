@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by linus_000 on 02.11.2016.
+ * @author Linus Weiss
  */
 
 public class Bundle extends Element {

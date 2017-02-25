@@ -5,9 +5,12 @@ import android.widget.TextView;
 import com.sunilson.firenote.adapters.ElementRecyclerAdapter;
 
 /**
- * Created by linus_000 on 11.11.2016.
+ * @author Linus Weiss
  */
 
+/**
+ * Implemented by Activities that have a list that can be sorted
+ */
 public interface HasSortableList {
 
     ElementRecyclerAdapter getElementAdapter();

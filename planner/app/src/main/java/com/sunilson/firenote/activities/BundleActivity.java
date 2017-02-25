@@ -95,7 +95,7 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
             swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                    if(!((BaseApplication) getApplicationContext()).getInternetConnected()) {
+                    if (!((BaseApplication) getApplicationContext()).getInternetConnected()) {
                         Toast.makeText(BundleActivity.this, R.string.listener_no_connection, Toast.LENGTH_LONG).show();
                     }
                     mElementsReference.removeEventListener(mElementsListener);
@@ -124,9 +124,9 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
         if (!started) {
             started = true;
             Handler handler = new Handler();
-            handler.postDelayed(new Runnable(){
+            handler.postDelayed(new Runnable() {
                 @Override
-                public void run(){
+                public void run() {
                     mElementsReference.addChildEventListener(mElementsListener);
                 }
             }, 200);
@@ -144,19 +144,24 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
         }
     }
 
+    /**
+     * Firebase Listener on elements reference
+     */
     private void initializeElementsListener() {
         mElementsListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                //Add new Element to Bundle if valid
                 Element element = dataSnapshot.getValue(Element.class);
                 element.setElementID(dataSnapshot.getKey());
                 if (element.getNoteType() != null) {
-                   int position = bundleRecyclerAdapter.add(element);
+                    int position = bundleRecyclerAdapter.add(element);
                     if (element.getElementID().equals(restoredElement)) {
                         bundleList.smoothScrollToPosition(position);
                         restoredElement = "";
                     }
                 } else {
+                    //not valid --> Delete
                     mElementsReference.child(dataSnapshot.getKey()).removeValue();
                 }
             }
@@ -210,16 +215,23 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
         };
     }
 
+    /**
+     * Open element on click
+     */
     private void initializeRecyclerOnClickListener() {
         recycleOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Retrieve element at position of click from list adapter
                 int itemPosition = bundleList.getChildLayoutPosition(v);
                 Element element = bundleRecyclerAdapter.getItem(itemPosition);
+
+                //If element is locked, ask for password
                 if (element.getLocked()) {
                     DialogFragment dialogFragment = PasswordDialog.newInstance("passwordOpenElement", element.getNoteType(), element.getElementID(), element.getTitle(), element.getColor());
                     dialogFragment.show(getSupportFragmentManager(), "dialog");
                 } else {
+                    //Start the correct activity
                     Intent i = null;
                     switch (element.getNoteType()) {
                         case "checklist":
@@ -233,6 +245,7 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
                             break;
                     }
 
+                    //Put element values into intent and then start it
                     if (i != null) {
                         i.putExtra("elementID", element.getElementID());
                         i.putExtra("elementTitle", element.getTitle());
@@ -247,6 +260,9 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
         };
     }
 
+    /**
+     * Display edit dialog on long click
+     */
     private void initializeRecyclerOnLongClickListener() {
         recycleOnLongClickListener = new View.OnLongClickListener() {
             @Override
@@ -265,7 +281,6 @@ public class BundleActivity extends BaseElementActivity implements BundleInterfa
             }
         };
     }
-
 
     @Override
     public DatabaseReference getElementsReference() {

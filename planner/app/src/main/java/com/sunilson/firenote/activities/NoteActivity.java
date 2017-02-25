@@ -39,12 +39,6 @@ public class NoteActivity extends BaseElementActivity {
     private FloatingActionButton fab;
     private RelativeLayout content;
 
-    /*
-    ------------------------
-    ---- Android Events ----
-    ------------------------
-     */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +92,11 @@ public class NoteActivity extends BaseElementActivity {
         super.onSaveInstanceState(outState, outPersistentState);
     }
 
+    /**
+     * Stop editing if activity looses focus
+     *
+     * @param hasFocus
+     */
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -113,6 +112,8 @@ public class NoteActivity extends BaseElementActivity {
     @Override
     protected void onStop() {
         super.onStop();
+
+        //Apply value to database and stop listening for changes
         if (mContentsListener != null) {
             if(!((BaseApplication) getApplicationContext()).getInternetConnected()) {
                 Toast.makeText(this, R.string.edit_no_connection, Toast.LENGTH_LONG).show();
@@ -131,12 +132,6 @@ public class NoteActivity extends BaseElementActivity {
     protected void onPause() {
         super.onPause();
     }
-
-    /*
-    ----------------------
-    ---- Options Menu ----
-    ----------------------
-     */
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -158,6 +153,7 @@ public class NoteActivity extends BaseElementActivity {
             }
             return true;
         } else if (id == R.id.menu_share) {
+            //Start share dialog
             String shareBody = notePad.getText().toString().trim();
             Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
             sharingIntent.setType("text/plain");
@@ -165,6 +161,7 @@ public class NoteActivity extends BaseElementActivity {
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
             startActivity(Intent.createChooser(sharingIntent, ""));
         } else if (id == R.id.menu_reminder) {
+            //Go to default calendar app
             String shareBody = getString(R.string.element_note) + " \"" + elementTitle + "\" " + getString(R.string.from_app) + ": " + "\n" + notePad.getText().toString().trim();
             Intent calIntent = new Intent(Intent.ACTION_INSERT);
             calIntent.setData(CalendarContract.Events.CONTENT_URI);
@@ -175,12 +172,6 @@ public class NoteActivity extends BaseElementActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    /*
-    -----------------------------
-    --- Listener Initializing ---
-    -----------------------------
-     */
 
     private void initializeContentsListener() {
 
@@ -198,12 +189,9 @@ public class NoteActivity extends BaseElementActivity {
         };
     }
 
-    /*
-    ---------------------
-    ---- Own methods ----
-    ---------------------
+    /**
+     * Make edittext editable and also start editing of the title
      */
-
     private void startEditMode() {
         if (!editMode) {
             if (!titleEdit) {
@@ -223,6 +211,9 @@ public class NoteActivity extends BaseElementActivity {
         }
     }
 
+    /**
+     * Make edittext not editable and store value in database. Also stop editing of the title
+     */
     private void stopEditMode() {
         if (editMode) {
             if (titleEdit) {
@@ -245,6 +236,9 @@ public class NoteActivity extends BaseElementActivity {
         }
     }
 
+    /**
+     * If user starts editing the title, also start editing content
+     */
     @Override
     protected void titleEditStarted() {
         super.titleEditStarted();
@@ -254,6 +248,9 @@ public class NoteActivity extends BaseElementActivity {
         titleEditText.requestFocus();
     }
 
+    /**
+     * If user stops editing the title, also stop editing content
+     */
     @Override
     protected void titleEditStopped() {
         super.titleEditStopped();
@@ -261,12 +258,6 @@ public class NoteActivity extends BaseElementActivity {
             stopEditMode();
         }
     }
-
-    /*
-    ---------------------------
-    ---- Other methods ----
-    ---------------------------
-     */
 
     @Override
     protected void showTutorial() {

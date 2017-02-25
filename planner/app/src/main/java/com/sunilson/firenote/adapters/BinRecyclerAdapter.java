@@ -83,14 +83,27 @@ public class BinRecyclerAdapter extends RecyclerView.Adapter implements ItemTouc
         notifyDataSetChanged();
     }
 
+    /**
+     * Interface method onItemMove. Not used
+     *
+     * @param fromPosition
+     * @param toPosition
+     * @return
+     */
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
         return false;
     }
 
+    /**
+     * Interface Method onItemDismiss is called when element is swiped
+     *
+     * @param position Position of swiped element
+     */
     @Override
     public void onItemDismiss(int position) {
         BinInterface binInterface = (BinInterface) context;
+        //Remove swiped element
         binInterface.getBinReference().child(list.get(position).getElementID()).removeValue();
     }
 
@@ -100,7 +113,13 @@ public class BinRecyclerAdapter extends RecyclerView.Adapter implements ItemTouc
         notifyItemInserted(index);
     }
 
+    /**
+     * Remove item with given ID
+     *
+     * @param noteID Id of element to remove
+     */
     public void remove(String noteID) {
+        //Iterate over list and find element with ID, remove first occurence
         Iterator<Element> it = list.iterator();
         int index = 0;
 

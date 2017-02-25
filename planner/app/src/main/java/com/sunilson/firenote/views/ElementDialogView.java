@@ -25,9 +25,12 @@ import com.sunilson.firenote.baseClasses.Category;
 import com.sunilson.firenote.baseClasses.NoteColor;
 
 /**
- * Created by linus_000 on 05.01.2017.
+ * @author Linus Weiss
  */
 
+/**
+ * View used as content for the Edit or Add Dialog
+ */
 public class ElementDialogView extends LinearLayout implements AdapterView.OnItemSelectedListener {
 
     protected View v;
@@ -48,12 +51,14 @@ public class ElementDialogView extends LinearLayout implements AdapterView.OnIte
 
         LayoutInflater inflater = LayoutInflater.from(context);
 
+        //Inflate correct Base Layout (add or edit)
         if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             v = inflater.inflate(R.layout.alertdialog_body_add_element, this, true);
         } else {
             v = inflater.inflate(R.layout.alertdialog_body_add_element_horizontal, this, true);
         }
 
+        //Get all View References
         mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
         colorList = (ListView) v.findViewById(R.id.colorlist);
         title = (EditText) findViewById(R.id.add_element_title);
@@ -63,6 +68,7 @@ public class ElementDialogView extends LinearLayout implements AdapterView.OnIte
 
         imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
+        //Populate color list
         colorAdapter = new ColorAddAdapter(getContext(), R.layout.color_list_layout);
         colorAdapter.add(new NoteColor("note_color_1", ContextCompat.getColor(getContext(), R.color.note_color_1)));
         colorAdapter.add(new NoteColor("note_color_2", ContextCompat.getColor(getContext(), R.color.note_color_2)));
@@ -75,10 +81,12 @@ public class ElementDialogView extends LinearLayout implements AdapterView.OnIte
         colorAdapter.add(new NoteColor("note_color_9", ContextCompat.getColor(getContext(), R.color.note_color_9)));
         colorList.setAdapter(colorAdapter);
 
+        //Click Listener for the colors
         colorList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                              @Override
                                              public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                                  ColorElementView colorElementView = (ColorElementView) view;
+                                                 //Toggle colors
                                                  if (!colorElementView.isChecked()) {
                                                      selectedColor = colorAdapter.getItem(position).getColor();
                                                      colorAdapter.uncheckAll();
@@ -89,6 +97,7 @@ public class ElementDialogView extends LinearLayout implements AdapterView.OnIte
                                          }
         );
 
+        //Hide keyboard on list scroll
         colorList.setOnScrollListener(new AbsListView.OnScrollListener() {
                                           @Override
                                           public void onScrollStateChanged(AbsListView absListView, int i) {
@@ -101,6 +110,7 @@ public class ElementDialogView extends LinearLayout implements AdapterView.OnIte
                                       }
         );
 
+        //When spinner is touched, close keyboard and give focus to spinner
         categorySpinner.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -110,10 +120,12 @@ public class ElementDialogView extends LinearLayout implements AdapterView.OnIte
             }
         });
 
+        //Set up spinner
         categorySpinner.setAdapter(categoryAdapter);
         categorySpinner.setOnItemSelectedListener(this);
         categorySpinner.setPrompt(getResources().getString(R.string.spinner_prompt));
 
+        //If title looses focus, close keyboard
         title.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
@@ -133,6 +145,8 @@ public class ElementDialogView extends LinearLayout implements AdapterView.OnIte
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+    //Getters and Setters
 
     public String getTitle() {
         return title.getText().toString();
@@ -160,6 +174,7 @@ public class ElementDialogView extends LinearLayout implements AdapterView.OnIte
         selectColor(position);
     }
 
+    //Select specific color
     protected void selectColor(int position) {
         colorAdapter.setCheckedPosition(position);
         ((ColorElementView) colorAdapter.getView(position, null, null)).setChecked(true);

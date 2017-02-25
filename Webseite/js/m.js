@@ -1,32 +1,27 @@
 $("document").ready(function() {
-  // Get the action to complete.
+  
+  //Auslesen von URL Parametern
   var mode = getParameterByName('mode');
-  // Get the one-time code from the query parameter.
   var actionCode = getParameterByName('oobCode');
-  // (Optional) Get the API key from the query parameter.
   var apiKey = getParameterByName('apiKey');
 
+  //Ungültig, auf Startseite umleiten
   if(!apiKey) {
     window.location.replace('/');
   }
 
-  // Configure the Firebase SDK.
-  // This is the minimum configuration required for the API to be used.
+  //Firebase SDK Einrichtung
   var config = {
-    'apiKey': apiKey  // This key could also be copied from the web
-                      // initialization snippet found in the Firebase console.
+    'apiKey': apiKey
   };
   var app = firebase.initializeApp(config);
   var auth = app.auth();
 
-  // Handle the user management action.
   switch (mode) {
     case 'verifyEmail':
-      // Display email verification handler and UI.
       handleVerifyEmail(auth, actionCode);
       break;
     case 'resetPassword':
-      // Display reset password handler and UI.
       handleResetPassword(auth, actionCode);
       break;
     default:
@@ -35,14 +30,16 @@ $("document").ready(function() {
   }
 });
 
+//Parameter von URL auslesen
 function getParameterByName(name) {
     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
 }
 
-
+//Reset Password UI anzeigen
 function handleResetPassword(auth, actionCode) {
   var accountEmail;
-  // Verify the password reset code is valid.
+  
+  //ActionCode überprüfen
   auth.verifyPasswordResetCode(actionCode).then(function(email) {
     var accountEmail = email;
 
@@ -56,6 +53,7 @@ function handleResetPassword(auth, actionCode) {
         var pw2 = $("#password2").val();
 
         if(pw1 === pw2) {
+          //Passwort zurücksetzen
           auth.confirmPasswordReset(actionCode, pw1).then(function(resp) {
             $("#resetEmail").addClass("success");
             $("#resetEmail").html("SUCCESS: Password has been changed!");
@@ -73,22 +71,19 @@ function handleResetPassword(auth, actionCode) {
         }
       });
     }, function(reason) {
+      //Invalider Code
       $("#resetInvalid").show();
     });
-
-
 }
 
+
 function handleVerifyEmail(auth, actionCode) {
-  // Try to apply the email verification code.
+  //ActionCode überprüfen
   auth.applyActionCode(actionCode).then(function(resp) {
-    // Email address has been verified.
+    //Email wurde verifiziert
     $("#verified").show();
-    // TODO: Display a confirmation message to the user.
-    // You could also provide the user with a link back to the app.
   }).catch(function(error) {
-    // Code is invalid or expired. Ask the user to verify their email address
-    // again.
+    //Code ungültig
     $("#notVerified").show();
   });
 }

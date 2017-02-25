@@ -15,9 +15,12 @@ import com.sunilson.firenote.R;
 import com.sunilson.firenote.views.CategoryVisibilityView;
 
 /**
- * Created by linus_000 on 17.11.2016.
+ * @author Linus Weiss
  */
 
+/**
+ * List of Categories with checkboxes displaying if category is visible or not
+ */
 public class CategoryFragment extends android.support.v4.app.Fragment {
 
     // Store instance variables
@@ -51,6 +54,8 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
         ListView categoryListView = (ListView) view.findViewById(R.id.fragment_category_listview);
         final MainActivityInterface mainActivityInterface = (MainActivityInterface) ((BaseApplication)getContext().getApplicationContext()).mainContext;
         categoryListView.setAdapter(mainActivityInterface.getListCategoryVisibilityAdapter());
+
+        //Toggle visibility
         categoryListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -67,9 +72,9 @@ public class CategoryFragment extends android.support.v4.app.Fragment {
             }
         });
 
+        //Uncheck and Check all buttons
         uncheckAll = (ImageButton) view.findViewById(R.id.uncheckAll);
         checkAll = (ImageButton) view.findViewById(R.id.checkAll);
-
         uncheckAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
