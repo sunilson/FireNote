@@ -2,7 +2,9 @@
 
 FireNote is an easy-to-use Android App for creating Notes and Checklists. Everything is stored in the cloud and is synced to all your devices in realtime. FireNote also offers additional features, like adding entries to your calendar or sharing your elements. The user interface is really intuitive and is perfect for your everyday needs. 
 
-FireNote is available for Android in German and English and can also be found on the Web via the domain www.firenote.at. To use the App, a registration is necessary.
+FireNote is available for Android in German and English and can also be found on the Web via the domain <a href="https://www.firenote.at">www.firenote.at</a>. To use the App, a registration is necessary.
+
+<a href='https://play.google.com/store/apps/details?id=com.sunilson.firenote&hl=en&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width="150" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
 
 ## Features
 
