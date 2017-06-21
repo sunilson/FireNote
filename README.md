@@ -6,23 +6,23 @@ FireNote is available for Android in German and English and can also be found on
 
 ## Features
 
-•	data synchronisation in realtime 
-•	works online and offline
-•	multi user access possible 
-•	usable on multiple devices 
-•	three different types of elements (notes, checklists, bundles)
-•	wastepaper Bin for deleted elements 
-•	show/hide elements depending on category or color 
-•	sort-function
-•	master password: a separate password which can be set to look your notes and save it from prying eyes 
-•	delete your elements by swapping 
-•	subsequent editing of elements 
-•	Google calendar embedded – save the notes to your calendar and set a reminder
-•	notes and checklists can be shared in various message services
-•	every bundle owns its own wastepaper bin – in this way, even deleted elements stay organized and can be easily found and restored or deleted
-•	checklists offer text import – in this way, you can copy and paste huge ingredients lists, format them and insert each point as checklist element by three simple clicks
-•	checklists offer a clean-up-function – every element which is marked as done can be deleted by one simple click 
-•	tutorial is provided if you log in for the first time 
+*	data synchronisation in realtime 
+*	works online and offline
+*	multi user access possible 
+*	usable on multiple devices 
+*	three different types of elements (notes, checklists, bundles)
+*	wastepaper Bin for deleted elements 
+*	show/hide elements depending on category or color 
+*	sort-function
+*	master password: a separate password which can be set to look your notes and save it from prying eyes 
+*	delete your elements by swapping 
+*	subsequent editing of elements 
+*	Google calendar embedded – save the notes to your calendar and set a reminder
+*	notes and checklists can be shared in various message services
+*	every bundle owns its own wastepaper bin – in this way, even deleted elements stay organized and can be easily found and restored or deleted
+*	checklists offer text import – in this way, you can copy and paste huge ingredients lists, format them and insert each point as checklist element by three simple clicks
+*	checklists offer a clean-up-function – every element which is marked as done can be deleted by one simple click 
+*	tutorial is provided if you log in for the first time 
 
 ## Screenshots
 
