@@ -26,7 +26,17 @@ FireNote is available for Android in German and English and can also be found on
 
 ## Screenshots
 
-<img src="http://i.imgur.com/zmdAOsC.png" width="300">
+<img src="http://i.imgur.com/zmdAOsC.png" width="300" style="float:left">
+
+<img src="http://i.imgur.com/zmdAOsC.png" width="300" style="float:left">
+
+<img src="http://i.imgur.com/zmdAOsC.png" width="300" style="float:left">
+
+<img src="http://i.imgur.com/zmdAOsC.png" width="300" style="float:left">
+
+<img src="http://i.imgur.com/zmdAOsC.png" width="300" style="float:left">
+
+<img src="http://i.imgur.com/zmdAOsC.png" width="300" style="float:left">
 
 ![Main Activity](http://i.imgur.com/zmdAOsC.png "Main Activity")
 
