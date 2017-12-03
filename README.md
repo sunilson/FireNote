@@ -34,4 +34,6 @@ FireNote is available for Android in German and English and can also be found on
 <img src="http://i.imgur.com/caOEwE0.png" width="300">
 <img src="http://i.imgur.com/mRb80kq.png" width="300">
 <img src="http://i.imgur.com/sJU5xxn.png" width="300">
+  <img src="https://i.imgur.com/L6AHTcl.jpg" width="600">
+  <img src="https://i.imgur.com/1cZsHSZ.jpg" width="600">
 </div>
