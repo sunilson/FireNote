@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:drawable="@drawable/ic_date_range_black_24dp"
-        android:left="0dp" />
-    <item
-        android:drawable="@drawable/ic_arrow_downward_black_24dp"
-        android:left="24dp" />
-</layer-list>

@@ -1,0 +1,9 @@
+*.iml
+.gradle
+/planner/local.properties
+/planner/.idea/workspace.xml
+/planner/.idea/libraries
+/planner/.DS_Store
+/planner/build
+/planner/captures
+/planner/.externalNativeBuild
