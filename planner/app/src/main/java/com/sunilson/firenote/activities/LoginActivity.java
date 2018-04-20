@@ -18,10 +18,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -104,7 +106,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        //Ende Google Sign IN
 
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -255,25 +256,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         // Result returned from Google Sign In Intent
         if (requestCode == googleSignInRequestCode) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSignInResult(result);
-        }
-    }
-
-    /**
-     * Handle the result from the Google Sign In
-     *
-     * @param result
-     */
-    private void handleSignInResult(GoogleSignInResult result) {
-        Log.d("Google", "handleSignInResult:" + result.isSuccess());
-        if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount acct = result.getSignInAccount();
-            firebaseAuthWithGoogle(acct);
-            googleButtonText.setText(getString(R.string.login_loading));
-        } else {
-            googleButtonText.setText(getString(R.string.google_sign_in));
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                firebaseAuthWithGoogle(account);
+                googleButtonText.setText(getString(R.string.login_loading));
+            } catch(ApiException e) {
+                googleButtonText.setText(getString(R.string.google_sign_in));
+            }
         }
     }
 

@@ -53,20 +53,20 @@ public class VisibilityDialog extends SuperDialog {
         }
         layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
-k
+
         getDialog().getWindow().setAttributes(layoutParams);
 
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //View Pager containing the Category and Color Fragments
         adapterViewPager = new VisibilityPagerAdapter(getChildFragmentManager(), getActivity());
         View content = inflater.inflate(R.layout.alertdialog_body_visibility, container);
-        ViewPager vpPager = (ViewPager) content.findViewById(R.id.menu_visibility_pager);
+        ViewPager vpPager = content.findViewById(R.id.menu_visibility_pager);
         vpPager.setAdapter(adapterViewPager);
-        TabLayout tabLayout = (TabLayout) content.findViewById(R.id.sliding_tabs);
+        TabLayout tabLayout =  content.findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(vpPager);
         return content;
     }

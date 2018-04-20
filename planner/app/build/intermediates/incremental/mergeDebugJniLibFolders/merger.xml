@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\src\main\jniLibs"/></dataSet><dataSet config="debug"><source path="C:\Users\linus_000\Documents\GitHub\Pro3\planner\app\src\debug\jniLibs"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\jniLibs"/></dataSet><dataSet config="debug"><source path="C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\debug\jniLibs"/></dataSet></merger>
