@@ -18,8 +18,6 @@ import com.sunilson.firenote.Interfaces.ItemTouchHelperAdapter;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
 import com.sunilson.firenote.LocalSettingsManager;
 import com.sunilson.firenote.R;
-import com.sunilson.firenote.activities.MainActivity;
-import com.sunilson.firenote.baseClasses.Element;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

@@ -15,7 +15,7 @@ import com.sunilson.firenote.BaseApplication;
 import com.sunilson.firenote.Interfaces.ChecklistInterface;
 import com.sunilson.firenote.Interfaces.ItemTouchHelperAdapter;
 import com.sunilson.firenote.R;
-import com.sunilson.firenote.baseClasses.ChecklistElement;
+import com.sunilson.firenote.data.models.ChecklistElement;
 
 import java.util.ArrayList;
 import java.util.Collections;

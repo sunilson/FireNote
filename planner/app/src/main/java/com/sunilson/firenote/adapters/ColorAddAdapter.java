@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
-import com.sunilson.firenote.baseClasses.NoteColor;
-import com.sunilson.firenote.views.ColorElementView;
+import com.sunilson.firenote.data.models.NoteColor;
+import com.sunilson.firenote.presentation.views.ColorElementView;
 
 import java.util.ArrayList;
 import java.util.Iterator;

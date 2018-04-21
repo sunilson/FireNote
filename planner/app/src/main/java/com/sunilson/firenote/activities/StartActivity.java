@@ -11,6 +11,8 @@ import android.widget.Button;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.sunilson.firenote.R;
+import com.sunilson.firenote.presentation.authentication.LoginActivity;
+import com.sunilson.firenote.presentation.authentication.RegisterActivity;
 
 public class StartActivity extends AppCompatActivity {
 

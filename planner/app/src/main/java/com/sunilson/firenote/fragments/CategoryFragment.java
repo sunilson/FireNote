@@ -12,7 +12,7 @@ import com.sunilson.firenote.BaseApplication;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
 import com.sunilson.firenote.LocalSettingsManager;
 import com.sunilson.firenote.R;
-import com.sunilson.firenote.views.CategoryVisibilityView;
+import com.sunilson.firenote.presentation.views.CategoryVisibilityView;
 
 /**
  * @author Linus Weiss

@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.sunilson.firenote.Interfaces.BinInterface;
 import com.sunilson.firenote.Interfaces.ItemTouchHelperAdapter;
 import com.sunilson.firenote.R;
-import com.sunilson.firenote.baseClasses.Element;
 
 import java.util.ArrayList;
 import java.util.Iterator;

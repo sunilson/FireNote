@@ -14,8 +14,8 @@ import com.sunilson.firenote.Interfaces.MainActivityInterface;
 import com.sunilson.firenote.LocalSettingsManager;
 import com.sunilson.firenote.R;
 import com.sunilson.firenote.adapters.ColorVisibilityAdapter;
-import com.sunilson.firenote.baseClasses.NoteColor;
-import com.sunilson.firenote.views.ColorElementView;
+import com.sunilson.firenote.data.models.NoteColor;
+import com.sunilson.firenote.presentation.views.ColorElementView;
 
 /**
  * @author Linus Weiss

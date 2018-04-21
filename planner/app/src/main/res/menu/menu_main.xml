@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.sunilson.firenote.activities.MainActivity">
+    tools:context="com.sunilson.firenote.presentation.homepage.MainActivity">
     <item
         android:id="@+id/main_element_sort"
         android:icon="@drawable/main_menu_sort_icon"
