@@ -8,6 +8,9 @@ import org.apache.commons.codec.digest.DigestUtils;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 /**
  * @author Linus Weiss
  *
@@ -16,22 +19,15 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Used to store and retrieve data from the Shared Preferences of the Phone
  */
+@Singleton
 public class LocalSettingsManager {
 
     private String sortingMethod;
-    private static LocalSettingsManager instance;
     private SharedPreferences prefs;
 
-    /**
-     * Creates new Instance or returns current one
-     *
-     * @return Current Instance of LocalSettingsManager
-     */
-    public static LocalSettingsManager getInstance() {
-        if (instance == null) {
-            instance = new LocalSettingsManager();
-        }
-        return instance;
+    @Inject
+    public LocalSettingsManager() {
+
     }
 
     /**

@@ -5,18 +5,18 @@ import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
 
 interface BaseContract {
-    interface IBasePresenter<in V> : LifecycleObserver {
-        fun setView(view: V)
+    interface IBasePresenter : LifecycleObserver {
+        fun setView(view: IBaseView)
         fun clearSubscriptions()
     }
 
     interface IBaseView {
-        fun addObserver(presenter: IBasePresenter<IBaseView>)
+        fun addObserver(presenter: IBasePresenter)
     }
 }
 
 
-abstract class BasePresenter<in V> : BaseContract.IBasePresenter<V> {
+abstract class BasePresenter : BaseContract.IBasePresenter {
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     abstract fun onStop()
 

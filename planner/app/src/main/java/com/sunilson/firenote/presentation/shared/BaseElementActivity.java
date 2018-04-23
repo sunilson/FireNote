@@ -40,6 +40,7 @@ import com.sunilson.firenote.Interfaces.ElementInterface;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
 import com.sunilson.firenote.LocalSettingsManager;
 import com.sunilson.firenote.R;
+import com.sunilson.firenote.data.models.Element;
 import com.sunilson.firenote.presentation.dialogs.EditElementDialog;
 import com.sunilson.firenote.presentation.dialogs.ListAlertDialog;
 
@@ -57,7 +58,7 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
     protected int elementColor;
     protected EditText titleEditText;
     protected ImageView titleDoneButton;
-    protected String elementID, elementType, elementTitle, parentID, categoryID;
+    public String elementID, elementType, elementTitle, parentID, categoryID;
     protected ValueEventListener mElementListener, mFinishedListener;
     protected FirebaseUser user;
     protected DatabaseReference mElementReference, mContentReference;
@@ -93,8 +94,8 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
         }
 
 
-        titleDoneButton = (ImageView) toolbar.findViewById(R.id.title_done_button);
-        titleEditText = (EditText) toolbar.findViewById(R.id.title_edittext);
+        titleDoneButton =  toolbar.findViewById(R.id.title_done_button);
+        titleEditText =  toolbar.findViewById(R.id.title_edittext);
         titleEditText.setFocusable(false);
         titleEditText.setFocusableInTouchMode(false);
 
@@ -126,30 +127,19 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
             setColors();
 
             //Enter button confirms edit of title
-            titleEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                    if ((keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (i == EditorInfo.IME_ACTION_DONE)) {
-                        titleDoneButton.performClick();
-                    }
-                    return false;
+            titleEditText.setOnEditorActionListener((textView, i1, keyEvent) -> {
+                if ((keyEvent != null && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (i1 == EditorInfo.IME_ACTION_DONE)) {
+                    titleDoneButton.performClick();
                 }
+                return false;
             });
 
-            titleDoneButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    stopTitleEdit();
-                }
-            });
+            titleDoneButton.setOnClickListener(view -> stopTitleEdit());
 
-            titleEditText.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (!titleEdit) {
-                        titleEditStarted();
-                        startTitleEdit();
-                    }
+            titleEditText.setOnClickListener(view -> {
+                if (!titleEdit) {
+                    titleEditStarted();
+                    startTitleEdit();
                 }
             });
         }
@@ -217,12 +207,7 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
 
             //Delay tutorial for 500 ms, otherwise some elements could be not displayed yet
             Handler myHandler = new Handler();
-            myHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    showTutorial();
-                }
-            }, 500);
+            myHandler.postDelayed(() -> showTutorial(), 500);
 
             //Check if parent has been deleted
             if (parentID != null) {
@@ -324,7 +309,7 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
         }
 
         //FAB coloring
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         if (fab != null) {
             fab.setBackgroundTintList(ColorStateList.valueOf(elementColor));
         }

@@ -38,6 +38,7 @@ import com.sunilson.firenote.Interfaces.MainActivityInterface;
 import com.sunilson.firenote.ItemTouchHelper.SimpleItemTouchHelperCallbackMain;
 import com.sunilson.firenote.LocalSettingsManager;
 import com.sunilson.firenote.R;
+import com.sunilson.firenote.data.models.Element;
 import com.sunilson.firenote.presentation.shared.BaseActivity;
 import com.sunilson.firenote.presentation.shared.BaseContract;
 import com.sunilson.firenote.presentation.shared.BaseElementActivity;
@@ -274,7 +275,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                     i.putExtra("elementTitle", element.getTitle());
                     i.putExtra("elementColor", element.getColor());
                     i.putExtra("elementType", element.getNoteType());
-                    i.putExtra("categoryID", element.getCategoryID());
+                    i.putExtra("categoryID", element.getCategory().getCategoryID());
                     startActivity(i);
                 }
             }
@@ -311,16 +312,14 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                 if (element != null) {
                     element.setElementID(dataSnapshot.getKey());
                     //Check if element is valid, else remove it
-                    if (element.getNoteType() != null) {
                         int position = elementRecyclerAdapter.add(element);
                         //If element was restored, scroll to position of element
                         if (element.getElementID().equals(restoredElement)) {
                             recyclerView.smoothScrollToPosition(position);
                             restoredElement = "";
                         }
-                    } else {
-                        mElementsReference.child(dataSnapshot.getKey()).removeValue();
-                    }
+
+                        //mElementsReference.child(dataSnapshot.getKey()).removeValue()
                 }
             }
 
@@ -515,7 +514,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                         i.putExtra("elementTitle", element.getTitle());
                         i.putExtra("elementColor", element.getColor());
                         i.putExtra("elementType", element.getNoteType());
-                        i.putExtra("categoryID", element.getCategoryID());
+                        i.putExtra("categoryID", element.getCategory().getCategoryID());
                         startActivity(i);
                     }
                 } else {
@@ -657,7 +656,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
 
 
     @Override
-    public void addObserver(@NotNull BaseContract.IBasePresenter<? super BaseContract.IBaseView> presenter) {
+    public void addObserver(@NotNull BaseContract.IBasePresenter presenter) {
 
     }
 }

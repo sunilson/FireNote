@@ -2,7 +2,7 @@ package com.sunilson.firenote.data.models
 
 import java.util.*
 
-data class Element(val noteID: String,
+data class Element(var elementID: String,
                    val category: Category,
                    val noteType: String,
                    val color: Int,

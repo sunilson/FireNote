@@ -6,6 +6,8 @@ INJECTED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\Andr
 INJECTED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:2:1-90:12
 MERGED from [com.android.databinding:adapters:3.1.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\adapters-3.1.1.aar\da7373666db360a948c064e3879d584e\AndroidManifest.xml:17:1-24:12
 MERGED from [com.android.databinding:library:3.1.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\library-3.1.1.aar\2499eea52502e7794ad355374274ab88\AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.dagger:dagger-android-support:2.14.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\dagger-android-support-2.14.1.aar\ad51fe6e251bb323e7b183c0524ee677\AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.dagger:dagger-android:2.14.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\dagger-android-2.14.1.aar\141722893f2a3001f69b7bbba5706a1b\AndroidManifest.xml:17:1-22:12
 MERGED from [com.android.support:design:27.1.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\design-27.1.1.aar\85070399f74478d9bdc0d80e4bc0a320\AndroidManifest.xml:17:1-22:12
 MERGED from [jp.wasabeef:recyclerview-animators:2.2.5] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\recyclerview-animators-2.2.5.aar\f36b578fefab7971d3f620b65a6e39e4\AndroidManifest.xml:2:1-12:12
 MERGED from [com.android.support:appcompat-v7:27.1.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.1.1.aar\42693e7bcc4e4790d5323de22df69858\AndroidManifest.xml:17:1-22:12
@@ -264,6 +266,10 @@ MERGED from [com.android.databinding:adapters:3.1.1] C:\Users\linus\.gradle\cach
 MERGED from [com.android.databinding:adapters:3.1.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\adapters-3.1.1.aar\da7373666db360a948c064e3879d584e\AndroidManifest.xml:22:5-44
 MERGED from [com.android.databinding:library:3.1.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\library-3.1.1.aar\2499eea52502e7794ad355374274ab88\AndroidManifest.xml:22:5-44
 MERGED from [com.android.databinding:library:3.1.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\library-3.1.1.aar\2499eea52502e7794ad355374274ab88\AndroidManifest.xml:22:5-44
+MERGED from [com.google.dagger:dagger-android-support:2.14.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\dagger-android-support-2.14.1.aar\ad51fe6e251bb323e7b183c0524ee677\AndroidManifest.xml:20:5-44
+MERGED from [com.google.dagger:dagger-android-support:2.14.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\dagger-android-support-2.14.1.aar\ad51fe6e251bb323e7b183c0524ee677\AndroidManifest.xml:20:5-44
+MERGED from [com.google.dagger:dagger-android:2.14.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\dagger-android-2.14.1.aar\141722893f2a3001f69b7bbba5706a1b\AndroidManifest.xml:20:5-44
+MERGED from [com.google.dagger:dagger-android:2.14.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\dagger-android-2.14.1.aar\141722893f2a3001f69b7bbba5706a1b\AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:design:27.1.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\design-27.1.1.aar\85070399f74478d9bdc0d80e4bc0a320\AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:design:27.1.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\design-27.1.1.aar\85070399f74478d9bdc0d80e4bc0a320\AndroidManifest.xml:20:5-44
 MERGED from [jp.wasabeef:recyclerview-animators:2.2.5] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\recyclerview-animators-2.2.5.aar\f36b578fefab7971d3f620b65a6e39e4\AndroidManifest.xml:8:5-10:41

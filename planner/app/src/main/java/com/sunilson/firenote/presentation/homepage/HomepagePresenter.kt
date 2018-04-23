@@ -1,14 +1,15 @@
 package com.sunilson.firenote.presentation.homepage
 
+import com.sunilson.firenote.presentation.shared.BaseContract
 import com.sunilson.firenote.presentation.shared.BasePresenter
 
-class HomepagePresenter : BasePresenter<HomepagePresenterContract.HomepageView>(), HomepagePresenterContract.HomepagePresenter {
+class HomepagePresenter : BasePresenter(), HomepagePresenterContract.HomepagePresenter {
 
     override fun loadData() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun setView(view: HomepagePresenterContract.HomepageView) {
+    override fun setView(view: BaseContract.IBaseView) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

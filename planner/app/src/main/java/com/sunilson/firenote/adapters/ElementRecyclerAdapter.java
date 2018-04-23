@@ -18,6 +18,8 @@ import com.sunilson.firenote.Interfaces.ItemTouchHelperAdapter;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
 import com.sunilson.firenote.LocalSettingsManager;
 import com.sunilson.firenote.R;
+import com.sunilson.firenote.data.models.Element;
+import com.sunilson.firenote.presentation.homepage.MainActivity;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -182,7 +184,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
             ViewHolder viewHolder = (ViewHolder) holder;
             viewHolder.elementTitle.setText(element.getTitle());
 
-            viewHolder.elementCategory.setText(element.getCategoryName());
+            viewHolder.elementCategory.setText(element.getCategory().getCategoryName());
 
 
             switch (element.getNoteType()) {
@@ -221,7 +223,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
             SwipeableViewHolder viewHolder = (SwipeableViewHolder) holder;
             viewHolder.elementTitle.setText(element.getTitle());
 
-            viewHolder.elementCategory.setText(element.getCategoryName());
+            viewHolder.elementCategory.setText(element.getCategory().getCategoryName());
 
             switch (element.getNoteType()) {
                 case "checklist":
@@ -305,7 +307,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
     public int add(Element element) {
         if (activity instanceof MainActivity) {
             int position = 0;
-            if (LocalSettingsManager.getInstance().getCategoryVisibility(element.getCategoryID()) != -1 && LocalSettingsManager.getInstance().getColorVisibility(element.getColor()) != -1) {
+            if (LocalSettingsManager.getInstance().getCategoryVisibility(element.getCategory().getCategoryID()) != -1 && LocalSettingsManager.getInstance().getColorVisibility(element.getColor()) != -1) {
                 list.add(element);
                 String sort = LocalSettingsManager.getInstance().getSortingMethod();
                 if (sort != null) {
@@ -336,7 +338,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
 
         for (Element e: allItems) {
             //If Invisible, remove them from the visible list and set changed to true
-            if (LocalSettingsManager.getInstance().getCategoryVisibility(e.getCategoryID()) == -1 || LocalSettingsManager.getInstance().getColorVisibility(e.getColor()) == -1) {
+            if (LocalSettingsManager.getInstance().getCategoryVisibility(e.getCategory().getCategoryID()) == -1 || LocalSettingsManager.getInstance().getColorVisibility(e.getColor()) == -1) {
                 list.remove(e);
                 changed = true;
             } else {
@@ -364,9 +366,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
      * @param noteID Id of Element that should be updated
      */
     public void update(Element element, String noteID) {
-
         ListIterator<Element> it = list.listIterator();
-
         while (it.hasNext()) {
             Element nextElement = it.next();
             if (nextElement.getElementID().equals(noteID)) {
@@ -376,7 +376,6 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         }
 
         ListIterator<Element> it2 = allItems.listIterator();
-
         while (it2.hasNext()) {
             Element nextElement = it2.next();
             if (nextElement.getElementID().equals(noteID)) {
@@ -454,69 +453,53 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
     }
 
     private void sortByCategory() {
-        Comparator<Element> comp = new Comparator<Element>() {
-            @Override
-            public int compare(Element o1, Element o2) {
-
-                if (o1.getCategoryName().compareToIgnoreCase(o2.getCategoryName()) < 0) {
-                    return -1;
-                } else if (o1.getCategoryName().compareToIgnoreCase(o2.getCategoryName()) > 0) {
-                    return 1;
-                }
-                return 0;
+        Comparator<Element> comp = (o1, o2) -> {
+            if (o1.getCategory().getCategoryName().compareToIgnoreCase(o2.getCategory().getCategoryName()) < 0) {
+                return -1;
+            } else if (o1.getCategory().getCategoryName().compareToIgnoreCase(o2.getCategory().getCategoryName()) > 0) {
+                return 1;
             }
+            return 0;
         };
 
         Collections.sort(list, comp);
     }
 
     private void sortByDateDescending() {
-        Comparator<Element> comp = new Comparator<Element>() {
-            @Override
-            public int compare(Element o1, Element o2) {
-
-                if (o1.getCreationDate().after(o2.getCreationDate())) {
-                    return -1;
-                } else if (o1.getCreationDate().before(o2.getCreationDate())) {
-                    return 1;
-                }
-
-                return 0;
+        Comparator<Element> comp = (o1, o2) -> {
+            if (o1.getCreationDate().after(o2.getCreationDate())) {
+                return -1;
+            } else if (o1.getCreationDate().before(o2.getCreationDate())) {
+                return 1;
             }
+            return 0;
         };
 
         Collections.sort(list, comp);
     }
 
     private void sortByDateAscending() {
-        Comparator<Element> comp = new Comparator<Element>() {
-            @Override
-            public int compare(Element o1, Element o2) {
-
-                if (o1.getCreationDate().after(o2.getCreationDate())) {
-                    return 1;
-                } else if (o1.getCreationDate().before(o2.getCreationDate())) {
-                    return -1;
-                }
-                return 0;
+        Comparator<Element> comp = (o1, o2) -> {
+            if (o1.getCreationDate().after(o2.getCreationDate())) {
+                return 1;
+            } else if (o1.getCreationDate().before(o2.getCreationDate())) {
+                return -1;
             }
+            return 0;
         };
 
         Collections.sort(list, comp);
     }
 
     private void sortByNameDescending() {
-        Comparator<Element> comp = new Comparator<Element>() {
-            @Override
-            public int compare(Element o1, Element o2) {
+        Comparator<Element> comp = (o1, o2) -> {
 
-                if (o1.getTitle().compareToIgnoreCase(o2.getTitle()) < 0) {
-                    return 1;
-                } else if (o1.getTitle().compareToIgnoreCase(o2.getTitle()) > 0) {
-                    return -1;
-                }
-                return 0;
+            if (o1.getTitle().compareToIgnoreCase(o2.getTitle()) < 0) {
+                return 1;
+            } else if (o1.getTitle().compareToIgnoreCase(o2.getTitle()) > 0) {
+                return -1;
             }
+            return 0;
         };
 
         Collections.sort(list, comp);
@@ -526,7 +509,6 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
         Comparator<Element> comp = new Comparator<Element>() {
             @Override
             public int compare(Element o1, Element o2) {
-
                 if (o1.getTitle().compareToIgnoreCase(o2.getTitle()) < 0) {
                     return -1;
                 } else if (o1.getTitle().compareToIgnoreCase(o2.getTitle()) > 0) {
