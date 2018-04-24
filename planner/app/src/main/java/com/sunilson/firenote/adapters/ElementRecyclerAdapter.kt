@@ -10,6 +10,7 @@ import com.sunilson.firenote.LocalSettingsManager
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.homepage.MainActivity
+import com.sunilson.firenote.presentation.shared.ElementComparators
 import java.util.*
 import javax.inject.Inject
 
@@ -77,8 +78,38 @@ class ElementRecyclerAdapter(val context: AppCompatActivity,
         }
     }
 
-    fun sort() {
+    fun remove(id: String) : Int {
+        if (context is MainActivity) removeFromAllItems(id)
 
+        val iterator = list.iterator()
+        for((index, value) in iterator.withIndex()) {
+            if(value.elementID == id) {
+                iterator.remove()
+                if(index == list.size) notifyDataSetChanged()
+                else notifyItemRemoved(index)
+                return index
+            }
+        }
+    }
+
+    fun removeFromAllItems(id: String) {
+        val iterator = allItems.iterator()
+        while(iterator.hasNext()) {
+            if(iterator.next().elementID == id) {
+                iterator.remove()
+                return
+            }
+        }
+    }
+
+    fun sort(sortMethod: String) {
+        when(sortMethod) {
+            context.resources.getString(R.string.sort_descending_date) -> list.sortWith(ElementComparators.sortByName(true))
+            context.resources.getString(R.string.sort_ascending_date) -> list.sortWith(ElementComparators.sortByDate(false))
+            context.resources.getString(R.string.sort_descending_name) -> list.sortWith(ElementComparators.sortByName(true))
+            context.resources.getString(R.string.sort_ascending_name) -> list.sortWith(ElementComparators.sortByName(false))
+            context.resources.getString(R.string.sort_category_name) -> list.sortWith(ElementComparators.sortByCategory())
+        }
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {

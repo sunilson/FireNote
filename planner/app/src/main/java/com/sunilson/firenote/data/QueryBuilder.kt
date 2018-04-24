@@ -1,6 +1,12 @@
 package com.sunilson.firenote.data
 
+import android.sax.Element
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.firestore.*
+import com.sunilson.firenote.data.firebaseSnapshotModels.FirebaseSnapshot
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,30 +18,27 @@ interface EventRepository {
 
 }
 
+//TODO auf database anstatt firestore umändern
 class QueryBuilder : EventRepository {
-    fun loadFullRoom() : Flowable<MeetingRoom> {
-        return createFlowableFromQuery(FirebaseFirestore.getInstance().collection("bla"), {
-            MeetingRoom("bla")
-        }).observeOn(Schedulers.io()).subscribeOn(AndroidSchedulers.mainThread())
-    }
 
-    fun loadLocationPreview() : Flowable<Location> {
-        return createFlowableFromQuery(FirebaseFirestore.getInstance().collection("bla"), {
-            Location(1, "bla")
-        }).observeOn(Schedulers.io()).subscribeOn(AndroidSchedulers.mainThread())
+    fun loadElements() : Flowable<FirebaseSnapshot<List<Element>>> {
+
     }
 
     companion object {
-        fun <T> createFlowableFromQuery(query: Query, converter: (QuerySnapshot?) -> T) : Flowable<T> {
+        fun <T> createFlowableFromQuery(ref: DatabaseReference, converter: (String, DataSnapshot?) -> FirebaseSnapshot<T>) : Flowable<FirebaseSnapshot<T>> {
             return Flowable.create({ emitter ->
-                var listenerRegistration : ListenerRegistration? = null
-                val listener = EventListener<QuerySnapshot> { p0, p1 -> emitter.onNext(converter(p0)) }
-
-                emitter.setCancellable {
-                    if(!emitter.isCancelled && listenerRegistration != null)  listenerRegistration!!.remove()
+                val listener = object : ChildEventListener {
+                    override fun onCancelled(p0: DatabaseError?) {}
+                    override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
+                    override fun onChildChanged(p0: DataSnapshot?, p1: String?) = emitter.onNext(converter("changed", p0))
+                    override fun onChildAdded(p0: DataSnapshot?, p1: String?) = emitter.onNext(converter("added", p0))
+                    override fun onChildRemoved(p0: DataSnapshot?) = emitter.onNext(converter("removed", p0))
                 }
-
-                listenerRegistration = query.addSnapshotListener(listener)
+                emitter.setCancellable {
+                    if(!emitter.isCancelled)  ref.removeEventListener(listener)
+                }
+                ref.addChildEventListener(listener)
             }, BackpressureStrategy.BUFFER)
         }
     }
