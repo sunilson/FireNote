@@ -9,7 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-import com.sunilson.firenote.BaseApplication;
+import com.sunilson.firenote.presentation.application.BaseApplication;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
 import com.sunilson.firenote.LocalSettingsManager;
 import com.sunilson.firenote.R;

@@ -127,7 +127,7 @@ MERGED from [com.google.android.gms:play-services-measurement-base:15.0.0] C:\Us
 	android:theme
 		ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:15:9-40
 	android:name
-		ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:9:9-61
+		ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:9:9-86
 activity#com.sunilson.firenote.presentation.homepage.MainActivity
 ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:16:9-25:20
 	android:label

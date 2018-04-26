@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
-import com.sunilson.firenote.BaseApplication;
+import com.sunilson.firenote.presentation.application.BaseApplication;
 import com.sunilson.firenote.Interfaces.BundleInterface;
 import com.sunilson.firenote.Interfaces.ChecklistInterface;
 import com.sunilson.firenote.Interfaces.ConfirmDialogResult;
@@ -52,7 +52,7 @@ public class ListAlertDialog extends SuperDialog {
         //Dialog ocntent
         String type = getArguments().getString("type");
         View content = inflater.inflate(R.layout.alertdialog_menu_listview, null);
-        ListView contentListView = (ListView) content.findViewById(R.id.dialog_menu_listview);
+        ListView contentListView = content.findViewById(R.id.dialog_menu_listview);
 
         //Dialog title
         titleText.setText(getArguments().getString("title"));

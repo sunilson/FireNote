@@ -25,7 +25,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -34,7 +33,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.sunilson.firenote.BaseApplication;
+import com.sunilson.firenote.presentation.application.BaseApplication;
 import com.sunilson.firenote.Interfaces.ConfirmDialogResult;
 import com.sunilson.firenote.Interfaces.ElementInterface;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;

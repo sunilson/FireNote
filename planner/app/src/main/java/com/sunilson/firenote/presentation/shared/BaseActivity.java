@@ -39,7 +39,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.sunilson.firenote.BaseApplication;
+import com.sunilson.firenote.presentation.application.BaseApplication;
 import com.sunilson.firenote.LocalSettingsManager;
 import com.sunilson.firenote.R;
 import com.sunilson.firenote.activities.StartActivity;

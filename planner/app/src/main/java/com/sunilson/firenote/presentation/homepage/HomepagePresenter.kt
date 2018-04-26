@@ -9,13 +9,7 @@ class HomepagePresenter : BasePresenter(), HomepagePresenterContract.HomepagePre
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun setView(view: BaseContract.IBaseView) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun clearSubscriptions() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun setView(view: BaseContract.IBaseView) = view.addObserver(this)
 
     override fun onStop() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

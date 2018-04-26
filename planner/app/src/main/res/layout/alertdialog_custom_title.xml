@@ -8,10 +8,10 @@
     android:paddingBottom="@dimen/dialog_margin_vertically"
     android:paddingLeft="@dimen/dialog_margin_horizontal">
     <TextView
+        android:id="@+id/dialog_title"
         android:text="TextView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/dialog_title"
         style="@style/dialog_title_textview"
         android:textAppearance="@style/TextAppearance.AppCompat" />
 </LinearLayout>

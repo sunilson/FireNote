@@ -11,7 +11,7 @@ interface HomepagePresenterContract {
         fun elementRemoved(element: Element)
     }
 
-    interface HomepagePresenter : BaseContract.IBasePresenter<HomepageView> {
+    interface HomepagePresenter : BaseContract.IBasePresenter {
         fun loadData()
     }
 }

@@ -16,12 +16,11 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.sunilson.firenote.BaseApplication;
+import com.sunilson.firenote.presentation.application.BaseApplication;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
 import com.sunilson.firenote.R;
 import com.sunilson.firenote.adapters.ColorAddAdapter;
 import com.sunilson.firenote.adapters.SpinnerAdapter;
-import com.sunilson.firenote.data.models.Category;
 import com.sunilson.firenote.data.models.NoteColor;
 
 /**
@@ -60,11 +59,11 @@ public class ElementDialogView extends LinearLayout implements AdapterView.OnIte
 
         //Get all View References
         mainActivityInterface = (MainActivityInterface) ((BaseApplication) getContext().getApplicationContext()).mainContext;
-        colorList = (ListView) v.findViewById(R.id.colorlist);
-        title = (EditText) findViewById(R.id.add_element_title);
-        categorySpinner = (Spinner) findViewById(R.id.add_element_categorySpinner);
-        linearLayout = (LinearLayout) findViewById(R.id.add_element_layout);
-        categoryTitle = (TextView) findViewById(R.id.add_element_category_title);
+        colorList =  v.findViewById(R.id.colorlist);
+        title =  findViewById(R.id.add_element_title);
+        categorySpinner =  findViewById(R.id.add_element_categorySpinner);
+        linearLayout =  findViewById(R.id.add_element_layout);
+        categoryTitle = findViewById(R.id.add_element_category_title);
 
         imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
@@ -82,19 +81,16 @@ public class ElementDialogView extends LinearLayout implements AdapterView.OnIte
         colorList.setAdapter(colorAdapter);
 
         //Click Listener for the colors
-        colorList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                             @Override
-                                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                                 ColorElementView colorElementView = (ColorElementView) view;
-                                                 //Toggle colors
-                                                 if (!colorElementView.isChecked()) {
-                                                     selectedColor = colorAdapter.getItem(position).getColor();
-                                                     colorAdapter.uncheckAll();
-                                                     colorAdapter.setCheckedPosition(position);
-                                                     colorElementView.setChecked(true);
-                                                 }
-                                             }
-                                         }
+        colorList.setOnItemClickListener((parent, view, position, id) -> {
+            ColorElementView colorElementView = (ColorElementView) view;
+            //Toggle colors
+            if (!colorElementView.isChecked()) {
+                selectedColor = colorAdapter.getItem(position).getColor();
+                colorAdapter.uncheckAll();
+                colorAdapter.setCheckedPosition(position);
+                colorElementView.setChecked(true);
+            }
+        }
         );
 
         //Hide keyboard on list scroll
@@ -111,13 +107,10 @@ public class ElementDialogView extends LinearLayout implements AdapterView.OnIte
         );
 
         //When spinner is touched, close keyboard and give focus to spinner
-        categorySpinner.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                title.clearFocus();
-                categorySpinner.requestFocus();
-                return false;
-            }
+        categorySpinner.setOnTouchListener((view, motionEvent) -> {
+            title.clearFocus();
+            categorySpinner.requestFocus();
+            return false;
         });
 
         //Set up spinner
@@ -126,12 +119,9 @@ public class ElementDialogView extends LinearLayout implements AdapterView.OnIte
         categorySpinner.setPrompt(getResources().getString(R.string.spinner_prompt));
 
         //If title looses focus, close keyboard
-        title.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (!b) {
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                }
+        title.setOnFocusChangeListener((view, b) -> {
+            if (!b) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
         });
     }

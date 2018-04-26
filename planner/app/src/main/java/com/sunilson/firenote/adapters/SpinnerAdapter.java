@@ -4,8 +4,6 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.widget.ArrayAdapter;
 
-import com.sunilson.firenote.data.models.Category;
-
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;

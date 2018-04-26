@@ -21,7 +21,7 @@
     <uses-permission android:name="com.sunilson.firenote.permission.C2D_MESSAGE" />
 
     <application
-        android:name="com.sunilson.firenote.BaseApplication"
+        android:name="com.sunilson.firenote.presentation.application.BaseApplication"
         android:allowBackup="true"
         android:debuggable="true"
         android:hardwareAccelerated="true"

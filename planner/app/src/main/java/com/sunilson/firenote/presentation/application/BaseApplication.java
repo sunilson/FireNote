@@ -1,4 +1,4 @@
-package com.sunilson.firenote;
+package com.sunilson.firenote.presentation.application;
 
 import android.app.Activity;
 import android.app.Application;

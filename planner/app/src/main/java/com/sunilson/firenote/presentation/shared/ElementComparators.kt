@@ -7,8 +7,8 @@ import kotlin.Comparator
 object ElementComparators {
     fun sortByCategory() : Comparator<Element> = Comparator { o1, o2 ->
         when {
-            o1.category.categoryName < o2.category.categoryName -> -1
-            o1.category.categoryName > o2.category.categoryName -> 1
+            o1.category.name < o2.category.name -> -1
+            o1.category.name > o2.category.name -> 1
             else -> 0
         }
     }

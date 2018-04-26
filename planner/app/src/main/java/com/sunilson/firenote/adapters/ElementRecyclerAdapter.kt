@@ -13,6 +13,7 @@ import com.sunilson.firenote.presentation.homepage.MainActivity
 import com.sunilson.firenote.presentation.shared.ElementComparators
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class ElementRecyclerAdapter(val context: AppCompatActivity,
                              val onClickListener: View.OnClickListener,
@@ -22,7 +23,7 @@ class ElementRecyclerAdapter(val context: AppCompatActivity,
     @Inject
     lateinit var localSettingsManager: LocalSettingsManager
 
-    private val list = ArrayList<Element>()
+    val list = listOf<Element>()
     private val allItems = ArrayList<Element>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

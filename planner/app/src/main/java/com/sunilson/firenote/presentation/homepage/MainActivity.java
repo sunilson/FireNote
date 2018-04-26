@@ -32,7 +32,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.sunilson.firenote.BaseApplication;
+import com.sunilson.firenote.presentation.application.BaseApplication;
 import com.sunilson.firenote.Interfaces.ConfirmDialogResult;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
 import com.sunilson.firenote.ItemTouchHelper.SimpleItemTouchHelperCallbackMain;
@@ -50,7 +50,6 @@ import com.sunilson.firenote.presentation.settings.SettingsActivity;
 import com.sunilson.firenote.adapters.CategoryVisibilityAdapter;
 import com.sunilson.firenote.adapters.ElementRecyclerAdapter;
 import com.sunilson.firenote.adapters.SpinnerAdapter;
-import com.sunilson.firenote.data.models.Category;
 import com.sunilson.firenote.presentation.dialogs.AddElementDialog;
 import com.sunilson.firenote.presentation.dialogs.EditElementDialog;
 import com.sunilson.firenote.presentation.dialogs.ListAlertDialog;
@@ -97,7 +96,6 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        //toolbar.setTitle(R.string.app_name);
 
         //Set Main Context of BaseApplication, so we can use it in the other Activities
         ((BaseApplication) getApplicationContext()).mainContext = this;

@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sunilson.firenote.BaseApplication;
+import com.sunilson.firenote.presentation.application.BaseApplication;
 import com.sunilson.firenote.Interfaces.BundleInterface;
 import com.sunilson.firenote.Interfaces.ItemTouchHelperAdapter;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;

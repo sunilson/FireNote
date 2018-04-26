@@ -3,11 +3,11 @@ package com.sunilson.firenote.presentation.shared
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
+import io.reactivex.disposables.CompositeDisposable
 
 interface BaseContract {
     interface IBasePresenter : LifecycleObserver {
         fun setView(view: IBaseView)
-        fun clearSubscriptions()
     }
 
     interface IBaseView {
@@ -17,6 +17,9 @@ interface BaseContract {
 
 
 abstract class BasePresenter : BaseContract.IBasePresenter {
+
+    protected val disposable: CompositeDisposable = CompositeDisposable()
+
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     abstract fun onStop()
 
@@ -24,6 +27,11 @@ abstract class BasePresenter : BaseContract.IBasePresenter {
     abstract fun onStart()
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun SuperOnDestroy() {
+        disposable.dispose()
+        onDestroy()
+    }
+
     abstract fun onDestroy()
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
