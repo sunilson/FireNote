@@ -22,14 +22,13 @@ import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.sunilson.firenote.presentation.application.BaseApplication;
 import com.sunilson.firenote.Interfaces.ConfirmDialogResult;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
 import com.sunilson.firenote.Interfaces.SettingsInterface;
 import com.sunilson.firenote.R;
 import com.sunilson.firenote.presentation.dialogs.ConfirmDialog;
 import com.sunilson.firenote.presentation.dialogs.MasterPasswordDialog;
-import com.sunilson.firenote.presentation.shared.BaseActivity;
+import com.sunilson.firenote.presentation.shared.activities.BaseActivity;
 
 public class SettingsActivity extends BaseActivity implements SettingsInterface, View.OnClickListener, ConfirmDialogResult {
 

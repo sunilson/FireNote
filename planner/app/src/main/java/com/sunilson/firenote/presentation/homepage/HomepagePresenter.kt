@@ -1,29 +1,38 @@
 package com.sunilson.firenote.presentation.homepage
 
-import com.sunilson.firenote.presentation.shared.BaseContract
-import com.sunilson.firenote.presentation.shared.BasePresenter
+import com.google.firebase.auth.FirebaseAuth
+import com.sunilson.firenote.data.FirebaseRepository
+import com.sunilson.firenote.data.IFirebaseRepository
+import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
+import com.sunilson.firenote.presentation.shared.presenters.BaseContract
+import com.sunilson.firenote.presentation.shared.presenters.BasePresenter
+import javax.inject.Inject
 
-class HomepagePresenter : BasePresenter(), HomepagePresenterContract.HomepagePresenter {
+@ActivityScope
+class HomepagePresenter @Inject constructor(val firebaseRepository: FirebaseRepository) : BasePresenter(), HomepagePresenterContract.Presenter {
+
+    private lateinit var view: HomepagePresenterContract.View
 
     override fun loadData() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        disposable.dispose()
+        val user = FirebaseAuth.getInstance().currentUser
+        if(user != null) {
+            disposable.add(firebaseRepository.loadElements(user).subscribe { result, err ->
+                view.listElements(result)
+            })
+        }
     }
 
-    override fun setView(view: BaseContract.IBaseView) = view.addObserver(this)
-
-    override fun onStop() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun setView(view: BaseContract.IBaseView) {
+        this.view = view as HomepagePresenterContract.View
+        view.addObserver(this)
     }
 
-    override fun onStart() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun onStop() {}
 
-    override fun onDestroy() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun onStart() {}
 
-    override fun onCreate() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun onDestroy() {}
+
+    override fun onCreate() {}
 }

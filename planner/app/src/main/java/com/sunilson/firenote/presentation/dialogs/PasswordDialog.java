@@ -13,7 +13,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.sunilson.firenote.Interfaces.ConfirmDialogResult;
-import com.sunilson.firenote.LocalSettingsManager;
 import com.sunilson.firenote.R;
 
 import java.io.UnsupportedEncodingException;

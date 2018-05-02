@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.google.firebase.database.DatabaseReference;
 import com.sunilson.firenote.Interfaces.ChecklistInterface;
 import com.sunilson.firenote.R;
-import com.sunilson.firenote.data.models.ChecklistElement;
 
 import java.io.BufferedReader;
 import java.io.IOException;

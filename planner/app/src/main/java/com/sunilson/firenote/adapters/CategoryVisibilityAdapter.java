@@ -8,11 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.sunilson.firenote.presentation.application.BaseApplication;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
-import com.sunilson.firenote.LocalSettingsManager;
 import com.sunilson.firenote.R;
-import com.sunilson.firenote.presentation.views.CategoryVisibilityView;
 
 import java.util.Collections;
 import java.util.Comparator;

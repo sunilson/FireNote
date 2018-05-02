@@ -8,11 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
-import com.sunilson.firenote.presentation.application.BaseApplication;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
-import com.sunilson.firenote.LocalSettingsManager;
 import com.sunilson.firenote.R;
-import com.sunilson.firenote.data.models.NoteColor;
 import com.sunilson.firenote.presentation.views.ColorElementView;
 
 import java.util.ArrayList;

@@ -6,7 +6,7 @@ import android.app.DialogFragment
 import android.os.Bundle
 import android.view.View
 import com.sunilson.firenote.R
-import com.sunilson.firenote.presentation.shared.BaseElementActivity
+import com.sunilson.firenote.presentation.shared.activities.BaseElementActivity
 import kotlinx.android.synthetic.main.alertdialog_custom_title.view.*
 
 abstract class SuperDialog : DialogFragment() {

@@ -4,10 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.OvershootInterpolator
 import com.google.firebase.auth.FirebaseAuth
+import com.sunilson.firenote.ItemTouchHelper.SimpleItemTouchHelperCallbackMain
 import com.sunilson.firenote.R
 import com.sunilson.firenote.adapters.ElementRecyclerAdapter
 import com.sunilson.firenote.data.models.Element
@@ -18,28 +21,33 @@ import com.sunilson.firenote.presentation.dialogs.ListAlertDialog
 import com.sunilson.firenote.presentation.dialogs.VisibilityDialog
 import com.sunilson.firenote.presentation.note.NoteActivity
 import com.sunilson.firenote.presentation.settings.SettingsActivity
-import com.sunilson.firenote.presentation.shared.BaseActivity
-import com.sunilson.firenote.presentation.shared.BaseContract
-import com.sunilson.firenote.presentation.shared.TutorialController
+import com.sunilson.firenote.presentation.shared.activities.BaseActivity
+import com.sunilson.firenote.presentation.shared.presenters.BaseContract
+import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
+import com.sunilson.firenote.presentation.shared.singletons.TutorialController
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
+import jp.wasabeef.recyclerview.animators.ScaleInAnimator
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity(), HomepagePresenterContract.HomepageView {
+class MainActivity : BaseActivity(), HomepagePresenterContract.View {
 
     @Inject
-    lateinit var presenter: HomepagePresenterContract.HomepagePresenter
+    lateinit var presenter: HomepagePresenterContract.Presenter
 
     @Inject
     lateinit var tutorialController: TutorialController
 
+    @Inject
+    lateinit var localSettingsManager: LocalSettingsManager
+
     //Click listeners
-    lateinit var recyclerViewClickListener: View.OnClickListener
-    lateinit var recyclerViewLongClickListener: View.OnLongClickListener
+    private lateinit var recyclerViewClickListener: View.OnClickListener
+    private lateinit var recyclerViewLongClickListener: View.OnLongClickListener
 
     //Recyclerview stuff
     lateinit var adapter: ElementRecyclerAdapter
     val layoutManager: LinearLayoutManager = LinearLayoutManager(this)
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,12 +59,21 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.HomepageView {
         initClickListeners()
         activity_main_recycler_view.setHasFixedSize(true)
         adapter = ElementRecyclerAdapter(this, recyclerViewClickListener, recyclerViewLongClickListener, activity_main_recycler_view)
-        activity_main_recycler_view.adapter = adapter
+        val alphaAnimator = AlphaInAnimationAdapter(adapter)
+        alphaAnimator.setFirstOnly(false)
+        alphaAnimator.setDuration(200)
+        activity_main_recycler_view.adapter = alphaAnimator
+        activity_main_recycler_view.itemAnimator = ScaleInAnimator(OvershootInterpolator(1f))
+        activity_main_recycler_view.itemAnimator.addDuration = 400
         activity_main_recycler_view.layoutManager = layoutManager
+        val itemTouchHelper = ItemTouchHelper(SimpleItemTouchHelperCallbackMain(adapter))
+        itemTouchHelper.attachToRecyclerView(activity_main_recycler_view)
 
-        Handler().postDelayed({
-            tutorialController.showMainActivityTutorial(this)
-        }, 500)
+        //Set sorting text
+        if (localSettingsManager.getSortingMethod() != null) current_sorting_method.text = getString(R.string.current_sorthing_method) + " " + localSettingsManager.getSortingMethod()
+        else current_sorting_method.text = getString(R.string.current_sorthing_method) + " " + getString(R.string.sort_ascending_name)
+
+        Handler().postDelayed({ tutorialController.showMainActivityTutorial(this) }, 500)
 
         presenter.setView(this)
         presenter.loadData()
@@ -67,18 +84,29 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.HomepageView {
         return true
     }
 
+
+    /**
+     * Go to home screen on back press
+     */
+    override fun onBackPressed() {
+        val intent = Intent(Intent.ACTION_MAIN)
+        intent.addCategory(Intent.CATEGORY_HOME)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.action_logOut -> FirebaseAuth.getInstance().signOut()
-            R.id.main_element_sort -> ListAlertDialog.newInstance(getString(R.string.menu_sort), "sort", null, null).show(supportFragmentManager, "dialog")
-            R.id.main_element_visibility -> VisibilityDialog().show(supportFragmentManager, "dialog")
+            R.id.main_element_sort -> ListAlertDialog.newInstance(getString(R.string.menu_sort), "sort", null, null).show(fragmentManager, "dialog")
+            R.id.main_element_visibility -> VisibilityDialog().show(fragmentManager, "dialog")
             R.id.action_bin -> startActivity(Intent(this, BinActivity::class.java))
             R.id.action_settings -> startActivity(Intent(this, SettingsActivity::class.java))
         }
         return super.onOptionsItemSelected(item)
     }
 
-    fun initClickListeners() {
+    private fun initClickListeners() {
         recyclerViewClickListener = View.OnClickListener {
             val element = adapter.list[activity_main_recycler_view.getChildLayoutPosition(it)]
 
@@ -97,48 +125,32 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.HomepageView {
 
         recyclerViewLongClickListener = View.OnLongClickListener {
             val element = adapter.list[activity_main_recycler_view.getChildLayoutPosition(it)]
-
             if (element.locked) {
                 //TODO: Mit Callback
             } else {
                 //TODO: Mit Callback
-                ListAlertDialog.newInstance(getString(R.string.edit_element_title), "editElement", element.elementID, element.noteType)
-                        .show(supportFragmentManager, "dialog")
+                ListAlertDialog.newInstance(getString(R.string.edit_element_title), "editElement", element.elementID, element.noteType).show(fragmentManager, "dialog")
             }
             true
         }
 
         current_sorting_method.setOnClickListener {
             //TODO: Mit Callback
-            ListAlertDialog.newInstance(resources.getString(R.string.menu_sort), "sort", null, null)
-                    .show(supportFragmentManager, "dialog")
+            ListAlertDialog.newInstance(resources.getString(R.string.menu_sort), "sort", null, null).show(fragmentManager, "dialog")
         }
 
-        activity_main_swipe_refresh_layout.setOnRefreshListener {
-            //TODO: Refresh data
-        }
+        activity_main_swipe_refresh_layout.setOnRefreshListener { presenter.loadData() }
 
         fab.setOnClickListener {
             //TODO: Mit Callback
-            ListAlertDialog.newInstance(resources.getString(R.string.add_Element_Title), "addElement", null, null)
-                    .show(supportFragmentManager, "dialog")
+            ListAlertDialog.newInstance(resources.getString(R.string.add_Element_Title), "addElement", null, null).show(fragmentManager, "dialog")
         }
+
+        current_sorting_method.setOnClickListener { ListAlertDialog.newInstance(resources.getString(R.string.menu_sort), "sort", null, null).show(fragmentManager, "dialog") }
     }
 
-    override fun displayList(elements: ArrayList<Element>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun listElements(elements: List<Element>) {
 
-    override fun elementAdded(element: Element) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun elementChanged(element: Element) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun elementRemoved(element: Element) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun addObserver(presenter: BaseContract.IBasePresenter) = lifecycle.addObserver(presenter)

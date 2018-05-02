@@ -6,7 +6,6 @@ import android.content.Context;
 import com.sunilson.firenote.Interfaces.BundleInterface;
 import com.sunilson.firenote.Interfaces.ElementInterface;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
-import com.sunilson.firenote.adapters.SpinnerAdapter;
 
 /**
  * @author Linus Weiss
@@ -19,7 +18,7 @@ public class EditElementView extends ElementDialogView{
 
     String type, id;
 
-    public EditElementView(Context context, final SpinnerAdapter categoryAdapter, String type, String id) {
+    public EditElementView(Context context, final CategorySpinnerAdapter categoryAdapter, String type, String id) {
         super(context, categoryAdapter);
 
         this.type = type;

@@ -34,17 +34,14 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.sunilson.firenote.presentation.application.BaseApplication;
 import com.sunilson.firenote.Interfaces.ChecklistInterface;
 import com.sunilson.firenote.Interfaces.ConfirmDialogResult;
-import com.sunilson.firenote.ItemTouchHelper.SimpleItemTouchHelperCallbackChecklist;
 import com.sunilson.firenote.R;
 import com.sunilson.firenote.adapters.ChecklistRecyclerAdapter;
-import com.sunilson.firenote.data.models.ChecklistElement;
 import com.sunilson.firenote.presentation.dialogs.ConfirmDialog;
 import com.sunilson.firenote.presentation.dialogs.ImportFromTextDialog;
 import com.sunilson.firenote.presentation.dialogs.ListAlertDialog;
-import com.sunilson.firenote.presentation.shared.BaseElementActivity;
+import com.sunilson.firenote.presentation.shared.activities.BaseElementActivity;
 
 import java.util.List;
 

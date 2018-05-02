@@ -2,7 +2,6 @@ package com.sunilson.firenote.Interfaces;
 
 import com.google.firebase.database.DatabaseReference;
 import com.sunilson.firenote.adapters.CategoryVisibilityAdapter;
-import com.sunilson.firenote.adapters.SpinnerAdapter;
 
 /**
  * @author Linus Weiss
@@ -14,7 +13,7 @@ import com.sunilson.firenote.adapters.SpinnerAdapter;
 public interface MainActivityInterface extends HasSortableList {
     DatabaseReference getBinReference();
 
-    SpinnerAdapter getSpinnerCategoryAdapter();
+    CategorySpinnerAdapter getSpinnerCategoryAdapter();
 
     CategoryVisibilityAdapter getListCategoryVisibilityAdapter();
 
@@ -35,7 +34,7 @@ public interface MainActivityInterface extends HasSortableList {
     void setDeletedElement(boolean value);
 
     /**
-     * Detach and attach all Listeners, so new data is loaded
+     * Detach and attach all Listeners, so new recyclerData is loaded
      */
     void refreshListeners();
 

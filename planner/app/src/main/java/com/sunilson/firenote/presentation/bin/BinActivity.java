@@ -23,15 +23,13 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.sunilson.firenote.presentation.application.BaseApplication;
 import com.sunilson.firenote.Interfaces.BinInterface;
 import com.sunilson.firenote.Interfaces.ConfirmDialogResult;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
-import com.sunilson.firenote.ItemTouchHelper.SimpleItemTouchHelperCallbackMain;
 import com.sunilson.firenote.R;
 import com.sunilson.firenote.adapters.BinRecyclerAdapter;
 import com.sunilson.firenote.presentation.dialogs.ConfirmDialog;
-import com.sunilson.firenote.presentation.shared.BaseActivity;
+import com.sunilson.firenote.presentation.shared.activities.BaseActivity;
 
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator;
@@ -77,18 +75,22 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
             //Initialize List
             binList = (RecyclerView) findViewById(R.id.binList);
             binList.setHasFixedSize(true);
+
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
             binList.setLayoutManager(linearLayoutManager);
             binRecyclerAdapter = new BinRecyclerAdapter(this, recycleOnClickListener, recycleOnLongClickListener);
+
             AlphaInAnimationAdapter alphaInAnimationAdapter = new AlphaInAnimationAdapter(binRecyclerAdapter);
             alphaInAnimationAdapter.setFirstOnly(false);
             alphaInAnimationAdapter.setDuration(200);
             binList.setAdapter(alphaInAnimationAdapter);
             binList.setItemAnimator(new ScaleInAnimator(new OvershootInterpolator(1f)));
             binList.getItemAnimator().setAddDuration(400);
+
             ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallbackMain(binRecyclerAdapter);
             ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
             itemTouchHelper.attachToRecyclerView(binList);
+
             initializeBinListener();
 
             //Click listeners
@@ -116,12 +118,7 @@ public class BinActivity extends BaseActivity implements BinInterface, ConfirmDi
 
         if (mReference != null) {
             Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    mBinReference.addChildEventListener(mBinListener);
-                }
-            }, 200);
+            handler.postDelayed(() -> mBinReference.addChildEventListener(mBinListener), 200);
         }
     }
 

@@ -12,11 +12,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sunilson.firenote.presentation.application.BaseApplication;
 import com.sunilson.firenote.Interfaces.BundleInterface;
 import com.sunilson.firenote.Interfaces.ItemTouchHelperAdapter;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
-import com.sunilson.firenote.LocalSettingsManager;
 import com.sunilson.firenote.R;
 import com.sunilson.firenote.data.models.Element;
 import com.sunilson.firenote.presentation.homepage.MainActivity;
@@ -299,7 +297,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
     }
 
     /**
-     * Add new Element to Adapater and notify data change
+     * Add new Element to Adapater and notify recyclerData change
      *
      * @param element Element to add
      * @return Position of new Element
@@ -347,7 +345,7 @@ public class ElementRecyclerAdapter extends RecyclerView.Adapter implements Item
             }
         }
 
-        //If something has changed, sort the list and notify that the data has changed
+        //If something has changed, sort the list and notify that the recyclerData has changed
         if (changed) {
             String sort = LocalSettingsManager.getInstance().getSortingMethod();
             if (sort != null) {

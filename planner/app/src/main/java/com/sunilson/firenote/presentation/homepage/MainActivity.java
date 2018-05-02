@@ -32,16 +32,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.sunilson.firenote.presentation.application.BaseApplication;
 import com.sunilson.firenote.Interfaces.ConfirmDialogResult;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
-import com.sunilson.firenote.ItemTouchHelper.SimpleItemTouchHelperCallbackMain;
-import com.sunilson.firenote.LocalSettingsManager;
 import com.sunilson.firenote.R;
 import com.sunilson.firenote.data.models.Element;
-import com.sunilson.firenote.presentation.shared.BaseActivity;
-import com.sunilson.firenote.presentation.shared.BaseContract;
-import com.sunilson.firenote.presentation.shared.BaseElementActivity;
+import com.sunilson.firenote.presentation.application.BaseApplication;
+import com.sunilson.firenote.presentation.shared.activities.BaseActivity;
+import com.sunilson.firenote.presentation.shared.presenters.BaseContract;
+import com.sunilson.firenote.presentation.shared.activities.BaseElementActivity;
 import com.sunilson.firenote.presentation.bin.BinActivity;
 import com.sunilson.firenote.presentation.bundle.BundleActivity;
 import com.sunilson.firenote.presentation.checklist.ChecklistActivity;
@@ -49,7 +47,6 @@ import com.sunilson.firenote.presentation.note.NoteActivity;
 import com.sunilson.firenote.presentation.settings.SettingsActivity;
 import com.sunilson.firenote.adapters.CategoryVisibilityAdapter;
 import com.sunilson.firenote.adapters.ElementRecyclerAdapter;
-import com.sunilson.firenote.adapters.SpinnerAdapter;
 import com.sunilson.firenote.presentation.dialogs.AddElementDialog;
 import com.sunilson.firenote.presentation.dialogs.EditElementDialog;
 import com.sunilson.firenote.presentation.dialogs.ListAlertDialog;
@@ -63,6 +60,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import dagger.android.AndroidInjection;
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator;
 
@@ -73,7 +71,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
     private DatabaseReference mReference, mElementsReference, mBinReference;
     private ChildEventListener mElementsListener;
     private ElementRecyclerAdapter elementRecyclerAdapter;
-    private SpinnerAdapter spinnerCategoryAdapter;
+    private CategorySpinnerAdapter spinnerCategoryAdapter;
     private CategoryVisibilityAdapter listCategoryVisibilityAdapter;
     private RecyclerView recyclerView;
     private View.OnClickListener recycleOnClickListener;
@@ -91,6 +89,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -114,7 +113,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
 
             if (mReference != null) {
 
-                //Initialize the Listener which detects changes in the note data
+                //Initialize the Listener which detects changes in the note recyclerData
                 initializeElementsListener();
 
                 //Register ChildEventListener here so it's not added every time we switch Activity
@@ -267,7 +266,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                         break;
                 }
 
-                //Put element data into the intent and start it
+                //Put element recyclerData into the intent and start it
                 if (i != null) {
                     i.putExtra("elementID", element.getElementID());
                     i.putExtra("elementTitle", element.getTitle());
@@ -414,7 +413,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
         };
         Collections.sort(categories, comparator);
 
-        spinnerCategoryAdapter = new SpinnerAdapter(this, R.layout.spinner_item, categories);
+        spinnerCategoryAdapter = new CategorySpinnerAdapter(this, R.layout.spinner_item, categories);
         spinnerCategoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         listCategoryVisibilityAdapter = new CategoryVisibilityAdapter(this, R.layout.category_list_layout, categories);
     }
@@ -440,7 +439,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
     }
 
     /**
-     * Clears element list and re-attaches the listener so new data will be loaded
+     * Clears element list and re-attaches the listener so new recyclerData will be loaded
      */
     @Override
     public void refreshListeners() {
@@ -466,7 +465,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
     }
 
     @Override
-    public SpinnerAdapter getSpinnerCategoryAdapter() {
+    public CategorySpinnerAdapter getSpinnerCategoryAdapter() {
         return spinnerCategoryAdapter;
     }
 

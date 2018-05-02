@@ -9,12 +9,9 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
-import com.sunilson.firenote.presentation.application.BaseApplication;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
-import com.sunilson.firenote.LocalSettingsManager;
 import com.sunilson.firenote.R;
 import com.sunilson.firenote.adapters.ColorVisibilityAdapter;
-import com.sunilson.firenote.data.models.NoteColor;
 import com.sunilson.firenote.presentation.views.ColorElementView;
 
 /**

@@ -14,7 +14,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.sunilson.firenote.Interfaces.SettingsInterface;
-import com.sunilson.firenote.LocalSettingsManager;
 import com.sunilson.firenote.R;
 
 import java.io.UnsupportedEncodingException;

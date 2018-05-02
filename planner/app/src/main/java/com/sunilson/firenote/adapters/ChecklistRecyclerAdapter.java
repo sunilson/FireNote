@@ -11,11 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.sunilson.firenote.presentation.application.BaseApplication;
 import com.sunilson.firenote.Interfaces.ChecklistInterface;
 import com.sunilson.firenote.Interfaces.ItemTouchHelperAdapter;
 import com.sunilson.firenote.R;
-import com.sunilson.firenote.data.models.ChecklistElement;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -83,7 +81,7 @@ public class ChecklistRecyclerAdapter extends RecyclerView.Adapter implements It
     }
 
     /**
-     * Clear list and notify data change
+     * Clear list and notify recyclerData change
      */
     public void clear() {
         list.clear();

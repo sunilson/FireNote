@@ -1,7 +1,6 @@
 package com.sunilson.firenote.presentation.dialogs
 
 import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Toast
@@ -11,10 +10,9 @@ import com.sunilson.firenote.Interfaces.BundleInterface
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.homepage.MainActivity
-import com.sunilson.firenote.presentation.shared.ConnectivityManager
+import com.sunilson.firenote.presentation.shared.singletons.ConnectivityManager
 import com.sunilson.firenote.presentation.views.AddElementView
 import kotlinx.android.synthetic.main.alertdialog_custom_title.view.*
-import kotlinx.android.synthetic.main.element_list_layout.*
 import javax.inject.Inject
 
 class AddElementDialog : SuperDialog() {

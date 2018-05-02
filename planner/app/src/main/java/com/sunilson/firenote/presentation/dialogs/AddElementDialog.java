@@ -10,13 +10,9 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
-import com.sunilson.firenote.presentation.application.BaseApplication;
 import com.sunilson.firenote.Interfaces.BundleInterface;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
 import com.sunilson.firenote.R;
-import com.sunilson.firenote.presentation.views.AddElementView;
-
-import javax.inject.Inject;
 
 /**
  * @author Linus Weiss

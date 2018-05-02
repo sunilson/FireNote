@@ -37,7 +37,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sunilson.firenote.R;
 import com.sunilson.firenote.activities.StartActivity;
-import com.sunilson.firenote.data.models.ChecklistElement;
 
 /**
  * @author Linus Weiss
@@ -284,7 +283,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     /**
-     * Give user a set of default data, if this is the first login
+     * Give user a set of default recyclerData, if this is the first login
      *
      * @param user The logging in user
      */

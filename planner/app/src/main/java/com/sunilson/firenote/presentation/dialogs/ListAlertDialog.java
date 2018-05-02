@@ -18,17 +18,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
-import com.sunilson.firenote.presentation.application.BaseApplication;
 import com.sunilson.firenote.Interfaces.BundleInterface;
 import com.sunilson.firenote.Interfaces.ChecklistInterface;
 import com.sunilson.firenote.Interfaces.ConfirmDialogResult;
 import com.sunilson.firenote.Interfaces.ElementInterface;
 import com.sunilson.firenote.Interfaces.HasSortableList;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
-import com.sunilson.firenote.LocalSettingsManager;
 import com.sunilson.firenote.R;
-import com.sunilson.firenote.presentation.shared.BaseElementActivity;
-import com.sunilson.firenote.adapters.DialogMenuAdapter;
+import com.sunilson.firenote.presentation.shared.activities.BaseElementActivity;
 
 /**
  * @author Linus Weiss

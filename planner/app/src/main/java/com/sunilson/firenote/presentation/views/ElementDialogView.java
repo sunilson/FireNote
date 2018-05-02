@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
@@ -16,12 +15,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.sunilson.firenote.presentation.application.BaseApplication;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
 import com.sunilson.firenote.R;
-import com.sunilson.firenote.adapters.ColorAddAdapter;
-import com.sunilson.firenote.adapters.SpinnerAdapter;
-import com.sunilson.firenote.data.models.NoteColor;
 
 /**
  * @author Linus Weiss
@@ -42,7 +37,7 @@ public class ElementDialogView extends LinearLayout implements AdapterView.OnIte
     protected LinearLayout linearLayout;
     protected InputMethodManager imm;
     protected MainActivityInterface mainActivityInterface;
-    protected ColorAddAdapter colorAdapter;
+    protected ColorAddArrayAdapter colorAdapter;
     protected LayoutInflater inflater;
 
     public ElementDialogView(Context context, final ArrayAdapter<CharSequence> categoryAdapter) {
@@ -68,7 +63,7 @@ public class ElementDialogView extends LinearLayout implements AdapterView.OnIte
         imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         //Populate color list
-        colorAdapter = new ColorAddAdapter(getContext(), R.layout.color_list_layout);
+        colorAdapter = new ColorAddArrayAdapter(getContext(), R.layout.color_list_layout);
         colorAdapter.add(new NoteColor("note_color_1", ContextCompat.getColor(getContext(), R.color.note_color_1)));
         colorAdapter.add(new NoteColor("note_color_2", ContextCompat.getColor(getContext(), R.color.note_color_2)));
         colorAdapter.add(new NoteColor("note_color_3", ContextCompat.getColor(getContext(), R.color.note_color_3)));
@@ -128,7 +123,7 @@ public class ElementDialogView extends LinearLayout implements AdapterView.OnIte
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long l) {
-        selectedCategory = ((SpinnerAdapter) parent.getAdapter()).getCategory(position);
+        selectedCategory = ((CategorySpinnerAdapter) parent.getAdapter()).getCategory(position);
     }
 
     @Override
