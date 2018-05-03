@@ -15,11 +15,11 @@ import com.sunilson.firenote.R
 import com.sunilson.firenote.adapters.ElementRecyclerAdapter
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.bin.BinActivity
-import com.sunilson.firenote.presentation.bundle.BundleActivity
-import com.sunilson.firenote.presentation.checklist.ChecklistActivity
 import com.sunilson.firenote.presentation.dialogs.ListAlertDialog
 import com.sunilson.firenote.presentation.dialogs.VisibilityDialog
-import com.sunilson.firenote.presentation.note.NoteActivity
+import com.sunilson.firenote.presentation.elements.bundle.BundleActivity
+import com.sunilson.firenote.presentation.elements.checklist.ChecklistActivity
+import com.sunilson.firenote.presentation.elements.note.NoteActivity
 import com.sunilson.firenote.presentation.settings.SettingsActivity
 import com.sunilson.firenote.presentation.shared.activities.BaseActivity
 import com.sunilson.firenote.presentation.shared.presenters.BaseContract
@@ -27,7 +27,6 @@ import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import com.sunilson.firenote.presentation.shared.singletons.TutorialController
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator
-import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
 class MainActivity : BaseActivity(), HomepagePresenterContract.View {
@@ -75,8 +74,10 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.View {
 
         Handler().postDelayed({ tutorialController.showMainActivityTutorial(this) }, 500)
 
-        presenter.setView(this)
-        presenter.loadData()
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            presenter.setView(this)
+            presenter.loadData()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

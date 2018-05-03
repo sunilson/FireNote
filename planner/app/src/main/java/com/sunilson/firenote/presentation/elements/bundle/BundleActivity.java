@@ -1,4 +1,4 @@
-package com.sunilson.firenote.presentation.bundle;
+package com.sunilson.firenote.presentation.elements.bundle;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,12 +35,12 @@ import com.sunilson.firenote.Interfaces.BundleInterface;
 import com.sunilson.firenote.Interfaces.ConfirmDialogResult;
 import com.sunilson.firenote.R;
 import com.sunilson.firenote.presentation.bin.BinActivity;
-import com.sunilson.firenote.presentation.checklist.ChecklistActivity;
+import com.sunilson.firenote.presentation.elements.checklist.ChecklistActivity;
 import com.sunilson.firenote.adapters.ElementRecyclerAdapter;
 import com.sunilson.firenote.presentation.dialogs.AddElementDialog;
 import com.sunilson.firenote.presentation.dialogs.ListAlertDialog;
 import com.sunilson.firenote.presentation.dialogs.PasswordDialog;
-import com.sunilson.firenote.presentation.note.NoteActivity;
+import com.sunilson.firenote.presentation.elements.note.NoteActivity;
 import com.sunilson.firenote.presentation.shared.activities.BaseElementActivity;
 
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;

@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.sunilson.firenote.Interfaces.BundleInterface;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
 import com.sunilson.firenote.R;
+import com.sunilson.firenote.presentation.shared.SuperDialog;
 
 /**
  * @author Linus Weiss

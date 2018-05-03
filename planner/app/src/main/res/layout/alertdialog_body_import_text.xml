@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context="com.sunilson.firenote.presentation.note.NoteActivity"
+            tools:context=".presentation.elements.note.NoteActivity"
             tools:showIn="@layout/activity_note">
 
             <com.sunilson.firenote.presentation.views.LinedEditText

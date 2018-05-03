@@ -2,7 +2,6 @@ package com.sunilson.firenote.presentation.homepage
 
 import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.data.FirebaseRepository
-import com.sunilson.firenote.data.IFirebaseRepository
 import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
 import com.sunilson.firenote.presentation.shared.presenters.BaseContract
 import com.sunilson.firenote.presentation.shared.presenters.BasePresenter

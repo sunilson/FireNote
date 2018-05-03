@@ -1,4 +1,4 @@
-package com.sunilson.firenote.presentation.checklist;
+package com.sunilson.firenote.presentation.elements.checklist;
 
 import android.content.DialogInterface;
 import android.content.Intent;

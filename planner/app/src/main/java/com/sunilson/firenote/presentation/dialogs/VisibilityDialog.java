@@ -15,6 +15,7 @@ import android.view.WindowManager;
 
 import com.sunilson.firenote.R;
 import com.sunilson.firenote.adapters.VisibilityPagerAdapter;
+import com.sunilson.firenote.presentation.shared.SuperDialog;
 
 /**
  * @author  Linus Weiss

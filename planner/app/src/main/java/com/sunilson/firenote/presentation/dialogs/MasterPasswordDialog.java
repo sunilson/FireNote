@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.sunilson.firenote.Interfaces.SettingsInterface;
 import com.sunilson.firenote.R;
+import com.sunilson.firenote.presentation.shared.SuperDialog;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;

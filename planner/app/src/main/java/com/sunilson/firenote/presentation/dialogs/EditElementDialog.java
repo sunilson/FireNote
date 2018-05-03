@@ -15,6 +15,7 @@ import com.sunilson.firenote.Interfaces.BundleInterface;
 import com.sunilson.firenote.Interfaces.ElementInterface;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
 import com.sunilson.firenote.R;
+import com.sunilson.firenote.presentation.shared.SuperDialog;
 import com.sunilson.firenote.presentation.views.EditElementView;
 
 /**

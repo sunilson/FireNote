@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.sunilson.firenote.Interfaces.ConfirmDialogResult;
 import com.sunilson.firenote.R;
+import com.sunilson.firenote.presentation.shared.SuperDialog;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;

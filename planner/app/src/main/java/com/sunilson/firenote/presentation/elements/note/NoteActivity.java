@@ -1,4 +1,4 @@
-package com.sunilson.firenote.presentation.note;
+package com.sunilson.firenote.presentation.elements.note;
 
 import android.content.Intent;
 import android.os.Bundle;

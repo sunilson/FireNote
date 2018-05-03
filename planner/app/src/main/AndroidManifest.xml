@@ -37,14 +37,14 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name="com.sunilson.firenote.presentation.checklist.ChecklistActivity"
+            android:name="com.sunilson.firenote.presentation.elements.checklist.ChecklistActivity"
             android:label="@string/app_name"
             android:parentActivityName="com.sunilson.firenote.presentation.homepage.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
         <activity
-            android:name="com.sunilson.firenote.presentation.note.NoteActivity"
+            android:name="com.sunilson.firenote.presentation.elements.note.NoteActivity"
             android:label="@string/app_name"
             android:parentActivityName="com.sunilson.firenote.presentation.homepage.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
@@ -59,7 +59,7 @@
             android:label="@string/app_name"
             android:theme="@style/SettingsTheme" />
         <activity
-            android:name="com.sunilson.firenote.presentation.bundle.BundleActivity"
+            android:name="com.sunilson.firenote.presentation.elements.bundle.BundleActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden" />

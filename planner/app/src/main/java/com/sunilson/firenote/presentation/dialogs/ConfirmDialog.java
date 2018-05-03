@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.sunilson.firenote.Interfaces.ConfirmDialogResult;
 import com.sunilson.firenote.R;
+import com.sunilson.firenote.presentation.shared.SuperDialog;
 
 /**
  * @author Linus Weiss
