@@ -10,12 +10,12 @@ import com.sunilson.firenote.Interfaces.BundleInterface
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.homepage.MainActivity
-import com.sunilson.firenote.presentation.shared.SuperDialog
+import com.sunilson.firenote.presentation.shared.base.BaseDialogFragment
 import com.sunilson.firenote.presentation.shared.singletons.ConnectivityManager
 import com.sunilson.firenote.presentation.views.AddElementView
 import javax.inject.Inject
 
-class AddElementDialog : SuperDialog() {
+class AddElementDialog : BaseDialogFragment() {
 
     @Inject
     lateinit var connectivityManager: ConnectivityManager

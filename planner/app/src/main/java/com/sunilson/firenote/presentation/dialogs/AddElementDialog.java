@@ -13,7 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.sunilson.firenote.Interfaces.BundleInterface;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
 import com.sunilson.firenote.R;
-import com.sunilson.firenote.presentation.shared.SuperDialog;
+import com.sunilson.firenote.presentation.shared.base.BaseDialogFragment;
 
 /**
  * @author Linus Weiss
@@ -22,7 +22,7 @@ import com.sunilson.firenote.presentation.shared.SuperDialog;
 /**
  * Dialog for adding new Elements
  */
-public class AddElementDialog extends SuperDialog {
+public class AddElementDialog extends BaseDialogFragment {
 
     private MainActivityInterface mainActivityInterface;
     private AddElementView content;

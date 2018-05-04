@@ -11,7 +11,7 @@ import com.sunilson.firenote.Interfaces.ItemTouchHelperAdapter
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.data.models.ElementComparators
-import com.sunilson.firenote.presentation.shared.adapters.BaseRecyclerAdapter
+import com.sunilson.firenote.presentation.shared.base.adapters.BaseRecyclerAdapter
 import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import javax.inject.Inject

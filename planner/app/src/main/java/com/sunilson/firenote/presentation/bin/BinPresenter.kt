@@ -1,8 +1,8 @@
 package com.sunilson.firenote.presentation.bin
 
 import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
-import com.sunilson.firenote.presentation.shared.presenters.BaseContract
-import com.sunilson.firenote.presentation.shared.presenters.BasePresenter
+import com.sunilson.firenote.presentation.shared.base.BaseContract
+import com.sunilson.firenote.presentation.shared.base.BasePresenter
 import javax.inject.Inject
 
 @ActivityScope

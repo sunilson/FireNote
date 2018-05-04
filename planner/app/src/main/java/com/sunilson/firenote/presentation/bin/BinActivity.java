@@ -29,7 +29,7 @@ import com.sunilson.firenote.Interfaces.MainActivityInterface;
 import com.sunilson.firenote.R;
 import com.sunilson.firenote.adapters.BinRecyclerAdapter;
 import com.sunilson.firenote.presentation.dialogs.ConfirmDialog;
-import com.sunilson.firenote.presentation.shared.activities.BaseActivity;
+import com.sunilson.firenote.presentation.shared.base.BaseActivity;
 
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator;

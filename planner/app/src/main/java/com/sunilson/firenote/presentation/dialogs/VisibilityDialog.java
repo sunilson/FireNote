@@ -15,7 +15,7 @@ import android.view.WindowManager;
 
 import com.sunilson.firenote.R;
 import com.sunilson.firenote.adapters.VisibilityPagerAdapter;
-import com.sunilson.firenote.presentation.shared.SuperDialog;
+import com.sunilson.firenote.presentation.shared.base.BaseDialogFragment;
 
 /**
  * @author  Linus Weiss
@@ -24,7 +24,7 @@ import com.sunilson.firenote.presentation.shared.SuperDialog;
 /**
  * Dialog for hiding and showing elements in the main list
  */
-public class VisibilityDialog extends SuperDialog {
+public class VisibilityDialog extends BaseDialogFragment {
 
     FragmentPagerAdapter adapterViewPager;
 

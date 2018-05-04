@@ -1,7 +1,7 @@
 package com.sunilson.firenote.presentation.bin
 
 import android.sax.Element
-import com.sunilson.firenote.presentation.shared.presenters.BaseContract
+import com.sunilson.firenote.presentation.shared.base.BaseContract
 
 interface BinPresenterContract {
     interface View : BaseContract.IBaseView {

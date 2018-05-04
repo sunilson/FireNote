@@ -15,7 +15,7 @@ import com.sunilson.firenote.Interfaces.BundleInterface;
 import com.sunilson.firenote.Interfaces.ElementInterface;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
 import com.sunilson.firenote.R;
-import com.sunilson.firenote.presentation.shared.SuperDialog;
+import com.sunilson.firenote.presentation.shared.base.BaseDialogFragment;
 import com.sunilson.firenote.presentation.views.EditElementView;
 
 /**
@@ -25,7 +25,7 @@ import com.sunilson.firenote.presentation.views.EditElementView;
 /**
  * Dialog used to edit existing elements
  */
-public class EditElementDialog extends SuperDialog {
+public class EditElementDialog extends BaseDialogFragment {
 
     private BundleInterface bundleInterface;
     private DatabaseReference elementReference;

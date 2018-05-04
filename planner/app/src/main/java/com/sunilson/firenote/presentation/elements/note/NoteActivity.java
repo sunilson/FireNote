@@ -26,7 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.sunilson.firenote.R;
-import com.sunilson.firenote.presentation.shared.activities.BaseElementActivity;
+import com.sunilson.firenote.presentation.shared.base.element.BaseElementActivity;
 
 import static com.sunilson.firenote.R.id.notepad;
 

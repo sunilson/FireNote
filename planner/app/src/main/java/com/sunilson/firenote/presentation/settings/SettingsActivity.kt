@@ -5,7 +5,7 @@ import android.view.MenuItem
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
-import com.sunilson.firenote.presentation.shared.activities.BaseActivity
+import com.sunilson.firenote.presentation.shared.base.BaseActivity
 
 class SettingsActivity : BaseActivity(), View.OnClickListener {
 

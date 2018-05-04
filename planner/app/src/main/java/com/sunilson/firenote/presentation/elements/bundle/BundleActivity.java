@@ -41,7 +41,7 @@ import com.sunilson.firenote.presentation.dialogs.AddElementDialog;
 import com.sunilson.firenote.presentation.dialogs.ListAlertDialog;
 import com.sunilson.firenote.presentation.dialogs.PasswordDialog;
 import com.sunilson.firenote.presentation.elements.note.NoteActivity;
-import com.sunilson.firenote.presentation.shared.activities.BaseElementActivity;
+import com.sunilson.firenote.presentation.shared.base.element.BaseElementActivity;
 
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator;

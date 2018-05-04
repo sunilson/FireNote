@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.sunilson.firenote.Interfaces.ConfirmDialogResult;
 import com.sunilson.firenote.R;
-import com.sunilson.firenote.presentation.shared.SuperDialog;
+import com.sunilson.firenote.presentation.shared.base.BaseDialogFragment;
 
 /**
  * @author Linus Weiss
@@ -18,7 +18,7 @@ import com.sunilson.firenote.presentation.shared.SuperDialog;
 /**
  * Simple dialog with "Confirm" or "Cancel". Calls interface method of activity when done
  */
-public class ConfirmDialog extends SuperDialog {
+public class ConfirmDialog extends BaseDialogFragment {
 
     @NonNull
     @Override

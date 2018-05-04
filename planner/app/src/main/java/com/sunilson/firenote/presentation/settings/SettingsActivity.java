@@ -28,7 +28,7 @@ import com.sunilson.firenote.Interfaces.SettingsInterface;
 import com.sunilson.firenote.R;
 import com.sunilson.firenote.presentation.dialogs.ConfirmDialog;
 import com.sunilson.firenote.presentation.dialogs.MasterPasswordDialog;
-import com.sunilson.firenote.presentation.shared.activities.BaseActivity;
+import com.sunilson.firenote.presentation.shared.base.BaseActivity;
 
 public class SettingsActivity extends BaseActivity implements SettingsInterface, View.OnClickListener, ConfirmDialogResult {
 

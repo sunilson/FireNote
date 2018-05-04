@@ -7,7 +7,7 @@ import android.widget.ImageView
 import com.sunilson.firenote.Interfaces.MainActivityInterface
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.NoteColor
-import com.sunilson.firenote.presentation.shared.adapters.BaseArrayAdapter
+import com.sunilson.firenote.presentation.shared.base.adapters.BaseArrayAdapter
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import com.sunilson.firenote.presentation.views.ColorElementView
 import javax.inject.Inject

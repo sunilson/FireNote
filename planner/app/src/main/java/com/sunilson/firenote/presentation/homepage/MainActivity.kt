@@ -21,8 +21,8 @@ import com.sunilson.firenote.presentation.elements.bundle.BundleActivity
 import com.sunilson.firenote.presentation.elements.checklist.ChecklistActivity
 import com.sunilson.firenote.presentation.elements.note.NoteActivity
 import com.sunilson.firenote.presentation.settings.SettingsActivity
-import com.sunilson.firenote.presentation.shared.activities.BaseActivity
-import com.sunilson.firenote.presentation.shared.presenters.BaseContract
+import com.sunilson.firenote.presentation.shared.base.BaseActivity
+import com.sunilson.firenote.presentation.shared.base.BaseContract
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import com.sunilson.firenote.presentation.shared.singletons.TutorialController
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter

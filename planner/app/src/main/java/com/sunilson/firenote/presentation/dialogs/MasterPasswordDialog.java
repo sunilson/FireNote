@@ -15,7 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.sunilson.firenote.Interfaces.SettingsInterface;
 import com.sunilson.firenote.R;
-import com.sunilson.firenote.presentation.shared.SuperDialog;
+import com.sunilson.firenote.presentation.shared.base.BaseDialogFragment;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -27,7 +27,7 @@ import java.security.NoSuchAlgorithmException;
 /**
  * Dialog to enter new Master Password
  */
-public class MasterPasswordDialog extends SuperDialog {
+public class MasterPasswordDialog extends BaseDialogFragment {
 
     View content;
 

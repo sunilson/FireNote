@@ -25,8 +25,8 @@ import com.sunilson.firenote.Interfaces.ElementInterface;
 import com.sunilson.firenote.Interfaces.HasSortableList;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
 import com.sunilson.firenote.R;
-import com.sunilson.firenote.presentation.shared.SuperDialog;
-import com.sunilson.firenote.presentation.shared.activities.BaseElementActivity;
+import com.sunilson.firenote.presentation.shared.base.BaseDialogFragment;
+import com.sunilson.firenote.presentation.shared.base.element.BaseElementActivity;
 
 /**
  * @author Linus Weiss
@@ -35,7 +35,7 @@ import com.sunilson.firenote.presentation.shared.activities.BaseElementActivity;
 /**
  * Dialog used to display lists of menu choices
  */
-public class ListAlertDialog extends SuperDialog {
+public class ListAlertDialog extends BaseDialogFragment {
 
     private DialogMenuAdapter dialogAdapter;
     private MainActivityInterface mainActivityInterface;
