@@ -8,3 +8,4 @@
 /planner/app/build
 /planner/captures
 /planner/.externalNativeBuild
+node_modules/
