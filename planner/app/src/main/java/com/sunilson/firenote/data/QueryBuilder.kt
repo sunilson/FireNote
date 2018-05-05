@@ -13,20 +13,15 @@ import javax.inject.Singleton
 
 interface FirebaseRepository {
     fun loadElements(user: FirebaseUser): Single<List<Element>>
-    fun loadBundle() : Flowable<Note>
-    fun loadBundleElements(): Flowable<List<Pair<ChangeType, Element>>>
+    fun loadElement(id: String, parent: String? = null) : Flowable<Element?>
+
     fun loadNote(): Flowable<Note>
-    fun loadChecklist(): Flowable<Checklist>
+    fun loadBundleElements(): Flowable<List<Pair<ChangeType, Element>>>
     fun loadChecklistElements() : Flowable<List<Pair<ChangeType, ChecklistElement>>>
 }
 
 @Singleton
 class QueryBuilder @Inject constructor() : FirebaseRepository {
-    override fun loadBundle(): Flowable<Note> {
-        return createFlowableFromQuery(FirebaseDatabase.getInstance().reference, {
-
-        })
-    }
 
     override fun loadBundleElements(): Flowable<List<Pair<ChangeType, Element>>> {
         return createFlowableFromQuery(FirebaseDatabase.getInstance().reference, {
@@ -34,17 +29,6 @@ class QueryBuilder @Inject constructor() : FirebaseRepository {
         })
     }
 
-    override fun loadNote(): Flowable<Note> {
-        return createFlowableFromQuery(FirebaseDatabase.getInstance().reference, {
-
-        })
-    }
-
-    override fun loadChecklist(): Flowable<Checklist> {
-        return createFlowableFromQuery(FirebaseDatabase.getInstance().reference, {
-
-        })
-    }
 
     override fun loadChecklistElements(): Flowable<List<Pair<ChangeType, ChecklistElement>>> {
         return createFlowableFromQuery(FirebaseDatabase.getInstance().reference, {

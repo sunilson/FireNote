@@ -1,14 +1,14 @@
 package com.sunilson.firenote.presentation.homepage
 
 import com.sunilson.firenote.data.models.Element
-import com.sunilson.firenote.presentation.shared.base.BaseContract
+import com.sunilson.firenote.presentation.shared.base.IBaseView
 
-interface  HomepagePresenterContract {
-    interface View : BaseContract.IBaseView {
+interface HomepagePresenterContract {
+    interface IHomepageView : IBaseView {
         fun listElements(elements: List<Element>)
     }
 
-    interface Presenter {
+    interface IHomepagePresenter {
         fun loadData()
     }
 }

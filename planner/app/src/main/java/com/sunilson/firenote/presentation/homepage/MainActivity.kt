@@ -29,10 +29,10 @@ import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator
 import javax.inject.Inject
 
-class MainActivity : BaseActivity(), HomepagePresenterContract.View {
+class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView {
 
     @Inject
-    lateinit var presenter: HomepagePresenterContract.Presenter
+    lateinit var presenter: HomepagePresenterContract.IHomepagePresenter
 
     @Inject
     lateinit var tutorialController: TutorialController

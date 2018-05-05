@@ -1,29 +1,43 @@
 package com.sunilson.firenote.presentation.shared.base.element
 
 import android.content.res.ColorStateList
+import android.databinding.DataBindingUtil
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
+import android.support.v4.content.ContextCompat
+import android.view.Menu
+import android.view.MenuItem
 import android.view.WindowManager
-import android.widget.EditText
-import android.widget.ImageView
+import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Category
 import com.sunilson.firenote.data.models.Element
+import com.sunilson.firenote.databinding.BaseElementActivityBinding
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
-import com.sunilson.firenote.presentation.shared.base.BaseContract
+import com.sunilson.firenote.presentation.shared.base.BasePresenter
+import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
+import dagger.android.AndroidInjection
+import kotlinx.android.synthetic.main.base_element_activity.*
+import java.util.*
+import javax.inject.Inject
 
-abstract class BaseElementActivity : BaseActivity(), BaseElementPresenterContract.IBaseElementView {
+abstract class BaseElementActivity<T> : BaseActivity(), BaseElementPresenterContract.IBaseElementView {
+
+    @Inject
+    lateinit var presenter: BaseElementPresenter<T>
+
+    @Inject
+    lateinit var localSettingsManager: LocalSettingsManager
 
     lateinit var element: Element
-    protected lateinit var titleEditText: EditText
-    protected lateinit var titleDoneButton: ImageView
+    lateinit var binding: BaseElementActivityBinding
     protected lateinit var parentID: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
 
         element = Element(
@@ -32,27 +46,66 @@ abstract class BaseElementActivity : BaseActivity(), BaseElementPresenterContrac
                 intent.getStringExtra("elementType"),
                 intent.getIntExtra("elementColor", 1),
                 false,
-                title = intent.getStringExtra("elementTitle")
+                Date(),
+                intent.getStringExtra("elementTitle")
         )
         parentID = intent.getStringExtra("parentID")
 
+        binding = DataBindingUtil.setContentView(this, R.layout.base_element_activity)
+        binding.element = element
+
         when (element.noteType) {
-            "note" -> setContentView(R.layout.activity_note)
-            "checklist" -> setContentView(R.layout.activity_checklist)
-            "bundle" -> setContentView(R.layout.activity_bundle)
+            "note" -> base_element_activity_container.addView(layoutInflater.inflate(R.layout.content_note, base_element_activity_container, false))
+            "checklist" -> base_element_activity_container.addView(layoutInflater.inflate(R.layout.content_checklist, base_element_activity_container, false))
+            "bundle" -> base_element_activity_container.addView(layoutInflater.inflate(R.layout.content_bundle, base_element_activity_container, false))
         }
 
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        titleEditText = findViewById(R.id.title_edittext)
-        titleEditText.isFocusable = false
-        titleEditText.isFocusableInTouchMode = false
-        titleEditText.setText(element.title)
-        titleDoneButton = findViewById(R.id.title_done_button)
+        title_edittext.isFocusable = false
+        title_edittext.isFocusableInTouchMode = false
+        title_edittext.setText(element.title)
+
+        setColors()
+        setFab()
 
         if (FirebaseAuth.getInstance().currentUser != null) {
-            initialize()
+            presenter.loadElementData(element.elementID, parentID)
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        when(item?.itemId) {
+            R.id.menu_lock -> {
+                if (localSettingsManager.getMasterPassword().isEmpty()) {
+                    presenter.lockElement(element.elementID, !element.locked)
+                } else Toast.makeText(this, R.string.master_password_not_set, Toast.LENGTH_LONG).show()
+            }
+            R.id.menu_settings -> {
+
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val lockButton = menu?.findItem(R.id.menu_lock)
+        if (element.locked) lockButton?.icon = ContextCompat.getDrawable(this, R.drawable.element_lock_icon)
+        else lockButton?.icon  = ContextCompat.getDrawable(this, R.drawable.ic_lock_open_white_24dp)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    private fun setFab() {
+        when (element.noteType) {
+            "note" -> {
+            }
+            "checklist" -> {
+            }
+            "bundle" -> {
+            }
         }
     }
 
@@ -61,7 +114,6 @@ abstract class BaseElementActivity : BaseActivity(), BaseElementPresenterContrac
         colorDrawable.color = element.color
         supportActionBar!!.setBackgroundDrawable(colorDrawable)
 
-        val fab = findViewById<FloatingActionButton>(R.id.fab)
         fab.backgroundTintList = ColorStateList.valueOf(element.color)
 
         //Darken notification bar color and set it to status bar. Only works in Lollipop and above
@@ -76,10 +128,19 @@ abstract class BaseElementActivity : BaseActivity(), BaseElementPresenterContrac
         }
     }
 
-    abstract fun showTutorial()
-    abstract fun initialize()
-
-    override fun addObserver(presenter: BaseContract.IBasePresenter) = lifecycle.addObserver(presenter)
-    override fun elementChanged() {}
-    override fun elementRemoved() {}
+    override fun addObserver(presenter: BasePresenter) = lifecycle.addObserver(presenter)
+    override fun elementChanged(element: Element) {
+        val colorChanged = this.element.color != element.color
+        this.element = element
+        this.element.notifyChange()
+        if(colorChanged) setColors()
+    }
+    override fun showError(error: String) {
+        Toast.makeText(this, error, Toast.LENGTH_LONG).show()
+        finish()
+    }
+    override fun elementRemoved() {
+        Toast.makeText(this, R.string.element_removed, Toast.LENGTH_LONG).show()
+        finish()
+    }
 }

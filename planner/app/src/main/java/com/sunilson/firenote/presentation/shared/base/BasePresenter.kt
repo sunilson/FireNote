@@ -6,17 +6,11 @@ import android.arch.lifecycle.OnLifecycleEvent
 import com.sunilson.firenote.presentation.shared.other.DisposableDelegate
 import io.reactivex.disposables.CompositeDisposable
 
-interface BaseContract {
-    interface IBasePresenter : LifecycleObserver {
-        fun setView(view: IBaseView)
-    }
-
-    interface IBaseView {
-        fun addObserver(presenter: IBasePresenter)
-    }
+interface IBaseView {
+    fun addObserver(presenter: BasePresenter)
 }
 
-abstract class BasePresenter : BaseContract.IBasePresenter {
+abstract class BasePresenter : LifecycleObserver {
 
     protected val disposable: CompositeDisposable by DisposableDelegate()
 

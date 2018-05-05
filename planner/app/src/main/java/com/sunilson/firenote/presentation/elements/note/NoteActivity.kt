@@ -1,15 +1,12 @@
 package com.sunilson.firenote.presentation.elements.note
 
+import com.sunilson.firenote.data.models.Note
+import com.sunilson.firenote.presentation.shared.base.BasePresenter
 import com.sunilson.firenote.presentation.shared.base.element.BaseElementActivity
-import com.sunilson.firenote.presentation.shared.base.BaseContract
-import javax.inject.Inject
 
-class ChecklistActivity : BaseElementActivity(), NotePresenterContract.INoteView {
+class ChecklistActivity : BaseElementActivity<Note>(), NotePresenterContract.INoteView {
 
-    @Inject
-    lateinit var presenter: NotePresenter
-
-    override fun addObserver(presenter: BaseContract.IBasePresenter) = lifecycle.addObserver(presenter)
+    override fun addObserver(presenter: BasePresenter) = lifecycle.addObserver(presenter)
     override fun showTutorial() {
     }
 }

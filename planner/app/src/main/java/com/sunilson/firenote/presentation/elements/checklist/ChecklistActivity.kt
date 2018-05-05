@@ -1,28 +1,33 @@
 package com.sunilson.firenote.presentation.elements.checklist
 
+import com.sunilson.firenote.presentation.shared.base.BasePresenter
+import com.sunilson.firenote.presentation.shared.base.IBaseView
 import com.sunilson.firenote.presentation.shared.base.element.BaseElementActivity
 import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
-import com.sunilson.firenote.presentation.shared.base.BaseContract
 import javax.inject.Inject
 
 interface ChecklistPresenterContract {
-    interface IChecklistPresenter : BaseContract.IBasePresenter {
+    interface IChecklistPresenter {
 
     }
 
-    interface IChecklistView : BaseContract.IBaseView {
+    interface IChecklistView : IBaseView {
 
     }
 }
 
 @ActivityScope
-class ChecklistPresenter @Inject constructor() : ChecklistPresenterContract.IChecklistPresenter {
+class ChecklistPresenter @Inject constructor(val View: ChecklistPresenterContract.IChecklistView) : BasePresenter(), ChecklistPresenterContract.IChecklistPresenter {
+    override fun onStop() {
+    }
 
-    private lateinit var view: ChecklistPresenterContract.IChecklistView
+    override fun onStart() {
+    }
 
-    override fun setView(view: BaseContract.IBaseView) {
-        this.view = view as ChecklistPresenterContract.IChecklistView
-        this.view.addObserver(this)
+    override fun onDestroy() {
+    }
+
+    override fun onCreate() {
     }
 }
 
@@ -31,7 +36,7 @@ class ChecklistActivity : BaseElementActivity(), ChecklistPresenterContract.IChe
     @Inject
     lateinit var presenter: ChecklistPresenter
 
-    override fun addObserver(presenter: BaseContract.IBasePresenter) = lifecycle.addObserver(presenter)
+    override fun addObserver(presenter: BasePresenter) = lifecycle.addObserver(presenter)
     override fun showTutorial() {
     }
 }
