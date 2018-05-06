@@ -11,7 +11,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.Toast
-import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Category
 import com.sunilson.firenote.data.models.Element
@@ -32,29 +31,28 @@ abstract class BaseElementActivity<T> : BaseActivity(), BaseElementPresenterCont
     @Inject
     lateinit var localSettingsManager: LocalSettingsManager
 
-    lateinit var element: Element
-    lateinit var binding: BaseElementActivityBinding
-    protected lateinit var parentID: String
+    private lateinit var _element: Element
+    private lateinit var binding: BaseElementActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
 
-        element = Element(
+        _element = Element(
                 intent.getStringExtra("elementID"),
                 Category("", intent.getStringExtra("categoryID")),
                 intent.getStringExtra("elementType"),
                 intent.getIntExtra("elementColor", 1),
                 false,
                 Date(),
-                intent.getStringExtra("elementTitle")
+                intent.getStringExtra("elementTitle"),
+                intent.getStringExtra("parentID")
         )
-        parentID = intent.getStringExtra("parentID")
 
         binding = DataBindingUtil.setContentView(this, R.layout.base_element_activity)
-        binding.element = element
+        binding.element = _element
 
-        when (element.noteType) {
+        when (_element.noteType) {
             "note" -> base_element_activity_container.addView(layoutInflater.inflate(R.layout.content_note, base_element_activity_container, false))
             "checklist" -> base_element_activity_container.addView(layoutInflater.inflate(R.layout.content_checklist, base_element_activity_container, false))
             "bundle" -> base_element_activity_container.addView(layoutInflater.inflate(R.layout.content_bundle, base_element_activity_container, false))
@@ -65,22 +63,18 @@ abstract class BaseElementActivity<T> : BaseActivity(), BaseElementPresenterCont
 
         title_edittext.isFocusable = false
         title_edittext.isFocusableInTouchMode = false
-        title_edittext.setText(element.title)
+        title_edittext.setText(_element.title)
 
         setColors()
         setFab()
-
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            presenter.loadElementData(element.elementID, parentID)
-        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
-        when(item?.itemId) {
+        when (item?.itemId) {
             R.id.menu_lock -> {
                 if (localSettingsManager.getMasterPassword().isEmpty()) {
-                    presenter.lockElement(element.elementID, !element.locked)
+                    presenter.lockElement(!_element.locked)
                 } else Toast.makeText(this, R.string.master_password_not_set, Toast.LENGTH_LONG).show()
             }
             R.id.menu_settings -> {
@@ -93,33 +87,45 @@ abstract class BaseElementActivity<T> : BaseActivity(), BaseElementPresenterCont
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val lockButton = menu?.findItem(R.id.menu_lock)
-        if (element.locked) lockButton?.icon = ContextCompat.getDrawable(this, R.drawable.element_lock_icon)
-        else lockButton?.icon  = ContextCompat.getDrawable(this, R.drawable.ic_lock_open_white_24dp)
+        if (_element.locked) lockButton?.icon = ContextCompat.getDrawable(this, R.drawable.element_lock_icon)
+        else lockButton?.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_open_white_24dp)
         return super.onCreateOptionsMenu(menu)
     }
 
     private fun setFab() {
-        when (element.noteType) {
+        when (_element.noteType) {
             "note" -> {
+                fab.setImageDrawable(getDrawable(R.drawable.ic_mode_edit_black_24dp))
+                fab.setOnClickListener {
+
+                }
             }
             "checklist" -> {
+                fab.setImageDrawable(getDrawable(R.drawable.ic_add_white_24dp))
+                fab.setOnClickListener {
+
+                }
             }
             "bundle" -> {
+                fab.setImageDrawable(getDrawable(R.drawable.ic_add_white_24dp))
+                fab.setOnClickListener {
+
+                }
             }
         }
     }
 
     private fun setColors() {
         val colorDrawable = ColorDrawable()
-        colorDrawable.color = element.color
+        colorDrawable.color = _element.color
         supportActionBar!!.setBackgroundDrawable(colorDrawable)
 
-        fab.backgroundTintList = ColorStateList.valueOf(element.color)
+        fab.backgroundTintList = ColorStateList.valueOf(_element.color)
 
         //Darken notification bar color and set it to status bar. Only works in Lollipop and above
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val hsv = FloatArray(3)
-            Color.colorToHSV(element.color, hsv)
+            Color.colorToHSV(_element.color, hsv)
             hsv[2] *= 0.6f
 
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
@@ -130,10 +136,10 @@ abstract class BaseElementActivity<T> : BaseActivity(), BaseElementPresenterCont
 
     override fun addObserver(presenter: BasePresenter) = lifecycle.addObserver(presenter)
     override fun elementChanged(element: Element) {
-        val colorChanged = this.element.color != element.color
-        this.element = element
-        this.element.notifyChange()
-        if(colorChanged) setColors()
+        val colorChanged = this._element.color != element.color
+        this._element = element
+        this._element.notifyChange()
+        if (colorChanged) setColors()
     }
     override fun showError(error: String) {
         Toast.makeText(this, error, Toast.LENGTH_LONG).show()
@@ -143,4 +149,5 @@ abstract class BaseElementActivity<T> : BaseActivity(), BaseElementPresenterCont
         Toast.makeText(this, R.string.element_removed, Toast.LENGTH_LONG).show()
         finish()
     }
+    override fun getElement(): Element = _element
 }

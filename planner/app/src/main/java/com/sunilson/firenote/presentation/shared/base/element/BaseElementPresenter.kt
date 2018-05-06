@@ -7,8 +7,8 @@ import com.sunilson.firenote.presentation.shared.base.IBaseView
 
 interface BaseElementPresenterContract {
     interface IBaseElementPresenter {
-        fun loadElementData(id: String, parent: String? = null)
-        fun lockElement(id: String, locked: Boolean)
+        fun loadElementData()
+        fun lockElement(locked: Boolean)
     }
 
     interface IBaseElementView : IBaseView {
@@ -16,18 +16,34 @@ interface BaseElementPresenterContract {
         fun showTutorial()
         fun elementChanged(element: Element)
         fun elementRemoved()
+        fun getElement() : Element
     }
 }
 
 abstract class BaseElementPresenter<T>(private val eventRepository: FirebaseRepository,
                                     private val baseView: BaseElementPresenterContract.IBaseElementView)
     : BaseElementPresenterContract.IBaseElementPresenter, BasePresenter() {
-    override fun loadElementData(id: String, parent: String?) {
-        eventRepository.loadElement(id, parent).subscribe({
+
+    protected val element : Element = baseView.getElement()
+
+    override fun loadElementData() {
+        disposable.add(eventRepository.loadElement(element.elementID, element.parent).subscribe({
             if(it != null) baseView.elementChanged(it)
             else baseView.elementRemoved()
         }, {
             baseView.showError("Error loading element!")
-        })
+        }))
+    }
+
+    override fun lockElement(locked: Boolean) {
+        eventRepository.lockElement(element.elementID, locked, element.parent)
+    }
+
+    override fun onStart() {
+        loadElementData()
+    }
+
+    override fun onStop() {
+        disposable.dispose()
     }
 }

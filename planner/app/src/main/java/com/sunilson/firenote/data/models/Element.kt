@@ -13,7 +13,8 @@ data class Element(val elementID: String,
                    private var _color: Int,
                    private var _locked: Boolean,
                    val creationDate: Date = Date(),
-                   private var _title: String = "New Element") : Parcelable, BaseObservable() {
+                   private var _title: String = "New Element",
+                   val parent: String? = null) : Parcelable, BaseObservable() {
 
     var category: Category
         @Bindable get() = _category
@@ -32,7 +33,7 @@ data class Element(val elementID: String,
     var locked: Boolean
         @Bindable get() = _locked
         set(value) {
-            _locked= value
+            _locked = value
             notifyPropertyChanged(BR.locked)
         }
 

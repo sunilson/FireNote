@@ -1,5 +1,6 @@
 package com.sunilson.firenote.data
 
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.sunilson.firenote.data.models.*
@@ -14,6 +15,7 @@ import javax.inject.Singleton
 interface FirebaseRepository {
     fun loadElements(user: FirebaseUser): Single<List<Element>>
     fun loadElement(id: String, parent: String? = null) : Flowable<Element?>
+    fun lockElement(id: String, locked: Boolean, parent: String? = null)
 
     fun loadNote(): Flowable<Note>
     fun loadBundleElements(): Flowable<List<Pair<ChangeType, Element>>>
@@ -22,6 +24,27 @@ interface FirebaseRepository {
 
 @Singleton
 class QueryBuilder @Inject constructor() : FirebaseRepository {
+
+    override fun loadElement(id: String, parent: String?): Flowable<Element?> {
+        var ref = FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("elements")
+        ref = if(parent != null) ref.child("bundles").child(parent).child(id)
+        else ref.child("main").child(id)
+
+        return createFlowableFromQuery(ref, { snapshot, changeType ->
+            val element = snapshot?.getValue(Element::class.java) ?: return@createFlowableFromQuery null
+            when(changeType) {
+                ChangeType.ADDED, ChangeType.CHANGED -> element
+                ChangeType.REMOVED -> null
+            }
+        })
+    }
+
+    override fun lockElement(id: String, locked: Boolean, parent: String?) {
+        var ref = FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("elements")
+        ref = if(parent != null) ref.child("bundles").child(parent).child(id)
+        else ref.child("main").child(id)
+        ref.child("locked").setValue(locked)
+    }
 
     override fun loadBundleElements(): Flowable<List<Pair<ChangeType, Element>>> {
         return createFlowableFromQuery(FirebaseDatabase.getInstance().reference, {
@@ -36,8 +59,8 @@ class QueryBuilder @Inject constructor() : FirebaseRepository {
         })
     }
 
-    override fun loadElements(user: FirebaseUser): Single<List<Element>> {
-        return createSingleFromQuery(FirebaseDatabase.getInstance().reference.child("users").child(user.uid).child("elements").child("main"), {
+    override fun loadElements(): Single<List<Element>> {
+        return createSingleFromQuery(FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("elements").child("main"), {
             val result = mutableListOf<Element>()
             it?.children?.forEach {
                 val tempEvent = it.getValue(Element::class.java)
@@ -69,7 +92,7 @@ class QueryBuilder @Inject constructor() : FirebaseRepository {
             }
         }
 
-        fun <T> createFlowableFromQuery(ref: DatabaseReference, converter: (DataSnapshot?, ChangeType) -> Pair<ChangeType, T>): Flowable<Pair<ChangeType, T>> {
+        fun <T>createFlowableFromQuery(ref: DatabaseReference, converter: (DataSnapshot?, ChangeType) -> T): Flowable<T> {
             return Flowable.create({ emitter ->
                 val listener = object : ChildEventListener {
                     override fun onCancelled(p0: DatabaseError?) {}
