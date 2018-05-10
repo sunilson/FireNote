@@ -25,8 +25,9 @@ import com.sunilson.firenote.Interfaces.ElementInterface;
 import com.sunilson.firenote.Interfaces.HasSortableList;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
 import com.sunilson.firenote.R;
+import com.sunilson.firenote.presentation.adapters.CategoryVisibilityAdapter;
 import com.sunilson.firenote.presentation.shared.base.BaseDialogFragment;
-import com.sunilson.firenote.presentation.shared.base.element.BaseElementActivity;
+import com.sunilson.firenote.presentation.shared.base.element.ElementActivity;
 
 /**
  * @author Linus Weiss
@@ -277,8 +278,8 @@ public class ListAlertDialog extends BaseDialogFragment {
                         elementTitle.setSelection(elementTitle.length());
                     }
 
-                    if (activity instanceof BaseElementActivity) {
-                        (title.findViewById(R.id.dialog_title_container)).setBackgroundColor(((BaseElementActivity) activity).getElementColor());
+                    if (activity instanceof ElementActivity) {
+                        (title.findViewById(R.id.dialog_title_container)).setBackgroundColor(((ElementActivity) activity).getElementColor());
                     }
                     alert.setCustomTitle(title);
 

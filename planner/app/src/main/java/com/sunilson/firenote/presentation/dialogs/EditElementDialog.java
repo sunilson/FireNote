@@ -16,7 +16,7 @@ import com.sunilson.firenote.Interfaces.ElementInterface;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
 import com.sunilson.firenote.R;
 import com.sunilson.firenote.presentation.shared.base.BaseDialogFragment;
-import com.sunilson.firenote.presentation.views.EditElementView;
+import com.sunilson.firenote.presentation.shared.views.EditElementView;
 
 /**
  * @author Linus Weiss

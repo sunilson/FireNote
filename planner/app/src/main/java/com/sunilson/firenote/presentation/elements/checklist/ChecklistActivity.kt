@@ -2,7 +2,7 @@ package com.sunilson.firenote.presentation.elements.checklist
 
 import com.sunilson.firenote.presentation.shared.base.BasePresenter
 import com.sunilson.firenote.presentation.shared.base.IBaseView
-import com.sunilson.firenote.presentation.shared.base.element.BaseElementActivity
+import com.sunilson.firenote.presentation.shared.base.element.ElementActivity
 import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
 import javax.inject.Inject
 
@@ -31,7 +31,7 @@ class ChecklistPresenter @Inject constructor(val View: ChecklistPresenterContrac
     }
 }
 
-class ChecklistActivity : BaseElementActivity(), ChecklistPresenterContract.IChecklistView {
+class ChecklistActivity : ElementActivity(), ChecklistPresenterContract.IChecklistView {
 
     @Inject
     lateinit var presenter: ChecklistPresenter

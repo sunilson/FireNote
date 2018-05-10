@@ -2,14 +2,13 @@ package com.sunilson.firenote.presentation.shared.base
 
 import android.app.AlertDialog
 import android.app.Dialog
-import android.app.DialogFragment
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.app.DialogFragment
 import android.view.View
 import com.sunilson.firenote.R
-import com.sunilson.firenote.presentation.shared.base.element.BaseElementActivity
+import com.sunilson.firenote.presentation.shared.base.element.ElementActivity
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.alertdialog_custom_title.view.*
 
 abstract class BaseDialogFragment : DialogFragment() {
 
@@ -19,7 +18,7 @@ abstract class BaseDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         builder = AlertDialog.Builder(activity)
         titleView = activity.layoutInflater.inflate(R.layout.alertdialog_custom_title, null)
-        if (activity is BaseElementActivity) titleView.dialog_title_container.setBackgroundColor((activity as BaseElementActivity).elementColor)
+        if (activity is ElementActivity) titleView.dialog_title_container.setBackgroundColor((activity as ElementActivity).elementColor)
         return super.onCreateDialog(savedInstanceState)
     }
 

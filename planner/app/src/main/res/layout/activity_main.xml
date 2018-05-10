@@ -58,6 +58,7 @@
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:orientation="vertical"
+        android:animateLayoutChanges="true"
         android:paddingBottom="@dimen/element_list_vertical_margin"
         android:paddingLeft="@dimen/element_list_horizontal_margin"
         android:paddingRight="@dimen/element_list_horizontal_margin"
@@ -69,6 +70,7 @@
             android:layout_height="30dp"
             android:layout_marginBottom="@dimen/element_list_vertical_margin"
             android:background="@color/colorPrimary"
+            android:animateLayoutChanges="true"
             >
 
             <TextView
@@ -77,6 +79,14 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:textColor="@color/title_text_color" />
+
+            <ListView
+                android:id="@+id/sorting_methods_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                >
+            </ListView>
         </LinearLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -93,14 +103,40 @@
         </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:tint="@color/tint_white"
-        app:backgroundTint="@color/colorFloatingMain"
-        app:srcCompat="@drawable/ic_add_white_24dp" />
+        android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
+        app:fab_colorNormal="@color/colorAccent"
+        app:fab_icon="@drawable/ic_add_white_24dp"
+        app:fab_labelStyle="@style/menu_labels_style"
+        app:fab_labelsPosition="left">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/colorAccent"
+            app:fab_icon="@drawable/ic_add_white_24dp"
+            app:fab_title="Appointment" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_checklist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/colorAccent"
+            app:fab_icon="@drawable/ic_add_white_24dp"
+            app:fab_title="Deadline" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_bundle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/colorAccent"
+            app:fab_icon="@drawable/ic_add_white_24dp"
+            app:fab_title="Deadline" />
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </android.support.design.widget.CoordinatorLayout>

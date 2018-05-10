@@ -27,7 +27,7 @@ import com.sunilson.firenote.Interfaces.BinInterface;
 import com.sunilson.firenote.Interfaces.ConfirmDialogResult;
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
 import com.sunilson.firenote.R;
-import com.sunilson.firenote.adapters.BinRecyclerAdapter;
+import com.sunilson.firenote.presentation.adapters.BinRecyclerAdapter;
 import com.sunilson.firenote.presentation.dialogs.ConfirmDialog;
 import com.sunilson.firenote.presentation.shared.base.BaseActivity;
 

@@ -9,9 +9,9 @@ import java.util.*
 @Parcelize
 data class Element(val elementID: String,
                    private var _category: Category,
-                   val noteType: String,
-                   private var _color: Int,
-                   private var _locked: Boolean,
+                   val noteType: String = "note",
+                   private var _color: Int = 123,
+                   private var _locked: Boolean = false,
                    val creationDate: Date = Date(),
                    private var _title: String = "New Element",
                    val parent: String? = null) : Parcelable, BaseObservable() {

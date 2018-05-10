@@ -5,11 +5,17 @@ import android.databinding.ViewDataBinding
 import android.support.v7.widget.RecyclerView
 
 abstract class BaseRecyclerAdapter<T>(protected val context: Context) : RecyclerView.Adapter<BaseRecyclerAdapter<T>.ViewHolder>() {
-    protected var recyclerData = mutableListOf<T>()
 
-    fun setData(newData: List<T>) {
-        this.recyclerData = newData.toMutableList()
-    }
+    protected var _data = mutableListOf<T>()
+
+    var data: List<T>
+        get() = recyclerData.toList()
+        set(value) {
+            _data = value.toMutableList()
+            notifyDataSetChanged()
+        }
+
+    protected var recyclerData = mutableListOf<T>()
 
     override fun getItemCount(): Int = recyclerData.size
 

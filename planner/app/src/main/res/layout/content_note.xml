@@ -17,7 +17,8 @@
     tools:context=".presentation.elements.note.NoteActivity"
     tools:showIn="@layout/activity_note"
     >
-    <com.sunilson.firenote.presentation.views.LinedEditText
+    <com.sunilson.firenote.presentation.elements.note.views.LinedEditText
+        android:id="@+id/notepad"
         android:paddingBottom="@dimen/notePad_padding_vertical"
         android:paddingLeft="@dimen/notePad_padding_horizontal"
         android:paddingRight="@dimen/notePad_padding_horizontal"
@@ -31,7 +32,6 @@
         android:textSize="24sp"
         android:background="@color/defaultElementColor"
         android:textCursorDrawable="@drawable/notepad_cursor"
-        android:id="@+id/notepad"
         android:hint="@string/note_hint"
         android:linksClickable="true"
         android:textIsSelectable="true"

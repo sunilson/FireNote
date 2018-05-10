@@ -152,8 +152,8 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
         titleEditText.setFocusable(true);
         titleEditText.requestFocus();
         titleEditText.setSelection(titleEditText.getText().length());
-        titleEditText.setBackgroundColor(ContextCompat.getColor(BaseElementActivity.this, R.color.tint_white));
-        titleEditText.setTextColor(ContextCompat.getColor(BaseElementActivity.this, R.color.title_text_color));
+        titleEditText.setBackgroundColor(ContextCompat.getColor(ElementActivity.this, R.color.tint_white));
+        titleEditText.setTextColor(ContextCompat.getColor(ElementActivity.this, R.color.title_text_color));
         titleDoneButton.setVisibility(View.VISIBLE);
         imm.showSoftInput(titleEditText, InputMethodManager.SHOW_FORCED);
     }
@@ -167,8 +167,8 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
         titleEditText.setSelection(0);
         titleEditText.setFocusableInTouchMode(false);
         titleEditText.setFocusable(false);
-        titleEditText.setBackgroundColor(ContextCompat.getColor(BaseElementActivity.this, android.R.color.transparent));
-        titleEditText.setTextColor(ContextCompat.getColor(BaseElementActivity.this, R.color.tint_white));
+        titleEditText.setBackgroundColor(ContextCompat.getColor(ElementActivity.this, android.R.color.transparent));
+        titleEditText.setTextColor(ContextCompat.getColor(ElementActivity.this, R.color.tint_white));
         titleDoneButton.setVisibility(View.GONE);
         imm.hideSoftInputFromWindow(titleEditText.getWindowToken(), 0);
         mElementReference.child("title").setValue(titleEditText.getText().toString());

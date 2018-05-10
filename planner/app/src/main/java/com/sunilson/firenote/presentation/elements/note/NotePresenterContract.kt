@@ -1,13 +1,15 @@
 package com.sunilson.firenote.presentation.elements.note
 
-import com.sunilson.firenote.presentation.shared.base.element.BaseElementPresenterContract
+import com.sunilson.firenote.presentation.shared.base.element.ElementContentPresenterContract
 
 interface NotePresenterContract {
     interface INotePresenter {
         fun loadNoteData()
+        fun storeNoteText(text: String)
     }
 
-    interface INoteView : BaseElementPresenterContract.IBaseElementView {
-
+    interface INoteView : ElementContentPresenterContract.View {
+        fun noteTextChanged(text: String)
+        fun finishTextEdit()
     }
 }

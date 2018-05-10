@@ -21,7 +21,7 @@
             tools:context=".presentation.elements.note.NoteActivity"
             tools:showIn="@layout/activity_note">
 
-            <com.sunilson.firenote.presentation.views.LinedEditText
+            <com.sunilson.firenote.presentation.elements.note.views.LinedEditText
                 android:id="@+id/import_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

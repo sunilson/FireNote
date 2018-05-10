@@ -9,7 +9,7 @@ import android.view.View
 import com.sunilson.firenote.Interfaces.MainActivityInterface
 import com.sunilson.firenote.ItemTouchHelper.SimpleItemTouchHelperCallbackMain
 import com.sunilson.firenote.R
-import com.sunilson.firenote.adapters.BinRecyclerAdapter
+import com.sunilson.firenote.presentation.adapters.BinRecyclerAdapter
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
 import com.sunilson.firenote.presentation.shared.base.BaseContract
 import kotlinx.android.synthetic.main.content_bin.*

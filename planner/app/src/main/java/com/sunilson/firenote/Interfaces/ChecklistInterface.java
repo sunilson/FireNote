@@ -1,7 +1,7 @@
 package com.sunilson.firenote.Interfaces;
 
 import com.google.firebase.database.DatabaseReference;
-import com.sunilson.firenote.adapters.ChecklistRecyclerAdapter;
+import com.sunilson.firenote.presentation.adapters.ChecklistRecyclerAdapter;
 
 /**
  * @author Linus Weiss

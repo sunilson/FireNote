@@ -12,8 +12,10 @@ import android.view.animation.OvershootInterpolator
 import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.ItemTouchHelper.SimpleItemTouchHelperCallbackMain
 import com.sunilson.firenote.R
-import com.sunilson.firenote.adapters.ElementRecyclerAdapter
+import com.sunilson.firenote.presentation.shared.adapters.elementList.ElementRecyclerAdapter
 import com.sunilson.firenote.data.models.Element
+import com.sunilson.firenote.presentation.addElementDialog.AddElementDialog
+import com.sunilson.firenote.presentation.addElementDialog.AddElementListener
 import com.sunilson.firenote.presentation.bin.BinActivity
 import com.sunilson.firenote.presentation.dialogs.ListAlertDialog
 import com.sunilson.firenote.presentation.dialogs.VisibilityDialog
@@ -23,13 +25,15 @@ import com.sunilson.firenote.presentation.elements.note.NoteActivity
 import com.sunilson.firenote.presentation.settings.SettingsActivity
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
 import com.sunilson.firenote.presentation.shared.base.BaseContract
+import com.sunilson.firenote.presentation.shared.base.BasePresenter
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import com.sunilson.firenote.presentation.shared.singletons.TutorialController
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator
+import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
 
-class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView {
+class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, AddElementListener {
 
     @Inject
     lateinit var presenter: HomepagePresenterContract.IHomepagePresenter
@@ -68,11 +72,12 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView {
         val itemTouchHelper = ItemTouchHelper(SimpleItemTouchHelperCallbackMain(adapter))
         itemTouchHelper.attachToRecyclerView(activity_main_recycler_view)
 
+        //Initialize sorting list
+        //TODO
+
         //Set sorting text
         if (localSettingsManager.getSortingMethod() != null) current_sorting_method.text = getString(R.string.current_sorthing_method) + " " + localSettingsManager.getSortingMethod()
         else current_sorting_method.text = getString(R.string.current_sorthing_method) + " " + getString(R.string.sort_ascending_name)
-
-        Handler().postDelayed({ tutorialController.showMainActivityTutorial(this) }, 500)
 
         if (FirebaseAuth.getInstance().currentUser != null) {
             presenter.setView(this)
@@ -125,7 +130,7 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView {
         }
 
         recyclerViewLongClickListener = View.OnLongClickListener {
-            val element = adapter.list[activity_main_recycler_view.getChildLayoutPosition(it)]
+            val element = adapter.data[activity_main_recycler_view.getChildLayoutPosition(it)]
             if (element.locked) {
                 //TODO: Mit Callback
             } else {
@@ -135,24 +140,26 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView {
             true
         }
 
+        //Toggle sorting list
         current_sorting_method.setOnClickListener {
-            //TODO: Mit Callback
-            ListAlertDialog.newInstance(resources.getString(R.string.menu_sort), "sort", null, null).show(fragmentManager, "dialog")
+            if(sorting_methods_list.visibility == View.GONE) sorting_methods_list.visibility = View.VISIBLE
+            else if(sorting_methods_list.visibility == View.VISIBLE) sorting_methods_list.visibility = View.GONE
         }
 
         activity_main_swipe_refresh_layout.setOnRefreshListener { presenter.loadData() }
-
-        fab.setOnClickListener {
-            //TODO: Mit Callback
-            ListAlertDialog.newInstance(resources.getString(R.string.add_Element_Title), "addElement", null, null).show(fragmentManager, "dialog")
-        }
-
-        current_sorting_method.setOnClickListener { ListAlertDialog.newInstance(resources.getString(R.string.menu_sort), "sort", null, null).show(fragmentManager, "dialog") }
+        fab_add_bundle.setOnClickListener { AddElementDialog.newInstance("", "bundle").show(supportFragmentManager, "dialog") }
+        fab_add_checklist.setOnClickListener{ AddElementDialog.newInstance("", "checklist").show(supportFragmentManager, "dialog") }
+        fab_add_note.setOnClickListener { AddElementDialog.newInstance("", "note").show(supportFragmentManager, "dialog") }
+        current_sorting_method.setOnClickListener {
+            ListAlertDialog.newInstance(resources.getString(R.string.menu_sort), "sort", null, null).show(supportFragmentManager, "dialog") }
     }
 
-    override fun listElements(elements: List<Element>) {
-
+    override fun showTutorial() {
+        Handler().postDelayed({ tutorialController.showMainActivityTutorial(this) }, 500)
     }
 
-    override fun addObserver(presenter: BaseContract.IBasePresenter) = lifecycle.addObserver(presenter)
+    override fun toggleLoading(loading: Boolean, message: String?) {}
+    override fun addElement(element: Element) = presenter.addElement(element)
+    override fun listElements(elements: List<Element>) {}
+    override fun addObserver(presenter: BasePresenter) = lifecycle.addObserver(presenter)
 }

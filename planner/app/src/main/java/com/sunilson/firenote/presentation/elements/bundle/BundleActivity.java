@@ -36,19 +36,18 @@ import com.sunilson.firenote.Interfaces.ConfirmDialogResult;
 import com.sunilson.firenote.R;
 import com.sunilson.firenote.presentation.bin.BinActivity;
 import com.sunilson.firenote.presentation.elements.checklist.ChecklistActivity;
-import com.sunilson.firenote.adapters.ElementRecyclerAdapter;
-import com.sunilson.firenote.presentation.dialogs.AddElementDialog;
+import com.sunilson.firenote.presentation.shared.adapters.elementList.ElementRecyclerAdapter;
+import com.sunilson.firenote.presentation.addElementDialog.AddElementDialog;
 import com.sunilson.firenote.presentation.dialogs.ListAlertDialog;
 import com.sunilson.firenote.presentation.dialogs.PasswordDialog;
-import com.sunilson.firenote.presentation.elements.note.NoteActivity;
-import com.sunilson.firenote.presentation.shared.base.element.BaseElementActivity;
+import com.sunilson.firenote.presentation.shared.base.element.ElementActivity;
 
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator;
 
 import static com.sunilson.firenote.R.id.swipeContainerBundle;
 
-public class BundleActivity extends BaseElementActivity implements BundleInterface, ConfirmDialogResult {
+public class BundleActivity extends ElementActivity implements BundleInterface, ConfirmDialogResult {
 
     private RecyclerView bundleList;
     private DatabaseReference mElementsReference, mBinReference;

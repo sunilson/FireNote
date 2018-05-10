@@ -11,8 +11,7 @@ import android.widget.ListView;
 
 import com.sunilson.firenote.Interfaces.MainActivityInterface;
 import com.sunilson.firenote.R;
-import com.sunilson.firenote.adapters.ColorVisibilityAdapter;
-import com.sunilson.firenote.presentation.views.ColorElementView;
+import com.sunilson.firenote.presentation.adapters.ColorVisibilityAdapter;
 
 /**
  * @author Linus Weiss

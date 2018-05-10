@@ -37,11 +37,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.sunilson.firenote.Interfaces.ChecklistInterface;
 import com.sunilson.firenote.Interfaces.ConfirmDialogResult;
 import com.sunilson.firenote.R;
-import com.sunilson.firenote.adapters.ChecklistRecyclerAdapter;
+import com.sunilson.firenote.presentation.adapters.ChecklistRecyclerAdapter;
 import com.sunilson.firenote.presentation.dialogs.ConfirmDialog;
 import com.sunilson.firenote.presentation.dialogs.ImportFromTextDialog;
 import com.sunilson.firenote.presentation.dialogs.ListAlertDialog;
-import com.sunilson.firenote.presentation.shared.base.element.BaseElementActivity;
+import com.sunilson.firenote.presentation.shared.base.element.ElementActivity;
 
 import java.util.List;
 
@@ -51,7 +51,7 @@ import static com.sunilson.firenote.R.id.checkListView;
 import static com.sunilson.firenote.R.id.swipeContainerChecklist;
 import static com.sunilson.firenote.R.id.title_edittext;
 
-public class ChecklistActivity extends BaseElementActivity implements ChecklistInterface, ConfirmDialogResult {
+public class ChecklistActivity extends ElementActivity implements ChecklistInterface, ConfirmDialogResult {
 
     private ChildEventListener mContentsListener;
     private RecyclerView recyclerView;

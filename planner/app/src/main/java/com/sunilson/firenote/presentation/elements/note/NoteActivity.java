@@ -26,12 +26,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.sunilson.firenote.R;
-import com.sunilson.firenote.data.models.Note;
-import com.sunilson.firenote.presentation.shared.base.element.BaseElementActivity;
+import com.sunilson.firenote.presentation.shared.base.element.ElementActivity;
 
 import static com.sunilson.firenote.R.id.notepad;
 
-public class NoteActivity extends BaseElementActivity {
+public class NoteActivity extends ElementActivity {
 
     private EditText notePad;
     private boolean editMode;
@@ -74,18 +73,6 @@ public class NoteActivity extends BaseElementActivity {
             mContentReference = mContentReference.child("text");
             initializeContentsListener();
         }
-
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (editMode) {
-                    stopEditMode();
-                } else {
-                    startEditMode();
-                }
-            }
-        });
     }
 
     @Override
@@ -104,40 +91,10 @@ public class NoteActivity extends BaseElementActivity {
         stopEditMode();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mContentReference.addValueEventListener(mContentsListener);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        //Apply value to database and stop listening for changes
-        if (mContentsListener != null) {
-            if(!((BaseApplication) getApplicationContext()).getInternetConnected()) {
-                Toast.makeText(this, R.string.edit_no_connection, Toast.LENGTH_LONG).show();
-            }
-            mContentReference.setValue(notePad.getText().toString());
-            mContentReference.removeEventListener(mContentsListener);
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_note, menu);
-
         settingsButton = menu.findItem(R.id.menu_settings);
         return super.onCreateOptionsMenu(menu);
     }
@@ -172,92 +129,6 @@ public class NoteActivity extends BaseElementActivity {
             startActivityForResult(calIntent, 123);
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void initializeContentsListener() {
-
-        mContentsListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                    String text = dataSnapshot.getValue(String.class);
-                    notePad.setText(text);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
-    }
-
-    /**
-     * Make edittext editable and also start editing of the title
-     */
-    private void startEditMode() {
-        if (!editMode) {
-            if (!titleEdit) {
-                startTitleEdit();
-            }
-            imm.showSoftInput(notePad, InputMethodManager.SHOW_FORCED);
-            fab.setVisibility(View.GONE);
-            editMode = true;
-            notePad.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-            notePad.setSingleLine(false);
-            notePad.clearFocus();
-            notePad.requestFocus();
-            notePad.setLinksClickable(false);
-            notePad.setAutoLinkMask(0);
-            notePad.setText(notePad.getText().toString());
-            notePad.setSelection(notePad.getText().length());
-        }
-    }
-
-    /**
-     * Make edittext not editable and store value in database. Also stop editing of the title
-     */
-    private void stopEditMode() {
-        if (editMode) {
-            if (titleEdit) {
-                stopTitleEdit();
-            }
-            fab.setVisibility(View.VISIBLE);
-            imm.hideSoftInputFromWindow(notePad.getWindowToken(), 0);
-            editMode = false;
-            notePad.clearFocus();
-            notePad.setLinksClickable(true);
-            notePad.setAutoLinkMask(Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES);
-            notePad.setText(notePad.getText().toString());
-            notePad.setInputType(InputType.TYPE_NULL);
-            notePad.setSingleLine(false);
-            mContentReference.setValue(notePad.getText().toString());
-            Toast.makeText(this, R.string.stop_edit_mode, Toast.LENGTH_SHORT).show();
-            if(!((BaseApplication) getApplicationContext()).getInternetConnected()) {
-                Toast.makeText(this, R.string.edit_no_connection, Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    /**
-     * If user starts editing the title, also start editing content
-     */
-    @Override
-    protected void titleEditStarted() {
-        super.titleEditStarted();
-        if (!editMode) {
-            startEditMode();
-        }
-        titleEditText.requestFocus();
-    }
-
-    /**
-     * If user stops editing the title, also stop editing content
-     */
-    @Override
-    protected void titleEditStopped() {
-        super.titleEditStopped();
-        if (editMode) {
-            stopEditMode();
-        }
     }
 
     @Override

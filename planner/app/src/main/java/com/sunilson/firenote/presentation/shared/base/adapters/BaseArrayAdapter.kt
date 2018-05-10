@@ -4,11 +4,19 @@ import android.content.Context
 import android.widget.ArrayAdapter
 import java.util.Comparator
 
-open class BaseArrayAdapter<T>(context: Context, resource: Int, val data : MutableList<T> = mutableListOf()) : ArrayAdapter<T>(context, resource) {
+open class BaseArrayAdapter<T>(context: Context, resource: Int, private var _data : MutableList<T> = mutableListOf()) : ArrayAdapter<T>(context, resource) {
+
+    var data : List<T>
+        get() = _data.toList()
+        set(value) {
+            _data = value.toMutableList()
+            notifyDataSetChanged()
+        }
+
     override fun getCount(): Int = data.size
     override fun getItem(position: Int): T = data[position]
     override fun add(`object`: T) {
-        data.add(`object`)
+        _data.add(`object`)
         notifyDataSetChanged()
     }
     override fun sort(comparator: Comparator<in T>?) {

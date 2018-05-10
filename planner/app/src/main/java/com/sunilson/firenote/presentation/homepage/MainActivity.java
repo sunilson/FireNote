@@ -39,15 +39,14 @@ import com.sunilson.firenote.data.models.Element;
 import com.sunilson.firenote.presentation.application.BaseApplication;
 import com.sunilson.firenote.presentation.shared.base.BaseActivity;
 import com.sunilson.firenote.presentation.shared.base.BaseContract;
-import com.sunilson.firenote.presentation.shared.base.element.BaseElementActivity;
+import com.sunilson.firenote.presentation.shared.base.element.ElementActivity;
 import com.sunilson.firenote.presentation.bin.BinActivity;
 import com.sunilson.firenote.presentation.elements.bundle.BundleActivity;
 import com.sunilson.firenote.presentation.elements.checklist.ChecklistActivity;
-import com.sunilson.firenote.presentation.elements.note.NoteActivity;
 import com.sunilson.firenote.presentation.settings.SettingsActivity;
-import com.sunilson.firenote.adapters.CategoryVisibilityAdapter;
-import com.sunilson.firenote.adapters.ElementRecyclerAdapter;
-import com.sunilson.firenote.presentation.dialogs.AddElementDialog;
+import com.sunilson.firenote.presentation.adapters.CategoryVisibilityAdapter;
+import com.sunilson.firenote.presentation.shared.adapters.elementList.ElementRecyclerAdapter;
+import com.sunilson.firenote.presentation.addElementDialog.AddElementDialog;
 import com.sunilson.firenote.presentation.dialogs.EditElementDialog;
 import com.sunilson.firenote.presentation.dialogs.ListAlertDialog;
 import com.sunilson.firenote.presentation.dialogs.PasswordDialog;
@@ -345,7 +344,7 @@ public class MainActivity extends BaseActivity implements MainActivityInterface,
                         if (element.getNoteType().equals("bundle")) {
                             Activity currentActivity = ((BaseApplication) getApplicationContext()).getCurrentActivity();
                             if (currentActivity instanceof NoteActivity || currentActivity instanceof ChecklistActivity) {
-                                BaseElementActivity baseElementActivity = (BaseElementActivity) currentActivity;
+                                ElementActivity baseElementActivity = (ElementActivity) currentActivity;
                                 if (baseElementActivity.parentID != null) {
                                     Intent i = new Intent(baseElementActivity, MainActivity.class);
                                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

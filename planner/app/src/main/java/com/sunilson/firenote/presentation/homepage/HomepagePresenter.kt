@@ -1,13 +1,14 @@
 package com.sunilson.firenote.presentation.homepage
 
 import com.google.firebase.auth.FirebaseAuth
-import com.sunilson.firenote.data.FirebaseRepository
+import com.sunilson.firenote.data.IFirebaseRepository
+import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.shared.base.BasePresenter
 import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
 import javax.inject.Inject
 
 @ActivityScope
-class HomepagePresenter @Inject constructor(val firebaseRepository: FirebaseRepository, val view: HomepagePresenterContract.IHomepageView)
+class HomepagePresenter @Inject constructor(val firebaseRepository: IFirebaseRepository, val view: HomepagePresenterContract.IHomepageView)
     : BasePresenter(), HomepagePresenterContract.IHomepagePresenter {
 
     init {
@@ -24,11 +25,23 @@ class HomepagePresenter @Inject constructor(val firebaseRepository: FirebaseRepo
         }
     }
 
+    override fun addElement(element: Element) {
+        disposable.add(firebaseRepository.storeElement(element).subscribe({
+            view.elementAdded(element)
+        }, {
+            view.showError(it.message)
+        }))
+    }
+
     override fun onStop() {}
 
     override fun onStart() {}
 
-    override fun onDestroy() {}
+    override fun onDestroy() {
+        disposable.dispose()
+    }
 
-    override fun onCreate() {}
+    override fun onCreate() {
+        loadData()
+    }
 }
