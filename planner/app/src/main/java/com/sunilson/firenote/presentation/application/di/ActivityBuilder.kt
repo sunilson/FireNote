@@ -3,7 +3,7 @@ package com.sunilson.firenote.presentation.application.di
 import com.sunilson.firenote.presentation.bin.BinActivity
 import com.sunilson.firenote.presentation.homepage.MainActivity
 import com.sunilson.firenote.presentation.settings.SettingsActivity
-import com.sunilson.firenote.presentation.shared.base.element.ElementActivity
+import com.sunilson.firenote.presentation.shared.base.element.activities.ElementActivity
 import com.sunilson.firenote.presentation.shared.base.element.di.BaseElementModule
 import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
 import dagger.Module

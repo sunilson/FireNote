@@ -2,7 +2,6 @@ package com.sunilson.firenote.presentation.elements.note
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.text.InputType
 import android.text.util.Linkify
 import android.view.*
@@ -11,13 +10,12 @@ import android.widget.Toast
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.shared.base.BaseFragment
-import com.sunilson.firenote.presentation.shared.base.BasePresenter
-import com.sunilson.firenote.presentation.shared.base.element.BaseElementPresenterContract
 import com.sunilson.firenote.presentation.shared.base.element.ElementFragment
+import com.sunilson.firenote.presentation.shared.base.element.interfaces.BaseElementPresenterContract
 import com.sunilson.firenote.presentation.shared.singletons.ConnectivityManager
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.base_element_activity.*
-import kotlinx.android.synthetic.main.content_note.*
+import kotlinx.android.synthetic.main.fragment_note.*
 import javax.inject.Inject
 
 class NoteFragment : BaseFragment(), NotePresenterContract.INoteView, ElementFragment {
@@ -31,6 +29,11 @@ class NoteFragment : BaseFragment(), NotePresenterContract.INoteView, ElementFra
     private val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     private lateinit var elementActivity: BaseElementPresenterContract.View
     private var editMode = false
+
+    override val element: Element
+        get() = (activity as BaseElementPresenterContract.View).element
+
+    override val mContext = activity as Context
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -117,12 +120,11 @@ class NoteFragment : BaseFragment(), NotePresenterContract.INoteView, ElementFra
     }
 
     override fun titleEditToggled(active: Boolean) = toggleEditMode()
-    override fun getElement(): Element = (activity as BaseElementPresenterContract.View).getElement()
     override fun noteTextChanged(text: String) = notepad.setText(text)
     override fun toggleLoading(loading: Boolean, message: String?) {}
     override fun showTutorial() {}
     override fun canLeave(): Boolean {
-        if(editMode) {
+        if (editMode) {
             toggleEditMode()
             return false
         }

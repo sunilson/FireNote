@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Checkable
 import android.widget.LinearLayout
+import com.sunilson.firenote.R
+import kotlinx.android.synthetic.main.color_list_layout.view.*
 
 class ColorElementView(context: Context) : LinearLayout(context), Checkable {
 

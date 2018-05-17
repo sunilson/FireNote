@@ -28,10 +28,10 @@ class NotePresenter @Inject constructor(private val eventRepository: IFirebaseRe
     override fun onCreate() {
     }
 
-    override fun storeNoteText(text: String) = eventRepository.storeNoteText(view.getElement().elementID, text)
+    override fun storeNoteText(text: String) = eventRepository.storeNoteText(view.element.elementID, text)
 
     override fun loadNoteData() {
-        disposable.add(eventRepository.loadNote(view.getElement().elementID).subscribe {
+        disposable.add(eventRepository.loadNote(view.element.elementID).subscribe {
             view.noteTextChanged(it)
         })
     }

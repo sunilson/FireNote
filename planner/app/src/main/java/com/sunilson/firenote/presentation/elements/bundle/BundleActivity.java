@@ -40,7 +40,7 @@ import com.sunilson.firenote.presentation.shared.adapters.elementList.ElementRec
 import com.sunilson.firenote.presentation.addElementDialog.AddElementDialog;
 import com.sunilson.firenote.presentation.dialogs.ListAlertDialog;
 import com.sunilson.firenote.presentation.dialogs.PasswordDialog;
-import com.sunilson.firenote.presentation.shared.base.element.ElementActivity;
+import com.sunilson.firenote.presentation.shared.base.element.activities.ElementActivity;
 
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter;
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator;

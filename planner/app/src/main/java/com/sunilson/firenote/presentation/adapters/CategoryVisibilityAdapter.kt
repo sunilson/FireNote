@@ -4,9 +4,12 @@ import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Category
+import com.sunilson.firenote.presentation.homepage.MainActivity
 import com.sunilson.firenote.presentation.shared.base.adapters.BaseArrayAdapter
 import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
+import com.sunilson.firenote.presentation.shared.interfaces.HasElementList
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import com.sunilson.firenote.presentation.shared.views.CategoryVisibilityView
 import javax.inject.Inject
@@ -22,7 +25,7 @@ class CategoryVisibilityAdapter private constructor(
     override fun toggleAll(checked: Boolean) {
         data.forEach {
             localSettingsManager.setCategoryVisiblity(it.id, if (checked) 1 else -1)
-            mainActivity.elementAdapter.hideElements()
+            (context as HasElementList).adapter.hideElements()
         }
         notifyDataSetChanged()
     }

@@ -1,6 +1,7 @@
 package com.sunilson.firenote.presentation.addElementDialog
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Toast
@@ -13,6 +14,7 @@ import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.homepage.MainActivity
 import com.sunilson.firenote.presentation.shared.base.BaseDialogFragment
 import com.sunilson.firenote.presentation.shared.singletons.ConnectivityManager
+import kotlinx.android.synthetic.main.alertdialog_custom_title.view.*
 import javax.inject.Inject
 
 class AddElementDialog : BaseDialogFragment() {
@@ -25,13 +27,13 @@ class AddElementDialog : BaseDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         super.onCreateDialog(savedInstanceState)
-        addElementView = AddElementView(activity)
+        addElementView = AddElementView(activity as Context)
 
         val elementType = arguments?.getString("elementType")
         if(elementType != null) element = Element("", Category("", ""), elementType)
 
         titleView.dialog_title.text = arguments?.getString("title")
-        if(savedInstanceState != null) addElementView.color = savedInstanceState.getInt("color")
+        if(savedInstanceState != null) addElementView.selectedColor = savedInstanceState.getInt("color")
 
         builder.setCustomTitle(titleView)
         builder.setView(addElementView)
@@ -60,7 +62,7 @@ class AddElementDialog : BaseDialogFragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt("color", addElementView.color)
+        outState.putInt("color", addElementView.selectedColor)
     }
 
     private fun setDialogLayoutParams(dialog: Dialog) {

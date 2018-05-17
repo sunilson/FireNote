@@ -9,7 +9,4 @@ abstract class BaseActivity : AppCompatActivity(), IBaseView {
         super.onCreate(savedInstanceState)
         showTutorial()
     }
-
-    override fun showError(message: String?) = Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-    override fun showSuccess(message: String?) = Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 }

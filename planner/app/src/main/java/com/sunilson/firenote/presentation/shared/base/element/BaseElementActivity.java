@@ -40,6 +40,7 @@ import com.sunilson.firenote.data.models.Element;
 import com.sunilson.firenote.presentation.dialogs.EditElementDialog;
 import com.sunilson.firenote.presentation.dialogs.ListAlertDialog;
 import com.sunilson.firenote.presentation.shared.base.BaseActivity;
+import com.sunilson.firenote.presentation.shared.base.element.activities.ElementActivity;
 
 /**
  * @author Linus Weiss
@@ -72,13 +73,13 @@ public abstract class BaseElementActivity extends BaseActivity implements Elemen
         //Depending on type, use the correct layout for activity
         switch (elementType) {
             case "checklist":
-                setContentView(R.layout.activity_checklist);
+                setContentView(R.layout.fragment_checklist);
                 break;
             case "note":
-                setContentView(R.layout.activity_note);
+                setContentView(R.layout.fragment_note);
                 break;
             case "bundle":
-                setContentView(R.layout.activity_bundle);
+                setContentView(R.layout.fragment_bundle);
                 break;
         }
 

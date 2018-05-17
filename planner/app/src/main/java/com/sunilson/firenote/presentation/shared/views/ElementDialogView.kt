@@ -21,7 +21,6 @@ open class ElementDialogView(context: Context) : LinearLayout(context), AdapterV
     lateinit var constantController: ConstantController
 
     var selectedColor = 0
-        protected set
     var selectedCategory: Category? = null
         protected set
     var title : String
@@ -29,7 +28,7 @@ open class ElementDialogView(context: Context) : LinearLayout(context), AdapterV
         get() = add_element_title.text.toString()
 
     private val view: View
-    protected val colorAdapter: ColorAddArrayAdapter = ColorAddArrayAdapter(context, R.layout.color_list_layout)
+    protected val colorAdapter: ColorAddArrayAdapter = ColorAddArrayAdapter(context)
     private val imm : InputMethodManager
 
     init {
@@ -78,14 +77,12 @@ open class ElementDialogView(context: Context) : LinearLayout(context), AdapterV
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        selectedCategory = (parent?.adapter as CategorySpinnerAdapter).getCategory(position)
+        selectedCategory = (parent?.adapter as CategorySpinnerAdapter).data[position]
     }
 
     protected fun selectColor(position: Int) {
         colorAdapter.setCheckedPosition(position)
         (colorAdapter.getView(position, null, null) as ColorElementView).isChecked = true
-        if (colorAdapter.getItem(position) != null) {
-            selectedColor = colorAdapter.getItem(position)!!.color
-        }
+        selectedColor = colorAdapter.getItem(position).color
     }
 }

@@ -22,7 +22,7 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="com.sunilson.firenote.presentation.authentication.LoginActivity"
-        tools:showIn="@layout/activity_login">
+        tools:showIn="@layout/fragment_login">
 
         <LinearLayout
             android:layout_width="0px"
@@ -30,27 +30,20 @@
             android:focusable="true"
             android:focusableInTouchMode="true" />
 
-        <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_gravity="center"
-            android:src="@drawable/fire"
-            android:layout_marginBottom="25dp"
-            />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:paddingBottom="50dp"
+            android:paddingBottom="15dp"
             android:text="@string/register_title"
             android:textColor="@color/title_text_color"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/registerEmail"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/login_edit_text_height"
+            android:layout_height="@dimen/login_edit_text_land_height"
             android:background="@drawable/login_edit_text"
             android:drawableLeft="@drawable/email_login"
             android:ems="10"
@@ -61,13 +54,13 @@
             android:nextFocusLeft="@+id/registerEmail"
             android:nextFocusRight="@+id/registerPassword"
             android:nextFocusUp="@+id/registerEmail"
-            android:theme="@style/loginEditText" />
+            android:theme="@style/loginEditTextLand" />
 
         <EditText
             android:id="@+id/registerPassword"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/login_edit_text_height"
-            android:layout_marginTop="20dp"
+            android:layout_height="@dimen/login_edit_text_land_height"
+            android:layout_marginTop="10dp"
             android:background="@drawable/login_edit_text"
             android:drawableLeft="@drawable/lock_login"
             android:ems="10"
@@ -79,31 +72,33 @@
             android:nextFocusLeft="@+id/registerEmail"
             android:nextFocusRight="@+id/registerPasswordAgain"
             android:nextFocusUp="@+id/registerEmail"
-            android:theme="@style/loginEditText" />
+            android:theme="@style/loginEditTextLand" />
 
         <EditText
             android:id="@+id/registerPasswordAgain"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/login_edit_text_height"
-            android:layout_marginTop="20dp"
+            android:layout_height="@dimen/login_edit_text_land_height"
+            android:layout_marginTop="10dp"
             android:background="@drawable/login_edit_text"
             android:drawableLeft="@drawable/lock_login"
             android:ems="10"
             android:fontFamily="sans-serif"
             android:hint="@string/repeat_password"
             android:inputType="textPassword"
-            android:theme="@style/loginEditText" />
+            android:theme="@style/loginEditTextLand" />
 
         <Button
             android:id="@+id/registerSubmitButton"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="30dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
             android:background="@drawable/login_button_drawable"
             android:foreground="?selectableItemBackground"
             android:text="@string/register_button"
-            android:textColor="@color/tint_white" />
+            android:textColor="@color/tint_white"
+            android:textSize="12sp"
+            />
 
 
     </LinearLayout>

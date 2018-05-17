@@ -21,7 +21,7 @@ abstract class BaseRecyclerAdapter<T>(protected val context: Context) : Recycler
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(recyclerData[position])
 
-    inner class ViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
+    open inner class ViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(obj: T) {
             binding.setVariable(BR.obj, obj)
             binding.executePendingBindings()

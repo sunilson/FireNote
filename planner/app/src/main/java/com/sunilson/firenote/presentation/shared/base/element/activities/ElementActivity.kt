@@ -1,4 +1,4 @@
-package com.sunilson.firenote.presentation.shared.base.element
+package com.sunilson.firenote.presentation.shared.base.element.activities
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -7,12 +7,10 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Category
@@ -20,7 +18,8 @@ import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.databinding.BaseElementActivityBinding
 import com.sunilson.firenote.presentation.elements.note.NoteFragment
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
-import com.sunilson.firenote.presentation.shared.base.BasePresenter
+import com.sunilson.firenote.presentation.shared.base.element.ElementFragment
+import com.sunilson.firenote.presentation.shared.base.element.interfaces.BaseElementPresenterContract
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.base_element_activity.*
@@ -28,7 +27,6 @@ import java.util.*
 import javax.inject.Inject
 
 class ElementActivity : BaseActivity(), BaseElementPresenterContract.View {
-
     @Inject
     lateinit var presenter: BaseElementPresenterContract.Presenter
 
@@ -37,6 +35,12 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View {
 
     private lateinit var _element: Element
     private lateinit var binding: BaseElementActivityBinding
+
+    override val element: Element
+        get() = _element
+
+    override val mContext: Context
+        get() = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -65,11 +69,9 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View {
 
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
         title_edittext.isFocusable = false
         title_edittext.isFocusableInTouchMode = false
         title_edittext.setText(_element.title)
-
         setColors()
     }
 
@@ -79,9 +81,8 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View {
                 if((supportFragmentManager.fragments[0] as ElementFragment).canLeave()) finish()
             }
             R.id.menu_lock -> {
-                if (localSettingsManager.getMasterPassword().isEmpty()) {
-                    presenter.lockElement(!_element.locked)
-                } else Toast.makeText(this, R.string.master_password_not_set, Toast.LENGTH_LONG).show()
+                if (localSettingsManager.getMasterPassword().isEmpty()) presenter.lockElement(!_element.locked)
+                else Toast.makeText(this, R.string.master_password_not_set, Toast.LENGTH_LONG).show()
             }
             R.id.menu_settings -> { }
         }
@@ -115,11 +116,7 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View {
         }
     }
 
-    override fun toggleTitleEdit(active: Boolean) {
-
-    }
-
-    override fun addObserver(presenter: BasePresenter) = lifecycle.addObserver(presenter)
+    override fun toggleTitleEdit(active: Boolean) {}
 
     override fun elementChanged(element: Element) {
         val colorChanged = this._element.color != element.color
@@ -133,14 +130,8 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View {
         finish()
     }
 
-    override fun showError(message: String?) {
-    }
-
-    override fun showSuccess(message: String?) {
-    }
-
-    override fun toggleLoading(loading: Boolean, message: String?) {
-    }
-
-    override fun getElement(): Element = _element
+    override fun showError(message: String?) {}
+    override fun showTutorial() {}
+    override fun showSuccess(message: String?) {}
+    override fun toggleLoading(loading: Boolean, message: String?) {}
 }

@@ -3,8 +3,9 @@ package com.sunilson.firenote.presentation.shared.base.adapters
 import android.content.Context
 import android.databinding.ViewDataBinding
 import android.support.v7.widget.RecyclerView
+import com.sunilson.firenote.BR
 
-abstract class BaseRecyclerViewAdapter<T>(protected val context: Context) : RecyclerView.Adapter<BaseRecyclerViewAdapter.ViewHolder>() {
+abstract class BaseRecyclerViewAdapter<T>(protected val context: Context) : RecyclerView.Adapter<BaseRecyclerViewAdapter<T>.ViewHolder>() {
     val data = mutableListOf<T>()
 
     override fun getItemCount(): Int = data.size

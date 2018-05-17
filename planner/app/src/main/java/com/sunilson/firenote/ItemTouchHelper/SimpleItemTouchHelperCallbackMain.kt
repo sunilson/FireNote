@@ -11,7 +11,7 @@ class SimpleItemTouchHelperCallbackMain(val adapter: ItemTouchHelperAdapter) : I
         var dragFlags = 0
         var swipeFlags = 0
 
-        if (viewHolder is ElementRecyclerAdapter.SwipeableViewHolder) {
+        if (viewHolder is ElementRecyclerAdapter.ViewHolder && viewHolder.swipeable) {
             dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
             swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
         }

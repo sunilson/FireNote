@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.sunilson.firenote.Interfaces.ItemTouchHelperAdapter
+import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.data.models.ElementComparators
 import com.sunilson.firenote.presentation.shared.base.adapters.BaseRecyclerAdapter
@@ -101,13 +102,16 @@ class ElementRecyclerAdapter constructor(
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
+        return false
     }
 
     override fun onItemDismiss(position: Int) {
     }
 
+    inner class ViewHolder(binding: ViewDataBinding, val swipeable: Boolean = false) : BaseRecyclerAdapter<Element>.ViewHolder(binding)
+
     @ActivityScope
-    class ElementRecyclerAdapterFactory @Inject constructor(val localSettingsManager: LocalSettingsManager) {
+    class ElementRecyclerAdapterFactory @Inject constructor(private val localSettingsManager: LocalSettingsManager) {
         fun create(context: Context,
                    onClickListener: View.OnClickListener,
                    onLongClickListener: View.OnLongClickListener,

@@ -2,6 +2,7 @@ package com.sunilson.firenote.presentation.shared.base.element
 
 import com.sunilson.firenote.data.IFirebaseRepository
 import com.sunilson.firenote.presentation.shared.base.BasePresenter
+import com.sunilson.firenote.presentation.shared.base.element.interfaces.BaseElementPresenterContract
 import javax.inject.Inject
 
 

@@ -1,13 +1,19 @@
 package com.sunilson.firenote.presentation.settings
 
+import android.content.Context
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
+import kotlinx.android.synthetic.main.activity_settings.*
+import kotlinx.android.synthetic.main.content_settings.*
 
 class SettingsActivity : BaseActivity(), View.OnClickListener {
+
+    override val mContext: Context
+        get() = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,20 +35,10 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun aboutDialog() {
-        //TODO
-    }
-
-    override fun reAuthenticated(type: String?) {
-        super.reAuthenticated(type)
-    }
-
-    private fun changePasswordDialog() {
-
-    }
+    private fun aboutDialog() {}
+    private fun changePasswordDialog() {}
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-
         if(item?.itemId == android.R.id.home){
             finish()
             return true
@@ -52,9 +48,10 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        when (v?.id) {
-
-        }
+        when (v?.id) { }
     }
+
+    override fun toggleLoading(loading: Boolean, message: String?) {}
+    override fun showTutorial() {}
 
 }

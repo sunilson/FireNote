@@ -41,7 +41,7 @@ import com.sunilson.firenote.presentation.adapters.ChecklistRecyclerAdapter;
 import com.sunilson.firenote.presentation.dialogs.ConfirmDialog;
 import com.sunilson.firenote.presentation.dialogs.ImportFromTextDialog;
 import com.sunilson.firenote.presentation.dialogs.ListAlertDialog;
-import com.sunilson.firenote.presentation.shared.base.element.ElementActivity;
+import com.sunilson.firenote.presentation.shared.base.element.activities.ElementActivity;
 
 import java.util.List;
 

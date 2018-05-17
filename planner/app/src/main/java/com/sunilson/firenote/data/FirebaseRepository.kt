@@ -29,6 +29,10 @@ interface IFirebaseRepository {
 @Singleton
 class FirebaseRepository @Inject constructor() : IFirebaseRepository {
 
+    override fun storeNoteText(id: String, text: String) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun loadElement(id: String, parent: String?): Flowable<Element?> {
         var ref = FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("elements")
         ref = if(parent != null) ref.child("bundles").child(parent).child(id)
@@ -67,20 +71,17 @@ class FirebaseRepository @Inject constructor() : IFirebaseRepository {
     }
 
     override fun loadBundleElements(): Flowable<List<Pair<ChangeType, Element>>> {
-        return createFlowableFromQuery(FirebaseDatabase.getInstance().reference, {
-
-        })
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 
     override fun loadChecklistElements(): Flowable<List<Pair<ChangeType, ChecklistElement>>> {
-        return createFlowableFromQuery(FirebaseDatabase.getInstance().reference, {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 
-        })
     }
 
-    override fun loadElements(): Single<List<Element>> {
-        return createSingleFromQuery(FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("elements").child("main"), {
+    override fun loadElements(user: FirebaseUser): Single<List<Element>> {
+        return createSingleFromQuery(FirebaseDatabase.getInstance().reference.child("users").child(user.uid).child("elements").child("main"), {
             val result = mutableListOf<Element>()
             it?.children?.forEach {
                 val tempEvent = it.getValue(Element::class.java)

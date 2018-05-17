@@ -22,7 +22,7 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="com.sunilson.firenote.presentation.authentication.LoginActivity"
-        tools:showIn="@layout/activity_login">
+        tools:showIn="@layout/fragment_login">
 
         <LinearLayout
             android:layout_width="0px"
@@ -30,20 +30,26 @@
             android:focusable="true"
             android:focusableInTouchMode="true" />
 
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:src="@drawable/fire"
+            android:layout_marginBottom="25dp"
+            />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:paddingBottom="20dp"
+            android:paddingBottom="50dp"
             android:text="@string/login_title"
             android:textColor="@color/title_text_color"
-            android:textSize="20sp" />
-
+            android:textSize="24sp" />
         <EditText
             android:id="@+id/loginEmail"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/login_edit_text_land_height"
+            android:layout_height="@dimen/login_edit_text_height"
             android:background="@drawable/login_edit_text"
             android:drawableLeft="@drawable/email_login"
             android:ems="10"
@@ -54,14 +60,13 @@
             android:nextFocusLeft="@+id/loginEmail"
             android:nextFocusRight="@+id/loginPassword"
             android:nextFocusUp="@+id/loginEmail"
-            android:theme="@style/loginEditTextLand"
+            android:theme="@style/loginEditText" />
 
-            />
 
         <EditText
             android:id="@+id/loginPassword"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/login_edit_text_land_height"
+            android:layout_height="@dimen/login_edit_text_height"
             android:layout_marginTop="10dp"
             android:background="@drawable/login_edit_text"
             android:drawableLeft="@drawable/lock_login"
@@ -69,63 +74,53 @@
             android:fontFamily="sans-serif"
             android:hint="@string/enter_password"
             android:inputType="textPassword"
-            android:theme="@style/loginEditTextLand" />
+            android:theme="@style/loginEditText" />
+
+        <Button
+            android:id="@+id/loginButton"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/login_button_drawable"
+            android:foreground="?selectableItemBackground"
+            android:text="@string/login_button"
+            android:textColor="@color/tint_white" />
 
         <LinearLayout
+            android:id="@+id/google_sign_in"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/google_login_button_drawable"
+            android:foreground="?selectableItemBackground"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/loginButton"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="0px"
-                android:layout_height="40dp"
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_marginRight="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/login_button_drawable"
-                android:foreground="?selectableItemBackground"
-                android:text="@string/login_button"
-                android:textColor="@color/tint_white"
-                android:textSize="12sp" />
+                android:src="@drawable/google_icon" />
 
-            <LinearLayout
-                android:id="@+id/google_sign_in"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="0px"
-                android:layout_weight="1"
-                android:layout_height="40dp"
-                android:background="@drawable/google_login_button_drawable"
-                android:foreground="?selectableItemBackground"
+            <TextView
+                android:id="@+id/google_sign_in_text"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginRight="10dp"
-                    android:src="@drawable/google_icon" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="@string/google_sign_in"
-                    android:id="@+id/google_sign_in_text"
-                    android:textSize="12sp"
-                    android:textAllCaps="true"
-                    android:textStyle="bold"
-                    android:textColor="@color/secondary_text_color" />
-            </LinearLayout>
+                android:text="@string/google_sign_in"
+                android:textAllCaps="true"
+                android:textColor="@color/secondary_text_color"
+                android:textStyle="bold" />
         </LinearLayout>
-
 
         <TextView
             android:id="@+id/forgotPasswordLink"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="@string/forgot_password_link"
             android:textColor="@color/title_text_color" />

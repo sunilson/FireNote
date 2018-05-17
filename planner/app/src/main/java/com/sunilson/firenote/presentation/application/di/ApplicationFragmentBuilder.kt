@@ -1,6 +1,7 @@
 package com.sunilson.firenote.presentation.application.di
 
 import com.sunilson.firenote.presentation.settings.adapters.ChangePasswordDialog
+import com.sunilson.firenote.presentation.shared.di.scopes.DialogFragmentScope
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

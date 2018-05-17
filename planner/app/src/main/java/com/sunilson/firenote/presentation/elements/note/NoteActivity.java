@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.provider.CalendarContract;
 import android.support.design.widget.FloatingActionButton;
-import android.text.InputType;
-import android.text.util.Linkify;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,16 +15,13 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.sunilson.firenote.R;
-import com.sunilson.firenote.presentation.shared.base.element.ElementActivity;
+import com.sunilson.firenote.presentation.shared.base.element.activities.ElementActivity;
 
 import static com.sunilson.firenote.R.id.notepad;
 

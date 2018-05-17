@@ -2,30 +2,29 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/content_bundle"
+    android:id="@+id/content_checklist"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="false"
-    android:paddingBottom="@dimen/element_list_vertical_margin"
-    android:paddingLeft="@dimen/element_list_horizontal_margin"
-    android:paddingRight="@dimen/element_list_horizontal_margin"
+    android:paddingBottom="@dimen/checklist_list_horizontal_margin"
+    android:paddingLeft="@dimen/checklist_list_horizontal_margin"
+    android:paddingRight="@dimen/checklist_list_horizontal_margin"
     android:paddingTop="@dimen/element_list_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".presentation.elements.bundle.BundleActivity"
-    tools:showIn="@layout/activity_bundle">
+    tools:context=".presentation.elements.checklist.ChecklistActivity"
+    tools:showIn="@layout/fragment_checklist">
 
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/swipeContainerBundle"
+        android:id="@+id/swipeContainerChecklist"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/bundleList"
+            android:id="@+id/checkListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
-            android:divider="@null"
-            android:dividerHeight="0px" />
+            android:layout_centerVertical="true"
+            android:choiceMode="multipleChoice"
+            android:divider="@drawable/list_divider" />
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

@@ -2,6 +2,7 @@ package com.sunilson.firenote.presentation.shared
 
 import android.content.Context
 import android.support.v4.content.ContextCompat
+import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Category
 import com.sunilson.firenote.data.models.NoteColor
 

@@ -11,14 +11,17 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LocalSettingsManager @Inject constructor() {
+class LocalSettingsManager @Inject constructor(application: Application) {
 
-    @Inject
-    lateinit var application: Application
+    private val sharedPrefs: SharedPreferences = application.getSharedPreferences("prefs", Context.MODE_PRIVATE)
 
-    private val sharedPrefs: SharedPreferences
+    fun setCategoryVisiblity(id: String, visibility: Int) {
+        val editor = sharedPrefs.edit()
+        editor.putInt(id, visibility)
+        editor.commit()
+    }
 
-    fun setCategoryVisibility(color: Int, visibility: Int) {
+    fun setColorVisibility(color: Int, visibility: Int) {
         val editor = sharedPrefs.edit()
         editor.putInt(color.toString(), visibility)
         editor.commit()
@@ -38,10 +41,8 @@ class LocalSettingsManager @Inject constructor() {
 
     fun getMasterPassword() = sharedPrefs.getString("masterPassword", "");
     fun getSortingMethod() = sharedPrefs.getString("mainElementSorting", null)
+    fun getColorVisibility(color: Int) = sharedPrefs.getInt(color.toString(), -1)
     fun getCategoryVisibility(category: String) = sharedPrefs.getInt(category, -1)
     fun getSHA1Hash(masterPasswordHash: String): String = String(Hex.encodeHex(DigestUtils.sha1(masterPasswordHash)))
 
-    init {
-        sharedPrefs = application.getSharedPreferences("prefs", Context.MODE_PRIVATE)
-    }
 }

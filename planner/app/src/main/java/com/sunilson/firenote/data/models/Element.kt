@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 import java.util.*
 
 @Parcelize
-data class Element(val elementID: String,
+open class Element(var elementID: String,
                    private var _category: Category,
                    val noteType: String = "note",
                    private var _color: Int = 123,

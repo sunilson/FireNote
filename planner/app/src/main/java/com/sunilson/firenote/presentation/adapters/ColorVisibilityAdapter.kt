@@ -8,17 +8,12 @@ import com.sunilson.firenote.Interfaces.MainActivityInterface
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.NoteColor
 import com.sunilson.firenote.presentation.shared.base.adapters.BaseArrayAdapter
+import com.sunilson.firenote.presentation.shared.interfaces.HasElementList
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import com.sunilson.firenote.presentation.shared.views.ColorElementView
 import javax.inject.Inject
 
-class ColorVisibilityAdapter(context: Context) : BaseArrayAdapter<NoteColor>(context, resource), CheckableArrayAdapter {
-
-    @Inject
-    lateinit var localSettingsManager: LocalSettingsManager
-
-    @Inject
-    lateinit var mainActivity: MainActivityInterface
+class ColorVisibilityAdapter(context: Context, val localSettingsManager: LocalSettingsManager) : BaseArrayAdapter<NoteColor>(context, R.layout.color_list_layout), CheckableArrayAdapter {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var row = convertView as ColorElementView?
@@ -31,12 +26,16 @@ class ColorVisibilityAdapter(context: Context) : BaseArrayAdapter<NoteColor>(con
         } else {
             row.tag as ColorVisibilityAdapter.ElementHolder
         }
+
+        row.tag = elementHolder
+
+        return row
     }
 
     override fun toggleAll(checked: Boolean) {
         data.forEach {
             localSettingsManager.setColorVisibility(it.color, if (checked) -1 else 1)
-            mainActivity.elementAdapter.hideElements()
+            (context as HasElementList).adapter.hideElements()
         }
         notifyDataSetChanged()
     }
