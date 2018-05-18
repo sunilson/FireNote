@@ -1,32 +1,68 @@
 <template>
-    <div class="elementCard">
-        <v-card color="cyan darken-2" class="white--text">
-            <v-container fluid grid-list-lg>
-                <v-layout row>
-                    <v-flex xs7>
-                        <div>
-                        <div class="headline">Supermodel</div>
-                        <div>Foster the People</div>
-                        </div>
-                    </v-flex>
-                    <v-flex xs5>
-                        <v-card-media src="https://vuetifyjs.com/static/doc-images/cards/foster.jpg" height="125px" contain></v-card-media>
-                    </v-flex>
-                </v-layout>
-            </v-container>
+    <v-flex xs12 sm6 class="elementCard">
+        <v-card ripple class="white--text" height="60px" :class="[backgroundColor]">
+            <v-layout row>
+                <v-flex xs9 style="height: 60px; display: flex; align-items: center">
+                    <div class="elementSide left" :class="[sideBackgroundColor]">
+                        <v-icon v-if="element.noteType == 'note'">event_note</v-icon>
+                        <v-icon v-if="element.noteType == 'checklist'">done_all</v-icon>
+                        <v-icon v-if="element.noteType == 'bundle'">list</v-icon>
+                    </div>
+                    <div style="padding-left: 10px; padding-right: 10px" class="ellipsis">
+                        <div class="header ellipsis">{{element.title}}</div>
+                        <div class="subHeader ellipsis">{{element.categoryName}}</div>
+                    </div>
+                </v-flex>
+                <v-flex xs3 style="height: 60px; display: flex; align-items: center; font-size: 12px" class="ellipsis">
+                    {{element.creationDate | parseDate}}
+                </v-flex>
+            </v-layout>
         </v-card>
-    </div>
+    </v-flex>
 </template>
 
 <script>
+import colormap from "../services/colormap.js"
+
 export default {
-  props: ["element"]
+  props: ["element"],
+    computed: {
+        backgroundColor: function() {
+            return colormap(this.element.color)[1]
+        },
+        sideBackgroundColor: function() {
+            return colormap(this.element.color)[0]
+        }
+    }
 };
 </script>
 
-<style>
+<style scoped>
+.header {
+    font-size:16px
+}
+
+.subHeader {
+    font-size:12px
+}
+
+.elementSide {
+    height: 100%; 
+    min-width: 40px; 
+    display: flex; 
+    justify-content: center; 
+    align-items:center
+}
+
+.icon {
+    color: white;
+}
+
 .elementCard {
   margin-top: 15px;
+  padding-left: 5px;
+  padding-right: 5px;
+  cursor: pointer;
 }
 </style>
 
