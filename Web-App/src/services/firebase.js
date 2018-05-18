@@ -1,13 +1,7 @@
 import fb from "firebase"
+import config from "../config"
 
-const firebaseApp = fb.initializeApp({
-    apiKey: "AIzaSyBkH4zNyP3rxPD0zqDiLuD7h3I8JYZNWA4",
-    authDomain: "pro3-48b05.firebaseapp.com",
-    databaseURL: "https://pro3-48b05.firebaseio.com",
-    projectId: "pro3-48b05",
-    storageBucket: "pro3-48b05.appspot.com",
-    messagingSenderId: "376414129715"
-})
+const firebaseApp = fb.initializeApp(config.firebaseConfig)
 
 function getElementRef(id) {
     return {
