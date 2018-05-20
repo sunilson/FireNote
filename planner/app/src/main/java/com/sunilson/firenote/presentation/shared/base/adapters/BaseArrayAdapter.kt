@@ -4,8 +4,9 @@ import android.content.Context
 import android.widget.ArrayAdapter
 import java.util.Comparator
 
-open class BaseArrayAdapter<T>(context: Context, resource: Int, private var _data : MutableList<T> = mutableListOf()) : ArrayAdapter<T>(context, resource) {
+open class BaseArrayAdapter<T>(context: Context, resource: Int) : ArrayAdapter<T>(context, resource) {
 
+    protected var _data : MutableList<T> = mutableListOf()
     var data : List<T>
         get() = _data.toList()
         set(value) {

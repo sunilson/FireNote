@@ -9,3 +9,4 @@
 /planner/captures
 /planner/.externalNativeBuild
 node_modules/
+Web-App/src/config.js

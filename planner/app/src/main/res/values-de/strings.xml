@@ -88,7 +88,7 @@
     <string name="share">Teilen</string>
     <string name="sort_ascending_date">Datum aufsteigend</string>
     <string name="sort_ascending_name">Name aufsteigend</string>
-    <string name="sort_by">Sortieren nach</string>
+    <string name="sort_by">Sortieren nach %1$s</string>
     <string name="sort_category_name">Kategorie Name</string>
     <string name="sort_descending_date">Datum absteigend</string>
     <string name="sort_descending_name">Name absteigend</string>

@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.sunilson.firenote.data.models.*
+import com.sunilson.firenote.presentation.shared.singletons.FirebaseDataParser
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -44,7 +45,7 @@ class FirebaseRepository @Inject constructor() : IFirebaseRepository {
                 ChangeType.ADDED, ChangeType.CHANGED -> element
                 ChangeType.REMOVED -> null
             }
-        })
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun loadNote(id: String): Flowable<String> {
@@ -84,14 +85,12 @@ class FirebaseRepository @Inject constructor() : IFirebaseRepository {
         return createSingleFromQuery(FirebaseDatabase.getInstance().reference.child("users").child(user.uid).child("elements").child("main"), {
             val result = mutableListOf<Element>()
             it?.children?.forEach {
-                val tempEvent = it.getValue(Element::class.java)
-                if(tempEvent != null){
-                    tempEvent.elementID = it.key
-                    result.add(tempEvent)
-                }
+                val tempEvent = FirebaseDataParser.parseElement(it)
+                tempEvent.elementID = it.key
+                result.add(tempEvent)
             }
             result.toList()
-        }).observeOn(Schedulers.io()).subscribeOn(AndroidSchedulers.mainThread())
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
     companion object {

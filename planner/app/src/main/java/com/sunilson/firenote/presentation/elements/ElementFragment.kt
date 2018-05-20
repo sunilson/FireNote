@@ -1,4 +1,4 @@
-package com.sunilson.firenote.presentation.shared.base.element
+package com.sunilson.firenote.presentation.elements
 
 interface ElementFragment {
     fun canLeave() : Boolean

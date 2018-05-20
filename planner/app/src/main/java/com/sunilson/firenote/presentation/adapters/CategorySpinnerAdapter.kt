@@ -1,31 +1,58 @@
 package com.sunilson.firenote.presentation.adapters
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.sunilson.firenote.data.models.Category
-import com.sunilson.firenote.presentation.shared.base.adapters.BaseArrayAdapter
+import com.sunilson.firenote.presentation.shared.base.adapters.BaseSpinnerArrayAdapter
+import com.sunilson.firenote.presentation.shared.di.scopes.DialogFragmentScope
+import com.sunilson.firenote.presentation.shared.singletons.ConstantController
+import javax.inject.Inject
 
-class CategorySpinnerAdapter(context: Context, data : List<Category> = listOf()) : BaseArrayAdapter<Category>(context, 1, data.toMutableList()) {
+class CategorySpinnerAdapter (context: Context, constantController: ConstantController)
+    : BaseSpinnerArrayAdapter<Category>(context) {
+
+    init {
+        data = constantController.categories
+    }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        //TODO use category name to display
-        return super.getView(position, convertView, parent)
+        var row = convertView
+
+        val viewHolder = if (row == null) {
+            row = LayoutInflater.from(context).inflate(android.R.layout.simple_spinner_item, parent, false)
+            val tempViewholder = ViewHolder(row.findViewById(android.R.id.text1))
+            row.tag = tempViewholder
+            tempViewholder
+        } else {
+            row.tag as ViewHolder
+        }
+        viewHolder.textView.text = data[position].name
+
+        row!!.setPadding(0, row.paddingTop, row.paddingRight, row.paddingBottom)
+        return row!!
     }
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        //TODO display category name
-        return super.getDropDownView(position, convertView, parent)
+        var row = convertView
+
+        val viewHolder = if (row == null) {
+            row = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_1, parent, false)
+            val tempViewholder = ViewHolder(row.findViewById(android.R.id.text1))
+            row.tag = tempViewholder
+            tempViewholder
+        } else {
+            row.tag as ViewHolder
+        }
+        viewHolder.textView.text = data[position].name
+        return row!!
     }
 
-    fun getPositionWithId(id: String) : Int{
-        for((index, category) in data.withIndex()) {
+    fun getPositionWithId(id: String): Int {
+        for ((index, category) in data.withIndex()) {
             if (category.id == id) return index
         }
         return 0
     }
-
-    class ViewHolder(val textView: TextView)
-
 }

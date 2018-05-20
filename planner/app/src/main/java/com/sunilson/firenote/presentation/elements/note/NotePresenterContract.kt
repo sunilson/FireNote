@@ -1,6 +1,6 @@
 package com.sunilson.firenote.presentation.elements.note
 
-import com.sunilson.firenote.presentation.shared.base.element.interfaces.ElementContentPresenterContract
+import com.sunilson.firenote.presentation.elements.elementActivity.interfaces.ElementContentPresenterContract
 
 interface NotePresenterContract {
     interface INotePresenter {

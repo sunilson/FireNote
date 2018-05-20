@@ -39,13 +39,13 @@
 //import com.sunilson.firenote.presentation.application.BaseApplication;
 //import com.sunilson.firenote.presentation.shared.base.BaseActivity;
 //import com.sunilson.firenote.presentation.shared.base.BaseContract;
-//import com.sunilson.firenote.presentation.shared.base.element.activities.ElementActivity;
+//import com.sunilson.firenote.presentation.elements.elementActivity.ElementActivity;
 //import com.sunilson.firenote.presentation.bin.BinActivity;
 //import com.sunilson.firenote.presentation.elements.bundle.BundleActivity;
 //import com.sunilson.firenote.presentation.elements.checklist.ChecklistActivity;
 //import com.sunilson.firenote.presentation.settings.SettingsActivity;
 //import com.sunilson.firenote.presentation.adapters.CategoryVisibilityAdapter;
-//import com.sunilson.firenote.presentation.shared.adapters.elementList.ElementRecyclerAdapter;
+//import com.sunilson.firenote.presentation.elements.elementActivity.ElementRecyclerAdapter;
 //import com.sunilson.firenote.presentation.addElementDialog.AddElementDialog;
 //import com.sunilson.firenote.presentation.dialogs.EditElementDialog;
 //import com.sunilson.firenote.presentation.dialogs.ListAlertDialog;

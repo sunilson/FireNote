@@ -26,7 +26,7 @@
     <string name="element_checklist">Checklist</string>
     <string name="menu_log_out">Log out</string>
     <string name="menu_sort">Sort elements</string>
-    <string name="sort_by">Sort by</string>
+    <string name="sort_by">Sort by %1$s</string>
     <string name="sort_ascending_date">Date Ascending</string>
     <string name="sort_descending_date">Date Descending</string>
     <string name="sort_ascending_name">Name Ascending</string>

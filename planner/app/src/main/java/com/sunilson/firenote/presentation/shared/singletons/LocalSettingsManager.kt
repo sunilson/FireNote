@@ -11,9 +11,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LocalSettingsManager @Inject constructor(application: Application) {
+class LocalSettingsManager @Inject constructor(context: Context) {
 
-    private val sharedPrefs: SharedPreferences = application.getSharedPreferences("prefs", Context.MODE_PRIVATE)
+    private val sharedPrefs: SharedPreferences = context.getSharedPreferences("prefs", Context.MODE_PRIVATE)
 
     fun setCategoryVisiblity(id: String, visibility: Int) {
         val editor = sharedPrefs.edit()

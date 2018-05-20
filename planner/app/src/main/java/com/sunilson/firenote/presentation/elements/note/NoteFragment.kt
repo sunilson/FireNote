@@ -10,8 +10,8 @@ import android.widget.Toast
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.shared.base.BaseFragment
-import com.sunilson.firenote.presentation.shared.base.element.ElementFragment
-import com.sunilson.firenote.presentation.shared.base.element.interfaces.BaseElementPresenterContract
+import com.sunilson.firenote.presentation.elements.ElementFragment
+import com.sunilson.firenote.presentation.elements.elementActivity.interfaces.BaseElementPresenterContract
 import com.sunilson.firenote.presentation.shared.singletons.ConnectivityManager
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.base_element_activity.*

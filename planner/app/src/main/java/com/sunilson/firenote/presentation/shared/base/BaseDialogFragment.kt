@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.view.View
 import com.sunilson.firenote.R
-import com.sunilson.firenote.presentation.shared.base.element.activities.ElementActivity
+import com.sunilson.firenote.presentation.elements.elementActivity.ElementActivity
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.alertdialog_custom_title.view.*
 

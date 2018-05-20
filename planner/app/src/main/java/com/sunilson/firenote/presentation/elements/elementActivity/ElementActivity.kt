@@ -1,4 +1,4 @@
-package com.sunilson.firenote.presentation.shared.base.element.activities
+package com.sunilson.firenote.presentation.elements.elementActivity
 
 import android.content.Context
 import android.content.res.ColorStateList
@@ -16,10 +16,10 @@ import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Category
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.databinding.BaseElementActivityBinding
+import com.sunilson.firenote.presentation.elements.ElementFragment
 import com.sunilson.firenote.presentation.elements.note.NoteFragment
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
-import com.sunilson.firenote.presentation.shared.base.element.ElementFragment
-import com.sunilson.firenote.presentation.shared.base.element.interfaces.BaseElementPresenterContract
+import com.sunilson.firenote.presentation.elements.elementActivity.interfaces.BaseElementPresenterContract
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.base_element_activity.*
@@ -27,6 +27,7 @@ import java.util.*
 import javax.inject.Inject
 
 class ElementActivity : BaseActivity(), BaseElementPresenterContract.View {
+
     @Inject
     lateinit var presenter: BaseElementPresenterContract.Presenter
 

@@ -18,14 +18,14 @@
             android:minHeight="70dp"
             android:id="@+id/elementList_content"
             android:foreground="?attr/selectableItemBackground"
-            android:background="@color/defaultElementColor"
+            android:background="@{obj.transparentColor}"
             >
 
             <LinearLayout
                 android:id="@+id/elementList_icon_holder"
                 android:layout_width="35dp"
                 android:layout_height="match_parent"
-                android:background="@color/note_color_1">
+                android:background="@{obj.color}">
 
                 <ImageView
                     style="@style/element_List_element"
@@ -35,6 +35,7 @@
                     android:layout_marginRight="8dp"
                     android:id="@+id/elementList_icon"
                     android:tint="@color/tint_white"
+                    android:src="@{context.getResources().getDrawable(obj.icon)}"
                     />
 
             </LinearLayout>
@@ -87,6 +88,7 @@
                 android:layout_width="wrap_content"
                 android:gravity="center_vertical|end"
                 android:textSize="14sp"
+                android:text="@{obj.formattedDate}"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="sans-serif" />

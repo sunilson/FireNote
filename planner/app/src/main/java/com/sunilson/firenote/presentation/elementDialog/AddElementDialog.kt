@@ -1,19 +1,15 @@
-package com.sunilson.firenote.presentation.addElementDialog
+package com.sunilson.firenote.presentation.elementDialog
 
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.Toast
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
-import com.sunilson.firenote.Interfaces.BundleInterface
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Category
 import com.sunilson.firenote.data.models.Element
-import com.sunilson.firenote.presentation.homepage.MainActivity
 import com.sunilson.firenote.presentation.shared.base.BaseDialogFragment
 import com.sunilson.firenote.presentation.shared.singletons.ConnectivityManager
+import com.sunilson.firenote.presentation.shared.singletons.ConstantController
 import kotlinx.android.synthetic.main.alertdialog_custom_title.view.*
 import javax.inject.Inject
 
@@ -22,25 +18,29 @@ class AddElementDialog : BaseDialogFragment() {
     @Inject
     lateinit var connectivityManager: ConnectivityManager
 
-    private lateinit var addElementView: AddElementView
-    private lateinit var element : Element
+    @Inject
+    lateinit var constantController: ConstantController
+
+    lateinit var elementDialogView: ElementDialogView
+
+    private lateinit var element: Element
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         super.onCreateDialog(savedInstanceState)
-        addElementView = AddElementView(activity as Context)
 
         val elementType = arguments?.getString("elementType")
-        if(elementType != null) element = Element("", Category("", ""), elementType)
+        if (elementType != null) element = Element("", Category("", ""), elementType)
 
         titleView.dialog_title.text = arguments?.getString("title")
-        if(savedInstanceState != null) addElementView.selectedColor = savedInstanceState.getInt("color")
+        elementDialogView = ElementDialogView(context!!, constantController)
+        if (savedInstanceState != null) elementDialogView.selectedColor = savedInstanceState.getInt("color")
 
         builder.setCustomTitle(titleView)
-        builder.setView(addElementView)
-        builder.setPositiveButton(getString(R.string.confirm_add_dialog),  { dialog, which -> (activity as AddElementListener).addElement(element) })
-        builder.setNegativeButton(getString(R.string.cancel_add_dialog), { _, _ ->  dismiss()})
+        builder.setView(elementDialogView)
+        builder.setPositiveButton(getString(R.string.confirm_add_dialog), { _, _ -> (activity as AddElementListener).addElement(element) })
+        builder.setNegativeButton(getString(R.string.cancel_add_dialog), { _, _ -> dismiss() })
 
-        if(!connectivityManager.isConnected()) Toast.makeText(activity, R.string.edit_no_connection, Toast.LENGTH_LONG).show()
+        if (!connectivityManager.isConnected()) Toast.makeText(activity, R.string.edit_no_connection, Toast.LENGTH_LONG).show()
 
         val dialog = builder.create()
         setDialogLayoutParams(dialog)
@@ -62,7 +62,7 @@ class AddElementDialog : BaseDialogFragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt("color", addElementView.selectedColor)
+        outState.putInt("color", elementDialogView.selectedColor)
     }
 
     private fun setDialogLayoutParams(dialog: Dialog) {
