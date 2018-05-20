@@ -25,12 +25,20 @@ function getElementListRef() {
     return fb.database().ref(`users/${fb.auth().currentUser.uid}/elements/main`)
 }
 
-function lockElement() {
-
+function lockElement(value, id, parent) {
+    console.log(`users/${fb.auth().currentUser.uid}/elements/main/${id}/locked`)
+    fb.database().ref(`users/${fb.auth().currentUser.uid}/elements/main/${id}/locked`).set(value)
 }
 
-function deleteElement() {
+function deleteElement(id, parent, cb) {
+    if (!parent) fb.database().ref(`users/${fb.auth().currentUser.uid}/elements/main/${id}`).remove(error => {
+        cb(error)
+    })
+    else null
+}
 
+function saveNote(text, id) {
+    fb.database().ref(`users/${fb.auth().currentUser.uid}/contents/${id}/text`).set(text)
 }
 
 function createElement() {
@@ -50,5 +58,8 @@ export default {
     getElementListRef,
     getNoteContentRef,
     getChecklistContentRef,
-    getElementRef
+    getElementRef,
+    lockElement,
+    deleteElement,
+    saveNote
 }

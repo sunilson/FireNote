@@ -3,9 +3,15 @@
         <v-layout row>
             <v-flex xs12 sm6 offset-sm3 class="note">
                 <transition name="fade-transition" >
-                    <textarea v-if="content.text" :value="content.text" class="noteText"></textarea>
-                    <div v-if="content.text" v-html="lineBreak(content.text)"></div>
+                    <textarea v-if="content.text && editMode" v-model="content.text" class="noteText"></textarea>
                 </transition>
+                <transition name="fade-transition" >
+                    <p v-if="content.text && !editMode" v-html="lineBreak(content.text)" class="noteText"></p>
+                </transition>
+                <v-btn color="pink" dark fixed bottom right fab style="display: flex" @click="toggleEdit()">
+                    <v-icon v-if="editMode">check</v-icon>
+                    <v-icon v-else>edit</v-icon>
+                </v-btn>
             </v-flex>
         </v-layout>
     </v-container>
@@ -17,6 +23,7 @@ export default {
     props: ["id"],
     data() { 
         return {
+            editMode: false,
             content: null
         }
     },
@@ -27,9 +34,12 @@ export default {
     },
     methods: {
         lineBreak (value) {
-            console.log(value)
             if(!value) return ""
             return value.replace(/(?:\r\n|\r|\n)/g, '<br/>')
+        },
+        toggleEdit() {
+            if(this.editMode) firebase.saveNote(this.content.text, this.id)
+            this.editMode = !this.editMode
         }
     }
 }

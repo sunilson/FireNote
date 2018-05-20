@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Home from "../components/Home.vue";
+import ElementList from "../components/ElementList.vue";
 import Login from "../components/authentication/Login.vue";
 import BaseElement from "../components/elements/BaseElement.vue";
 import firebase from "firebase"
@@ -14,22 +15,28 @@ const router = new Router({
     component: Home,
     meta: {
       requiresAuth: true
-    }
+    },
+    children: [
+      {
+        path: "/",
+        name: "ElementList",
+        component: ElementList,
+      },
+      {
+        path: "/element/:id",
+        name: "BaseElement",
+        component: BaseElement,
+        meta: {
+          requiresAuth: true
+        }
+      }
+    ]
   },
   {
     path: "/login",
     name: "Login",
     component: Login
-  },
-  {
-    path: "/element/:id",
-    name: "BaseElement",
-    component: BaseElement,
-    meta: {
-      requiresAuth: true
-    }
-  }
-  ]
+  }]
 });
 
 router.beforeEach((to, from, next) => {
