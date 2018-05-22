@@ -25,6 +25,13 @@ function getElementListRef() {
     return fb.database().ref(`users/${fb.auth().currentUser.uid}/elements/main`)
 }
 
+function getSettings() {
+    return {
+        source: fb.database().ref(`users/${fb.auth().currentUser.uid}/settings`),
+        asObject: true
+    }
+}
+
 function lockElement(value, id, parent) {
     console.log(`users/${fb.auth().currentUser.uid}/elements/main/${id}/locked`)
     fb.database().ref(`users/${fb.auth().currentUser.uid}/elements/main/${id}/locked`).set(value)
@@ -41,8 +48,8 @@ function saveNote(text, id) {
     fb.database().ref(`users/${fb.auth().currentUser.uid}/contents/${id}/text`).set(text)
 }
 
-function createElement() {
-
+function createElement(element, cb) {
+    fb.database().ref(`users/${fb.auth().currentUser.uid}/elements/main`).push().set(element, err => cb(err))
 }
 
 function restoreElement() {
@@ -61,5 +68,7 @@ export default {
     getElementRef,
     lockElement,
     deleteElement,
-    saveNote
+    saveNote,
+    createElement,
+    getSettings
 }

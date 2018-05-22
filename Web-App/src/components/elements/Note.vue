@@ -18,9 +18,12 @@
 </template>
 <script>
 import firebase from "../../services/firebase.js"
+import {EventBus} from "../../services/EventBus.js"
+import BaseElmenetContent from "./BaseElementContent"
 
 export default {
     props: ["id"],
+    extends: BaseElmenetContent,
     data() { 
         return {
             editMode: false,
@@ -38,8 +41,14 @@ export default {
             return value.replace(/(?:\r\n|\r|\n)/g, '<br/>')
         },
         toggleEdit() {
-            if(this.editMode) firebase.saveNote(this.content.text, this.id)
+            if(this.editMode) {
+                EventBus.$emit("showSnackbar", "Saved Note!")
+                firebase.saveNote(this.content.text, this.id)
+            }
             this.editMode = !this.editMode
+        },
+        willLeave() {
+            if(this.editMode) this.toggleEdit()
         }
     }
 }

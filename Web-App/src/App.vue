@@ -1,7 +1,5 @@
 <template>
-    <transition name="slide-y-transition" mode="out-in">
-        <router-view></router-view>
-    </transition>
+    <router-view></router-view>
 </template>
 
 <script>

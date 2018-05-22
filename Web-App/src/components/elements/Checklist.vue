@@ -13,9 +13,11 @@
 <script>
 import firebase from "../../services/firebase.js"
 import ChecklistElement from "../ChecklistElement.vue";
+import BaseElementContent from "./BaseElementContent"
 
 export default {
     props: ["id"],
+    extends: BaseElementContent,
     data() { 
         return {
             content: []

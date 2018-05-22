@@ -3,6 +3,8 @@ import Router from "vue-router";
 import Home from "../components/Home.vue";
 import ElementList from "../components/ElementList.vue";
 import Login from "../components/authentication/Login.vue";
+import Register from "../components/authentication/Register.vue";
+import Authentication from "../components/authentication/Authentication.vue";
 import BaseElement from "../components/elements/BaseElement.vue";
 import firebase from "firebase"
 
@@ -33,9 +35,21 @@ const router = new Router({
     ]
   },
   {
-    path: "/login",
-    name: "Login",
-    component: Login
+    path: "/auth",
+    name: "Authentication",
+    component: Authentication,
+    children: [
+      {
+        path: "/",
+        name: "Login",
+        component: Login
+      },
+      {
+        path: "/register",
+        name: "Register",
+        component: Register
+      }
+    ]
   }]
 });
 
@@ -43,7 +57,7 @@ router.beforeEach((to, from, next) => {
   const currentUser = firebase.auth().currentUser
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
 
-  if (requiresAuth && !currentUser) next("Login")
+  if (requiresAuth && !currentUser) next("/auth")
   else if (!requiresAuth && currentUser) next("/")
   else next()
 })

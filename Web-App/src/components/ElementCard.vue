@@ -12,6 +12,7 @@
                         <div class="header ellipsis">{{element.title}}</div>
                         <div class="subHeader ellipsis">{{element.categoryName}}</div>
                     </div>
+                    <v-icon v-if="element.locked">lock_outline</v-icon>
                 </v-flex>
                 <v-flex xs3 style="height: 60px; display: flex; align-items: center; font-size: 12px" class="ellipsis">
                     {{element.creationDate | parseDate}}

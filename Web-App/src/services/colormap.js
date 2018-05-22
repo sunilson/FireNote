@@ -1,5 +1,4 @@
 export default function (color) {
-    console.log(color)
     const bg = ["", ""]
     switch (color) {
         case -769226:
