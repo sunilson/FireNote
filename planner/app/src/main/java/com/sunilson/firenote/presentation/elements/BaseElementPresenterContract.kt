@@ -1,4 +1,4 @@
-package com.sunilson.firenote.presentation.elements.elementActivity.interfaces
+package com.sunilson.firenote.presentation.elements
 
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.shared.base.IBaseView

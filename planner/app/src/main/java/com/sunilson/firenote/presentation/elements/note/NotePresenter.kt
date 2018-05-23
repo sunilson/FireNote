@@ -7,11 +7,7 @@ import javax.inject.Inject
 
 @FragmentScope
 class NotePresenter @Inject constructor(private val eventRepository: IFirebaseRepository, val view: NotePresenterContract.INoteView)
-    : BasePresenter(), NotePresenterContract.INotePresenter {
-
-    init {
-        view.addObserver(this)
-    }
+    : BasePresenter(view), NotePresenterContract.INotePresenter {
 
     override fun onStop() {
         view.finishTextEdit()

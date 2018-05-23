@@ -52,6 +52,5 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun toggleLoading(loading: Boolean, message: String?) {}
-    override fun showTutorial() {}
 
 }

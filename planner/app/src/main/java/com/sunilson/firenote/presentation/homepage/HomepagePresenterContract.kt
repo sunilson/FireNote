@@ -7,6 +7,7 @@ import com.sunilson.firenote.presentation.shared.base.IBaseView
 interface HomepagePresenterContract {
     interface IHomepageView : IBaseView, AddElementListener {
         fun listElements(elements: List<Element>)
+        fun loggedOut()
     }
 
     interface IHomepagePresenter {

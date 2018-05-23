@@ -186,5 +186,8 @@
     <string name="welcome_to_bundle">This is a Bundle!</string>
     <string name="element_removed">Element was removed!</string>
     <string name="tutorial_add_bundle_element">A Bundle is a container for Notes and Checklists. Click here to add a new Bundle element!</string>
+    <string name="login_field_error">One or more fields is not filled</string>
+    <string name="login_error">Error occured</string>
+    <string name="register_error">One ore more fields not correct</string>
 
 </resources>

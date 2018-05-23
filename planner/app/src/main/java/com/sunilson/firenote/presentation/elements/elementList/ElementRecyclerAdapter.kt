@@ -1,4 +1,4 @@
-package com.sunilson.firenote.presentation.shared.adapters.elementList
+package com.sunilson.firenote.presentation.elements.elementList
 
 import android.content.Context
 import android.databinding.DataBindingUtil

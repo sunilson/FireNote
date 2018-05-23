@@ -17,11 +17,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.ItemTouchHelper.SimpleItemTouchHelperCallbackMain
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
+import com.sunilson.firenote.presentation.authentication.AuthenticationActivity
 import com.sunilson.firenote.presentation.elementDialog.AddElementDialog
 import com.sunilson.firenote.presentation.bin.BinActivity
 import com.sunilson.firenote.presentation.settings.SettingsActivity
-import com.sunilson.firenote.presentation.shared.adapters.elementList.ElementRecyclerAdapter
-import com.sunilson.firenote.presentation.shared.adapters.elementList.ElementRecyclerAdapterFactory
+import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapter
+import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapterFactory
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
 import com.sunilson.firenote.presentation.shared.base.BasePresenter
 import com.sunilson.firenote.presentation.shared.interfaces.HasElementList
@@ -47,9 +48,6 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
     lateinit var presenter: HomepagePresenterContract.IHomepagePresenter
 
     @Inject
-    lateinit var tutorialController: TutorialController
-
-    @Inject
     lateinit var localSettingsManager: LocalSettingsManager
 
     @Inject
@@ -57,8 +55,6 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
 
     @Inject
     lateinit var sortListingArrayAdapterFactory: SortingListArrayAdapterFactory
-
-    private val authListener: FirebaseAuth.AuthStateListener = FirebaseAuth.AuthStateListener {}
 
     //Click listeners
     private lateinit var recyclerViewClickListener: View.OnClickListener
@@ -105,21 +101,10 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        FirebaseAuth.getInstance().addAuthStateListener(authListener)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        FirebaseAuth.getInstance().removeAuthStateListener(authListener)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
-
 
     /**
      * Go to home screen on back press
@@ -225,9 +210,11 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
         }
     }
 
-    override fun showTutorial() {
-        Handler().postDelayed({ tutorialController.showMainActivityTutorial(this) }, 500)
+    override fun loggedOut() {
+        finish()
+        startActivity(Intent(this, AuthenticationActivity::class.java))
     }
+
     override fun toggleLoading(loading: Boolean, message: String?) {}
     override fun addElement(element: Element) = presenter.addElement(element)
     override fun elementAdded(element: Element) {}

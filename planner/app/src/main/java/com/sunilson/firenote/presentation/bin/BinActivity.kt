@@ -51,5 +51,4 @@ class BinActivity : BaseActivity(), BinPresenterContract.View {
     override fun elementChanged(element: Element) {}
     override fun elementRemoved(element: Element) {}
     override fun toggleLoading(loading: Boolean, message: String?) {}
-    override fun showTutorial() {}
 }

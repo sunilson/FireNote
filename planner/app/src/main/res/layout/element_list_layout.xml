@@ -3,14 +3,14 @@
     <data>
         <variable
             name="obj"
-            type="com.sunilson.firenote.data.models.Element"/>
+            type="com.sunilson.firenote.data.models.Element" />
+        <import type="java.util.Date" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/container"
-        >
+        android:id="@+id/container">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
@@ -18,8 +18,7 @@
             android:minHeight="70dp"
             android:id="@+id/elementList_content"
             android:foreground="?attr/selectableItemBackground"
-            android:background="@{obj.transparentColor}"
-            >
+            android:transparentColor="@{obj.color}">
 
             <LinearLayout
                 android:id="@+id/elementList_icon_holder"
@@ -35,7 +34,7 @@
                     android:layout_marginRight="8dp"
                     android:id="@+id/elementList_icon"
                     android:tint="@color/tint_white"
-                    android:src="@{context.getResources().getDrawable(obj.icon)}"
+                    android:noteTypeIcon="@{obj.noteType}"
                     />
 
             </LinearLayout>
@@ -88,7 +87,7 @@
                 android:layout_width="wrap_content"
                 android:gravity="center_vertical|end"
                 android:textSize="14sp"
-                android:text="@{obj.formattedDate}"
+                android:formatDate="@{obj.creationDate}"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="16dp"
                 android:fontFamily="sans-serif" />

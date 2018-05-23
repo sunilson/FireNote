@@ -24,16 +24,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.sunilson.firenote.presentation.authentication.LoginActivity"
+            android:name="com.sunilson.firenote.presentation.authentication.AuthenticationActivity"
             android:configChanges="keyboardHidden|screenSize"
             android:label="@string/app_name"
-            android:parentActivityName="com.sunilson.firenote.activities.StartActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name="com.sunilson.firenote.presentation.authentication.RegisterActivity"
-            android:configChanges="keyboardHidden|screenSize"
-            android:label="@string/app_name"
-            android:parentActivityName="com.sunilson.firenote.presentation.authentication.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity

@@ -21,6 +21,7 @@
         android:paddingRight="@dimen/login_activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:animateLayoutChanges="true"
         tools:context="com.sunilson.firenote.presentation.authentication.LoginActivity"
         tools:showIn="@layout/fragment_login">
 
@@ -61,8 +62,6 @@
             android:nextFocusRight="@+id/loginPassword"
             android:nextFocusUp="@+id/loginEmail"
             android:theme="@style/loginEditText" />
-
-
         <EditText
             android:id="@+id/loginPassword"
             android:layout_width="match_parent"
@@ -114,6 +113,16 @@
                 android:textColor="@color/secondary_text_color"
                 android:textStyle="bold" />
         </LinearLayout>
+
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            android:id="@+id/fragment_login_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:indeterminate="true"
+            app:mpb_progressStyle="horizontal"
+            android:visibility="gone"
+            style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal" />
 
         <TextView
             android:id="@+id/forgotPasswordLink"

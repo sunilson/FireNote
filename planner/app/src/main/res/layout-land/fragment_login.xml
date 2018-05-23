@@ -119,6 +119,15 @@
             </LinearLayout>
         </LinearLayout>
 
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            android:id="@+id/fragment_login_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:indeterminate="true"
+            app:mpb_progressStyle="horizontal"
+            android:visibility="gone"
+            style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal" />
 
         <TextView
             android:id="@+id/forgotPasswordLink"

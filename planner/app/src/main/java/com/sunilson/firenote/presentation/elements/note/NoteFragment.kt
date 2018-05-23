@@ -11,7 +11,7 @@ import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.shared.base.BaseFragment
 import com.sunilson.firenote.presentation.elements.ElementFragment
-import com.sunilson.firenote.presentation.elements.elementActivity.interfaces.BaseElementPresenterContract
+import com.sunilson.firenote.presentation.elements.BaseElementPresenterContract
 import com.sunilson.firenote.presentation.shared.singletons.ConnectivityManager
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.base_element_activity.*
@@ -122,7 +122,6 @@ class NoteFragment : BaseFragment(), NotePresenterContract.INoteView, ElementFra
     override fun titleEditToggled(active: Boolean) = toggleEditMode()
     override fun noteTextChanged(text: String) = notepad.setText(text)
     override fun toggleLoading(loading: Boolean, message: String?) {}
-    override fun showTutorial() {}
     override fun canLeave(): Boolean {
         if (editMode) {
             toggleEditMode()

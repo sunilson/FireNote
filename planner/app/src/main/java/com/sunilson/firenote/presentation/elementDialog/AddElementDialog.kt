@@ -33,7 +33,7 @@ class AddElementDialog : BaseDialogFragment() {
 
         titleView.dialog_title.text = arguments?.getString("title")
         elementDialogView = ElementDialogView(context!!, constantController)
-        if (savedInstanceState != null) elementDialogView.selectedColor = savedInstanceState.getInt("color")
+        //if (savedInstanceState != null) elementDialogView.selectedColor = savedInstanceState.getInt("color")
 
         builder.setCustomTitle(titleView)
         builder.setView(elementDialogView)
@@ -62,7 +62,7 @@ class AddElementDialog : BaseDialogFragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt("color", elementDialogView.selectedColor)
+       // outState.putInt("color", elementDialogView.selectedColor)
     }
 
     private fun setDialogLayoutParams(dialog: Dialog) {

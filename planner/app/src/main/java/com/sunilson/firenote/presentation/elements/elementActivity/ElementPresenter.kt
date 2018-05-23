@@ -1,14 +1,14 @@
 package com.sunilson.firenote.presentation.elements.elementActivity
 
 import com.sunilson.firenote.data.IFirebaseRepository
+import com.sunilson.firenote.presentation.elements.BaseElementPresenterContract
 import com.sunilson.firenote.presentation.shared.base.BasePresenter
-import com.sunilson.firenote.presentation.elements.elementActivity.interfaces.BaseElementPresenterContract
 import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
 import javax.inject.Inject
 
 @ActivityScope
 class ElementPresenter @Inject constructor(private val eventRepository: IFirebaseRepository, private val view: BaseElementPresenterContract.View)
-    : BaseElementPresenterContract.Presenter, BasePresenter() {
+    : BaseElementPresenterContract.Presenter, BasePresenter(view) {
 
     override fun loadElementData() {
         disposable.add(eventRepository.loadElement(view.element.elementID, view.element.parent).subscribe({
@@ -29,11 +29,5 @@ class ElementPresenter @Inject constructor(private val eventRepository: IFirebas
 
     override fun onStart() {
         loadElementData()
-    }
-
-    override fun onDestroy() {
-    }
-
-    override fun onCreate() {
     }
 }

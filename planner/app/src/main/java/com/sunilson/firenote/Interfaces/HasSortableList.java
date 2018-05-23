@@ -2,7 +2,7 @@ package com.sunilson.firenote.Interfaces;
 
 import android.widget.TextView;
 
-import com.sunilson.firenote.presentation.shared.adapters.elementList.ElementRecyclerAdapter;
+import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapter;
 
 /**
  * @author Linus Weiss

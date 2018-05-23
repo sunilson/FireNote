@@ -5,39 +5,37 @@ import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.OnLifecycleEvent
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
-import com.sunilson.firenote.presentation.shared.other.DisposableDelegate
+import com.sunilson.firenote.presentation.shared.DisposableDelegate
+import com.sunilson.firenote.presentation.shared.showToast
 import io.reactivex.disposables.CompositeDisposable
 
 interface IBaseView : LifecycleOwner {
     val mContext: Context
     fun addObserver(presenter: BasePresenter) = lifecycle.addObserver(presenter)
-    fun showError(message: String?) = Toast.makeText(mContext, message, Toast.LENGTH_LONG).show()
-    fun showSuccess(message: String?) = Toast.makeText(mContext, message, Toast.LENGTH_LONG).show()
+    fun showError(message: String?) = mContext.showToast(message)
+    fun showSuccess(message: String?) = mContext.showToast(message)
     fun toggleLoading(loading: Boolean, message: String? = null)
-    fun showTutorial()
 }
 
-
-
-abstract class BasePresenter : LifecycleObserver {
+abstract class BasePresenter(view: IBaseView) : LifecycleObserver {
 
     protected val disposable: CompositeDisposable by DisposableDelegate()
 
+    init { view.addObserver(this) }
+
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    abstract fun onStop()
+    open fun onStop() {}
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    abstract fun onStart()
+    open fun onStart() {}
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun SuperOnDestroy() {
+    open fun onDestroy() {
         disposable.dispose()
-        onDestroy()
     }
 
-    abstract fun onDestroy()
-
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    abstract fun onCreate()
+    open fun onCreate() {}
 }

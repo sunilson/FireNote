@@ -1,4 +1,4 @@
-package com.sunilson.firenote.presentation.shared.adapters.elementList;//package com.sunilson.firenote.presentation.elements.elementList;
+package com.sunilson.firenote.presentation.elements.elementList;//package com.sunilson.firenote.presentation.elements.elementList;
 //
 //import android.app.Activity;
 //import android.content.Context;

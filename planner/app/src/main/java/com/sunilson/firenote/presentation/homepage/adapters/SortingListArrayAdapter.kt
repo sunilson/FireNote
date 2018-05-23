@@ -8,8 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.SortingMethod
-import com.sunilson.firenote.presentation.homepage.MainActivity
-import com.sunilson.firenote.presentation.shared.Constants
 import com.sunilson.firenote.presentation.shared.base.adapters.BaseArrayAdapter
 import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
 import com.sunilson.firenote.presentation.shared.singletons.ConstantController
