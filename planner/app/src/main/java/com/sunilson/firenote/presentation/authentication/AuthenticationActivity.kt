@@ -49,6 +49,10 @@ class AuthenticationActivity : BaseActivity(), CanNavigateFragments, Authenticat
         transaction.commit()
     }
 
+    override fun pop() {
+        supportFragmentManager.popBackStack()
+    }
+
     override fun loggedIn() {
         finish()
         startActivity(Intent(this, MainActivity::class.java))
@@ -58,6 +62,18 @@ class AuthenticationActivity : BaseActivity(), CanNavigateFragments, Authenticat
 
     override fun onBackPressed() {
         if(!supportFragmentManager.findFragmentByTag("start").isVisible) super.onBackPressed()
+    }
+
+    override fun showSuccess(message: String?) {
+        supportFragmentManager.fragments.forEach {
+            if(it.isVisible) (it as IBaseView).showSuccess(message)
+        }
+    }
+
+    override fun showError(message: String?) {
+        supportFragmentManager.fragments.forEach {
+            if(it.isVisible) (it as IBaseView).showError(message)
+        }
     }
 
     override fun toggleLoading(loading: Boolean, message: String?) {

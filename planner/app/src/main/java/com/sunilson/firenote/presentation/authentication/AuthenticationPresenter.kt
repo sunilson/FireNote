@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.support.v4.app.FragmentActivity
 import android.support.v4.content.ContextCompat
-import android.util.Log
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -53,13 +52,14 @@ class AuthenticationPresenter @Inject constructor(val view: AuthenticationPresen
                     .child(FirebaseAuth.getInstance().currentUser?.uid)
                     .child("settings")
                     .child("registered")
-                    .addListenerForSingleValueEvent(object :ValueEventListener {
+                    .addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onCancelled(p0: DatabaseError?) {
                             view.loggedIn()
                         }
+
                         override fun onDataChange(p0: DataSnapshot?) {
                             val registered = p0?.getValue<Boolean>(Boolean::class.java)
-                            if(registered == null || !registered) addDefaultValues().subscribe{ _, _ -> view.loggedIn() }
+                            if (registered == null || !registered) addDefaultValues().subscribe { _, _ -> view.loggedIn() }
                             else view.loggedIn()
                         }
                     })
@@ -82,13 +82,9 @@ class AuthenticationPresenter @Inject constructor(val view: AuthenticationPresen
             return
         }
         view.toggleLoading(true)
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password).addOnSuccessListener {
-            view.toggleLoading(false)
-            view.showSuccess(view.mContext.getString(R.string.logged_in_as) + it.user.displayName)
-        }.addOnFailureListener {
-            view.toggleLoading(false)
-            view.showError("Sign in Failed!")
-        }
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener { view.showSuccess(view.mContext.getString(R.string.logged_in_as) + it.user.displayName) }
+                .addOnFailureListener { view.showError("Sign in Failed!") }
     }
 
     override fun startSocialSignIn() {
@@ -102,21 +98,14 @@ class AuthenticationPresenter @Inject constructor(val view: AuthenticationPresen
             val account = task.getResult(ApiException::class.java)
             firebaseAuthWithGoogle(account)
             view.toggleLoading(true)
-        } catch (e: ApiException) {
-        }
+        } catch (e: ApiException) { }
     }
 
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         FirebaseAuth.getInstance().signInWithCredential(credential)
-                .addOnSuccessListener {
-                    view.showSuccess(view.mContext.getString(R.string.logged_in_as) + it.user.displayName)
-                    view.toggleLoading(false)
-                }
-                .addOnFailureListener {
-                    view.showError(it.message)
-                    view.toggleLoading(false)
-                }
+                .addOnSuccessListener { view.showSuccess(view.mContext.getString(R.string.logged_in_as) + it.user.displayName) }
+                .addOnFailureListener { view.showError(it.message) }
     }
 
     private fun addDefaultValues(): Single<Any> {
@@ -201,7 +190,6 @@ class AuthenticationPresenter @Inject constructor(val view: AuthenticationPresen
                         view.toggleLoading(false)
                     }
                     .addOnFailureListener {
-                        view.toggleLoading(false)
                         when (it) {
                             is FirebaseAuthWeakPasswordException -> view.showError(view.mContext.getString(R.string.error_register_password_weak))
                             is FirebaseAuthInvalidCredentialsException -> view.showError(view.mContext.getString(R.string.error_register_invalid_email))
@@ -215,9 +203,13 @@ class AuthenticationPresenter @Inject constructor(val view: AuthenticationPresen
     }
 
     override fun resetPassword(email: String) {
+        view.toggleLoading(true)
+        if (email.isNotEmpty()) {
+            FirebaseAuth.getInstance().sendPasswordResetEmail(email)
+                    .addOnSuccessListener { view.showSuccess(view.mContext.getString(R.string.reset_success)) }
+                    .addOnFailureListener { view.showError(view.mContext.getString(R.string.reset_failed)) }
+        }
     }
 
-    override fun onConnectionFailed(p0: ConnectionResult) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun onConnectionFailed(p0: ConnectionResult) = view.showError(view.mContext.getString(R.string.login_error))
 }

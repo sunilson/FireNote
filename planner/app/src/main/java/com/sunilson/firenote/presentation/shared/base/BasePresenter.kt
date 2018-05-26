@@ -14,8 +14,14 @@ import io.reactivex.disposables.CompositeDisposable
 interface IBaseView : LifecycleOwner {
     val mContext: Context
     fun addObserver(presenter: BasePresenter) = lifecycle.addObserver(presenter)
-    fun showError(message: String?) = mContext.showToast(message)
-    fun showSuccess(message: String?) = mContext.showToast(message)
+    fun showError(message: String?) {
+        toggleLoading(false)
+        mContext.showToast(message)
+    }
+    fun showSuccess(message: String?) {
+        toggleLoading(false)
+        mContext.showToast(message)
+    }
     fun toggleLoading(loading: Boolean, message: String? = null)
 }
 
