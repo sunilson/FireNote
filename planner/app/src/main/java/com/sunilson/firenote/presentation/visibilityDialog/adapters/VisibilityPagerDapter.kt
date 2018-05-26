@@ -1,12 +1,12 @@
-package com.sunilson.firenote.presentation.adapters
+package com.sunilson.firenote.presentation.visibilityDialog.adapters
 
 import android.content.Context
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import com.sunilson.firenote.R
-import com.sunilson.firenote.fragments.CategoryFragment
-import com.sunilson.firenote.fragments.ColorFragment
+import com.sunilson.firenote.presentation.visibilityDialog.CategoryFragment
+import com.sunilson.firenote.presentation.visibilityDialog.ColorFragment
 
 class VisibilityPagerDapter(fm: FragmentManager, private val context: Context) : FragmentPagerAdapter(fm) {
 

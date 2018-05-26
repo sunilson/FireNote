@@ -6,15 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.sunilson.firenote.data.models.Category
 import com.sunilson.firenote.presentation.shared.base.adapters.BaseSpinnerArrayAdapter
-import com.sunilson.firenote.presentation.shared.di.scopes.DialogFragmentScope
-import com.sunilson.firenote.presentation.shared.singletons.ConstantController
-import javax.inject.Inject
+import com.sunilson.firenote.presentation.shared.categories
 
-class CategorySpinnerAdapter (context: Context, constantController: ConstantController)
+class CategorySpinnerAdapter(context: Context)
     : BaseSpinnerArrayAdapter<Category>(context) {
 
     init {
-        data = constantController.categories
+        data = context.categories()
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {

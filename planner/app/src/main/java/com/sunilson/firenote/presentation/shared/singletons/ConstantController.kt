@@ -1,6 +1,6 @@
+/*
 package com.sunilson.firenote.presentation.shared.singletons
 
-import android.app.Application
 import android.content.Context
 import android.support.v4.content.ContextCompat
 import com.sunilson.firenote.R
@@ -14,7 +14,7 @@ import javax.inject.Singleton
 @Singleton
 class ConstantController @Inject constructor(val context: Context) {
 
-    val categories: List<Category> = listOf(
+    var categories: List<Category> = listOf(
             Category(context.getString(R.string.category_events), "events"),
             Category(context.getString(R.string.category_events), "events"),
             Category(context.getString(R.string.category_events), "events"),
@@ -33,6 +33,7 @@ class ConstantController @Inject constructor(val context: Context) {
             NoteColor("note_color_7", ContextCompat.getColor(context, R.color.note_color_7)),
             NoteColor("note_color_8", ContextCompat.getColor(context, R.color.note_color_8)),
             NoteColor("note_color_9", ContextCompat.getColor(context, R.color.note_color_9)))
+
     val sortingMethods: List<SortingMethod> = listOf(
             SortingMethod(context.resources.getString(R.string.sort_descending_date), R.drawable.ic_date_range_black_24dp, ElementComparators.sortByDate(true)),
             SortingMethod(context.resources.getString(R.string.sort_ascending_date), R.drawable.ic_date_range_black_24dp, ElementComparators.sortByDate(false)),
@@ -42,7 +43,7 @@ class ConstantController @Inject constructor(val context: Context) {
     )
 
     init {
-        categories.sortedWith(Comparator { o1, o2 ->
+        categories = categories.sortedWith(Comparator { o1, o2 ->
             when {
                 o1.name.compareTo(o2.name, true) < 0 -> -1
                 o1.name.compareTo(o2.name, true) > 0 -> 1
@@ -50,4 +51,4 @@ class ConstantController @Inject constructor(val context: Context) {
             }
         })
     }
-}
+}*/

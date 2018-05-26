@@ -1,4 +1,4 @@
-//package com.sunilson.firenote.fragments;
+package com.sunilson.firenote.presentation.visibilityDialog;//package com.sunilson.firenote.fragments;
 //
 //import android.os.Bundle;
 //import android.view.LayoutInflater;

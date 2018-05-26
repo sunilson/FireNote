@@ -2,6 +2,7 @@ package com.sunilson.firenote.presentation.elementDialog
 
 import android.app.Dialog
 import android.os.Bundle
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import com.sunilson.firenote.R
@@ -9,7 +10,7 @@ import com.sunilson.firenote.data.models.Category
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.shared.base.BaseDialogFragment
 import com.sunilson.firenote.presentation.shared.singletons.ConnectivityManager
-import com.sunilson.firenote.presentation.shared.singletons.ConstantController
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.alertdialog_custom_title.view.*
 import javax.inject.Inject
 
@@ -17,9 +18,6 @@ class AddElementDialog : BaseDialogFragment() {
 
     @Inject
     lateinit var connectivityManager: ConnectivityManager
-
-    @Inject
-    lateinit var constantController: ConstantController
 
     lateinit var elementDialogView: ElementDialogView
 
@@ -32,7 +30,12 @@ class AddElementDialog : BaseDialogFragment() {
         if (elementType != null) element = Element("", Category("", ""), elementType)
 
         titleView.dialog_title.text = arguments?.getString("title")
-        elementDialogView = ElementDialogView(context!!, constantController)
+        titleView.dialog_title_action.visibility = View.VISIBLE
+        titleView.dialog_title_action.setOnClickListener {
+            //TODO
+        }
+
+        elementDialogView = ElementDialogView(context!!)
         //if (savedInstanceState != null) elementDialogView.selectedColor = savedInstanceState.getInt("color")
 
         builder.setCustomTitle(titleView)
@@ -62,7 +65,7 @@ class AddElementDialog : BaseDialogFragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-       // outState.putInt("color", elementDialogView.selectedColor)
+        // outState.putInt("color", elementDialogView.selectedColor)
     }
 
     private fun setDialogLayoutParams(dialog: Dialog) {

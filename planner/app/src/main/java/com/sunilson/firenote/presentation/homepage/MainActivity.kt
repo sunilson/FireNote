@@ -18,25 +18,26 @@ import com.sunilson.firenote.ItemTouchHelper.SimpleItemTouchHelperCallbackMain
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.authentication.AuthenticationActivity
-import com.sunilson.firenote.presentation.elementDialog.AddElementDialog
 import com.sunilson.firenote.presentation.bin.BinActivity
-import com.sunilson.firenote.presentation.settings.SettingsActivity
+import com.sunilson.firenote.presentation.elementDialog.AddElementDialog
+import com.sunilson.firenote.presentation.elements.elementActivity.ElementActivity
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapter
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapterFactory
+import com.sunilson.firenote.presentation.homepage.adapters.SortingListArrayAdapterFactory
+import com.sunilson.firenote.presentation.settings.SettingsActivity
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
 import com.sunilson.firenote.presentation.shared.base.BasePresenter
 import com.sunilson.firenote.presentation.shared.interfaces.HasElementList
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
-import com.sunilson.firenote.presentation.shared.singletons.TutorialController
+import com.sunilson.firenote.presentation.visibilityDialog.VisibilityDialog
 import dagger.android.AndroidInjection
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
-import com.sunilson.firenote.presentation.homepage.adapters.SortingListArrayAdapterFactory
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
 
 
 class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresenterContract.IHomepageView, HasElementList, View.OnClickListener {
@@ -96,9 +97,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
         if (localSettingsManager.getSortingMethod() != null) activity_main_sorting_bar_title.text = getString(R.string.current_sorthing_method) + " " + localSettingsManager.getSortingMethod()
         else activity_main_sorting_bar_title.text = getString(R.string.current_sorthing_method) + " " + getString(R.string.sort_ascending_name)
 
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            presenter.loadData()
-        }
+        if (FirebaseAuth.getInstance().currentUser != null) presenter.loadData()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -120,7 +119,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
         when (item?.itemId) {
             R.id.action_logOut -> FirebaseAuth.getInstance().signOut()
             R.id.main_element_sort -> toggleSorting()
-            R.id.main_element_visibility -> null
+            R.id.main_element_visibility -> VisibilityDialog.newInstance().show(supportFragmentManager, "dialog")
             R.id.action_bin -> startActivity(Intent(this, BinActivity::class.java))
             R.id.action_settings -> startActivity(Intent(this, SettingsActivity::class.java))
         }
@@ -139,20 +138,18 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
             if (element.locked) {
                 //TODO: Mit Callback
             } else {
-                val intent: Intent? = when (element.noteType) {
-                    "checklist" -> null
-                    "note" -> null
-                    "bundle" -> null
-                    else -> null
-                }
-                intent?.putExtra("element", element)
+                val intent = Intent(this, ElementActivity::class.java)
+                intent.putExtra("id", element.elementID)
+                intent.putExtra("noteType", element.noteType)
+                startActivity(intent)
             }
         }
 
         recyclerViewLongClickListener = View.OnLongClickListener {
             val element = adapter.data[activity_main_recycler_view.getChildLayoutPosition(it)]
-            if (element.locked) { }
-            else { }
+            if (element.locked) {
+            } else {
+            }
             true
         }
 
@@ -169,7 +166,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
     private fun toggleSorting() {
         val collapsed = activity_main_sorting_bar.layoutParams.height == resources.getDimensionPixelSize(R.dimen.sorting_layout_collapsed)
 
-        val height = if(collapsed) resources.getDimensionPixelSize(R.dimen.sorting_layout_expanded)
+        val height = if (collapsed) resources.getDimensionPixelSize(R.dimen.sorting_layout_expanded)
         else resources.getDimensionPixelSize(R.dimen.sorting_layout_collapsed)
 
         val slideAnimator = ValueAnimator.ofInt(activity_main_sorting_bar.height, height).setDuration(200)
@@ -179,21 +176,21 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
             layoutparams.height = value
             activity_main_sorting_bar.layoutParams = layoutparams
         }
-        slideAnimator.addListener(object: AnimatorListenerAdapter() {
+        slideAnimator.addListener(object : AnimatorListenerAdapter() {
             override fun onAnimationEnd(animation: Animator?) {
-                if(collapsed) sorting_methods_list.visibility = View.VISIBLE
+                if (collapsed) sorting_methods_list.visibility = View.VISIBLE
                 else activity_main_sorting_bar_title.visibility = View.VISIBLE
             }
         })
 
-        if(collapsed) activity_main_sorting_bar_title.visibility = View.GONE
+        if (collapsed) activity_main_sorting_bar_title.visibility = View.GONE
         else sorting_methods_list.visibility = View.GONE
 
         slideAnimator.start()
     }
 
     override fun onClick(v: View?) {
-        when(v?.id) {
+        when (v?.id) {
             R.id.fab_add_note -> {
                 AddElementDialog.newInstance(getString(R.string.add_Element_Title), "note").show(supportFragmentManager, "dialog")
                 fab.collapse()
@@ -224,6 +221,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
             elements.forEach { adapter.add(it) }
         }, 100)
     }
+
     override fun addObserver(presenter: BasePresenter) = lifecycle.addObserver(presenter)
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = dispatchingAndroidInjector
 }

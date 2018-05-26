@@ -10,17 +10,16 @@ import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.SortingMethod
 import com.sunilson.firenote.presentation.shared.base.adapters.BaseArrayAdapter
 import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
-import com.sunilson.firenote.presentation.shared.singletons.ConstantController
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
+import com.sunilson.firenote.presentation.shared.sortingMethods
 import javax.inject.Inject
 
 class SortingListArrayAdapter constructor(context: Context,
-                                          val localSettingsManager: LocalSettingsManager,
-                                          val constantController: ConstantController)
+                                          val localSettingsManager: LocalSettingsManager)
     : BaseArrayAdapter<SortingMethod>(context, 0) {
 
     init {
-        data = constantController.sortingMethods
+        data = context.sortingMethods()
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
@@ -46,9 +45,9 @@ class SortingListArrayAdapter constructor(context: Context,
 }
 
 @ActivityScope
-class SortingListArrayAdapterFactory @Inject constructor(val localSettingsManager: LocalSettingsManager, val constantController: ConstantController) {
-    fun create(context: Context) : SortingListArrayAdapter {
-        return SortingListArrayAdapter(context, localSettingsManager, constantController)
+class SortingListArrayAdapterFactory @Inject constructor(val localSettingsManager: LocalSettingsManager) {
+    fun create(context: Context): SortingListArrayAdapter {
+        return SortingListArrayAdapter(context, localSettingsManager)
     }
 }
 

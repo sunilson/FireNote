@@ -6,8 +6,8 @@
 //import android.support.v4.app.FragmentPagerAdapter;
 //
 //import com.sunilson.firenote.R;
-//import com.sunilson.firenote.fragments.CategoryFragment;
-//import com.sunilson.firenote.fragments.ColorFragment;
+//import com.sunilson.firenote.presentation.visibilityDialog.CategoryFragment;
+//import com.sunilson.firenote.presentation.visibilityDialog.ColorFragment;
 //
 ///**
 // * @author Linus Weiss

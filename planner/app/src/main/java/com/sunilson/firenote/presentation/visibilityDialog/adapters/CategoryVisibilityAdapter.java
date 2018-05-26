@@ -1,4 +1,4 @@
-//package com.sunilson.firenote.presentation.adapters;
+package com.sunilson.firenote.presentation.visibilityDialog.adapters;//package com.sunilson.firenote.presentation.adapters;
 //
 //import android.content.Context;
 //import android.support.annotation.NonNull;

@@ -12,8 +12,8 @@ import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.shared.base.adapters.BaseRecyclerAdapter
 import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
-import com.sunilson.firenote.presentation.shared.singletons.ConstantController
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
+import com.sunilson.firenote.presentation.shared.sortingMethods
 import javax.inject.Inject
 
 class ElementRecyclerAdapter constructor(
@@ -21,8 +21,7 @@ class ElementRecyclerAdapter constructor(
         val onClickListener: View.OnClickListener,
         val onLongClickListener: View.OnLongClickListener,
         val recyclerView: RecyclerView,
-        val localSettingsManager: LocalSettingsManager,
-        val constantController: ConstantController) : BaseRecyclerAdapter<Element>(context), ItemTouchHelperAdapter {
+        val localSettingsManager: LocalSettingsManager) : BaseRecyclerAdapter<Element>(context), ItemTouchHelperAdapter {
 
     private var allItems = mutableListOf<Element>()
 
@@ -99,7 +98,7 @@ class ElementRecyclerAdapter constructor(
         }
     }
 
-    fun sort(sortMethod: String) = _data.sortWith(constantController.sortingMethods.find { it.name == sortMethod }!!.comparator)
+    fun sort(sortMethod: String) = _data.sortWith(context.sortingMethods().find { it.name == sortMethod }!!.comparator)
 
     override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
         return false
@@ -112,11 +111,11 @@ class ElementRecyclerAdapter constructor(
 }
 
 @ActivityScope
-class ElementRecyclerAdapterFactory @Inject constructor(private val localSettingsManager: LocalSettingsManager, private val constantController: ConstantController) {
+class ElementRecyclerAdapterFactory @Inject constructor(private val localSettingsManager: LocalSettingsManager) {
     fun create(context: Context,
                onClickListener: View.OnClickListener,
                onLongClickListener: View.OnLongClickListener,
                recyclerView: RecyclerView): ElementRecyclerAdapter {
-        return ElementRecyclerAdapter(context, onClickListener, onLongClickListener, recyclerView, localSettingsManager, constantController)
+        return ElementRecyclerAdapter(context, onClickListener, onLongClickListener, recyclerView, localSettingsManager)
     }
 }

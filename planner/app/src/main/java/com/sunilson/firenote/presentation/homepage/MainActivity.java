@@ -44,7 +44,7 @@
 //import com.sunilson.firenote.presentation.elements.bundle.BundleActivity;
 //import com.sunilson.firenote.presentation.elements.checklist.ChecklistActivity;
 //import com.sunilson.firenote.presentation.settings.SettingsActivity;
-//import com.sunilson.firenote.presentation.adapters.CategoryVisibilityAdapter;
+//import com.sunilson.firenote.presentation.visibilityDialog.adapters.CategoryVisibilityAdapter;
 //import com.sunilson.firenote.presentation.elements.elementActivity.ElementRecyclerAdapter;
 //import com.sunilson.firenote.presentation.addElementDialog.AddElementDialog;
 //import com.sunilson.firenote.presentation.dialogs.EditElementDialog;

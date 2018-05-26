@@ -1,4 +1,4 @@
-package com.sunilson.firenote.presentation.adapters
+package com.sunilson.firenote.presentation.visibilityDialog.adapters
 
 import android.content.Context
 import android.view.View
@@ -6,20 +6,20 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Category
-import com.sunilson.firenote.presentation.homepage.MainActivity
+import com.sunilson.firenote.presentation.adapters.CheckableArrayAdapter
 import com.sunilson.firenote.presentation.shared.base.adapters.BaseArrayAdapter
+import com.sunilson.firenote.presentation.shared.categories
 import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
 import com.sunilson.firenote.presentation.shared.interfaces.HasElementList
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
-import com.sunilson.firenote.presentation.shared.views.CategoryVisibilityView
 import javax.inject.Inject
 
-class CategoryVisibilityAdapter private constructor(
+class CategoryVisibilityAdapter constructor(
         context: Context,
-        var localSettingsManager: LocalSettingsManager) : BaseArrayAdapter<Category>(context, 123), CheckableArrayAdapter {
+        var localSettingsManager: LocalSettingsManager) : BaseArrayAdapter<Category>(context, R.layout.category_list_layout), CheckableArrayAdapter {
 
     init {
-        //TODO Kategorien laden
+        _data = context.categories().toMutableList()
     }
 
     override fun toggleAll(checked: Boolean) {
@@ -35,7 +35,7 @@ class CategoryVisibilityAdapter private constructor(
 
         val elementHolder = if (row == null) {
             row = CategoryVisibilityView(context)
-            val tempHolder = CategoryVisibilityAdapter.ElementHolder(row.findViewById(R.id.category_element_text))
+            val tempHolder = ElementHolder(row.findViewById(R.id.category_element_text))
             row.tag = tempHolder
             tempHolder
         } else {
@@ -49,12 +49,14 @@ class CategoryVisibilityAdapter private constructor(
         return row
     }
 
+    /*
     @ActivityScope
     class CategoryVisibilityAdapterFactory @Inject constructor(private val localSettingsManager: LocalSettingsManager) {
         fun create(context: Context): CategoryVisibilityAdapter {
             return CategoryVisibilityAdapter(context, localSettingsManager)
         }
     }
+    */
 
     private class ElementHolder(val elementText: TextView)
 }
