@@ -1,17 +1,50 @@
 <template>
-    <router-view></router-view>
+    <v-app>
+        <v-snackbar
+        :timeout="4000"
+        bottom
+        v-model="snackbar">
+        {{ snackbarText }}
+        <v-btn flat color="pink" @click.native="snackbar = false">Close</v-btn>
+        </v-snackbar>
+        <router-view></router-view>
+    </v-app>
 </template>
 
 <script>
+import {EventBus} from "./services/EventBus.js"
+import firebase from "./services/firebase.js"
+
 export default {
   data() {
-    return {};
+    return {
+      snackbarText: "",
+      snackbar: false
+    };
   },
-  name: "App"
+  name: "App",
+  mounted() {
+    firebase.fb.auth().onAuthStateChanged(user => {
+        if(user) {
+            this.$router.replace("/")
+        } else {
+            this.$router.replace("/auth")
+        }
+    })
+    EventBus.$on('showSnackbar', message => {
+        this.snackbarText = message
+        this.snackbar = true
+    });
+  },
 };
 </script>
 
 <style>
+
+.small-headline {
+    font-size: 18px;
+    font-weight: normal;
+}
 
 .ellipsis {
   white-space: nowrap; 
@@ -20,9 +53,9 @@ export default {
 }
 
 .center-vertical {
-        display: flex;
-        align-items: center;
-    }
+    display: flex;
+    align-items: center;
+}
 
 .center {
   display: flex;

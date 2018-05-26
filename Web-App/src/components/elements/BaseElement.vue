@@ -22,8 +22,8 @@
               <v-icon>more_vert</v-icon>
             </v-btn>
             <v-list>
-              <v-list-tile v-for="(item, i) in menuItems" :key="item.name" @click="item.action()">
-                <v-list-tile-title>{{ item.name }}</v-list-tile-title>
+              <v-list-tile v-if="element.noteType == 'checklist'" @click="clearChecklist()">
+                <v-list-tile-title>Clean-Up</v-list-tile-title>
               </v-list-tile>
             </v-list>
           </v-menu>
@@ -57,8 +57,7 @@ export default {
   data() {
     return {
       dialog: false,
-      element: {},
-      menuItems: []
+      element: {}
     }
   },
   firebase() {
@@ -94,6 +93,9 @@ export default {
       }
 
       this.$router.go(-1)
+    },
+    clearChecklist() {
+      EventBus.$emit('clearChecklist')
     }
   },
 };

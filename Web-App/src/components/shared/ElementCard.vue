@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import colormap from "../services/colormap.js"
+import colormap from "../../services/colormap.js"
 
 export default {
   props: ["element"],

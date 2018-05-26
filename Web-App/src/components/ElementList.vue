@@ -17,8 +17,8 @@
       <v-container fluid>
           <v-layout row>
               <v-flex xs12 sm6 offset-sm3>
-                  <transition-group tag="v-layout" class="row wrap" mode="out-in">
-                      <element-card v-for="(item, index) in elements" :key="index" :element="item" @click.native="openElement(item)">
+                  <transition-group tag="v-layout" name="slide-x-transition" class="row wrap" mode="out-in">
+                      <element-card v-for="(item, index) in elements" :key="index" :element="item" @click.native="tryOpenElement(item)">
                       </element-card>
                   </transition-group>
               </v-flex>
@@ -39,39 +39,24 @@
               </v-speed-dial>
           </v-layout>
           <addElementDialog :show="addElement"></addElementDialog>
-          <v-dialog v-model="lockedElement" max-width="290">
-            <v-card>
-              <v-card-title class="headline">Element is locked</v-card-title>
-              <div style="padding-left: 16px; padding-right: 16px">
-                <v-text-field label="Element password" type="password" autofocus v-model="password" @keyup.enter="openElement()"></v-text-field>
-              </div>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="green darken-1" flat="flat" @click.native="lockedElement = false">Cancel</v-btn>
-                <v-btn color="green darken-1" flat="flat" @click.native="openElement()">Open</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+          <passwordDialog  @openLockedElement="openLockedElement($event)"></passwordDialog>
       </v-container>
     </v-content>
   </div>
 </template>
 
 <script>
-import ElementCard from "./ElementCard.vue";
-import AddElementDialog from "./AddElementDialog"
+import ElementCard from "./shared/ElementCard.vue";
+import AddElementDialog from "./shared/AddElementDialog"
 import firebase from "../services/firebase.js"
 import {hashPassword} from "../services/utilities.js"
+import {EventBus} from "../services/EventBus.js"
+import PasswordDialog from '../components/shared/PasswordDialog.vue';
 
 export default {
   name: "ElementList",
-  created() {
-    console.log("CREATED ELEMENTLIST")
-  },
   data() {
     return {
-      password: "",
-      lockedElement: false,
       selectedElement: null,
       elementToAdd: {
         title: "",
@@ -81,16 +66,12 @@ export default {
       fab: false,
       menuItems: [
           {
-          name: "Papierkorb",
-          action: () => {}
+            name: "Papierkorb",
+            action: () => {}
           },
           {
-          name: "Log Out",
-          action: () => {
-              firebase.fb.auth().signOut().then(() => {
-              this.$router.replace("/auth")
-              })
-          }
+            name: "Log Out",
+            action: () => firebase.fb.auth().signOut()
           }
       ],
       items: ["abc", "def", "ghi"],
@@ -98,28 +79,20 @@ export default {
     };
   },
   methods: {
-    openElement(element) {
-      if(element) this.selectedElement = element
-      else element = this.selectedElement
-
-      if(element.locked) {
-        if(this.password.length > 0) {
-          this.lockedElement = false
-          console.log(hashPassword(this.password))
-          console.log(this.settings.masterPassword)
-          if(hashPassword(this.password) == this.settings.masterPassword) {
-            this.$router.push({name: 'BaseElement', params: {id: element[".key"]}})
-          } else {
-            alert("Falsches Passwort!")
-          }
-          this.password = ""
-          this.selectedElement = null
-        } else {
-          this.lockedElement = true
-        }
-      } else {
-        this.selectedElement = null
+    tryOpenElement(element) {
+      this.selectedElement = null
+      if(!element.locked) {
         this.$router.push({name: 'BaseElement', params: {id: element[".key"]}})
+      } else {
+        this.selectedElement = element
+        EventBus.$emit("showPasswordDialog")
+      }
+    },
+    openLockedElement(password) {
+      if(hashPassword(password) == this.settings.masterPassword) {
+        this.$router.push({name: 'BaseElement', params: {id: this.selectedElement[".key"]}})
+      } else {
+        EventBus.$emit("showSnackbar", "Wrong password!")
       }
     }
   },
@@ -131,7 +104,8 @@ export default {
   },
   components: {
     elementCard: ElementCard,
-    addElementDialog: AddElementDialog
+    addElementDialog: AddElementDialog,
+    passwordDialog: PasswordDialog
   }
 };
 </script>
