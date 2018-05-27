@@ -29,23 +29,33 @@ import firebase from "../../services/firebase.js"
 import {EventBus} from "../../services/EventBus.js"
 
 export default {
-    props: ["show", "noteType"],
     data() {
         return {
+            show: false,
+            noteType: "note",
             title: "",
             category: "general",
-            color: "-769226",
+            color: -769226,
             categories: Constants.CATEGORIES,
             colors: Constants.COLORS
         }
+    },
+    mounted () {
+        EventBus.$on('addElement', (type) => {
+            this.noteType = type
+            this.show = true
+        });
     },
     methods: {
         confirm() {
             firebase.createElement({
                 title: this.title,
                 noteType: this.noteType,
-                categoryName: this.category,
-                categoryId: "TODO"
+                categoryName: Constants.CATEGORIES.find(category => category.id == this.category)["name"],
+                color: this.color,
+                categoryID: this.category,
+                locked: false,
+                timeStamp: new Date().getTime()
             }, err => {
                 console.log(err)
                 if(err) EventBus.$emit("showSnackbar", err)
@@ -59,5 +69,14 @@ export default {
 <style>
 .colorList .icon {
     display: none !important;
+}
+
+.colorList .input-group__details:after {
+    display: none !important;
+    height: 0 !important;
+}
+
+.colorList .input-group__input {
+    min-height: 40px;
 }
 </style>

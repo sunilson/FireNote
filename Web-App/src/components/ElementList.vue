@@ -22,48 +22,44 @@
                       </element-card>
                   </transition-group>
               </v-flex>
-              <v-speed-dial fixed bottom right v-model="fab">
-                  <v-btn slot="activator" v-model="fab" color="fabColor" dark fab>
-                      <v-icon>add</v-icon>
-                      <v-icon>close</v-icon>
-                  </v-btn>
-                  <v-btn fab dark small color="green" @click="addElement = true">
-                      <v-icon>list</v-icon>
-                  </v-btn>
-                  <v-btn fab dark small color="green" @click="addElement = true">
-                      <v-icon>event_note</v-icon>
-                  </v-btn>
-                  <v-btn fab dark small color="green" @click="addElement = true">
-                      <v-icon>done_all</v-icon>
-                  </v-btn>
-              </v-speed-dial>
           </v-layout>
-          <addElementDialog :show="addElement"></addElementDialog>
           <passwordDialog  @openLockedElement="openLockedElement($event)"></passwordDialog>
       </v-container>
+      <v-speed-dial fixed bottom right v-model="fab">
+        <v-btn slot="activator" v-model="fab" color="fabColor" dark fab>
+            <v-icon>add</v-icon>
+            <v-icon>close</v-icon>
+        </v-btn>
+        <v-btn fab dark small color="green" @click="addElement('bundle')">
+            <v-icon>list</v-icon>
+        </v-btn>
+        <v-btn fab dark small color="green" @click="addElement('note')">
+            <v-icon>event_note</v-icon>
+        </v-btn>
+        <v-btn fab dark small color="green" @click="addElement('checklist')">
+            <v-icon>done_all</v-icon>
+        </v-btn>
+      </v-speed-dial>
+      <addElementDialog></addElementDialog>
     </v-content>
   </div>
 </template>
 
 <script>
 import ElementCard from "./shared/ElementCard.vue";
-import AddElementDialog from "./shared/AddElementDialog"
 import firebase from "../services/firebase.js"
 import {hashPassword} from "../services/utilities.js"
 import {EventBus} from "../services/EventBus.js"
 import PasswordDialog from '../components/shared/PasswordDialog.vue';
+import AddElementDialog from "../components/shared/AddElementDialog"
 
 export default {
   name: "ElementList",
   data() {
     return {
-      selectedElement: null,
-      elementToAdd: {
-        title: "",
-        category: ""
-      },
-      addElement: false,
       fab: false,
+      noteType: "note",
+      selectedElement: null,
       menuItems: [
           {
             name: "Papierkorb",
@@ -79,6 +75,9 @@ export default {
     };
   },
   methods: {
+    addElement(type) {
+      EventBus.$emit("addElement", type)
+    },
     tryOpenElement(element) {
       this.selectedElement = null
       if(!element.locked) {
@@ -104,8 +103,8 @@ export default {
   },
   components: {
     elementCard: ElementCard,
+    passwordDialog: PasswordDialog,
     addElementDialog: AddElementDialog,
-    passwordDialog: PasswordDialog
   }
 };
 </script>
