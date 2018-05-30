@@ -138,7 +138,7 @@
 //     * @return New DialogFragment
 //     */
 //    public static com.sunilson.firenote.presentation.addElementDialog.AddElementDialog newInstance(String title, String elementType) {
-//        com.sunilson.firenote.presentation.addElementDialog.AddElementDialog dialog = new com.sunilson.firenote.presentation.addElementDialog.AddElementDialog();
+//        com.sunilson.firenote.presentation.addElementDialog.ElementDialog dialog = new com.sunilson.firenote.presentation.addElementDialog.ElementDialog();
 //        Bundle args = new Bundle();
 //        args.putString("title", title);
 //        args.putString("elementType", elementType);

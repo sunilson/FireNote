@@ -16,7 +16,7 @@ open class Element constructor(
         val noteType: String = "note",
         private var _color: Int = 123,
         private var _locked: Boolean = false,
-        val creationDate: Date = Date(),
+        val timeStamp: Long = 0,
         private var _title: String = "New Element",
         val parent: String? = null) : Parcelable, BaseObservable() {
 
@@ -35,4 +35,8 @@ open class Element constructor(
     @IgnoredOnParcel
     @get:Bindable
     var title: String by NotifyPropertyChangedDelegate(_title, BR.title)
+
+    @IgnoredOnParcel
+    val creationDate: Date
+        get() = Date(timeStamp)
 }

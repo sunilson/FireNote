@@ -10,11 +10,10 @@ import com.sunilson.firenote.data.models.Category
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.shared.base.BaseDialogFragment
 import com.sunilson.firenote.presentation.shared.singletons.ConnectivityManager
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.alertdialog_custom_title.view.*
 import javax.inject.Inject
 
-class AddElementDialog : BaseDialogFragment() {
+class ElementDialog : BaseDialogFragment() {
 
     @Inject
     lateinit var connectivityManager: ConnectivityManager
@@ -78,8 +77,8 @@ class AddElementDialog : BaseDialogFragment() {
     }
 
     companion object {
-        fun newInstance(title: String, elementType: String): AddElementDialog {
-            val dialog = AddElementDialog()
+        fun newInstance(title: String, elementType: String): ElementDialog {
+            val dialog = ElementDialog()
             val args = Bundle()
             args.putString("title", title)
             args.putString("elementType", elementType)

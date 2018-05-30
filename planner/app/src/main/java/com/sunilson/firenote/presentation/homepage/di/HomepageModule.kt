@@ -1,11 +1,10 @@
 package com.sunilson.firenote.presentation.homepage.di
 
-import com.sunilson.firenote.presentation.elementDialog.AddElementDialog
+import com.sunilson.firenote.presentation.elementDialog.ElementDialog
 import com.sunilson.firenote.presentation.homepage.HomepagePresenter
 import com.sunilson.firenote.presentation.homepage.HomepagePresenterContract
 import com.sunilson.firenote.presentation.homepage.MainActivity
 import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
-import com.sunilson.firenote.presentation.shared.di.scopes.DialogFragmentScope
 import com.sunilson.firenote.presentation.shared.di.scopes.FragmentScope
 import dagger.Binds
 import dagger.Module
@@ -24,6 +23,6 @@ abstract class HomepageModule {
 
     @ContributesAndroidInjector(modules = [])
     @FragmentScope
-    abstract fun contributeAddElementFragment(): AddElementDialog
+    abstract fun contributeAddElementFragment(): ElementDialog
 
 }

@@ -19,7 +19,7 @@ import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.authentication.AuthenticationActivity
 import com.sunilson.firenote.presentation.bin.BinActivity
-import com.sunilson.firenote.presentation.elementDialog.AddElementDialog
+import com.sunilson.firenote.presentation.elementDialog.ElementDialog
 import com.sunilson.firenote.presentation.elements.elementActivity.ElementActivity
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapter
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapterFactory
@@ -192,15 +192,15 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.fab_add_note -> {
-                AddElementDialog.newInstance(getString(R.string.add_Element_Title), "note").show(supportFragmentManager, "dialog")
+                ElementDialog.newInstance(getString(R.string.add_Element_Title), "note").show(supportFragmentManager, "dialog")
                 fab.collapse()
             }
             R.id.fab_add_checklist -> {
-                AddElementDialog.newInstance(getString(R.string.add_Element_Title), "checklist").show(supportFragmentManager, "dialog")
+                ElementDialog.newInstance(getString(R.string.add_Element_Title), "checklist").show(supportFragmentManager, "dialog")
                 fab.collapse()
             }
             R.id.fab_add_bundle -> {
-                AddElementDialog.newInstance(getString(R.string.add_Element_Title), "bundle").show(supportFragmentManager, "dialog")
+                ElementDialog.newInstance(getString(R.string.add_Element_Title), "bundle").show(supportFragmentManager, "dialog")
                 fab.collapse()
             }
             R.id.activity_main_sorting_bar -> toggleSorting()
