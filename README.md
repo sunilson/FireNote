@@ -1,6 +1,6 @@
 # FireNote
 
-<h1>!!! Refactor currently in progress!!!</h1>
+<h2>Refactor currently in progress (Branches <strong>Refactor</strong> and <strong>Web-App</strong></h1>
 
 FireNote is an easy-to-use Android App for creating Notes and Checklists. Everything is stored in the cloud and is synced to all your devices in realtime. FireNote also offers additional features, like adding entries to your calendar or sharing your elements. The user interface is really intuitive and is perfect for your everyday needs. 
 
