@@ -4,9 +4,11 @@
             <v-flex xs12 sm6 offset-sm3 class="note">
                 <transition name="fade-transition" >
                     <textarea v-if="content.text && editMode" v-model="content.text" class="noteText"></textarea>
+                    <textarea v-else-if="!content.text && editMode" v-model="emptyContent" class="noteText"></textarea>
                 </transition>
                 <transition name="fade-transition" >
                     <p v-if="content.text && !editMode" v-html="lineBreak(content.text)" class="noteText"></p>
+                    <p v-else-if="!content.text && !editMode" v-html="lineBreak(emptyContent)" class="noteText"></p>
                 </transition>
                 <v-btn color="pink" dark fixed bottom right fab style="display: flex" @click="toggleEdit()">
                     <v-icon v-if="editMode">check</v-icon>
@@ -22,12 +24,12 @@ import {EventBus} from "../../services/EventBus.js"
 import BaseElmenetContent from "./BaseElementContent"
 
 export default {
-    props: ["id"],
     extends: BaseElmenetContent,
     data() { 
         return {
             editMode: false,
-            content: null
+            content: null,
+            emptyContent: "\n\n\n"
         }
     },
     firebase() {
@@ -43,7 +45,7 @@ export default {
         toggleEdit() {
             if(this.editMode) {
                 EventBus.$emit("showSnackbar", "Saved Note!")
-                firebase.saveNote(this.content.text, this.id)
+                firebase.saveNote((this.content.text) ? this.content.text : this.emptyContent, this.id)
             }
             this.editMode = !this.editMode
         },

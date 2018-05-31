@@ -23,6 +23,10 @@ export default {
         return fb.database().ref(`users/${fb.auth().currentUser.uid}/contents/${id}/elements`)
     },
 
+    getBundleContentRef: function (id) {
+        return fb.database().ref(`users/${fb.auth().currentUser.uid}/elements/bundles/${id}/elements`)
+    },
+
     /**
      * 
      * @param {*} value 

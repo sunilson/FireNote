@@ -1,6 +1,7 @@
 <template>
     <v-content>
       <v-toolbar app fixed>
+      <v-toolbar-side-icon disabled><img src="../assets/firenote_logo.png" width="30"></v-toolbar-side-icon>
         <v-toolbar-title>FireNote</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-menu>
@@ -30,15 +31,24 @@
             <v-icon>add</v-icon>
             <v-icon>close</v-icon>
         </v-btn>
-        <v-btn fab dark small color="green" @click="addElement('bundle')">
-            <v-icon>list</v-icon>
-        </v-btn>
-        <v-btn fab dark small color="green" @click="addElement('note')">
-            <v-icon>event_note</v-icon>
-        </v-btn>
-        <v-btn fab dark small color="green" @click="addElement('checklist')">
+        <v-tooltip left :value="tooltips">
+          <v-btn fab dark small color="green" slot="activator" @click="addElement('checklist')">
             <v-icon>done_all</v-icon>
-        </v-btn>
+          </v-btn>
+          <span>Checklist</span>
+        </v-tooltip>   
+        <v-tooltip left :value="tooltips">
+          <v-btn fab dark small color="green" slot="activator" @click="addElement('note')">
+            <v-icon>event_note</v-icon>
+          </v-btn>
+          <span>Note</span>
+        </v-tooltip>   
+        <v-tooltip left :value="tooltips">
+          <v-btn fab dark small color="green" slot="activator" @click="addElement('bundle')">
+            <v-icon>list</v-icon>
+          </v-btn>
+          <span>Bundle</span>
+        </v-tooltip>    
       </v-speed-dial>
       <addElementDialog></addElementDialog>
     </v-content>
@@ -57,6 +67,7 @@ export default {
   name: "ElementList",
   data() {
     return {
+      tooltips: false,
       fab: false,
       noteType: "note",
       selectedElement: null,
@@ -74,9 +85,17 @@ export default {
       elements: []
     };
   },
+  watch: {
+    fab(val) {
+      this.tooltips = false
+      val && setTimeout(() => {
+        this.tooltips = true
+      }, 250)
+    }
+  },
   methods: {
     addElement(type) {
-      EventBus.$emit("addElement", type)
+      EventBus.$emit("addElement", {type})
     },
     tryOpenElement(element) {
       this.selectedElement = null
@@ -109,7 +128,17 @@ export default {
 };
 </script>
 
+<style scoped>
+  
+</style>
+
 <style>
+.toolbar .toolbar__content>.btn:first-child, .toolbar .toolbar__extension>.btn:first-child {
+    margin-left: 8px !important;
+  }
+  .toolbar__title {
+    margin-left: 8px !important;
+  }
   .speed-dial__list {
     padding-bottom: 10px
   }

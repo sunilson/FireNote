@@ -37,13 +37,18 @@ export default {
             category: "general",
             color: -769226,
             categories: Constants.CATEGORIES,
-            colors: Constants.COLORS
+            colors: Constants.COLORS,
+            parent: null
         }
     },
     mounted () {
-        EventBus.$on('addElement', (type) => {
-            this.noteType = type
+        EventBus.$on('addElement', (data) => {
+            this.noteType = data.type
+            if(data["parent"]) this.parent = data.parent
             this.show = true
+            this.title = ""
+            this.category = "general"
+            this.color = -769226
         });
     },
     methods: {

@@ -33,7 +33,7 @@ import BaseElementContent from "./BaseElementContent"
 import {EventBus} from "../../services/EventBus.js"
 
 export default {
-    props: ["id", "parent"],
+    props: ["parent"],
     extends: BaseElementContent,
     data() { 
         return {
