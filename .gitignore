@@ -11,3 +11,4 @@
 FirebaseFunctions/node_modules
 node_modules/
 Web-App/src/config.js
+FirebaseFunctions/serviceAccountKey.json
