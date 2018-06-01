@@ -3,6 +3,8 @@ package com.sunilson.firenote.data.models
 import android.databinding.BaseObservable
 import android.databinding.Bindable
 import android.os.Parcelable
+import android.support.annotation.IdRes
+import com.google.firebase.database.Exclude
 import com.sunilson.firenote.BR
 import com.sunilson.firenote.presentation.shared.NotifyPropertyChangedDelegate
 import kotlinx.android.parcel.IgnoredOnParcel
@@ -18,7 +20,7 @@ open class Element constructor(
         private var _locked: Boolean = false,
         val timeStamp: Long = 0,
         private var _title: String = "New Element",
-        val parent: String? = null) : Parcelable, BaseObservable() {
+        var parent: String? = null) : Parcelable, BaseObservable() {
 
     @IgnoredOnParcel
     @get:Bindable

@@ -50,6 +50,8 @@ class VisibilityDialog : BaseDialogFragment(), HasSupportFragmentInjector {
         return content
     }
 
+    override fun toggleLoading(loading: Boolean, message: String?) {}
+
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = dispatchingAndroidInjector
 
     companion object {

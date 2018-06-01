@@ -10,7 +10,6 @@ import com.sunilson.firenote.presentation.shared.interfaces.HasElementList
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import com.sunilson.firenote.presentation.visibilityDialog.adapters.CategoryVisibilityAdapter
 import com.sunilson.firenote.presentation.visibilityDialog.adapters.CategoryVisibilityView
-import kotlinx.android.synthetic.main.fragment_category.*
 import kotlinx.android.synthetic.main.fragment_category.view.*
 import javax.inject.Inject
 
@@ -32,7 +31,7 @@ class CategoryFragment : BaseFragment() {
             if (categoryVisibilityView.isChecked) localSettingsManager.setCategoryVisiblity(categoryVisibilityAdapter.getItem(position).id, 1)
             else localSettingsManager.setCategoryVisiblity(categoryVisibilityAdapter.getItem(position).id, -1)
 
-            (activity as HasElementList).adapter.hideElements()
+            (activity as HasElementList).adapter.checkOrderAndVisibility()
         }
 
         view.checkAll.setOnClickListener { categoryVisibilityAdapter.toggleAll(true) }

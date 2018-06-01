@@ -9,6 +9,7 @@ import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -23,6 +24,7 @@ import com.sunilson.firenote.presentation.elementDialog.ElementDialog
 import com.sunilson.firenote.presentation.elements.elementActivity.ElementActivity
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapter
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapterFactory
+import com.sunilson.firenote.presentation.homepage.adapters.SortingListArrayAdapter
 import com.sunilson.firenote.presentation.homepage.adapters.SortingListArrayAdapterFactory
 import com.sunilson.firenote.presentation.settings.SettingsActivity
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
@@ -37,6 +39,7 @@ import dagger.android.support.HasSupportFragmentInjector
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.sorting_list_layout.*
 import javax.inject.Inject
 
 
@@ -60,6 +63,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
     //Click listeners
     private lateinit var recyclerViewClickListener: View.OnClickListener
     private lateinit var recyclerViewLongClickListener: View.OnLongClickListener
+    private lateinit var sortingListArrayAdapter: SortingListArrayAdapter
 
     override val mContext = this
 
@@ -89,7 +93,8 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
         itemTouchHelper.attachToRecyclerView(activity_main_recycler_view)
 
         //Initialize sorting list
-        sorting_methods_list.adapter = sortListingArrayAdapterFactory.create(this)
+        sortingListArrayAdapter = sortListingArrayAdapterFactory.create(this)
+        sorting_methods_list.adapter = sortingListArrayAdapter
         sorting_methods_list.divider = null
         sorting_methods_list.dividerHeight = 0
 
@@ -139,7 +144,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
                 //TODO: Mit Callback
             } else {
                 val intent = Intent(this, ElementActivity::class.java)
-                intent.putExtra("id", element.elementID)
+                intent.putExtra("elementID", element.elementID)
                 intent.putExtra("noteType", element.noteType)
                 startActivity(intent)
             }
@@ -158,8 +163,11 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
             activity_main_swipe_refresh_layout.isRefreshing = false
         }
 
-        sorting_methods_list.setOnItemClickListener { parent, view, position, id ->
+        sorting_methods_list.setOnItemClickListener { _, _, position, _ ->
             toggleSorting()
+            localSettingsManager.setSortingMethod(sortingListArrayAdapter.getItem(position).name)
+            activity_main_sorting_bar_title.text = getString(R.string.sort_by, sortingListArrayAdapter.getItem(position).name)
+            adapter.checkOrderAndVisibility()
         }
     }
 
@@ -206,15 +214,12 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
             R.id.activity_main_sorting_bar -> toggleSorting()
         }
     }
-
     override fun loggedOut() {
         finish()
         startActivity(Intent(this, AuthenticationActivity::class.java))
     }
-
-    override fun toggleLoading(loading: Boolean, message: String?) {}
-    override fun addElement(element: Element) = presenter.addElement(element)
-    override fun elementAdded(element: Element) {}
+    override fun toggleLoading(loading: Boolean, message: String?) { activity_main_swipe_refresh_layout.isRefreshing = loading}
+    override fun elementAdded(element: Element) { presenter.loadData() }
     override fun listElements(elements: List<Element>) {
         adapter.clear()
         Handler().postDelayed({

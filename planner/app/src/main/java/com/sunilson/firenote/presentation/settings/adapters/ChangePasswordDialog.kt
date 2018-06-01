@@ -10,6 +10,8 @@ class ChangePasswordDialog : BaseDialogFragment() {
         return super.onCreateDialog(savedInstanceState)
     }
 
+    override fun toggleLoading(loading: Boolean, message: String?) {}
+
     companion object {
         fun newInstance() : ChangePasswordDialog {
             return ChangePasswordDialog()

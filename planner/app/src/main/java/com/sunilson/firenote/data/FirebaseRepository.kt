@@ -6,7 +6,9 @@ import com.google.firebase.database.*
 import com.sunilson.firenote.data.models.ChangeType
 import com.sunilson.firenote.data.models.ChecklistElement
 import com.sunilson.firenote.data.models.Element
+import com.sunilson.firenote.data.models.FirebaseElement
 import com.sunilson.firenote.presentation.shared.parseElement
+import com.sunilson.firenote.presentation.shared.storeElement
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -27,6 +29,7 @@ interface IFirebaseRepository {
 
     fun storeNoteText(id: String, text: String)
     fun storeElement(element: Element): Completable
+    fun updateElement(element: Element)
 }
 
 @Singleton
@@ -41,19 +44,16 @@ class FirebaseRepository @Inject constructor() : IFirebaseRepository {
         ref = if (parent != null) ref.child("bundles").child(parent).child(id)
         else ref.child("main").child(id)
 
-        return createFlowableFromQuery(ref, { snapshot, changeType ->
-            val element = snapshot?.getValue(Element::class.java)
-                    ?: return@createFlowableFromQuery null
-            when (changeType) {
-                ChangeType.ADDED, ChangeType.CHANGED -> element
-                ChangeType.REMOVED -> null
-            }
+        return createFlowableValueFromQuery(ref, { snapshot ->
+            val firebaseElement = snapshot?.getValue(FirebaseElement::class.java)
+            firebaseElement?.elementID = snapshot!!.key
+            firebaseElement?.parseElement()
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun loadNote(id: String): Flowable<String> {
-        var ref = FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("contents").child(id)
-        return createFlowableFromQuery(ref, { dataSnapshot, changeType ->
+        val ref = FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("contents").child(id)
+        return createFlowableFromQuery(ref, { dataSnapshot, _ ->
             return@createFlowableFromQuery dataSnapshot?.getValue(String::class.java) ?: ""
         })
     }
@@ -67,11 +67,23 @@ class FirebaseRepository @Inject constructor() : IFirebaseRepository {
 
     override fun storeElement(element: Element): Completable {
         var ref = FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("elements")
-        if (element.parent != null) ref = ref.child("bundles").child(element.parent)
+        ref = if (element.parent != null) ref.child("bundles").child(element.parent)
+        else ref.child("main")
         return Completable.create { emitter ->
             val elementRef = ref.push()
-            elementRef.setValue(element).addOnFailureListener { emitter.onError(it) }.addOnSuccessListener { emitter.onComplete() }
-        }
+            elementRef.storeElement(element).addOnFailureListener {
+                if (!emitter.isDisposed) emitter.onError(it)
+            }.addOnSuccessListener {
+                if (!emitter.isDisposed) emitter.onComplete()
+            }
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun updateElement(element: Element) {
+        var ref = FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("elements")
+        ref = if (element.parent != null) ref.child("bundles").child(element.parent).child(element.elementID)
+        else ref.child("main").child(element.elementID)
+        ref.setValue(element)
     }
 
     override fun loadBundleElements(): Flowable<List<Pair<ChangeType, Element>>> {
@@ -88,9 +100,9 @@ class FirebaseRepository @Inject constructor() : IFirebaseRepository {
         return createSingleFromQuery(FirebaseDatabase.getInstance().reference.child("users").child(user.uid).child("elements").child("main"), {
             val result = mutableListOf<Element>()
             it?.children?.forEach {
-                val tempEvent = it.parseElement()
-                tempEvent.elementID = it.key
-                result.add(tempEvent)
+                val tempEvent = it.getValue(FirebaseElement::class.java)?.parseElement()
+                tempEvent?.elementID = it.key
+                if (tempEvent != null) result.add(tempEvent)
             }
             result.toList()
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
@@ -128,6 +140,22 @@ class FirebaseRepository @Inject constructor() : IFirebaseRepository {
                     if (!emitter.isCancelled) ref.removeEventListener(listener)
                 }
                 ref.addChildEventListener(listener)
+            }, BackpressureStrategy.BUFFER)
+        }
+
+        fun <T> createFlowableValueFromQuery(ref: DatabaseReference, converter: (DataSnapshot?) -> T): Flowable<T> {
+            return Flowable.create({ emitter ->
+
+                val listener = object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError?) {}
+                    override fun onDataChange(p0: DataSnapshot?) = emitter.onNext(converter(p0))
+                }
+
+                emitter.setCancellable {
+                    if (!emitter.isCancelled) ref.removeEventListener(listener)
+                }
+
+                ref.addValueEventListener(listener)
             }, BackpressureStrategy.BUFFER)
         }
     }

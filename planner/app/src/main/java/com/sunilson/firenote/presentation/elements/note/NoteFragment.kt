@@ -31,7 +31,7 @@ class NoteFragment : BaseFragment(), NotePresenterContract.INoteView, ElementFra
     private var editMode = false
 
     override val element: Element
-        get() = (activity as BaseElementPresenterContract.View).element
+        get() = (activity as BaseElementPresenterContract.View).element!!
 
     override val mContext = activity as Context
 

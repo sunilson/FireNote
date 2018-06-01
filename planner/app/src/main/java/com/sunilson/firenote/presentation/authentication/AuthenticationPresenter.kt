@@ -40,7 +40,7 @@ class AuthenticationPresenter @Inject constructor(val view: AuthenticationPresen
                 .requestEmail()
                 .build()
 
-        mGoogleApiClient = GoogleApiClient.Builder(view.mContext)
+        mGoogleApiClient = GoogleApiClient.Builder(view.mContext!!)
                 .enableAutoManage(view.mContext as FragmentActivity, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build()
@@ -78,12 +78,12 @@ class AuthenticationPresenter @Inject constructor(val view: AuthenticationPresen
 
     override fun signIn(email: String, password: String) {
         if (email.isEmpty() || password.isEmpty()) {
-            view.showError(view.mContext.getString(R.string.login_field_error))
+            view.showError(view.mContext?.getString(R.string.login_field_error))
             return
         }
         view.toggleLoading(true)
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
-                .addOnSuccessListener { view.showSuccess(view.mContext.getString(R.string.logged_in_as) + it.user.displayName) }
+                .addOnSuccessListener { view.showSuccess(view.mContext!!.getString(R.string.logged_in_as) + it.user.displayName) }
                 .addOnFailureListener { view.showError("Sign in Failed!") }
     }
 
@@ -104,7 +104,7 @@ class AuthenticationPresenter @Inject constructor(val view: AuthenticationPresen
     private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         FirebaseAuth.getInstance().signInWithCredential(credential)
-                .addOnSuccessListener { view.showSuccess(view.mContext.getString(R.string.logged_in_as) + it.user.displayName) }
+                .addOnSuccessListener { view.showSuccess(view.mContext!!.getString(R.string.logged_in_as) + it.user.displayName) }
                 .addOnFailureListener { view.showError(it.message) }
     }
 
@@ -116,27 +116,27 @@ class AuthenticationPresenter @Inject constructor(val view: AuthenticationPresen
             var dRef = mReference.child("elements").child("main").push()
             val firstChecklist = Element(elementID = dRef.key,
                     noteType = "checklist",
-                    _title = view.mContext.getString(R.string.example_checklist),
-                    _category = Category("general", view.mContext.getString(R.string.category_general)),
-                    _color = ContextCompat.getColor(view.mContext, R.color.note_color_1))
+                    _title = view.mContext!!.getString(R.string.example_checklist),
+                    _category = Category("general", view.mContext!!.getString(R.string.category_general)),
+                    _color = ContextCompat.getColor(view.mContext!!, R.color.note_color_1))
             dRef.storeElement(firstChecklist)
             dRef = mReference.child("elements").child("main").push()
             val firstNote = Element(elementID = dRef.key,
                     noteType = "note",
-                    _title = view.mContext.getString(R.string.example_note),
-                    _category = Category("general", view.mContext.getString(R.string.category_general)),
-                    _color = ContextCompat.getColor(view.mContext, R.color.note_color_4))
+                    _title = view.mContext!!.getString(R.string.example_note),
+                    _category = Category("general", view.mContext!!.getString(R.string.category_general)),
+                    _color = ContextCompat.getColor(view.mContext!!, R.color.note_color_4))
             dRef.storeElement(firstNote)
             dRef = mReference.child("elements").child("main").push()
             val firstBundle = Element(elementID = dRef.key,
                     noteType = "bundle",
-                    _title = view.mContext.getString(R.string.example_bundle),
-                    _category = Category("general", view.mContext.getString(R.string.category_general)),
-                    _color = ContextCompat.getColor(view.mContext, R.color.note_color_7))
+                    _title = view.mContext!!.getString(R.string.example_bundle),
+                    _category = Category("general", view.mContext!!.getString(R.string.category_general)),
+                    _color = ContextCompat.getColor(view.mContext!!, R.color.note_color_7))
             dRef.storeElement(firstBundle)
 
             //Add Checklist Elements
-            val checklistElement = ChecklistElement(text = view.mContext.getString(R.string.example_checklist_element))
+            val checklistElement = ChecklistElement(text = view.mContext!!.getString(R.string.example_checklist_element))
             dRef = mReference.child("contents").child(firstChecklist.elementID).child("elements").push()
 
             checklistElement.elementID = dRef.key
@@ -156,16 +156,16 @@ class AuthenticationPresenter @Inject constructor(val view: AuthenticationPresen
 
             val bundleChecklist = Element(
                     elementID = bundleChildRef.key,
-                    _color = ContextCompat.getColor(view.mContext, R.color.note_color_2),
-                    _category = Category("general", view.mContext.getString(R.string.category_general)),
+                    _color = ContextCompat.getColor(view.mContext!!, R.color.note_color_2),
+                    _category = Category("general", view.mContext!!.getString(R.string.category_general)),
                     noteType = "checklist",
-                    _title = view.mContext.getString(R.string.example_checklist))
+                    _title = view.mContext!!.getString(R.string.example_checklist))
             val bundleNote = Element(
                     elementID = bundleChildRef2.key,
-                    _color = ContextCompat.getColor(view.mContext, R.color.note_color_6),
-                    _category = Category("general", view.mContext.getString(R.string.category_general)),
+                    _color = ContextCompat.getColor(view.mContext!!, R.color.note_color_6),
+                    _category = Category("general", view.mContext!!.getString(R.string.category_general)),
                     noteType = "note",
-                    _title = view.mContext.getString(R.string.example_note))
+                    _title = view.mContext!!.getString(R.string.example_note))
 
             bundleChildRef.storeElement(bundleChecklist)
             bundleChildRef2.storeElement(bundleNote)
@@ -174,9 +174,9 @@ class AuthenticationPresenter @Inject constructor(val view: AuthenticationPresen
             mReference.child("settings").child("registered").setValue(true)
 
             //Add Note Content
-            mReference.child("contents").child(firstNote.elementID).child("text").setValue(view.mContext.getString(R.string.example_note_text)).addOnSuccessListener {
+            mReference.child("contents").child(firstNote.elementID).child("text").setValue(view.mContext!!.getString(R.string.example_note_text)).addOnSuccessListener {
                 FirebaseAuth.getInstance().currentUser?.sendEmailVerification()
-                view.showSuccess(view.mContext.getString(R.string.register_success))
+                view.showSuccess(view.mContext!!.getString(R.string.register_success))
                 emitter.onSuccess(true)
             }
         }
@@ -191,14 +191,14 @@ class AuthenticationPresenter @Inject constructor(val view: AuthenticationPresen
                     }
                     .addOnFailureListener {
                         when (it) {
-                            is FirebaseAuthWeakPasswordException -> view.showError(view.mContext.getString(R.string.error_register_password_weak))
-                            is FirebaseAuthInvalidCredentialsException -> view.showError(view.mContext.getString(R.string.error_register_invalid_email))
-                            is FirebaseAuthUserCollisionException -> view.showError(view.mContext.getString(R.string.error_register_user_already_exists))
+                            is FirebaseAuthWeakPasswordException -> view.showError(view.mContext!!.getString(R.string.error_register_password_weak))
+                            is FirebaseAuthInvalidCredentialsException -> view.showError(view.mContext!!.getString(R.string.error_register_invalid_email))
+                            is FirebaseAuthUserCollisionException -> view.showError(view.mContext!!.getString(R.string.error_register_user_already_exists))
                             else -> view.showError(it.message)
                         }
                     }
         } else {
-            view.showError(view.mContext.getString(R.string.register_error))
+            view.showError(view.mContext!!.getString(R.string.register_error))
         }
     }
 
@@ -206,10 +206,10 @@ class AuthenticationPresenter @Inject constructor(val view: AuthenticationPresen
         view.toggleLoading(true)
         if (email.isNotEmpty()) {
             FirebaseAuth.getInstance().sendPasswordResetEmail(email)
-                    .addOnSuccessListener { view.showSuccess(view.mContext.getString(R.string.reset_success)) }
-                    .addOnFailureListener { view.showError(view.mContext.getString(R.string.reset_failed)) }
+                    .addOnSuccessListener { view.showSuccess(view.mContext!!.getString(R.string.reset_success)) }
+                    .addOnFailureListener { view.showError(view.mContext!!.getString(R.string.reset_failed)) }
         }
     }
 
-    override fun onConnectionFailed(p0: ConnectionResult) = view.showError(view.mContext.getString(R.string.login_error))
+    override fun onConnectionFailed(p0: ConnectionResult) = view.showError(view.mContext!!.getString(R.string.login_error))
 }

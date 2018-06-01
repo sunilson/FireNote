@@ -12,7 +12,6 @@ import dagger.android.ContributesAndroidInjector
 
 @Module
 abstract class HomepageModule {
-
     @ActivityScope
     @Binds
     abstract fun provideHomepageBresenter(homepagePresenter: HomepagePresenter): HomepagePresenterContract.IHomepagePresenter
@@ -20,9 +19,4 @@ abstract class HomepageModule {
     @ActivityScope
     @Binds
     abstract fun provideMainActivity(mainActivity: MainActivity): HomepagePresenterContract.IHomepageView
-
-    @ContributesAndroidInjector(modules = [])
-    @FragmentScope
-    abstract fun contributeAddElementFragment(): ElementDialog
-
 }

@@ -40,14 +40,6 @@ class HomepagePresenter @Inject constructor(val firebaseRepository: IFirebaseRep
         FirebaseAuth.getInstance().removeAuthStateListener(authListener)
     }
 
-    override fun addElement(element: Element) {
-        disposable.add(firebaseRepository.storeElement(element).subscribe({
-            view.elementAdded(element)
-        }, {
-            view.showError(it.message)
-        }))
-    }
-
     override fun onCreate() {
         loadData()
     }

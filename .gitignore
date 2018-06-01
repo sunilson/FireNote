@@ -8,5 +8,6 @@
 /planner/app/build
 /planner/captures
 /planner/.externalNativeBuild
+FirebaseFunctions/node_modules
 node_modules/
 Web-App/src/config.js

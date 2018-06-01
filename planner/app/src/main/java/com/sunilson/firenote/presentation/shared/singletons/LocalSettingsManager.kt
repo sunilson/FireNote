@@ -39,7 +39,7 @@ class LocalSettingsManager @Inject constructor(val context: Context) {
 
     fun getMasterPassword() = sharedPrefs.getString("masterPassword", "")
     fun getSortingMethod() = sharedPrefs.getString("mainElementSorting", context.sortingMethods()[0].name)
-    fun getColorVisibility(color: Int) = sharedPrefs.getInt(color.toString(), -1)
-    fun getCategoryVisibility(category: String) = sharedPrefs.getInt(category, -1)
+    fun getColorVisibility(color: Int) = sharedPrefs.getInt(color.toString(), 1)
+    fun getCategoryVisibility(category: String) = sharedPrefs.getInt(category, 1)
     fun getSHA1Hash(masterPasswordHash: String): String = String(Hex.encodeHex(DigestUtils.sha1(masterPasswordHash)))
 }

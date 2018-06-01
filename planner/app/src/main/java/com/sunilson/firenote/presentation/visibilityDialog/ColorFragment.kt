@@ -1,13 +1,11 @@
 package com.sunilson.firenote.presentation.visibilityDialog
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.sunilson.firenote.R
 import com.sunilson.firenote.presentation.shared.base.BaseFragment
-import com.sunilson.firenote.presentation.shared.colors
 import com.sunilson.firenote.presentation.shared.interfaces.HasElementList
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import com.sunilson.firenote.presentation.shared.views.ColorElementView
@@ -33,12 +31,16 @@ class ColorFragment : BaseFragment() {
             val colorElementView = view as ColorElementView
             colorElementView.isChecked = !colorElementView.isChecked
             if (!colorElementView.isChecked) localSettingsManager.setColorVisibility(colorVisibilityAdapter.getItem(position).color, 1)
-            else localSettingsManager.setColorVisibility(colorVisibilityAdapter.getItem(position).color, 1)
-            (activity as HasElementList).adapter.hideElements()
+            else localSettingsManager.setColorVisibility(colorVisibilityAdapter.getItem(position).color, -1)
+            (activity as HasElementList).adapter.checkOrderAndVisibility()
         }
 
-        view.checkAll.setOnClickListener { colorVisibilityAdapter.toggleAll(true) }
-        view.uncheckAll.setOnClickListener { colorVisibilityAdapter.toggleAll(false) }
+        view.checkAll.setOnClickListener {
+            colorVisibilityAdapter.toggleAll(true)
+        }
+        view.uncheckAll.setOnClickListener {
+            colorVisibilityAdapter.toggleAll(false)
+        }
 
         return view
     }

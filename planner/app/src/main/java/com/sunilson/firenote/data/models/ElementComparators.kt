@@ -11,7 +11,7 @@ object ElementComparators {
         }
     }
 
-    fun sortByName(descending: Boolean): Comparator<Element> = Comparator { o1: Element, o2: Element ->
+    fun sortByDate(descending: Boolean): Comparator<Element> = Comparator { o1: Element, o2: Element ->
         var result = when {
             o1.creationDate.after(o2.creationDate) -> -1
             o1.creationDate.before(o2.creationDate) -> 1
@@ -21,7 +21,7 @@ object ElementComparators {
         result
     }
 
-    fun sortByDate(descending: Boolean): Comparator<Element> = Comparator { o1: Element, o2: Element ->
+    fun sortByName(descending: Boolean): Comparator<Element> = Comparator { o1: Element, o2: Element ->
         var result = when {
             o1.title.compareTo(o2.title, true) < 0 -> -1
             o1.title.compareTo(o2.title, true) > 0 -> 1

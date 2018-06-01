@@ -20,7 +20,7 @@ fun DatabaseReference.storeElement(element: Element) : Task<*> {
             element.noteType,
             element.color,
             element.locked,
-            element.creationDate,
+            element.timeStamp,
             element.title
     ))
 }
@@ -29,14 +29,27 @@ fun Context.showToast(message: String? = "No message given!", duration: Int = To
     Toast.makeText(this, message, duration).show()
 }
 
-fun DataSnapshot.parseElement() : Element {
+fun FirebaseElement.parseElement() : Element {
     return Element(
+            this.elementID,
+            Category(this.categoryName, this.categoryID),
+            this.noteType,
+            this.color,
+            this.locked,
+            this.timeStamp,
+            this.title
+    )
+}
+
+fun DataSnapshot.parseFirebaseElement() : FirebaseElement {
+    return FirebaseElement(
             this.key,
-            Category(this.child("categoryName").value as String, this.child("categoryID").value as String),
+            this.child("categoryName").value as String,
+            this.child("categoryID").value as String,
             this.child("noteType").value as String,
             (this.child("color").value as Long).toInt(),
             this.child("locked").value as Boolean,
-            this.child("creationDate").getValue(Date::class.java)!!,
+            this.child("timeStamp").getValue(Long::class.java)!!,
             this.child("title").value as String
     )
 }

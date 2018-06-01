@@ -8,7 +8,7 @@ class Note( var text: String,
             noteType: String,
             color: Int,
             locked: Boolean,
-            creationDate: Date = Date(),
-            title: String = "New Element") : Element(elementID, category, noteType, color, locked, creationDate, title) {
+            timestamp: Long = Date().time,
+            title: String = "New Element") : Element(elementID, category, noteType, color, locked, timestamp, title) {
 
 }

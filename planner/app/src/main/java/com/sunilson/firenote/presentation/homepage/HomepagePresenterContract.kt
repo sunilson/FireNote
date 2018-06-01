@@ -12,6 +12,5 @@ interface HomepagePresenterContract {
 
     interface IHomepagePresenter {
         fun loadData()
-        fun addElement(element: Element)
     }
 }

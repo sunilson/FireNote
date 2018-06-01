@@ -189,5 +189,6 @@
     <string name="login_field_error">One or more fields is not filled</string>
     <string name="login_error">Error occured</string>
     <string name="register_error">One ore more fields not correct</string>
+    <string name="element_added">Element wurde hinzugefügt</string>
 
 </resources>

@@ -4,6 +4,7 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,9 +19,9 @@ import javax.inject.Inject
 
 class ElementRecyclerAdapter constructor(
         context: Context,
-        val onClickListener: View.OnClickListener,
-        val onLongClickListener: View.OnLongClickListener,
-        val recyclerView: RecyclerView,
+        private val onClickListener: View.OnClickListener,
+        private val onLongClickListener: View.OnLongClickListener,
+        private val recyclerView: RecyclerView,
         val localSettingsManager: LocalSettingsManager) : BaseRecyclerAdapter<Element>(context), ItemTouchHelperAdapter {
 
     private var allItems = mutableListOf<Element>()
@@ -32,6 +33,10 @@ class ElementRecyclerAdapter constructor(
                 parent,
                 false
         )
+
+        binding.root.setOnClickListener(onClickListener)
+        binding.root.setOnLongClickListener(onLongClickListener)
+
         return ViewHolder(binding)
     }
 
@@ -55,10 +60,9 @@ class ElementRecyclerAdapter constructor(
     fun add(element: Element): Int {
         allItems.add(element)
         var position = 0
-        _data.add(element)
-        notifyItemInserted(data.indexOf(element))
         if (localSettingsManager.getCategoryVisibility(element.category.id) != -1 && localSettingsManager.getColorVisibility(element.color) != -1) {
             _data.add(element)
+            notifyItemInserted(data.indexOf(element))
             sort(localSettingsManager.getSortingMethod())
             position = data.indexOf(element)
             notifyItemInserted(position)
@@ -66,9 +70,11 @@ class ElementRecyclerAdapter constructor(
         return position
     }
 
-    fun hideElements() {
+    fun checkOrderAndVisibility() {
         _data.clear()
         allItems.forEach {
+            Log.d("Linus", localSettingsManager.getCategoryVisibility(it.category.id).toString())
+            Log.d("Linus", localSettingsManager.getColorVisibility(it.color).toString())
             if (localSettingsManager.getCategoryVisibility(it.category.id) != -1 && localSettingsManager.getColorVisibility(it.color) != -1) {
                 _data.add(it)
             }

@@ -12,15 +12,15 @@ import com.sunilson.firenote.presentation.shared.showToast
 import io.reactivex.disposables.CompositeDisposable
 
 interface IBaseView : LifecycleOwner {
-    val mContext: Context
+    val mContext: Context?
     fun addObserver(presenter: BasePresenter) = lifecycle.addObserver(presenter)
     fun showError(message: String?) {
         toggleLoading(false)
-        mContext.showToast(message)
+        mContext?.showToast(message)
     }
     fun showSuccess(message: String?) {
         toggleLoading(false)
-        mContext.showToast(message)
+        mContext?.showToast(message)
     }
     fun toggleLoading(loading: Boolean, message: String? = null)
 }

@@ -9,10 +9,8 @@ import com.sunilson.firenote.data.models.Category
 import com.sunilson.firenote.presentation.adapters.CheckableArrayAdapter
 import com.sunilson.firenote.presentation.shared.base.adapters.BaseArrayAdapter
 import com.sunilson.firenote.presentation.shared.categories
-import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
 import com.sunilson.firenote.presentation.shared.interfaces.HasElementList
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
-import javax.inject.Inject
 
 class CategoryVisibilityAdapter constructor(
         context: Context,
@@ -25,7 +23,7 @@ class CategoryVisibilityAdapter constructor(
     override fun toggleAll(checked: Boolean) {
         data.forEach {
             localSettingsManager.setCategoryVisiblity(it.id, if (checked) 1 else -1)
-            (context as HasElementList).adapter.hideElements()
+            if(context is HasElementList) (context as HasElementList).adapter.checkOrderAndVisibility()
         }
         notifyDataSetChanged()
     }

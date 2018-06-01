@@ -65,35 +65,7 @@
         android:paddingTop="@dimen/element_list_vertical_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
-            android:id="@+id/activity_main_sorting_bar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/sorting_layout_collapsed"
-            android:layout_marginBottom="@dimen/element_list_vertical_margin"
-            android:background="@color/colorPrimary"
-            android:clickable="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:animateLayoutChanges="true"
-            android:orientation="vertical"
-            android:gravity="center"
-            >
-
-            <TextView
-                android:id="@+id/activity_main_sorting_bar_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="false"
-                android:textColor="@color/title_text_color" />
-
-            <ListView
-                android:id="@+id/sorting_methods_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="false"
-                android:visibility="gone">
-            </ListView>
-        </LinearLayout>
+        <include layout="@layout/sorting_list_layout" />
 
         <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/activity_main_swipe_refresh_layout"
