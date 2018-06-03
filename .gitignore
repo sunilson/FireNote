@@ -1,0 +1,14 @@
+*.iml
+.gradle
+/planner/local.properties
+/planner/.idea/workspace.xml
+/planner/.idea/libraries
+/planner/.DS_Store
+/planner/build
+/planner/app/build
+/planner/captures
+/planner/.externalNativeBuild
+FirebaseFunctions/node_modules
+node_modules/
+Web-App/src/config.js
+FirebaseFunctions/serviceAccountKey.json
