@@ -5,7 +5,7 @@ import android.support.v7.widget.helper.ItemTouchHelper
 import com.sunilson.firenote.Interfaces.ItemTouchHelperAdapter
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapter
 
-class SimpleItemTouchHelperCallbackMain(val adapter: ItemTouchHelperAdapter) : ItemTouchHelper.Callback() {
+class SimpleItemTouchHelperCallbackMain (val adapter: ItemTouchHelperAdapter) : ItemTouchHelper.Callback() {
 
     override fun getMovementFlags(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?): Int {
         var dragFlags = 0
@@ -13,7 +13,7 @@ class SimpleItemTouchHelperCallbackMain(val adapter: ItemTouchHelperAdapter) : I
 
         if (viewHolder is ElementRecyclerAdapter.ViewHolder && viewHolder.swipeable) {
             dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
-            swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
+            swipeFlags = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
         }
 
         return ItemTouchHelper.Callback.makeMovementFlags(dragFlags, swipeFlags)

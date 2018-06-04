@@ -4,11 +4,12 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.support.v7.widget.RecyclerView
-import android.util.Log
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.sunilson.firenote.Interfaces.ItemTouchHelperAdapter
+import com.sunilson.firenote.ItemTouchHelper.SimpleItemTouchHelperCallbackMain
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.shared.base.adapters.BaseRecyclerAdapter
@@ -21,12 +22,17 @@ class ElementRecyclerAdapter constructor(
         context: Context,
         private val onClickListener: View.OnClickListener,
         private val onLongClickListener: View.OnLongClickListener,
+        private val onSwipeListener: (String, String?) -> Unit,
         private val recyclerView: RecyclerView,
         val localSettingsManager: LocalSettingsManager) : BaseRecyclerAdapter<Element>(context), ItemTouchHelperAdapter {
 
     private var allItems = mutableListOf<Element>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    init {
+        ItemTouchHelper(SimpleItemTouchHelperCallbackMain(this)).attachToRecyclerView(recyclerView)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseRecyclerAdapter<Element>.ViewHolder {
         val binding: ViewDataBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
                 R.layout.element_list_layout,
@@ -37,7 +43,7 @@ class ElementRecyclerAdapter constructor(
         binding.root.setOnClickListener(onClickListener)
         binding.root.setOnLongClickListener(onLongClickListener)
 
-        return ViewHolder(binding)
+        return if(viewType == 0) ViewHolder(binding) else ViewHolder(binding, true)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -73,8 +79,6 @@ class ElementRecyclerAdapter constructor(
     fun checkOrderAndVisibility() {
         _data.clear()
         allItems.forEach {
-            Log.d("Linus", localSettingsManager.getCategoryVisibility(it.category.id).toString())
-            Log.d("Linus", localSettingsManager.getColorVisibility(it.color).toString())
             if (localSettingsManager.getCategoryVisibility(it.category.id) != -1 && localSettingsManager.getColorVisibility(it.color) != -1) {
                 _data.add(it)
             }
@@ -111,6 +115,11 @@ class ElementRecyclerAdapter constructor(
     }
 
     override fun onItemDismiss(position: Int) {
+        val element = _data[position]
+        _data.removeAt(position)
+        allItems = allItems.filter { it.elementID != element.elementID }.toMutableList()
+        notifyItemRemoved(position)
+        onSwipeListener(element.elementID, element.parent)
     }
 
     inner class ViewHolder(binding: ViewDataBinding, val swipeable: Boolean = false) : BaseRecyclerAdapter<Element>.ViewHolder(binding)
@@ -121,7 +130,8 @@ class ElementRecyclerAdapterFactory @Inject constructor(private val localSetting
     fun create(context: Context,
                onClickListener: View.OnClickListener,
                onLongClickListener: View.OnLongClickListener,
+               onSwipeListener: (String, String?) -> Unit,
                recyclerView: RecyclerView): ElementRecyclerAdapter {
-        return ElementRecyclerAdapter(context, onClickListener, onLongClickListener, recyclerView, localSettingsManager)
+        return ElementRecyclerAdapter(context, onClickListener, onLongClickListener, onSwipeListener, recyclerView, localSettingsManager)
     }
 }

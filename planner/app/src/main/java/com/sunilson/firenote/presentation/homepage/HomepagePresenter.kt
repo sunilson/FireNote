@@ -1,11 +1,8 @@
 package com.sunilson.firenote.presentation.homepage
 
-import android.content.Intent
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
+import com.sunilson.firenote.R
 import com.sunilson.firenote.data.IFirebaseRepository
-import com.sunilson.firenote.data.models.Element
-import com.sunilson.firenote.presentation.authentication.AuthenticationActivity
 import com.sunilson.firenote.presentation.shared.base.BasePresenter
 import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
 import javax.inject.Inject
@@ -28,6 +25,12 @@ class HomepagePresenter @Inject constructor(val firebaseRepository: IFirebaseRep
                 view.showError(it.message)
             }))
         }
+    }
+
+    override fun deleteElement(id: String) {
+        disposable.add(firebaseRepository.deleteElement(id).subscribe {
+            view.showSuccess(view.mContext?.getString(R.string.element_removed))
+        })
     }
 
     override fun onStart() {

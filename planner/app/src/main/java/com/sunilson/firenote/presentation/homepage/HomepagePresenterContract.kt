@@ -12,5 +12,6 @@ interface HomepagePresenterContract {
 
     interface IHomepagePresenter {
         fun loadData()
+        fun deleteElement(id: String)
     }
 }

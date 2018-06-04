@@ -29,6 +29,7 @@ interface IFirebaseRepository {
 
     fun storeNoteText(id: String, text: String)
     fun storeElement(element: Element): Completable
+    fun deleteElement(id: String, parent: String? = null): Completable
     fun updateElement(element: Element)
 }
 
@@ -79,11 +80,25 @@ class FirebaseRepository @Inject constructor() : IFirebaseRepository {
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
+    override fun deleteElement(id: String, parent: String?): Completable {
+        var ref = FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("elements")
+        ref = if (parent != null) ref.child("bundles").child(parent).child(id)
+        else ref.child("main").child(id)
+
+        return Completable.create { emitter ->
+            ref.removeValue().addOnFailureListener {
+                if(!emitter.isDisposed) emitter.onError(it)
+            }.addOnSuccessListener {
+                if(!emitter.isDisposed) emitter.onComplete()
+            }
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+    }
+
     override fun updateElement(element: Element) {
         var ref = FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("elements")
         ref = if (element.parent != null) ref.child("bundles").child(element.parent).child(element.elementID)
         else ref.child("main").child(element.elementID)
-        ref.setValue(element)
+        ref.storeElement(element)
     }
 
     override fun loadBundleElements(): Flowable<List<Pair<ChangeType, Element>>> {

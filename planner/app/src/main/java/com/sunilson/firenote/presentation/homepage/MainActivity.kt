@@ -8,14 +8,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.helper.ItemTouchHelper
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.OvershootInterpolator
 import com.google.firebase.auth.FirebaseAuth
-import com.sunilson.firenote.ItemTouchHelper.SimpleItemTouchHelperCallbackMain
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.authentication.AuthenticationActivity
@@ -81,7 +78,9 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
         //Initialize Recyclerview
         initClickListeners()
         activity_main_recycler_view.setHasFixedSize(true)
-        adapter = elementRecyclerAdapterFactory.create(this, recyclerViewClickListener, recyclerViewLongClickListener, activity_main_recycler_view)
+        adapter = elementRecyclerAdapterFactory.create(this, recyclerViewClickListener, recyclerViewLongClickListener, { id, _ ->
+            presenter.deleteElement(id)
+        }, activity_main_recycler_view)
         val alphaAnimator = AlphaInAnimationAdapter(adapter)
         alphaAnimator.setFirstOnly(false)
         alphaAnimator.setDuration(200)
@@ -89,8 +88,6 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
         activity_main_recycler_view.itemAnimator = ScaleInAnimator(OvershootInterpolator(1f))
         activity_main_recycler_view.itemAnimator.addDuration = 300
         activity_main_recycler_view.layoutManager = layoutManager
-        val itemTouchHelper = ItemTouchHelper(SimpleItemTouchHelperCallbackMain(adapter))
-        itemTouchHelper.attachToRecyclerView(activity_main_recycler_view)
 
         //Initialize sorting list
         sortingListArrayAdapter = sortListingArrayAdapterFactory.create(this)

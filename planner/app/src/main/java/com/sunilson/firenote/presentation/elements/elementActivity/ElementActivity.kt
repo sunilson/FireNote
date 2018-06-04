@@ -7,10 +7,8 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.text.TextUtils
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.WindowManager
+import android.view.*
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.sunilson.firenote.R
@@ -23,6 +21,8 @@ import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.base_element_activity.*
 import javax.inject.Inject
+
+
 
 class ElementActivity : BaseActivity(), BaseElementPresenterContract.View {
 
@@ -70,6 +70,15 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View {
         title_edittext.isFocusable = false
         title_edittext.isFocusableInTouchMode = false
         title_edittext.setOnClickListener { toggleTitleEdit(true) }
+        title_edittext.setOnEditorActionListener{ v, code, event ->
+            if(event != null && event.keyCode == KeyEvent.KEYCODE_ENTER || code == EditorInfo.IME_ACTION_DONE) {
+                toggleTitleEdit(false)
+                true
+            } else {
+                false
+            }
+        }
+
         title_done_button.setOnClickListener { toggleTitleEdit(false) }
     }
 
@@ -79,7 +88,7 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View {
     }
 
     override fun onBackPressed() {
-        if(editMode) toggleTitleEdit(false)
+        if (editMode) toggleTitleEdit(false)
         else if ((supportFragmentManager.fragments[0] as ElementFragment).canLeave()) super.onBackPressed()
     }
 
@@ -92,7 +101,8 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View {
                 if (localSettingsManager.getMasterPassword().isEmpty()) presenter.lockElement(_element!!.locked)
                 else Toast.makeText(this, R.string.master_password_not_set, Toast.LENGTH_LONG).show()
             }
-            R.id.menu_settings -> {}
+            R.id.menu_settings -> {
+            }
         }
 
         return super.onOptionsItemSelected(item)
@@ -149,7 +159,7 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View {
 
         //TODO Gelöschte und ungültige elemente abfangen
 
-        if(_element == null) {
+        if (_element == null) {
             _element = element
             element.parent = parent
             binding.element = _element
@@ -163,7 +173,7 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View {
     }
 
     private fun checkLockStatus() {
-        if(element!!.locked) lockButton?.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_outline_white_24dp)
+        if (element!!.locked) lockButton?.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_outline_white_24dp)
         else lockButton?.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_open_white_24dp)
     }
 
