@@ -3,7 +3,7 @@
 </template>
 <script>
     export default {
-        props: ["id"],
+        props: ["id", "parent"],
         methods: {
             willLeave() {
                 console.log("Will Leave not implemented!")

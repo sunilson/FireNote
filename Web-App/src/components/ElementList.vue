@@ -56,21 +56,15 @@
 </template>
 
 <script>
-import ElementCard from "./shared/ElementCard.vue";
+
+import BaseElementListComponentMixin from "./shared/BaseElementListComponentMixin"
 import firebase from "../services/firebase.js"
-import {hashPassword} from "../services/utilities.js"
-import {EventBus} from "../services/EventBus.js"
-import PasswordDialog from '../components/shared/PasswordDialog.vue';
-import AddElementDialog from "../components/shared/AddElementDialog"
 
 export default {
   name: "ElementList",
+  mixins: [BaseElementListComponentMixin],
   data() {
     return {
-      tooltips: false,
-      fab: false,
-      noteType: "note",
-      selectedElement: null,
       menuItems: [
           {
             name: "Papierkorb",
@@ -85,45 +79,11 @@ export default {
       elements: []
     };
   },
-  watch: {
-    fab(val) {
-      this.tooltips = false
-      val && setTimeout(() => {
-        this.tooltips = true
-      }, 250)
-    }
-  },
-  methods: {
-    addElement(type) {
-      EventBus.$emit("addElement", {type})
-    },
-    tryOpenElement(element) {
-      this.selectedElement = null
-      if(!element.locked) {
-        this.$router.push({name: 'BaseElement', params: {id: element[".key"]}})
-      } else {
-        this.selectedElement = element
-        EventBus.$emit("showPasswordDialog")
-      }
-    },
-    openLockedElement(password) {
-      if(hashPassword(password) == this.settings.masterPassword) {
-        this.$router.push({name: 'BaseElement', params: {id: this.selectedElement[".key"]}})
-      } else {
-        EventBus.$emit("showSnackbar", "Wrong password!")
-      }
-    }
-  },
   firebase() {
     return {
       elements: firebase.getElementListRef(),
       settings: firebase.getSettings()
     }
-  },
-  components: {
-    elementCard: ElementCard,
-    passwordDialog: PasswordDialog,
-    addElementDialog: AddElementDialog,
   }
 };
 </script>

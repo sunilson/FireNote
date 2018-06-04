@@ -24,7 +24,7 @@ export default {
     },
 
     getBundleContentRef: function (id) {
-        return fb.database().ref(`users/${fb.auth().currentUser.uid}/elements/bundles/${id}/elements`)
+        return fb.database().ref(`users/${fb.auth().currentUser.uid}/elements/bundles/${id}`)
     },
 
     /**
@@ -84,8 +84,19 @@ export default {
         fb.database().ref(`users/${fb.auth().currentUser.uid}/contents/${id}/text`).set(text)
     },
 
-    createElement: function (element, cb) {
-        fb.database().ref(`users/${fb.auth().currentUser.uid}/elements/main`).push().set(element, err => cb(err))
+    createElement: function (element, cb, parent) {
+        let ref = fb.database().ref(`users/${fb.auth().currentUser.uid}/elements`)
+        if (!parent) {
+            ref = ref.child("/main").push()
+        } else {
+            ref = ref.child(`/bundles/${parent}`).push()
+        }
+
+        console.log(ref)
+
+        ref.set(element, err => {
+            cb(err)
+        })
     },
 
     restoreElement: function () {

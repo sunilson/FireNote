@@ -31,6 +31,14 @@ const router = new Router({
         meta: {
           requiresAuth: true
         }
+      },
+      {
+        path: "/element/:parent/:id",
+        name: "BaseBundleElement",
+        component: BaseElement,
+        meta: {
+          requiresAuth: true
+        }
       }
     ]
   },

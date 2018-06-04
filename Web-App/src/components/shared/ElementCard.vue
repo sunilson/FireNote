@@ -15,7 +15,7 @@
                     <v-icon v-if="element.locked">lock_outline</v-icon>
                 </v-flex>
                 <v-flex xs3 style="height: 60px; display: flex; align-items: center; font-size: 12px" class="ellipsis">
-                    {{element.creationDate | parseDate}}
+                    {{element.timeStamp | parseTimestamp}}
                 </v-flex>
             </v-layout>
         </v-card>

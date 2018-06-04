@@ -65,7 +65,8 @@ export default {
                 console.log(err)
                 if(err) EventBus.$emit("showSnackbar", err)
                 else this.show = false
-            })
+            },
+            this.parent)
         }
     }
 }
