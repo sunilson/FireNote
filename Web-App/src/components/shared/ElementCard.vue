@@ -23,40 +23,40 @@
 </template>
 
 <script>
-import colormap from "../../services/colormap.js"
+import colormap from "../../services/colormap.js";
 
 export default {
   props: ["element"],
-    computed: {
-        backgroundColor: function() {
-            return colormap(this.element.color)[1]
-        },
-        sideBackgroundColor: function() {
-            return colormap(this.element.color)[0]
-        }
+  computed: {
+    backgroundColor: function() {
+      return colormap(this.element.color)[1];
+    },
+    sideBackgroundColor: function() {
+      return colormap(this.element.color)[0];
     }
+  }
 };
 </script>
 
 <style scoped>
 .header {
-    font-size:16px
+  font-size: 16px;
 }
 
 .subHeader {
-    font-size:12px
+  font-size: 12px;
 }
 
 .elementSide {
-    height: 100%; 
-    min-width: 40px; 
-    display: flex; 
-    justify-content: center; 
-    align-items:center
+  height: 100%;
+  min-width: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .icon {
-    color: white;
+  color: white;
 }
 
 .elementCard {

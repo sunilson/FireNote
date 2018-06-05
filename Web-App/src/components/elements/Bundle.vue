@@ -3,7 +3,7 @@
         <v-layout row>
               <v-flex xs12 sm6 offset-sm3>
                   <transition-group tag="v-layout" name="slide-x-transition" class="row wrap" mode="out-in">
-                      <element-card v-for="(item, index) in elements" :key="index" :element="item" @click.native="tryOpenElement(item)">
+                      <element-card v-for="(item, index) in elements" :key="index" :element="item" @click.native="tryOpenElement(item, id)">
                       </element-card>
                   </transition-group>
               </v-flex>

@@ -21,10 +21,10 @@
 <script>
 import firebase from "../../services/firebase.js"
 import {EventBus} from "../../services/EventBus.js"
-import BaseElmenetContent from "./BaseElementContent"
+import BaseElementContent from "./BaseElementContent"
 
 export default {
-    extends: BaseElmenetContent,
+    extends: BaseElementContent,
     data() { 
         return {
             editMode: false,
@@ -34,7 +34,7 @@ export default {
     },
     firebase() {
         return {
-            content: firebase.getNoteContentRef(this.id, true)
+            content: firebase.getNoteContentRef(this.id, this.parent)
         }
     },
     methods: {
@@ -45,7 +45,7 @@ export default {
         toggleEdit() {
             if(this.editMode) {
                 EventBus.$emit("showSnackbar", "Saved Note!")
-                firebase.saveNote((this.content.text) ? this.content.text : this.emptyContent, this.id)
+                firebase.saveNote((this.content.text) ? this.content.text : this.emptyContent, this.id, this.parent)
             }
             this.editMode = !this.editMode
         },

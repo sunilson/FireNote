@@ -1,7 +1,7 @@
 <template>
     <transition name="slide-y-transition" mode="out-in">
       <keep-alive include="ElementList">
-          <router-view></router-view>
+          <router-view :key="$route.fullPath"></router-view>
       </keep-alive>
     </transition>
 </template>

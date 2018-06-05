@@ -2,6 +2,7 @@ import Vue from "vue";
 import Router from "vue-router";
 import Home from "../components/Home.vue";
 import ElementList from "../components/ElementList.vue";
+import Bin from "../components/Bin.vue";
 import Login from "../components/authentication/Login.vue";
 import Register from "../components/authentication/Register.vue";
 import Authentication from "../components/authentication/Authentication.vue";
@@ -12,53 +13,60 @@ Vue.use(Router);
 
 const router = new Router({
   routes: [{
-    path: "/",
-    name: "Home",
-    component: Home,
-    meta: {
-      requiresAuth: true
+      path: "/",
+      name: "Home",
+      component: Home,
+      meta: {
+        requiresAuth: true
+      },
+      children: [{
+          path: "/",
+          name: "ElementList",
+          component: ElementList,
+        },
+        {
+          path: "/element/:id",
+          name: "BaseElement",
+          component: BaseElement,
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
+          path: "/element/:parent/:id",
+          name: "BaseBundleElement",
+          component: BaseElement,
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
+          path: "/bin",
+          name: "Bin",
+          component: Bin,
+          meta: {
+            requiresAuth: true
+          }
+        }
+      ]
     },
-    children: [
-      {
-        path: "/",
-        name: "ElementList",
-        component: ElementList,
-      },
-      {
-        path: "/element/:id",
-        name: "BaseElement",
-        component: BaseElement,
-        meta: {
-          requiresAuth: true
+    {
+      path: "/auth",
+      name: "Authentication",
+      component: Authentication,
+      children: [{
+          path: "/",
+          name: "Login",
+          component: Login
+        },
+        {
+          path: "/register",
+          name: "Register",
+          component: Register
         }
-      },
-      {
-        path: "/element/:parent/:id",
-        name: "BaseBundleElement",
-        component: BaseElement,
-        meta: {
-          requiresAuth: true
-        }
-      }
-    ]
-  },
-  {
-    path: "/auth",
-    name: "Authentication",
-    component: Authentication,
-    children: [
-      {
-        path: "/",
-        name: "Login",
-        component: Login
-      },
-      {
-        path: "/register",
-        name: "Register",
-        component: Register
-      }
-    ]
-  }]
+      ]
+    }
+  ]
 });
 
 router.beforeEach((to, from, next) => {

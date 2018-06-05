@@ -56,9 +56,8 @@
 </template>
 
 <script>
-
-import BaseElementListComponentMixin from "./shared/BaseElementListComponentMixin"
-import firebase from "../services/firebase.js"
+import BaseElementListComponentMixin from "./shared/BaseElementListComponentMixin";
+import firebase from "../services/firebase.js";
 
 export default {
   name: "ElementList",
@@ -66,14 +65,17 @@ export default {
   data() {
     return {
       menuItems: [
-          {
-            name: "Papierkorb",
-            action: () => {}
-          },
-          {
-            name: "Log Out",
-            action: () => firebase.fb.auth().signOut()
-          }
+        {
+          name: "Papierkorb",
+          action: () =>
+            this.$router.push({
+              name: "Bin"
+            })
+        },
+        {
+          name: "Log Out",
+          action: () => firebase.fb.auth().signOut()
+        }
       ],
       items: ["abc", "def", "ghi"],
       elements: []
@@ -83,32 +85,32 @@ export default {
     return {
       elements: firebase.getElementListRef(),
       settings: firebase.getSettings()
-    }
+    };
   }
 };
 </script>
 
 <style scoped>
-  
 </style>
 
 <style>
-.toolbar .toolbar__content>.btn:first-child, .toolbar .toolbar__extension>.btn:first-child {
-    margin-left: 8px !important;
-  }
-  .toolbar__title {
-    margin-left: 8px !important;
-  }
-  .speed-dial__list {
-    padding-bottom: 10px
-  }
-  .list {
-        background: #fafafa !important;
-  }
-  .icon {
-    display: flex !important
-  }
-  .fabColor {
-    background-color: #9E9E9E !important
-  }
+.toolbar .toolbar__content > .btn:first-child,
+.toolbar .toolbar__extension > .btn:first-child {
+  margin-left: 8px !important;
+}
+.toolbar__title {
+  margin-left: 8px !important;
+}
+.speed-dial__list {
+  padding-bottom: 10px;
+}
+.list {
+  background: #fafafa !important;
+}
+.icon {
+  display: flex !important;
+}
+.fabColor {
+  background-color: #9e9e9e !important;
+}
 </style>
