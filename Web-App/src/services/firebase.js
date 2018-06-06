@@ -91,9 +91,28 @@ export default {
   deleteElement: function (id, parent, element, cb) {
     fb.database().ref(`users/${fb.auth().currentUser.uid}/elements/${parent ? "bundles/" + parent : "main"}/${id}`).remove(error => {
       cb(error)
-      if (!error) {
-        fb.database().ref(`users/${fb.auth().currentUser.uid}/bin/${parent ? "bundles/" + parent : "main"}/${id}`).set(convertFirebaseToElement(element))
-      }
+    })
+  },
+
+  restoreElement: function (id, parent, cb) {
+    fb.database().ref(`users/${fb.auth().currentUser.uid}/bin/${parent ? "bundles/" + parent : "main"}/${id}`).once("value").then(element => {
+      return fb.database().ref(`users/${fb.auth().currentUser.uid}/elements/${parent ? "bundles/" + parent : "main"}/${id}`).set(element.val())
+    }).then(() => {
+      return fb.database().ref(`users/${fb.auth().currentUser.uid}/bin/${parent ? "bundles/" + parent : "main"}/${id}`).remove()
+    }).then(() => {
+      cb()
+    }).catch(error => {
+      cb(error)
+    })
+  },
+
+  clearBin: function (parent, elements) {
+    const ids = elements.map(element => element[".key"])
+    ids.forEach(element => {
+      console.log("DELETE", element)
+      fb.database().ref(`users/${fb.auth().currentUser.uid}/bin/${parent ? "bundles/" + parent : "main"}/${element}`).remove().then(() => {
+        fb.database().ref(`users/${fb.auth().currentUser.uid}/contents/${element}`).remove()
+      })
     })
   },
 
@@ -114,10 +133,6 @@ export default {
     ref.set(element, err => {
       cb(err)
     })
-  },
-
-  restoreElement: function () {
-
   },
 
   updateElement: function () {

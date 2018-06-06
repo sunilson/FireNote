@@ -17,6 +17,8 @@ export default {
       noteType: "note",
       selectedElement: null,
       selectedParent: null,
+      passwordDialog: false,
+      password: ""
     }
   },
   watch: {
@@ -25,6 +27,11 @@ export default {
       val && setTimeout(() => {
         this.tooltips = true
       }, 250)
+    }
+  },
+  firebase() {
+    return {
+      settings: firebase.getSettings()
     }
   },
   methods: {
@@ -49,11 +56,13 @@ export default {
       } else {
         this.selectedParent = parent
         this.selectedElement = element
-        EventBus.$emit("showPasswordDialog")
+        this.passwordDialog = true
+        this.password = ""
       }
     },
     openLockedElement(password) {
-      if (hashPassword(password) == this.settings.masterPassword) {
+      this.passwordDialog = false
+      if (hashPassword(this.password) == this.settings.masterPassword) {
         this.$router.push({
           name: (this.selectedParent) ? 'BaseBundleElement' : 'BaseElement',
           params: (this.selectedParent) ? {

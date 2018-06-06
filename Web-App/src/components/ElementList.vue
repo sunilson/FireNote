@@ -24,7 +24,19 @@
                   </transition-group>
               </v-flex>
           </v-layout>
-          <passwordDialog  @openLockedElement="openLockedElement($event)"></passwordDialog>
+          <v-dialog v-model="passwordDialog" max-width="290">
+            <v-card>
+                <v-card-title class="headline">Element is locked</v-card-title>
+                <div style="padding-left: 16px; padding-right: 16px">
+                    <v-text-field label="Element password" type="password" autofocus v-model="password" @keyup.enter="openElement()"></v-text-field>
+                </div>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="green darken-1" flat="flat" @click.native="show = false">Cancel</v-btn>
+                    <v-btn color="green darken-1" flat="flat" @click.native="openLockedElement()">Open</v-btn>
+                </v-card-actions>
+            </v-card>
+          </v-dialog>
       </v-container>
       <v-speed-dial fixed bottom right v-model="fab">
         <v-btn slot="activator" v-model="fab" color="fabColor" dark fab>
@@ -83,8 +95,7 @@ export default {
   },
   firebase() {
     return {
-      elements: firebase.getElementListRef(),
-      settings: firebase.getSettings()
+      elements: firebase.getElementListRef()
     };
   }
 };
