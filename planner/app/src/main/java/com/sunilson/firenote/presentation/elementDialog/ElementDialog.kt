@@ -19,8 +19,6 @@ import com.sunilson.firenote.presentation.shared.base.BaseDialogFragment
 import com.sunilson.firenote.presentation.shared.colors
 import com.sunilson.firenote.presentation.shared.singletons.ConnectivityManager
 import com.sunilson.firenote.presentation.shared.views.ColorElementView
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.alertdialog_body_add_element.*
 import kotlinx.android.synthetic.main.alertdialog_body_add_element.view.*
 import kotlinx.android.synthetic.main.alertdialog_custom_title.view.*
 import javax.inject.Inject
@@ -66,7 +64,7 @@ class ElementDialog : BaseDialogFragment(), ElementDialogPresenterContract.View 
         v.colorlist.setOnItemClickListener { _, view, position, _ ->
             val colorView = view as ColorElementView
             if (!colorView.isChecked) {
-                element.color = colorAdapter.getItem(position)!!.color
+                element.color = colorAdapter.getItem(position).color
                 colorAdapter.uncheckAll()
                 colorAdapter.setCheckedPosition(position)
                 colorView.isChecked = true
@@ -133,7 +131,6 @@ class ElementDialog : BaseDialogFragment(), ElementDialogPresenterContract.View 
 
     override fun showSuccess(message: String?) {
         super<ElementDialogPresenterContract.View>.showSuccess(message)
-        if(activity is AddElementListener) (activity as AddElementListener).elementAdded(element)
         dismiss()
     }
 

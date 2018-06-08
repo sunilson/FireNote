@@ -27,8 +27,8 @@ class ColorFragment : BaseFragment() {
 
         view.fragment_color_listview.adapter = colorVisibilityAdapter
 
-        view.fragment_color_listview.setOnItemClickListener { _, view, position, _ ->
-            val colorElementView = view as ColorElementView
+        view.fragment_color_listview.setOnItemClickListener { _, v, position, _ ->
+            val colorElementView = v as ColorElementView
             colorElementView.isChecked = !colorElementView.isChecked
             if (!colorElementView.isChecked) localSettingsManager.setColorVisibility(colorVisibilityAdapter.getItem(position).color, 1)
             else localSettingsManager.setColorVisibility(colorVisibilityAdapter.getItem(position).color, -1)

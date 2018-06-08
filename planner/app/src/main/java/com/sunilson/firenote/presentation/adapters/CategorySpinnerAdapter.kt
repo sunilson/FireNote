@@ -29,7 +29,7 @@ class CategorySpinnerAdapter(context: Context)
         viewHolder.textView.text = data[position].name
 
         row!!.setPadding(0, row.paddingTop, row.paddingRight, row.paddingBottom)
-        return row!!
+        return row
     }
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View {

@@ -24,9 +24,8 @@ class CategoryFragment : BaseFragment() {
         val categoryVisibilityAdapter = CategoryVisibilityAdapter(context!!, localSettingsManager)
         view.fragment_category_listview.adapter = categoryVisibilityAdapter
 
-        view.fragment_category_listview.setOnItemClickListener { parent, view, position, id ->
-            val categoryVisibilityView = view as CategoryVisibilityView
-
+        view.fragment_category_listview.setOnItemClickListener { _, v, position, _ ->
+            val categoryVisibilityView = v as CategoryVisibilityView
             categoryVisibilityView.isChecked = !categoryVisibilityView.isChecked
             if (categoryVisibilityView.isChecked) localSettingsManager.setCategoryVisiblity(categoryVisibilityAdapter.getItem(position).id, 1)
             else localSettingsManager.setCategoryVisiblity(categoryVisibilityAdapter.getItem(position).id, -1)

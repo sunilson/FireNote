@@ -1,17 +1,18 @@
 package com.sunilson.firenote.presentation.homepage
 
 import com.sunilson.firenote.data.models.Element
-import com.sunilson.firenote.presentation.elementDialog.AddElementListener
+import com.sunilson.firenote.presentation.elements.elementActivity.ElementContentPresenterContract
 import com.sunilson.firenote.presentation.shared.base.IBaseView
 
 interface HomepagePresenterContract {
-    interface IHomepageView : IBaseView, AddElementListener {
-        fun listElements(elements: List<Element>)
+    interface IHomepageView : IBaseView {
+        fun elementAdded(element: Element)
+        fun elementRemoved(element: Element)
+        fun elementChanged(element: Element)
         fun loggedOut()
     }
 
-    interface IHomepagePresenter {
-        fun loadData()
+    interface IHomepagePresenter : ElementContentPresenterContract.Presenter{
         fun deleteElement(id: String)
     }
 }

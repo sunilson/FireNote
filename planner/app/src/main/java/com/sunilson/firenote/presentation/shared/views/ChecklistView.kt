@@ -2,6 +2,7 @@ package com.sunilson.firenote.presentation.shared.views
 
 import android.content.Context
 import android.graphics.Paint
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
@@ -22,11 +23,11 @@ class ChecklistView(context: Context) : LinearLayout(context) {
             field = value
             if(value) {
                 checkList_element_text.paintFlags = checkList_element_text.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                checkList_element_text.setTextColor(resources.getColor(R.color.text_crossed_out))
+                checkList_element_text.setTextColor(ContextCompat.getColor(context, R.color.text_crossed_out))
                 checkList_element_checkBox.isChecked = true
             } else {
                 checkList_element_text.paintFlags = checkList_element_text.paintFlags and  Paint.STRIKE_THRU_TEXT_FLAG.inv()
-                checkList_element_text.setTextColor(resources.getColor(R.color.primary_text_color))
+                checkList_element_text.setTextColor(ContextCompat.getColor(context, R.color.primary_text_color))
                 checkList_element_checkBox.isChecked = true
             }
         }

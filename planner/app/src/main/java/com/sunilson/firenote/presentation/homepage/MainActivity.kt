@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
@@ -25,11 +24,9 @@ import com.sunilson.firenote.presentation.homepage.adapters.SortingListArrayAdap
 import com.sunilson.firenote.presentation.homepage.adapters.SortingListArrayAdapterFactory
 import com.sunilson.firenote.presentation.settings.SettingsActivity
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
-import com.sunilson.firenote.presentation.shared.base.BasePresenter
 import com.sunilson.firenote.presentation.shared.interfaces.HasElementList
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import com.sunilson.firenote.presentation.visibilityDialog.VisibilityDialog
-import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -69,7 +66,6 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
     val layoutManager: LinearLayoutManager = LinearLayoutManager(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
@@ -98,8 +94,6 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
         //Set sorting text
         if (localSettingsManager.getSortingMethod() != null) activity_main_sorting_bar_title.text = getString(R.string.current_sorthing_method) + " " + localSettingsManager.getSortingMethod()
         else activity_main_sorting_bar_title.text = getString(R.string.current_sorthing_method) + " " + getString(R.string.sort_ascending_name)
-
-        if (FirebaseAuth.getInstance().currentUser != null) presenter.loadData()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -143,6 +137,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
                 val intent = Intent(this, ElementActivity::class.java)
                 intent.putExtra("elementID", element.elementID)
                 intent.putExtra("noteType", element.noteType)
+                intent.putExtra("elementColor", element.color)
                 startActivity(intent)
             }
         }
@@ -156,7 +151,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
         }
 
         activity_main_swipe_refresh_layout.setOnRefreshListener {
-            presenter.loadData()
+            presenter.loadElementData()
             activity_main_swipe_refresh_layout.isRefreshing = false
         }
 
@@ -212,18 +207,12 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
         }
     }
     override fun loggedOut() {
-        finish()
         startActivity(Intent(this, AuthenticationActivity::class.java))
+        finish()
     }
     override fun toggleLoading(loading: Boolean, message: String?) { activity_main_swipe_refresh_layout.isRefreshing = loading}
-    override fun elementAdded(element: Element) { presenter.loadData() }
-    override fun listElements(elements: List<Element>) {
-        adapter.clear()
-        Handler().postDelayed({
-            elements.forEach { adapter.add(it) }
-        }, 100)
-    }
-
-    override fun addObserver(presenter: BasePresenter) = lifecycle.addObserver(presenter)
+    override fun elementAdded(element: Element) { adapter.add(element) }
+    override fun elementChanged(element: Element) { adapter.update(element) }
+    override fun elementRemoved(element: Element) { adapter.remove(element.elementID) }
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = dispatchingAndroidInjector
 }

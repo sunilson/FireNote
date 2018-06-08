@@ -9,16 +9,14 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
-import com.sunilson.firenote.presentation.shared.base.BaseFragment
-import com.sunilson.firenote.presentation.elements.ElementFragment
 import com.sunilson.firenote.presentation.elements.BaseElementPresenterContract
+import com.sunilson.firenote.presentation.shared.base.BaseFragment
 import com.sunilson.firenote.presentation.shared.singletons.ConnectivityManager
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.base_element_activity.*
 import kotlinx.android.synthetic.main.fragment_note.*
 import javax.inject.Inject
 
-class NoteFragment : BaseFragment(), NotePresenterContract.INoteView, ElementFragment {
+class NoteFragment : BaseFragment(), NotePresenterContract.INoteView {
 
     @Inject
     lateinit var notePresenter: NotePresenterContract.INotePresenter
@@ -26,50 +24,45 @@ class NoteFragment : BaseFragment(), NotePresenterContract.INoteView, ElementFra
     @Inject
     lateinit var connectivityManager: ConnectivityManager
 
-    private val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    private lateinit var elementActivity: BaseElementPresenterContract.View
+    private lateinit var imm: InputMethodManager
     private var editMode = false
 
-    override val element: Element
-        get() = (activity as BaseElementPresenterContract.View).element!!
+    val elementActivity: BaseElementPresenterContract.View?
+        get() = activity as? BaseElementPresenterContract.View
 
-    override val mContext = activity as Context
+    override val element: Element?
+        get() = elementActivity?.element
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        elementActivity = activity as BaseElementPresenterContract.View
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
+        imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
-        notepad.setOnTouchListener(object : View.OnTouchListener {
-            private val gestureDetector = GestureDetector(activity, object : GestureDetector.SimpleOnGestureListener() {
-                override fun onDoubleTap(e: MotionEvent): Boolean {
-                    if (!editMode) toggleEditMode()
-                    return super.onDoubleTap(e)
-                }
-            })
+        activity?.fab?.setImageDrawable(activity?.getDrawable(R.drawable.ic_mode_edit_black_24dp))
+        activity?.fab?.setOnClickListener { toggleEditMode() }
+    }
 
-            override fun onTouch(view: View, motionEvent: MotionEvent): Boolean {
-                gestureDetector.onTouchEvent(motionEvent)
-                if (editMode) imm.showSoftInput(notepad, InputMethodManager.SHOW_FORCED)
-                return false
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val gestureDetector = GestureDetector(activity, object : GestureDetector.SimpleOnGestureListener() {
+            override fun onDoubleTap(e: MotionEvent): Boolean {
+                if (!editMode) toggleEditMode()
+                return super.onDoubleTap(e)
             }
         })
 
-        fab.setImageDrawable(activity?.getDrawable(R.drawable.ic_mode_edit_black_24dp))
-        fab.setOnClickListener {
-            toggleEditMode()
+        notepad.setOnTouchListener { _, motionEvent ->
+            gestureDetector.onTouchEvent(motionEvent)
+            if (editMode) imm.showSoftInput(notepad, InputMethodManager.SHOW_FORCED)
+            false
         }
-    }
-
-    override fun onAttach(context: Context?) {
-        AndroidSupportInjection.inject(this)
-        super.onAttach(context)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
-        return super.onCreateView(inflater, container, savedInstanceState)
+        val view = inflater.inflate(R.layout.fragment_note, container, false)
+        return view
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -86,7 +79,7 @@ class NoteFragment : BaseFragment(), NotePresenterContract.INoteView, ElementFra
 
     fun toggleEditMode() {
         if (!editMode) {
-            elementActivity.toggleTitleEdit(true)
+            elementActivity?.toggleTitleEdit(true)
             imm.showSoftInput(notepad, InputMethodManager.SHOW_FORCED)
             fab.visibility = View.GONE
             editMode = true
@@ -99,7 +92,7 @@ class NoteFragment : BaseFragment(), NotePresenterContract.INoteView, ElementFra
             notepad.setText(notepad.text.toString())
             notepad.setSelection(notepad.text.length)
         } else {
-            elementActivity.toggleTitleEdit(false)
+            elementActivity?.toggleTitleEdit(false)
             fab.visibility = View.VISIBLE
             imm.hideSoftInputFromWindow(notepad.windowToken, 0)
             notepad.clearFocus()

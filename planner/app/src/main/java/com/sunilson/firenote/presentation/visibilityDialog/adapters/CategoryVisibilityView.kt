@@ -2,6 +2,7 @@ package com.sunilson.firenote.presentation.visibilityDialog.adapters
 
 import android.content.Context
 import android.graphics.Paint
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Checkable
@@ -30,11 +31,11 @@ class CategoryVisibilityView(context: Context) : LinearLayout(context), Checkabl
 
         if (mChecked) {
             category_element_text.paintFlags = category_element_text.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-            category_element_text.setTextColor(resources.getColor(R.color.text_crossed_out))
+            category_element_text.setTextColor(ContextCompat.getColor(context, R.color.text_crossed_out))
             category_element_checkBox.isChecked = false
         } else {
             category_element_text.paintFlags = category_element_text.paintFlags and  Paint.STRIKE_THRU_TEXT_FLAG.inv()
-            category_element_text.setTextColor(resources.getColor(R.color.primary_text_color))
+            category_element_text.setTextColor(ContextCompat.getColor(context, R.color.primary_text_color))
             category_element_checkBox.isChecked = true
         }
     }

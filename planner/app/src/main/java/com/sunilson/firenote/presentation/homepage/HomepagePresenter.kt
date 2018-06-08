@@ -12,19 +12,14 @@ class HomepagePresenter @Inject constructor(val firebaseRepository: IFirebaseRep
     : BasePresenter(view), HomepagePresenterContract.IHomepagePresenter {
 
     private val authListener: FirebaseAuth.AuthStateListener = FirebaseAuth.AuthStateListener {
-        if(it.currentUser == null) view.loggedOut()
+        if (it.currentUser == null) view.loggedOut()
     }
 
-    override fun loadData() {
+    override fun loadElementData() {
         disposable.dispose()
-        val user = FirebaseAuth.getInstance().currentUser
-        if (user != null) {
-            disposable.add(firebaseRepository.loadElements(user).subscribe({ result ->
-                view.listElements(result)
-             }, {
-                view.showError(it.message)
-            }))
-        }
+        disposable.add(firebaseRepository.loadElements(FirebaseAuth.getInstance().currentUser!!).subscribe({ _ -> }, {
+            view.showError(it.message)
+        }))
     }
 
     override fun deleteElement(id: String) {
@@ -36,14 +31,12 @@ class HomepagePresenter @Inject constructor(val firebaseRepository: IFirebaseRep
     override fun onStart() {
         super.onStart()
         FirebaseAuth.getInstance().addAuthStateListener(authListener)
+        if (FirebaseAuth.getInstance().currentUser != null) loadElementData()
     }
 
     override fun onStop() {
         super.onStop()
         FirebaseAuth.getInstance().removeAuthStateListener(authListener)
-    }
-
-    override fun onCreate() {
-        loadData()
+        disposable.dispose()
     }
 }

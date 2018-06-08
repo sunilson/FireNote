@@ -9,6 +9,8 @@ interface ElementContentPresenterContract {
     }
 
     interface View : IBaseView {
-        val element: Element
+        fun canLeave() : Boolean = true
+        fun titleEditToggled(active : Boolean)
+        val element: Element?
     }
 }

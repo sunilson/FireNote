@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.text.TextUtils
 import android.view.*
@@ -15,22 +16,25 @@ import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.databinding.BaseElementActivityBinding
 import com.sunilson.firenote.presentation.elements.BaseElementPresenterContract
-import com.sunilson.firenote.presentation.elements.ElementFragment
+import com.sunilson.firenote.presentation.elements.note.NoteFragment
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
-import dagger.android.AndroidInjection
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.base_element_activity.*
 import javax.inject.Inject
 
-
-
-class ElementActivity : BaseActivity(), BaseElementPresenterContract.View {
+class ElementActivity : BaseActivity(), BaseElementPresenterContract.View, HasSupportFragmentInjector {
 
     @Inject
     lateinit var presenter: BaseElementPresenterContract.Presenter
 
     @Inject
     lateinit var localSettingsManager: LocalSettingsManager
+
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
     private var _element: Element? = null
     private lateinit var binding: BaseElementActivityBinding
@@ -47,22 +51,20 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View {
         get() = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
 
         imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         elementID = intent.getStringExtra("elementID")
         parent = intent.getStringExtra("parentID")
         binding = DataBindingUtil.setContentView(this, R.layout.base_element_activity)
+        elementChanged(Element(elementID = elementID, parent = parent, _color = intent.getIntExtra("elementColor", 123)))
 
-        /*
         //Set element content
-        when (_element.noteType) {
+        when (intent.getStringExtra("noteType")) {
             "note" -> supportFragmentManager.beginTransaction().replace(R.id.base_element_activity_framelayout, NoteFragment.newInstance()).commit()
             "checklist" -> supportFragmentManager.beginTransaction().replace(R.id.base_element_activity_framelayout, NoteFragment.newInstance()).commit()
             "bundle" -> supportFragmentManager.beginTransaction().replace(R.id.base_element_activity_framelayout, NoteFragment.newInstance()).commit()
         }
-        */
 
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -70,8 +72,8 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View {
         title_edittext.isFocusable = false
         title_edittext.isFocusableInTouchMode = false
         title_edittext.setOnClickListener { toggleTitleEdit(true) }
-        title_edittext.setOnEditorActionListener{ v, code, event ->
-            if(event != null && event.keyCode == KeyEvent.KEYCODE_ENTER || code == EditorInfo.IME_ACTION_DONE) {
+        title_edittext.setOnEditorActionListener { _, code, event ->
+            if (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER || code == EditorInfo.IME_ACTION_DONE) {
                 toggleTitleEdit(false)
                 true
             } else {
@@ -89,13 +91,13 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View {
 
     override fun onBackPressed() {
         if (editMode) toggleTitleEdit(false)
-        else if ((supportFragmentManager.fragments[0] as ElementFragment).canLeave()) super.onBackPressed()
+        else if ((supportFragmentManager.fragments[0] as ElementContentPresenterContract.View).canLeave()) super.onBackPressed()
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> {
-                if ((supportFragmentManager.fragments[0] as ElementFragment).canLeave()) finish()
+                if ((supportFragmentManager.fragments[0] as ElementContentPresenterContract.View).canLeave()) finish()
             }
             R.id.menu_lock -> {
                 if (localSettingsManager.getMasterPassword().isEmpty()) presenter.lockElement(_element!!.locked)
@@ -156,7 +158,6 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View {
     }
 
     override fun elementChanged(element: Element) {
-
         //TODO Gelöschte und ungültige elemente abfangen
 
         if (_element == null) {
@@ -182,5 +183,6 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View {
         finish()
     }
 
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> = dispatchingAndroidInjector
     override fun toggleLoading(loading: Boolean, message: String?) {}
 }

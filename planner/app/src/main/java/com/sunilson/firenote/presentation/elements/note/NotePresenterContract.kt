@@ -3,8 +3,7 @@ package com.sunilson.firenote.presentation.elements.note
 import com.sunilson.firenote.presentation.elements.elementActivity.ElementContentPresenterContract
 
 interface NotePresenterContract {
-    interface INotePresenter {
-        fun loadNoteData()
+    interface INotePresenter : ElementContentPresenterContract.Presenter {
         fun storeNoteText(text: String)
     }
 

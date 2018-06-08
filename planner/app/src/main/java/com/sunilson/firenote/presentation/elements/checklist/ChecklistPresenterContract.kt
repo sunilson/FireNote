@@ -1,11 +1,17 @@
 package com.sunilson.firenote.presentation.elements.checklist
 
-interface ChecklistPresenterContract {
-    interface View {
+import com.sunilson.firenote.presentation.elements.elementActivity.ElementContentPresenterContract
 
+interface ChecklistPresenterContract {
+    interface View : ElementContentPresenterContract.View {
+        fun checklistElementAdded()
+        fun checklistElementChanged()
+        fun checklistElementRemoved()
     }
 
-    interface Presenter {
-
+    interface Presenter : ElementContentPresenterContract.Presenter {
+        fun addChecklistElement()
+        fun removeChecklistElement()
+        fun changeChecklistElement()
     }
 }

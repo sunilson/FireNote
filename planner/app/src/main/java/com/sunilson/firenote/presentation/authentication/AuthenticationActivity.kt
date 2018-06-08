@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
 import com.sunilson.firenote.presentation.authentication.fragments.StartFragment
 import com.sunilson.firenote.presentation.homepage.MainActivity
@@ -13,7 +11,6 @@ import com.sunilson.firenote.presentation.shared.base.BaseActivity
 import com.sunilson.firenote.presentation.shared.base.IBaseView
 import com.sunilson.firenote.presentation.shared.googleSignInRequestCode
 import com.sunilson.firenote.presentation.shared.interfaces.CanNavigateFragments
-import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -34,7 +31,6 @@ class AuthenticationActivity : BaseActivity(), CanNavigateFragments, Authenticat
         get() = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_authentication)
         supportFragmentManager.beginTransaction().replace(R.id.activity_authentication_framelayout, StartFragment.newInstance(), "start").commit()

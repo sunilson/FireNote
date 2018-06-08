@@ -10,25 +10,24 @@ class NotePresenter @Inject constructor(private val eventRepository: IFirebaseRe
     : BasePresenter(view), NotePresenterContract.INotePresenter {
 
     override fun onStop() {
+        super.onStop()
         view.finishTextEdit()
         disposable.dispose()
     }
 
-    override fun onStart() {
-        loadNoteData()
-    }
-
-    override fun onDestroy() {
-    }
-
     override fun onCreate() {
+        loadElementData()
     }
 
-    override fun storeNoteText(text: String) = eventRepository.storeNoteText(view.element.elementID, text)
+    override fun storeNoteText(text: String) {
+        if(view.element != null) eventRepository.storeNoteText(view.element!!.elementID, text)
+    }
 
-    override fun loadNoteData() {
-        disposable.add(eventRepository.loadNote(view.element.elementID).subscribe {
-            view.noteTextChanged(it)
-        })
+    override fun loadElementData() {
+        if(view.element != null) {
+            disposable.add(eventRepository.loadNoteContent(view.element!!.elementID).subscribe {
+                view.noteTextChanged(it)
+            })
+        }
     }
 }
