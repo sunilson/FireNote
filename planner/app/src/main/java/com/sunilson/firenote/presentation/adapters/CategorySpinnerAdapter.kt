@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import com.sunilson.firenote.data.models.Category
 import com.sunilson.firenote.presentation.shared.base.adapters.BaseSpinnerArrayAdapter
 import com.sunilson.firenote.presentation.shared.categories
+import com.sunilson.firenote.presentation.shared.di.scopes.DialogFragmentScope
 
-class CategorySpinnerAdapter(context: Context)
+@DialogFragmentScope
+class CategorySpinnerAdapter constructor(context: Context)
     : BaseSpinnerArrayAdapter<Category>(context) {
 
     init {

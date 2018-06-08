@@ -1,21 +1,34 @@
 package com.sunilson.firenote.presentation.elementDialog.di
 
+import com.sunilson.firenote.presentation.adapters.CategorySpinnerAdapter
+import com.sunilson.firenote.presentation.adapters.ColorAddArrayAdapter
 import com.sunilson.firenote.presentation.elementDialog.ElementDialog
-import com.sunilson.firenote.presentation.elementDialog.ElementDialogPresenter
-import com.sunilson.firenote.presentation.elementDialog.ElementDialogPresenterContract
 import com.sunilson.firenote.presentation.shared.di.scopes.DialogFragmentScope
-import dagger.Binds
 import dagger.Module
+import dagger.Provides
 
+@DialogFragmentScope
 @Module
-abstract class ElementDialogModule {
+class ElementDialogModule {
 
+    @Provides
     @DialogFragmentScope
-    @Binds
-    abstract fun provideElementDialogPresenter(elementDialogPresenter: ElementDialogPresenter): ElementDialogPresenterContract.Presenter
+    fun provideCategorySpinnerAdapter(elementDialog: ElementDialog): CategorySpinnerAdapter {
+        return CategorySpinnerAdapter(elementDialog.context!!)
+    }
 
+    @Provides
     @DialogFragmentScope
-    @Binds
-    abstract fun provideElementDialogView(elementDialog: ElementDialog): ElementDialogPresenterContract.View
+    fun provideColorArrayAdapter(elementDialog: ElementDialog): ColorAddArrayAdapter {
+        return ColorAddArrayAdapter(elementDialog.context!!)
+    }
 
+    /*
+            @DialogFragmentScope
+            @Provides
+            @JvmStatic
+            fun provideContext(elementDialog: ElementDialog) : Context {
+                return elementDialog.context!!
+            }
+            */
 }

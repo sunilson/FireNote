@@ -3,6 +3,7 @@ package com.sunilson.firenote.presentation.homepage
 import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.IFirebaseRepository
+import com.sunilson.firenote.data.models.ChangeType
 import com.sunilson.firenote.presentation.shared.base.BasePresenter
 import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
 import javax.inject.Inject
@@ -17,7 +18,14 @@ class HomepagePresenter @Inject constructor(val firebaseRepository: IFirebaseRep
 
     override fun loadElementData() {
         disposable.dispose()
-        disposable.add(firebaseRepository.loadElements(FirebaseAuth.getInstance().currentUser!!).subscribe({ _ -> }, {
+        view.clearAdapter()
+        disposable.add(firebaseRepository.loadElements(FirebaseAuth.getInstance().currentUser!!).subscribe({
+            when (it?.first) {
+                ChangeType.ADDED -> view.elementAdded(it.second)
+                ChangeType.REMOVED -> view.elementRemoved(it.second)
+                ChangeType.CHANGED -> view.elementChanged(it.second)
+            }
+        }, {
             view.showError(it.message)
         }))
     }

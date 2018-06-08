@@ -1,10 +1,11 @@
 package com.sunilson.firenote.presentation.elements.checklist
 
+import com.sunilson.firenote.data.models.ChecklistElement
 import com.sunilson.firenote.presentation.shared.base.BasePresenter
 import javax.inject.Inject
 
 class ChecklistPresenter @Inject constructor(val view : ChecklistPresenterContract.View) : BasePresenter(view), ChecklistPresenterContract.Presenter{
-    override fun addChecklistElement() {
+    override fun addChecklistElement(checklistElement: ChecklistElement) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

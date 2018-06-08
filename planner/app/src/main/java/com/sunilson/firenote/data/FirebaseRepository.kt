@@ -20,7 +20,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 interface IFirebaseRepository {
-    fun loadElements(user: FirebaseUser): Single<List<Element>>
+    fun loadElements(user: FirebaseUser): Flowable<Pair<ChangeType, Element>?>
     fun loadElement(id: String, parent: String? = null): Flowable<Element?>
     fun lockElement(id: String, locked: Boolean, parent: String? = null)
     fun loadNoteContent(id: String): Flowable<String>
@@ -105,15 +105,13 @@ class FirebaseRepository @Inject constructor() : IFirebaseRepository {
         })
     }
 
-    override fun loadElements(user: FirebaseUser): Single<List<Element>> {
-        return createSingleFromQuery(FirebaseDatabase.getInstance().reference.child("users").child(user.uid).child("elements").child("main"), {
-            val result = mutableListOf<Element>()
-            it?.children?.forEach {
-                val tempEvent = it.getValue(FirebaseElement::class.java)?.parseElement()
-                tempEvent?.elementID = it.key
-                if (tempEvent != null) result.add(tempEvent)
-            }
-            result.toList()
+    override fun loadElements(user: FirebaseUser): Flowable<Pair<ChangeType, Element>?> {
+        return createFlowableFromQuery(FirebaseDatabase.getInstance().reference.child("users").child(user.uid).child("elements").child("main"), { snapshot, changeType ->
+            return@createFlowableFromQuery if (snapshot != null) {
+                val tempEvent = snapshot.getValue(FirebaseElement::class.java)!!.parseElement()
+                tempEvent.elementID = snapshot.key
+                Pair(changeType, tempEvent)
+            } else null
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
@@ -125,6 +123,7 @@ class FirebaseRepository @Inject constructor() : IFirebaseRepository {
                         .addOnSuccessListener { if (!emitter.isDisposed) emitter.onComplete() }
             }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
         }
+
         fun <T> createSingleFromQuery(ref: DatabaseReference, converter: (DataSnapshot?) -> T): Single<T> {
             return Single.create<T> {
                 val listener = object : ValueEventListener {
@@ -141,6 +140,7 @@ class FirebaseRepository @Inject constructor() : IFirebaseRepository {
                 ref.addListenerForSingleValueEvent(listener)
             }
         }
+
         fun <T> createFlowableFromQuery(ref: DatabaseReference, converter: (DataSnapshot?, ChangeType) -> T): Flowable<T> {
             return Flowable.create({ emitter ->
                 val listener = object : ChildEventListener {
@@ -156,6 +156,7 @@ class FirebaseRepository @Inject constructor() : IFirebaseRepository {
                 ref.addChildEventListener(listener)
             }, BackpressureStrategy.BUFFER)
         }
+
         fun <T> createFlowableValueFromQuery(ref: DatabaseReference, converter: (DataSnapshot?) -> T): Flowable<T> {
             return Flowable.create({ emitter ->
                 val listener = object : ValueEventListener {

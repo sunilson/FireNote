@@ -3,8 +3,6 @@ package com.sunilson.firenote.presentation.application.di
 import com.sunilson.firenote.presentation.authentication.AuthenticationActivity
 import com.sunilson.firenote.presentation.authentication.di.AuthModule
 import com.sunilson.firenote.presentation.authentication.di.FragmentBuilder
-import com.sunilson.firenote.presentation.elementDialog.ElementDialog
-import com.sunilson.firenote.presentation.elementDialog.di.ElementDialogModule
 import com.sunilson.firenote.presentation.elements.elementActivity.ElementActivity
 import com.sunilson.firenote.presentation.elements.elementActivity.di.ElementFragmentBuilder
 import com.sunilson.firenote.presentation.elements.elementActivity.di.ElementModule
@@ -32,13 +30,16 @@ abstract class ActivityBuilder {
     @ActivityScope
     abstract fun contributeElementActivity(): ElementActivity
 
+
     @ContributesAndroidInjector(modules = [VisibilityDialogModule::class])
     @DialogFragmentScope
     abstract fun ccontributeVisibilityDialogFragment(): VisibilityDialog
 
+    /*
     @ContributesAndroidInjector(modules = [ElementDialogModule::class])
     @DialogFragmentScope
     abstract fun contributeAddElementFragment(): ElementDialog
+    */
 
     /*
 

@@ -31,10 +31,14 @@ class ElementDialog : BaseDialogFragment(), ElementDialogPresenterContract.View 
     @Inject
     lateinit var presenter: ElementDialogPresenterContract.Presenter
 
+    @Inject
+    lateinit var categorySpinnerAdapter: CategorySpinnerAdapter
+
+    @Inject
+    lateinit var colorAdapter: ColorAddArrayAdapter
+
     private lateinit var element: Element
     private lateinit var v: View
-    private lateinit var colorAdapter: ColorAddArrayAdapter
-    private lateinit var categorySpinnerAdapter: CategorySpinnerAdapter
     private var editMode: Boolean = false
     private var elementType: String = "note"
     private lateinit var imm: InputMethodManager
@@ -45,8 +49,6 @@ class ElementDialog : BaseDialogFragment(), ElementDialogPresenterContract.View 
         elementType = arguments?.getString("elementType")!!
         editMode = arguments?.getBoolean("editMode") == true
         element = Element("", Category("", ""), elementType)
-        colorAdapter = ColorAddArrayAdapter(context!!)
-        categorySpinnerAdapter = CategorySpinnerAdapter(context!!)
         context!!.colors().forEach { colorAdapter.add(it) }
         imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         v = LayoutInflater.from(context).inflate(R.layout.alertdialog_body_add_element, null, false)

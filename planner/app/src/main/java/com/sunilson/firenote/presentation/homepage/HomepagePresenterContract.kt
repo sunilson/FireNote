@@ -9,6 +9,7 @@ interface HomepagePresenterContract {
         fun elementAdded(element: Element)
         fun elementRemoved(element: Element)
         fun elementChanged(element: Element)
+        fun clearAdapter()
         fun loggedOut()
     }
 

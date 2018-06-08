@@ -16,6 +16,7 @@ import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.databinding.BaseElementActivityBinding
 import com.sunilson.firenote.presentation.elements.BaseElementPresenterContract
+import com.sunilson.firenote.presentation.elements.checklist.ChecklistFragment
 import com.sunilson.firenote.presentation.elements.note.NoteFragment
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
@@ -62,7 +63,7 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View, HasSu
         //Set element content
         when (intent.getStringExtra("noteType")) {
             "note" -> supportFragmentManager.beginTransaction().replace(R.id.base_element_activity_framelayout, NoteFragment.newInstance()).commit()
-            "checklist" -> supportFragmentManager.beginTransaction().replace(R.id.base_element_activity_framelayout, NoteFragment.newInstance()).commit()
+            "checklist" -> supportFragmentManager.beginTransaction().replace(R.id.base_element_activity_framelayout, ChecklistFragment.newInstance()).commit()
             "bundle" -> supportFragmentManager.beginTransaction().replace(R.id.base_element_activity_framelayout, NoteFragment.newInstance()).commit()
         }
 

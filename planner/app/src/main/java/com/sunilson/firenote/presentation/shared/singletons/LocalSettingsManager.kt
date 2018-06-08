@@ -1,5 +1,6 @@
 package com.sunilson.firenote.presentation.shared.singletons
 
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import com.sunilson.firenote.presentation.shared.sortingMethods
@@ -9,7 +10,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LocalSettingsManager @Inject constructor(val context: Context) {
+class LocalSettingsManager @Inject constructor(val context: Application) {
 
     private val sharedPrefs: SharedPreferences = context.getSharedPreferences("prefs", Context.MODE_PRIVATE)
 

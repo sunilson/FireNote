@@ -81,7 +81,7 @@ class NoteFragment : BaseFragment(), NotePresenterContract.INoteView {
         if (!editMode) {
             elementActivity?.toggleTitleEdit(true)
             imm.showSoftInput(notepad, InputMethodManager.SHOW_FORCED)
-            fab.visibility = View.GONE
+            activity?.fab?.visibility = View.GONE
             editMode = true
             notepad.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_FLAG_MULTI_LINE
             notepad.setSingleLine(false)
@@ -93,7 +93,7 @@ class NoteFragment : BaseFragment(), NotePresenterContract.INoteView {
             notepad.setSelection(notepad.text.length)
         } else {
             elementActivity?.toggleTitleEdit(false)
-            fab.visibility = View.VISIBLE
+            activity?.fab?.visibility = View.VISIBLE
             imm.hideSoftInputFromWindow(notepad.windowToken, 0)
             notepad.clearFocus()
             notepad.linksClickable = true

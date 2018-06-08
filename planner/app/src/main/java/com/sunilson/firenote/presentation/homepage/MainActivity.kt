@@ -74,7 +74,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
         //Initialize Recyclerview
         initClickListeners()
         activity_main_recycler_view.setHasFixedSize(true)
-        adapter = elementRecyclerAdapterFactory.create(this, recyclerViewClickListener, recyclerViewLongClickListener, { id, _ ->
+        adapter = elementRecyclerAdapterFactory.create(recyclerViewClickListener, recyclerViewLongClickListener, { id, _ ->
             presenter.deleteElement(id)
         }, activity_main_recycler_view)
         val alphaAnimator = AlphaInAnimationAdapter(adapter)
@@ -214,5 +214,6 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
     override fun elementAdded(element: Element) { adapter.add(element) }
     override fun elementChanged(element: Element) { adapter.update(element) }
     override fun elementRemoved(element: Element) { adapter.remove(element.elementID) }
+    override fun clearAdapter() = adapter.clear()
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = dispatchingAndroidInjector
 }

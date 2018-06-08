@@ -8,8 +8,8 @@ import com.sunilson.firenote.data.models.NoteColor
 import com.sunilson.firenote.presentation.shared.base.adapters.BaseArrayAdapter
 import com.sunilson.firenote.presentation.shared.di.scopes.DialogFragmentScope
 import com.sunilson.firenote.presentation.shared.views.ColorElementView
-import javax.inject.Inject
 
+@DialogFragmentScope
 class ColorAddArrayAdapter(context: Context) : BaseArrayAdapter<NoteColor>(context, R.layout.color_list_layout) {
 
     var checked = -1

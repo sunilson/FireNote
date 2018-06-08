@@ -1,5 +1,7 @@
 package com.sunilson.firenote.presentation.elements.elementActivity.di
 
+import com.sunilson.firenote.presentation.elements.checklist.ChecklistFragment
+import com.sunilson.firenote.presentation.elements.checklist.di.ChecklistModule
 import com.sunilson.firenote.presentation.elements.note.NoteFragment
 import com.sunilson.firenote.presentation.elements.note.di.NoteModule
 import com.sunilson.firenote.presentation.shared.di.scopes.FragmentScope
@@ -12,5 +14,15 @@ abstract class ElementFragmentBuilder {
     @FragmentScope
     @ContributesAndroidInjector(modules = [NoteModule::class])
     abstract fun provideNoteFragment(): NoteFragment
+
+    @FragmentScope
+    @ContributesAndroidInjector(modules = [ChecklistModule::class])
+    abstract fun provideChecklistFragment(): ChecklistFragment
+
+    /*
+  @DialogFragmentScope
+  @ContributesAndroidInjector(modules = [ElementDialogModule::class])
+  abstract fun contributeAddElementFragment(): ElementDialog
+  */
 
 }

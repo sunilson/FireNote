@@ -126,9 +126,8 @@ class ElementRecyclerAdapter constructor(
 }
 
 @ActivityScope
-class ElementRecyclerAdapterFactory @Inject constructor(private val localSettingsManager: LocalSettingsManager) {
-    fun create(context: Context,
-               onClickListener: View.OnClickListener,
+class ElementRecyclerAdapterFactory @Inject constructor(private val localSettingsManager: LocalSettingsManager, private val context: Context) {
+    fun create(onClickListener: View.OnClickListener,
                onLongClickListener: View.OnLongClickListener,
                onSwipeListener: (String, String?) -> Unit,
                recyclerView: RecyclerView): ElementRecyclerAdapter {
