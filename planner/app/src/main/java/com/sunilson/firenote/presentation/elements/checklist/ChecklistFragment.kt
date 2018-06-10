@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.view.*
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.ChecklistElement
 import com.sunilson.firenote.data.models.Element
@@ -14,6 +15,7 @@ import com.sunilson.firenote.presentation.shared.base.BaseFragment
 import kotlinx.android.synthetic.main.alertdialog_body_checklist_add.view.*
 import kotlinx.android.synthetic.main.alertdialog_custom_title.view.*
 import kotlinx.android.synthetic.main.base_element_activity.*
+import kotlinx.android.synthetic.main.fragment_checklist.*
 import javax.inject.Inject
 
 class ChecklistFragment : BaseFragment(), ChecklistPresenterContract.View {
@@ -21,11 +23,16 @@ class ChecklistFragment : BaseFragment(), ChecklistPresenterContract.View {
     @Inject
     lateinit var checklistPresenter: ChecklistPresenterContract.Presenter
 
+    @Inject
+    lateinit var checklistRecyclerAdapter: ChecklistRecyclerAdapter
+
     val elementActivity: BaseElementPresenterContract.View?
         get() = activity as? BaseElementPresenterContract.View
 
     override val element: Element?
         get() = elementActivity?.element
+
+    private lateinit var imm: InputMethodManager
 
     override fun toggleLoading(loading: Boolean, message: String?) {
     }
@@ -36,11 +43,17 @@ class ChecklistFragment : BaseFragment(), ChecklistPresenterContract.View {
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        checkListView.adapter = checklistRecyclerAdapter
+    }
+
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
-        activity?.fab?.setImageDrawable(activity?.getDrawable(R.drawable.ic_add_white_24dp))
         activity?.fab?.setOnClickListener { openChecklistElementDialog() }
+
+        imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -58,14 +71,10 @@ class ChecklistFragment : BaseFragment(), ChecklistPresenterContract.View {
     override fun titleEditToggled(active: Boolean) {
     }
 
-    override fun checklistElementAdded() {
+    override fun checklistElementAdded(checklistElement: ChecklistElement) = checklistRecyclerAdapter.add(checklistElement)
+    override fun checklistElementChanged(checklistElement: ChecklistElement) {
     }
-
-    override fun checklistElementChanged() {
-    }
-
-    override fun checklistElementRemoved() {
-    }
+    override fun checklistElementRemoved(checklistElement: ChecklistElement) = checklistRecyclerAdapter.remove(checklistElement)
 
     private fun openChecklistElementDialog() {
         val alert = AlertDialog.Builder(context)
@@ -79,11 +88,13 @@ class ChecklistFragment : BaseFragment(), ChecklistPresenterContract.View {
         alert.setView(content)
 
         alert.setPositiveButton(R.string.confirm_add_dialog) { _, _ ->
-            checklistPresenter.addChecklistElement(ChecklistElement(content.checklist_add_element_title.text.toString(), false))
+            checklistPresenter.addChecklistElement(ChecklistElement(text = content.checklist_add_element_title.text.toString(), finished =  false))
+            imm.hideSoftInputFromWindow(content.windowToken, 0)
         }
         alert.setNegativeButton(R.string.cancel_add_dialog) {_, _ ->}
 
         val dialog = alert.create()
+        dialog.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         dialog.window.attributes.windowAnimations = R.style.dialogAnimation
 
         content.checklist_add_element_title.setOnEditorActionListener { _, i, keyEvent ->

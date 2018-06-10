@@ -1,5 +1,6 @@
 package com.sunilson.firenote.presentation.elements.elementActivity
 
+import com.sunilson.firenote.R
 import com.sunilson.firenote.data.IFirebaseRepository
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.elements.BaseElementPresenterContract
@@ -25,7 +26,9 @@ class ElementPresenter @Inject constructor(private val eventRepository: IFirebas
     }
 
     override fun lockElement(locked: Boolean) {
-        eventRepository.lockElement(view.element!!.elementID, locked, view.element!!.parent)
+        disposable.add(eventRepository.lockElement(view.element!!.elementID, locked, view.element!!.parent).subscribe({}, {
+            view.showError(view.mContext?.getString(R.string.set_master_password))
+        }))
     }
 
     override fun onStop() {

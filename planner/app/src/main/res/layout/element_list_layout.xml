@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+
     <data>
+
         <variable
             name="obj"
             type="com.sunilson.firenote.data.models.Element" />
+
         <import type="java.util.Date" />
+
+        <import type="android.view.View" />
     </data>
+
     <LinearLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/container">
+        android:orientation="vertical">
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/elementList_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="70dp"
-            android:id="@+id/elementList_content"
             android:foreground="?attr/selectableItemBackground"
+            android:minHeight="70dp"
             android:transparentColor="@{obj.color}">
 
             <LinearLayout
@@ -27,70 +33,71 @@
                 android:background="@{obj.color}">
 
                 <ImageView
+                    android:id="@+id/elementList_icon"
                     style="@style/element_List_element"
                     android:layout_width="match_parent"
-                    android:gravity="center"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:id="@+id/elementList_icon"
-                    android:tint="@color/tint_white"
+                    android:gravity="center"
                     android:noteTypeIcon="@{obj.noteType}"
-                    />
+                    android:tint="@color/tint_white" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="0px"
                 android:layout_height="match_parent"
                 android:layout_weight="6"
-                android:paddingLeft="@dimen/element_list_text_padding_left"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/element_list_text_padding_left">
 
                 <TextView
                     android:id="@+id/elementList_title"
                     android:layout_width="match_parent"
                     android:layout_height="0px"
-                    android:layout_weight="1"
-                    android:maxLines="1"
-                    android:ellipsize="end"
-                    android:gravity="bottom"
                     android:layout_marginTop="6dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:fontFamily="sans-serif"
+                    android:gravity="bottom"
+                    android:maxLines="1"
+                    android:text="@{obj.title}"
                     android:textAppearance="@style/TextAppearance.AppCompat"
                     android:textColor="@color/primary_text_color"
-                    android:fontFamily="sans-serif"
-                    android:textSize="18sp"
-                    android:text="@{obj.title}" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/elementList_category"
                     android:layout_width="match_parent"
                     android:layout_height="0px"
                     android:layout_weight="1"
+                    android:fontFamily="sans-serif"
                     android:gravity="top"
                     android:maxLines="1"
-                    android:textAppearance="@style/TextAppearance.AppCompat"
-                    android:fontFamily="sans-serif"
-                    android:textSize="12sp"
                     android:text="@{obj.category.name}"
-                    android:textColor="@color/text_crossed_out" />
+                    android:textAppearance="@style/TextAppearance.AppCompat"
+                    android:textColor="@color/text_crossed_out"
+                    android:textSize="12sp" />
             </LinearLayout>
+
             <ImageView
                 android:id="@+id/elementLList_lock"
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
-                android:visibility="invisible"
                 android:src="@drawable/element_lock_icon_dark"
-                />
+                android:visibility="@{obj.locked ? View.VISIBLE : View.GONE}" />
+
             <TextView
                 android:id="@+id/elementList_date"
                 style="@style/element_List_TextView"
                 android:layout_width="wrap_content"
-                android:gravity="center_vertical|end"
-                android:textSize="14sp"
-                android:formatDate="@{obj.creationDate}"
-                android:layout_marginStart="8dp"
                 android:layout_marginEnd="16dp"
-                android:fontFamily="sans-serif" />
+                android:layout_marginStart="8dp"
+                android:fontFamily="sans-serif"
+                android:formatDate="@{obj.timeStamp}"
+                android:gravity="center_vertical|end"
+                android:textSize="14sp" />
 
         </LinearLayout>
 

@@ -1,28 +1,36 @@
 package com.sunilson.firenote.presentation.elements.checklist
 
+import com.sunilson.firenote.data.IFirebaseRepository
+import com.sunilson.firenote.data.models.ChangeType
 import com.sunilson.firenote.data.models.ChecklistElement
 import com.sunilson.firenote.presentation.shared.base.BasePresenter
 import javax.inject.Inject
 
-class ChecklistPresenter @Inject constructor(val view : ChecklistPresenterContract.View) : BasePresenter(view), ChecklistPresenterContract.Presenter{
+class ChecklistPresenter @Inject constructor(val view : ChecklistPresenterContract.View, private val repository: IFirebaseRepository) : BasePresenter(view), ChecklistPresenterContract.Presenter{
+
     override fun addChecklistElement(checklistElement: ChecklistElement) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        repository.addChecklistElement(view.element!!.elementID, checklistElement)
     }
 
-    override fun removeChecklistElement() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun removeChecklistElement(checklistElement: ChecklistElement) {
     }
 
-    override fun changeChecklistElement() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun changeChecklistElement(checklistElement: ChecklistElement) {
     }
 
     override fun loadElementData() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        disposable.add(repository.loadChecklistElements(view.element!!.elementID).subscribe {
+            when(it.first) {
+                ChangeType.ADDED -> view.checklistElementAdded(it.second)
+                ChangeType.CHANGED -> view.checklistElementChanged(it.second)
+                ChangeType.REMOVED -> view.checklistElementRemoved(it.second)
+            }
+        })
     }
 
     override fun onStart() {
         super.onStart()
+        loadElementData()
     }
 
     override fun onStop() {

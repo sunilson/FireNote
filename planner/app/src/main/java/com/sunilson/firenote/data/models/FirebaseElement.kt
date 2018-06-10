@@ -1,8 +1,6 @@
 package com.sunilson.firenote.data.models
 
-import java.util.*
-
-data class FirebaseElement (
+data class FirebaseElement(
         var elementID: String = "",
         var categoryName: String = "",
         var categoryID: String = "",
@@ -11,4 +9,16 @@ data class FirebaseElement (
         var locked: Boolean = false,
         var timeStamp: Long = 0,
         var title: String = ""
-)
+) {
+    fun parseElement(): Element {
+        return Element(
+                this.elementID,
+                Category(this.categoryName, this.categoryID),
+                this.noteType,
+                this.color,
+                this.locked,
+                this.timeStamp,
+                this.title
+        )
+    }
+}

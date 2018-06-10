@@ -1,49 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:id="@+id/container"
-    >
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:minHeight="70dp"
-    android:background="@color/defaultElementColor"
-    android:foreground="?attr/selectableItemBackground"
-    android:orientation="horizontal"
-    android:paddingTop="16dp"
-    android:paddingBottom="16dp"
-    >
-    <TextView
-        android:layout_width="0px"
-        android:layout_weight="3"
-        android:layout_height="match_parent"
-        android:textSize="18sp"
-        android:paddingLeft="16dp"
-        android:gravity="center_vertical"
-        android:id="@+id/checkList_element_text"
-        android:focusable="false"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:fontFamily="sans-serif" />
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="obj"
+            type="com.sunilson.firenote.data.models.ChecklistElement" />
+
+        <import type="android.view.View" />
+    </data>
+
     <LinearLayout
-        style="@style/element_List_element"
-        android:layout_weight="1"
-        android:gravity="center">
-        <CheckBox android:id="@+id/checkList_element_checkBox"
-            android:layout_width="wrap_content"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:focusable="false"
-            android:background="@android:color/transparent"
-            android:clickable="false"
-            android:focusableInTouchMode="false"
-            android:visibility="visible"
-            />
+            android:background="@color/defaultElementColor"
+            android:foreground="?attr/selectableItemBackground"
+            android:minHeight="70dp"
+            android:orientation="horizontal"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp">
+
+            <TextView
+                android:id="@+id/checkList_element_text"
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:focusable="false"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:text="@{obj.text}"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                style="@style/element_List_element"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <CheckBox
+                    android:id="@+id/checkList_element_checkBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:checked="@{obj.finished}"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:gravity="center"
+                    android:visibility="visible" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@color/main_background_color" />
     </LinearLayout>
-</LinearLayout>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="4dp"
-android:background="@color/main_background_color" />
-    </LinearLayout>
+
+</layout>

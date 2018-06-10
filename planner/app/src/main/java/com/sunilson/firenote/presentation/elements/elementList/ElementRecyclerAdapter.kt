@@ -57,23 +57,20 @@ class ElementRecyclerAdapter constructor(
         return null
     }
 
-    fun clear() {
+    override fun clear() {
         _data.clear()
         allItems.clear()
         notifyDataSetChanged()
     }
 
-    fun add(element: Element): Int {
+    override fun add(element: Element) {
         allItems.add(element)
-        var position = 0
         if (localSettingsManager.getCategoryVisibility(element.category.id) != -1 && localSettingsManager.getColorVisibility(element.color) != -1) {
             _data.add(element)
             notifyItemInserted(data.indexOf(element))
             sort(localSettingsManager.getSortingMethod())
-            position = data.indexOf(element)
-            notifyItemInserted(position)
+            notifyItemInserted(data.indexOf(element))
         }
-        return position
     }
 
     fun checkOrderAndVisibility() {

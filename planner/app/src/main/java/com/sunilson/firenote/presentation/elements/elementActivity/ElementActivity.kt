@@ -58,7 +58,7 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View, HasSu
         elementID = intent.getStringExtra("elementID")
         parent = intent.getStringExtra("parentID")
         binding = DataBindingUtil.setContentView(this, R.layout.base_element_activity)
-        elementChanged(Element(elementID = elementID, parent = parent, _color = intent.getIntExtra("elementColor", 123)))
+        elementChanged(Element(elementID = elementID, noteType = intent.getStringExtra("noteType"), parent = parent, _color = intent.getIntExtra("elementColor", 123)))
 
         //Set element content
         when (intent.getStringExtra("noteType")) {
@@ -101,8 +101,7 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View, HasSu
                 if ((supportFragmentManager.fragments[0] as ElementContentPresenterContract.View).canLeave()) finish()
             }
             R.id.menu_lock -> {
-                if (localSettingsManager.getMasterPassword().isEmpty()) presenter.lockElement(_element!!.locked)
-                else Toast.makeText(this, R.string.master_password_not_set, Toast.LENGTH_LONG).show()
+                presenter.lockElement(!_element!!.locked)
             }
             R.id.menu_settings -> {
             }
@@ -159,9 +158,12 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View, HasSu
     }
 
     override fun elementChanged(element: Element) {
-        //TODO Gelöschte und ungültige elemente abfangen
 
-        if (_element == null) {
+        _element = element
+        element.parent = parent
+        binding.element = _element
+
+        /*if (_element == null) {
             _element = element
             element.parent = parent
             binding.element = _element
@@ -169,7 +171,8 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View, HasSu
             this.element!!.color = element.color
             this.element!!.title = element.title
             this.element!!.locked = element.locked
-        }
+        }*/
+
         checkLockStatus()
         setStatusBarColors()
     }

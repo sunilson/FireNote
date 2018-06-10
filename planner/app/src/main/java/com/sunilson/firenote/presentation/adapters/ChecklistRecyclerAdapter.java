@@ -59,36 +59,6 @@
 //        }
 //    }
 //
-//    /**
-//     * Convert adapter to string
-//     *
-//     * @return String containing all elements and their finished state
-//     */
-//    public String toString() {
-//        String result = "";
-//
-//        for (ChecklistElement element : list) {
-//            String checkbox;
-//
-//            if (element.isFinished()) {
-//                checkbox = "☒";
-//            } else {
-//                checkbox = "☐";
-//            }
-//
-//            result += checkbox + " " + element.getText() + "\n";
-//        }
-//
-//        return result;
-//    }
-//
-//    /**
-//     * Clear list and notify recyclerData change
-//     */
-//    public void clear() {
-//        list.clear();
-//        notifyDataSetChanged();
-//    }
 //
 //    @Override
 //    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -98,38 +68,8 @@
 //        return new ViewHolder(v);
 //    }
 //
-//    @Override
-//    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-//        ViewHolder viewHolder = (ViewHolder) holder;
-//
-//        ChecklistElement checklistElement = list.get(position);
-//        CheckBox checkBox = viewHolder.checkBox;
-//        TextView textView = viewHolder.elementText;
-//
-//        textView.setText(checklistElement.getText());
-//
-//        if (checklistElement.isFinished()) {
-//            checkBox.setChecked(true);
-//            textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-//            textView.setTextColor(context.getResources().getColor(R.color.text_crossed_out));
-//        } else {
-//            checkBox.setChecked(false);
-//            textView.setPaintFlags(textView.getPaintFlags() & ~(Paint.STRIKE_THRU_TEXT_FLAG));
-//            textView.setTextColor(context.getResources().getColor(R.color.primary_text_color));
-//        }
-//
-//    }
-//
-//    public ChecklistElement getItem(int position) {
-//        return list.get(position);
-//    }
-//
-//    public void add(ChecklistElement element) {
-//        list.add(element);
-//        int position = list.indexOf(element);
-//        notifyItemInserted(position);
-//    }
-//
+
+
 //    /**
 //     * Remove first element with given ID
 //     * @param elementID ID of element to be deleted
@@ -160,15 +100,7 @@
 //            notifyItemRemoved(index);
 //        }
 //    }
-//
-//    /**
-//     * List with contents of adapter
-//     *
-//     * @return ArrayList containing all Checklist Elements of adapter
-//     */
-//    public List<ChecklistElement> getList() {
-//        return list;
-//    }
+
 //
 //    public ChecklistElement getItemWithID(String id) {
 //        for (ChecklistElement checklistElement : list) {
@@ -200,12 +132,7 @@
 //        list.set(index, element);
 //        notifyDataSetChanged();
 //    }
-//
-//    @Override
-//    public int getItemCount() {
-//        return list.size();
-//    }
-//
+
 //
 //    @Override
 //    public boolean onItemMove(int fromPosition, int toPosition) {

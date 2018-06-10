@@ -5,14 +5,14 @@ import com.sunilson.firenote.presentation.elements.elementActivity.ElementConten
 
 interface ChecklistPresenterContract {
     interface View : ElementContentPresenterContract.View {
-        fun checklistElementAdded()
-        fun checklistElementChanged()
-        fun checklistElementRemoved()
+        fun checklistElementAdded(checklistElement: ChecklistElement)
+        fun checklistElementChanged(checklistElement: ChecklistElement)
+        fun checklistElementRemoved(checklistElement: ChecklistElement)
     }
 
     interface Presenter : ElementContentPresenterContract.Presenter {
         fun addChecklistElement(checklistElement: ChecklistElement)
-        fun removeChecklistElement()
-        fun changeChecklistElement()
+        fun removeChecklistElement(checklistElement: ChecklistElement)
+        fun changeChecklistElement(checklistElement: ChecklistElement)
     }
 }

@@ -1,9 +1,7 @@
 package com.sunilson.firenote.presentation.shared
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.support.v4.content.ContextCompat
-import android.support.v4.graphics.ColorUtils
 import android.widget.Toast
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
@@ -27,18 +25,6 @@ fun DatabaseReference.storeElement(element: Element) : Task<*> {
 
 fun Context.showToast(message: String? = "No message given!", duration: Int = Toast.LENGTH_LONG) {
     Toast.makeText(this, message, duration).show()
-}
-
-fun FirebaseElement.parseElement() : Element {
-    return Element(
-            this.elementID,
-            Category(this.categoryName, this.categoryID),
-            this.noteType,
-            this.color,
-            this.locked,
-            this.timeStamp,
-            this.title
-    )
 }
 
 fun DataSnapshot.parseFirebaseElement() : FirebaseElement {

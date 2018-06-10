@@ -38,7 +38,6 @@ class NoteFragment : BaseFragment(), NotePresenterContract.INoteView {
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
         imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
-        activity?.fab?.setImageDrawable(activity?.getDrawable(R.drawable.ic_mode_edit_black_24dp))
         activity?.fab?.setOnClickListener { toggleEditMode() }
     }
 

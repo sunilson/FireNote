@@ -15,6 +15,17 @@ abstract class BaseRecyclerAdapter<T>(protected val context: Context) : Recycler
             notifyDataSetChanged()
         }
 
+    open fun clear() {
+        _data.clear()
+        notifyDataSetChanged()
+    }
+
+    open fun add(element: T) {
+        _data.add(element)
+        notifyItemInserted(_data.indexOf(element))
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(data[position])
