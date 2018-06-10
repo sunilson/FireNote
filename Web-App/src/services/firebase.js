@@ -1,5 +1,8 @@
 import fb from "firebase"
 import config from "../config"
+import {
+  EventBus
+} from "./EventBus"
 
 const firebaseApp = fb.initializeApp(config.firebaseConfig)
 
@@ -74,6 +77,7 @@ export default {
   },
 
   getBinRef: function (parent) {
+    console.log(`users/${fb.auth().currentUser.uid}/bin/${(parent) ? "bundles/" + parent : "main"}`)
     return fb.database().ref(`users/${fb.auth().currentUser.uid}/bin/${(parent) ? "bundles/" + parent : "main"}`)
   },
 
@@ -85,7 +89,13 @@ export default {
   },
 
   lockElement: function (value, id, parent) {
-    fb.database().ref(`users/${fb.auth().currentUser.uid}/elements/${(parent) ? "bundles" : "main"}/${(parent) ? parent + "/"  : ""}${id}/locked`).set(value)
+    fb.database().ref(`users/${fb.auth().currentUser.uid}/settings/masterPassword`).once("value").then(pw => {
+      if (pw) {
+        fb.database().ref(`users/${fb.auth().currentUser.uid}/elements/${(parent) ? "bundles" : "main"}/${(parent) ? parent + "/"  : ""}${id}/locked`).set(value)
+      } else {
+        EventBus.$emit("showSnackbar", "No master password set!")
+      }
+    })
   },
 
   deleteElement: function (id, parent, element, cb) {

@@ -25,6 +25,9 @@
               <v-list-tile v-if="element.noteType == 'checklist'" @click="clearChecklist()">
                 <v-list-tile-title>Clean-Up</v-list-tile-title>
               </v-list-tile>
+              <v-list-tile v-if="element.noteType == 'bundle'" @click="$router.push({name: 'BundleBin', id: $route.params.id, params: {color: element.color}})">
+                <v-list-tile-title>Bin</v-list-tile-title>
+              </v-list-tile>
             </v-list>
           </v-menu>
         </v-toolbar>

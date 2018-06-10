@@ -12,7 +12,7 @@ exports.handleElementDeletion = functions.database.ref("users/{uid}/elements/mai
         .set(snapshot.val())
 });
 
-exports.handleBundleElementDeletion = functions.database.ref("users/{uid}/elements/bundles/{parentId}/{elementId}").onDelete((snapshot, conext) => {
+exports.handleBundleElementDeletion = functions.database.ref("users/{uid}/elements/bundles/{parentId}/{elementId}").onDelete((snapshot, context) => {
     return admin.database()
         .ref(`users/${context.params.uid}/bin/bundles/${context.params.parentId}/${context.params.elementId}`)
         .set(snapshot.val())

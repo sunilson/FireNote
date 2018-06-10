@@ -1,14 +1,14 @@
 <template>
     <v-content>
-      <v-toolbar app fixed>
+      <v-toolbar app fixed :class="[backgroundColor]">
         <v-btn icon @click="$router.go(-1)">
-              <v-icon>arrow_back</v-icon>
+              <v-icon :class="{whiteColor: color != null}">arrow_back</v-icon>
         </v-btn>
-        <v-toolbar-title>Bin</v-toolbar-title>
+        <v-toolbar-title :class="{whiteColor: color != null}">Bin</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-menu>
           <v-btn slot="activator" icon>
-            <v-icon>more_vert</v-icon>
+            <v-icon :class="{whiteColor: color != null}">more_vert</v-icon>
           </v-btn>
           <v-list>
             <v-list-tile v-for="(item, i) in menuItems" :key="item.name" @click="item.action()">
@@ -57,8 +57,10 @@ import BaseElementListComponentMixin from "./shared/BaseElementListComponentMixi
 import ElementCard from "./shared/ElementCard.vue";
 import firebase from "../services/firebase.js";
 import { EventBus } from "../services/EventBus.js";
+import colormap from "../services/colormap.js";
 
 export default {
+  props: ["color"],
   name: "Bin",
   extends: BaseElementListComponentMixin,
   data() {
@@ -78,7 +80,7 @@ export default {
   },
   firebase() {
     return {
-      elements: firebase.getBinRef()
+      elements: firebase.getBinRef(this.$route.params.id)
     };
   },
   methods: {
@@ -102,6 +104,21 @@ export default {
         }
       );
     }
+  },
+  computed: {
+    backgroundColor: function() {
+      if (this.color) {
+        return colormap(this.color)[0];
+      } else {
+        return null;
+      }
+    }
   }
 };
 </script>
+
+<style scoped>
+.whiteColor {
+  color: white !important;
+}
+</style>

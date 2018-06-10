@@ -30,7 +30,7 @@ const router = new Router({
           component: BaseElement,
           meta: {
             requiresAuth: true
-          }
+          },
         },
         {
           path: "/element/:parent/:id",
@@ -43,6 +43,23 @@ const router = new Router({
         {
           path: "/bin",
           name: "Bin",
+          component: Bin,
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
+          path: "/element/:id/bin",
+          name: "BundleBin",
+          component: Bin,
+          props: true,
+          meta: {
+            requiresAuth: true
+          }
+        },
+        {
+          path: "/settings",
+          name: "Settings",
           component: Bin,
           meta: {
             requiresAuth: true
