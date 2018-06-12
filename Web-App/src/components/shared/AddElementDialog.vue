@@ -24,65 +24,98 @@
 </template>
 
 <script>
-import { Constants } from "../../services/constants"
-import firebase from "../../services/firebase.js"
-import {EventBus} from "../../services/EventBus.js"
+import { Constants } from "../../services/constants";
+import firebase from "../../services/firebase.js";
+import { EventBus } from "../../services/EventBus.js";
 
 export default {
-    data() {
-        return {
-            show: false,
-            noteType: "note",
-            title: "",
-            category: "general",
-            color: -769226,
-            categories: Constants.CATEGORIES,
-            colors: Constants.COLORS,
-            parent: null
-        }
-    },
-    mounted () {
-        EventBus.$on('addElement', (data) => {
-            this.noteType = data.type
-            if(data["parent"]) this.parent = data.parent
-            this.show = true
-            this.title = ""
-            this.category = "general"
-            this.color = -769226
+  data() {
+    return {
+      elementID: null,
+      show: false,
+      noteType: "note",
+      title: "",
+      category: "general",
+      color: -769226,
+      categories: Constants.CATEGORIES,
+      colors: Constants.COLORS,
+      parent: null
+    };
+  },
+  mounted() {
+    EventBus.$on("addElement", data => {
+      this.noteType = data.type;
+      if (data["parent"]) this.parent = data.parent;
+      this.show = true;
+      this.title = data.title || "";
+      this.category = data.categoryID || "general";
+      this.color = data.color || -769226;
+      this.elementID = data.elementID;
+    });
+  },
+  methods: {
+    confirm() {
+      if (this.elementID) {
+        console.log({
+          title: this.title,
+          categoryName: Constants.CATEGORIES.find(
+            category => category.id == this.category
+          )["name"],
+          categoryID: this.category,
+          color: this.color
         });
-    },
-    methods: {
-        confirm() {
-            firebase.createElement({
-                title: this.title,
-                noteType: this.noteType,
-                categoryName: Constants.CATEGORIES.find(category => category.id == this.category)["name"],
-                color: this.color,
-                categoryID: this.category,
-                locked: false,
-                timeStamp: new Date().getTime()
-            }, err => {
-                console.log(err)
-                if(err) EventBus.$emit("showSnackbar", err)
-                else this.show = false
+        firebase
+          .updateElement(
+            {
+              title: this.title,
+              categoryName: Constants.CATEGORIES.find(
+                category => category.id == this.category
+              )["name"],
+              categoryID: this.category,
+              color: this.color
             },
-            this.parent)
-        }
+            this.elementID,
+            this.parent
+          )
+          .then(() => (this.show = false))
+          .catch(err => EventBus.$emit("showSnackbar", err));
+      } else {
+        firebase
+          .createElement(
+            {
+              title: this.title,
+              noteType: this.noteType,
+              categoryName: Constants.CATEGORIES.find(
+                category => category.id == this.category
+              )["name"],
+              color: this.color,
+              categoryID: this.category,
+              locked: false,
+              timeStamp: new Date().getTime()
+            },
+            this.parent
+          )
+          .then(() => (this.show = false))
+          .catch(err =>
+            EventBus.$emit("showSnackbar", "Could not create element!")
+          );
+      }
     }
-}
+  }
+};
 </script>
 
 <style>
 .colorList .icon {
-    display: none !important;
+  display: none !important;
 }
 
 .colorList .input-group__details:after {
-    display: none !important;
-    height: 0 !important;
+  display: none !important;
+  height: 0 !important;
 }
 
 .colorList .input-group__input {
-    min-height: 40px;
+  min-height: 40px;
 }
 </style>

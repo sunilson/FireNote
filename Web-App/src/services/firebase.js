@@ -3,6 +3,9 @@ import config from "../config"
 import {
   EventBus
 } from "./EventBus"
+import {
+  hashPassword
+} from "./utilities.js"
 
 const firebaseApp = fb.initializeApp(config.firebaseConfig)
 
@@ -98,10 +101,16 @@ export default {
     })
   },
 
-  deleteElement: function (id, parent, element, cb) {
-    fb.database().ref(`users/${fb.auth().currentUser.uid}/elements/${parent ? "bundles/" + parent : "main"}/${id}`).remove(error => {
-      cb(error)
+  changeMasterPassword: function (newPassword, oldPassword) {
+    return fb.database().ref(`users/${fb.auth().currentUser.uid}/settings/masterPassword`).once("value").then(pw => {
+      if (pw == hashPassword(oldPassword)) {
+        return fb.database().ref(`users/${fb.auth().currentUser.uid}/settings/masterPassword`).set(hashPassword(newPassword))
+      } else throw new Error("Wrong password!")
     })
+  },
+
+  deleteElement: function (id, parent, element) {
+    return fb.database().ref(`users/${fb.auth().currentUser.uid}/elements/${parent ? "bundles/" + parent : "main"}/${id}`).remove()
   },
 
   restoreElement: function (id, parent, cb) {
@@ -130,7 +139,7 @@ export default {
     fb.database().ref(`users/${fb.auth().currentUser.uid}/contents/${(parent) ? parent + "/" : ""}${id}/text`).set(text)
   },
 
-  createElement: function (element, cb, parent) {
+  createElement: function (element, parent) {
     let ref = fb.database().ref(`users/${fb.auth().currentUser.uid}/elements`)
     if (!parent) {
       ref = ref.child("/main").push()
@@ -138,14 +147,16 @@ export default {
       ref = ref.child(`/bundles/${parent}`).push()
     }
 
-    console.log(ref)
-
-    ref.set(element, err => {
-      cb(err)
-    })
+    return ref.set(element)
   },
 
-  updateElement: function () {
-
+  updateElement: function (element, id, parent) {
+    const ref = fb.database().ref(`users/${fb.auth().currentUser.uid}/elements/${(parent) ? "bundles/"+ parent : "main"}/${id}`)
+    const promises = []
+    promises.push(ref.child("title").set(element["title"]))
+    promises.push(ref.child("categoryName").set(element["categoryName"]))
+    promises.push(ref.child("categoryID").set(element["categoryID"]))
+    promises.push(ref.child("color").set(element["color"]))
+    return Promise.all(promises)
   }
 }

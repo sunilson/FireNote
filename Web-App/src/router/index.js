@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Home from "../components/Home.vue";
+import Settings from "../components/Settings.vue";
 import ElementList from "../components/ElementList.vue";
 import Bin from "../components/Bin.vue";
 import Login from "../components/authentication/Login.vue";
@@ -60,7 +61,7 @@ const router = new Router({
         {
           path: "/settings",
           name: "Settings",
-          component: Bin,
+          component: Settings,
           meta: {
             requiresAuth: true
           }

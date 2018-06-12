@@ -85,6 +85,10 @@ export default {
             })
         },
         {
+          name: "Settings",
+          action: () => this.$router.push({ name: "Settings" })
+        },
+        {
           name: "Log Out",
           action: () => firebase.fb.auth().signOut()
         }

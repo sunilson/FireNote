@@ -14,14 +14,17 @@
             <v-icon v-if="element.locked">lock_outline</v-icon>
             <v-icon v-if="!element.locked">lock_open</v-icon>
           </v-btn>
-          <v-btn icon @click="confirmDeletion()">
-            <v-icon>delete</v-icon>
+          <v-btn icon @click="openEditDialog()">
+            <v-icon>settings</v-icon>
           </v-btn>
           <v-menu>
             <v-btn slot="activator" icon>
               <v-icon>more_vert</v-icon>
             </v-btn>
             <v-list>
+              <v-list-tile @click="confirmDeletion()">
+                <v-list-tile-title>Delete</v-list-tile-title>
+              </v-list-tile>
               <v-list-tile v-if="element.noteType == 'checklist'" @click="clearChecklist()">
                 <v-list-tile-title>Clean-Up</v-list-tile-title>
               </v-list-tile>
@@ -58,10 +61,6 @@ import colormap from "../../services/colormap.js";
 
 export default {
   name: "BaseElement",
-  mounted() {
-    console.log(this.$route.params.parent);
-    console.log(this.$route.params.id);
-  },
   data() {
     return {
       dialog: false,
@@ -82,6 +81,15 @@ export default {
     bundle: Bundle
   },
   methods: {
+    openEditDialog() {
+      EventBus.$emit("addElement", {
+        elementID: this.$route.params.id,
+        parent: this.$route.params.parent,
+        title: this.element["title"],
+        color: this.element["color"],
+        categoryID: this.element["categoryID"]
+      });
+    },
     toggleLock() {
       firebase.lockElement(
         !this.element.locked,
@@ -94,19 +102,17 @@ export default {
     },
     deleteElement() {
       this.dialog = false;
-      firebase.deleteElement(
-        this.element[".key"],
-        this.$route.params.parent,
-        this.element,
-        err => {
-          if (!err) {
-            this.$router.go(-1);
-            EventBus.$emit("showSnackbar", "Element moved to bin!");
-          } else {
-            EventBus.$emit("showSnackbar", err.message);
-          }
-        }
-      );
+      firebase
+        .deleteElement(
+          this.element[".key"],
+          this.$route.params.parent,
+          this.element
+        )
+        .then(() => {
+          this.$router.go(-1);
+          EventBus.$emit("showSnackbar", "Element moved to bin!");
+        })
+        .catch(err => EventBus.$emit("showSnackbar", err.message));
     },
     canLeave() {
       for (let key in this.$refs) {
