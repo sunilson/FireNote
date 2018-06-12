@@ -3,9 +3,8 @@ package com.sunilson.firenote.data.models
 import android.databinding.BaseObservable
 import android.databinding.Bindable
 import android.os.Parcelable
-import android.support.annotation.IdRes
-import com.google.firebase.database.Exclude
 import com.sunilson.firenote.BR
+import com.sunilson.firenote.R
 import com.sunilson.firenote.presentation.shared.NotifyPropertyChangedDelegate
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
@@ -16,7 +15,7 @@ open class Element constructor(
         var elementID: String = "",
         private var _category: Category = Category("", ""),
         val noteType: String = "note",
-        private var _color: Int = 123,
+        private var _color: Int = R.color.note_color_1,
         private var _locked: Boolean = false,
         val timeStamp: Long = 0,
         private var _title: String = "New Element",
@@ -41,4 +40,6 @@ open class Element constructor(
     @IgnoredOnParcel
     val creationDate: Date
         get() = Date(timeStamp)
+
+    fun copy() : Element = Element(elementID, _category, noteType, _color, _locked, timeStamp, _title, parent)
 }

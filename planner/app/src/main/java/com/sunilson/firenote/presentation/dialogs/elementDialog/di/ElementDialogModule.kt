@@ -1,8 +1,8 @@
-package com.sunilson.firenote.presentation.elementDialog.di
+package com.sunilson.firenote.presentation.dialogs.elementDialog.di
 
 import com.sunilson.firenote.presentation.adapters.CategorySpinnerAdapter
 import com.sunilson.firenote.presentation.adapters.ColorAddArrayAdapter
-import com.sunilson.firenote.presentation.elementDialog.ElementDialog
+import com.sunilson.firenote.presentation.dialogs.elementDialog.ElementDialog
 import com.sunilson.firenote.presentation.shared.di.scopes.DialogFragmentScope
 import dagger.Module
 import dagger.Provides

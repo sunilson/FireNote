@@ -34,7 +34,7 @@ interface IFirebaseRepository {
     fun storeElement(element: Element): Completable
     fun deleteElement(id: String, parent: String? = null): Completable
     fun restoreElement(id: String, parent: String? = null): Completable
-    fun updateElement(element: Element)
+    fun updateElement(element: Element): Completable
 }
 
 @Singleton
@@ -109,11 +109,11 @@ class FirebaseRepository @Inject constructor() : IFirebaseRepository {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun updateElement(element: Element) {
+    override fun updateElement(element: Element) : Completable{
         var ref = FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("elements")
         ref = if (element.parent != null) ref.child("bundles").child(element.parent).child(element.elementID)
         else ref.child("main").child(element.elementID)
-        ref.storeElement(element)
+        return createCompletableFromTask(ref.storeElement(element))
     }
 
     override fun loadBundleElements(): Flowable<List<Pair<ChangeType, Element>>> {

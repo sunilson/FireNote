@@ -49,6 +49,10 @@ class CategorySpinnerAdapter constructor(context: Context)
         return row!!
     }
 
+    fun setCheckedCategory(id: String) {
+
+    }
+
     fun getPositionWithId(id: String): Int {
         for ((index, category) in data.withIndex()) {
             if (category.id == id) return index

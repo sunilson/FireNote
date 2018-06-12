@@ -24,6 +24,10 @@
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
+        android:focusable="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_delete_white_24dp"
         />
 </LinearLayout>

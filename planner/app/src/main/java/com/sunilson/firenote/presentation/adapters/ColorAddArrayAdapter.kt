@@ -34,12 +34,20 @@ class ColorAddArrayAdapter(context: Context) : BaseArrayAdapter<NoteColor>(conte
         for ((index, value) in data.withIndex()) {
             if (value.color == color) return index
         }
-
         return 0
+    }
+
+    fun setCheckedColor(color: Int) {
+        var position = -1
+        for ((index, value) in data.withIndex()) {
+            if (value.color == color) position = index
+        }
+        setCheckedPosition(position)
     }
 
     fun setCheckedPosition(position: Int) {
         checked = position
+        notifyDataSetChanged()
     }
 
     fun uncheckAll() {

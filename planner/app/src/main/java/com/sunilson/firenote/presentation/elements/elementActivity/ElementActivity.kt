@@ -11,10 +11,10 @@ import android.text.TextUtils
 import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.databinding.BaseElementActivityBinding
+import com.sunilson.firenote.presentation.dialogs.elementDialog.ElementDialog
 import com.sunilson.firenote.presentation.elements.BaseElementPresenterContract
 import com.sunilson.firenote.presentation.elements.checklist.ChecklistFragment
 import com.sunilson.firenote.presentation.elements.note.NoteFragment
@@ -104,6 +104,7 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View, HasSu
                 presenter.lockElement(!_element!!.locked)
             }
             R.id.menu_settings -> {
+                if(element != null) ElementDialog.newInstance("bla", element!!.elementID, element).show(supportFragmentManager, "dialog")
             }
         }
 
@@ -182,11 +183,7 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View, HasSu
         else lockButton?.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_open_white_24dp)
     }
 
-    override fun elementRemoved() {
-        Toast.makeText(this, R.string.element_removed, Toast.LENGTH_LONG).show()
-        finish()
-    }
-
+    override fun elementRemoved() = finish()
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = dispatchingAndroidInjector
     override fun toggleLoading(loading: Boolean, message: String?) {}
 }

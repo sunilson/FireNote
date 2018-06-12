@@ -16,9 +16,7 @@ class ElementPresenter @Inject constructor(private val eventRepository: IFirebas
         disposable.add(eventRepository.loadElement(elementID, parent).subscribe({
             if (it != null) view.elementChanged(it)
             else view.elementRemoved()
-        }, {
-            view.showError("Error loading element!")
-        }))
+        }, { view.elementRemoved() }))
     }
 
     override fun updateElement(element: Element) {

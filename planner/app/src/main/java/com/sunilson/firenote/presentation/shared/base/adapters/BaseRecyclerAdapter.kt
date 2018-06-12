@@ -23,11 +23,9 @@ abstract class BaseRecyclerAdapter<T>(protected val context: Context) : Recycler
     open fun add(element: T) {
         _data.add(element)
         notifyItemInserted(_data.indexOf(element))
-        notifyDataSetChanged()
     }
 
     override fun getItemCount(): Int = data.size
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(data[position])
 
     open inner class ViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {

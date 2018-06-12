@@ -16,7 +16,7 @@ import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.authentication.AuthenticationActivity
 import com.sunilson.firenote.presentation.bin.BinActivity
-import com.sunilson.firenote.presentation.elementDialog.ElementDialog
+import com.sunilson.firenote.presentation.dialogs.elementDialog.ElementDialog
 import com.sunilson.firenote.presentation.elements.elementActivity.ElementActivity
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapter
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapterFactory
@@ -30,7 +30,6 @@ import com.sunilson.firenote.presentation.visibilityDialog.VisibilityDialog
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
-import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.sorting_list_layout.*
@@ -77,10 +76,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
         adapter = elementRecyclerAdapterFactory.create(recyclerViewClickListener, recyclerViewLongClickListener, { id, _ ->
             presenter.deleteElement(id)
         }, activity_main_recycler_view)
-        val alphaAnimator = AlphaInAnimationAdapter(adapter)
-        alphaAnimator.setFirstOnly(false)
-        alphaAnimator.setDuration(200)
-        activity_main_recycler_view.adapter = alphaAnimator
+        activity_main_recycler_view.adapter = adapter
         activity_main_recycler_view.itemAnimator = ScaleInAnimator(OvershootInterpolator(1f))
         activity_main_recycler_view.itemAnimator.addDuration = 300
         activity_main_recycler_view.layoutManager = layoutManager

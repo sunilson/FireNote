@@ -1,4 +1,4 @@
-package com.sunilson.firenote.presentation.elementDialog
+package com.sunilson.firenote.presentation.dialogs.elementDialog
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -46,23 +46,27 @@ class ElementDialog : BaseDialogFragment(), ElementDialogPresenterContract.View 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         super.onCreateDialog(savedInstanceState)
 
+        v = LayoutInflater.from(context).inflate(R.layout.alertdialog_body_add_element, null, false)
+
         elementType = arguments?.getString("elementType")!!
-        editMode = arguments?.getBoolean("editMode") == true
-        element = Element("", Category("", ""), elementType)
+        if(arguments?.getParcelable<Element>("element") != null) {
+            element = arguments?.getParcelable<Element>("element")!!.copy()
+            v.add_element_title.setText(element.title)
+            editMode = true
+        } else element = Element("", Category("", ""), elementType)
+
         context!!.colors().forEach { colorAdapter.add(it) }
         imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        v = LayoutInflater.from(context).inflate(R.layout.alertdialog_body_add_element, null, false)
 
         titleView.dialog_title.text = arguments?.getString("title")
         if(editMode) {
             titleView.dialog_title_action.visibility = View.VISIBLE
-            titleView.dialog_title_action.setOnClickListener {
-                //TODO
-            }
+            titleView.dialog_title_action.setOnClickListener { presenter.deleteElement(element) }
         }
 
         //Initialize Color List
         v.colorlist.adapter = colorAdapter
+        colorAdapter.setCheckedColor(element.color)
         v.colorlist.setOnItemClickListener { _, view, position, _ ->
             val colorView = view as ColorElementView
             if (!colorView.isChecked) {
@@ -92,13 +96,10 @@ class ElementDialog : BaseDialogFragment(), ElementDialogPresenterContract.View 
             if (!hasFocus) imm.hideSoftInputFromWindow(v.windowToken, 0)
         }
 
-
-        //TODO if (savedInstanceState != null) elementDialogView.selectedColor = savedInstanceState.getInt("color")
         builder.setCustomTitle(titleView)
         builder.setView(v)
         builder.setPositiveButton(getString(R.string.confirm_add_dialog), { _, _ -> })
         builder.setNegativeButton(getString(R.string.cancel_add_dialog), { _, _ -> dismiss() })
-        selectColor(0)
 
         if (!connectivityManager.isConnected()) Toast.makeText(activity, R.string.edit_no_connection, Toast.LENGTH_LONG).show()
 
@@ -112,23 +113,9 @@ class ElementDialog : BaseDialogFragment(), ElementDialogPresenterContract.View 
         super.onStart()
         (dialog as AlertDialog).getButton(Dialog.BUTTON_POSITIVE).setOnClickListener {
             element.title = v.add_element_title.text.toString()
-            presenter.addElement(element)
+            if(!editMode) presenter.addElement(element)
+            else presenter.updateElement(element)
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        retainInstance = true
-    }
-
-    override fun onDestroyView() {
-        if (dialog != null && retainInstance) dialog.setDismissMessage(null)
-        super.onDestroyView()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        //TODO outState.putInt("color", elementDialogView.selectedColor)
     }
 
     override fun showSuccess(message: String?) {
@@ -143,20 +130,15 @@ class ElementDialog : BaseDialogFragment(), ElementDialogPresenterContract.View 
         dialog.window!!.attributes = lp
     }
 
-    private fun selectColor(position: Int) {
-        colorAdapter.setCheckedPosition(position)
-        (colorAdapter.getView(position, null, null) as ColorElementView).isChecked = true
-        element.color = colorAdapter.getItem(position).color
-    }
-
     override fun toggleLoading(loading: Boolean, message: String?) {}
 
     companion object {
-        fun newInstance(title: String, elementType: String): ElementDialog {
+        fun newInstance(title: String, elementType: String, element: Element? = null): ElementDialog {
             val dialog = ElementDialog()
             val args = Bundle()
             args.putString("title", title)
             args.putString("elementType", elementType)
+            if(element != null) args.putParcelable("element", element)
             dialog.arguments = args
             return dialog
         }
