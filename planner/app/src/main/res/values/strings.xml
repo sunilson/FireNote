@@ -190,5 +190,7 @@
     <string name="register_error">One ore more fields not correct</string>
     <string name="element_added">Element wurde hinzugefügt</string>
     <string name="element_removed">Element was removed!</string>
+    <string name="saved_note">Saved note!</string>
+    <string name="save_note_error">Could not save note!</string>
 
 </resources>

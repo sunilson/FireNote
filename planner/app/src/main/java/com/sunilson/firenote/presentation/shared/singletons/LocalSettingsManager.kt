@@ -4,8 +4,6 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import com.sunilson.firenote.presentation.shared.sortingMethods
-import org.apache.commons.codec.binary.Hex
-import org.apache.commons.codec.digest.DigestUtils
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -42,5 +40,4 @@ class LocalSettingsManager @Inject constructor(val context: Application) {
     fun getSortingMethod() = sharedPrefs.getString("mainElementSorting", context.sortingMethods()[0].name)
     fun getColorVisibility(color: Int) = sharedPrefs.getInt(color.toString(), 1)
     fun getCategoryVisibility(category: String) = sharedPrefs.getInt(category, 1)
-    fun getSHA1Hash(masterPasswordHash: String): String = String(Hex.encodeHex(DigestUtils.sha1(masterPasswordHash)))
 }

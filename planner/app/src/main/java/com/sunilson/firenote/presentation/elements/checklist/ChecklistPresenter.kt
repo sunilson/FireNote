@@ -6,7 +6,8 @@ import com.sunilson.firenote.data.models.ChecklistElement
 import com.sunilson.firenote.presentation.shared.base.BasePresenter
 import javax.inject.Inject
 
-class ChecklistPresenter @Inject constructor(val view : ChecklistPresenterContract.View, private val repository: IFirebaseRepository) : BasePresenter(view), ChecklistPresenterContract.Presenter{
+class ChecklistPresenter @Inject constructor(val view : ChecklistPresenterContract.View, private val repository: IFirebaseRepository)
+    : BasePresenter(view), ChecklistPresenterContract.Presenter{
 
     override fun addChecklistElement(checklistElement: ChecklistElement) {
         repository.addChecklistElement(view.element!!.elementID, checklistElement)
@@ -16,6 +17,7 @@ class ChecklistPresenter @Inject constructor(val view : ChecklistPresenterContra
     }
 
     override fun changeChecklistElement(checklistElement: ChecklistElement) {
+        repository.updateChecklistElement(view.element!!.elementID, checklistElement)
     }
 
     override fun loadElementData() {

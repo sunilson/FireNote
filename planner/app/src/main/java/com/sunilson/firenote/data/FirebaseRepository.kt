@@ -26,11 +26,11 @@ interface IFirebaseRepository {
     fun loadBundleElements(): Flowable<List<Pair<ChangeType, Element>>>
 
     fun loadChecklistElements(id: String): Flowable<Pair<ChangeType, ChecklistElement>>
-    fun addChecklistElement(id: String, checklistElement: ChecklistElement): Completable
-    fun updateChecklistElement(id: String, checklistElement: ChecklistElement): Completable
-    fun removeChecklistElement(id: String, checklistElement: ChecklistElement): Completable
+    fun addChecklistElement(elementID: String, checklistElement: ChecklistElement): Completable
+    fun updateChecklistElement(elementID: String, checklistElement: ChecklistElement): Completable
+    fun removeChecklistElement(elementID: String, checklistElement: ChecklistElement): Completable
 
-    fun storeNoteText(id: String, text: String)
+    fun storeNoteText(id: String, text: String) : Completable
     fun storeElement(element: Element): Completable
     fun deleteElement(id: String, parent: String? = null): Completable
     fun restoreElement(id: String, parent: String? = null): Completable
@@ -40,8 +40,12 @@ interface IFirebaseRepository {
 @Singleton
 class FirebaseRepository @Inject constructor() : IFirebaseRepository {
 
-    override fun storeNoteText(id: String, text: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun storeNoteText(id: String, text: String) : Completable {
+        return createCompletableFromTask( FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid)
+                .child("contents")
+                .child(id)
+                .child("text")
+                .setValue(text))
     }
 
     override fun loadElement(id: String, parent: String?): Flowable<Element?> {
@@ -57,7 +61,7 @@ class FirebaseRepository @Inject constructor() : IFirebaseRepository {
     }
 
     override fun loadNoteContent(id: String): Flowable<String> {
-        val ref = FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("contents").child(id)
+        val ref = FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("contents").child(id).child("text")
         return createFlowableValueFromQuery(ref, { dataSnapshot ->
             dataSnapshot?.getValue(String::class.java) ?: ""
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
@@ -109,7 +113,7 @@ class FirebaseRepository @Inject constructor() : IFirebaseRepository {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun updateElement(element: Element) : Completable{
+    override fun updateElement(element: Element): Completable {
         var ref = FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("elements")
         ref = if (element.parent != null) ref.child("bundles").child(element.parent).child(element.elementID)
         else ref.child("main").child(element.elementID)
@@ -135,18 +139,24 @@ class FirebaseRepository @Inject constructor() : IFirebaseRepository {
         })
     }
 
-    override fun addChecklistElement(id: String, checklistElement: ChecklistElement): Completable {
-        var ref = FirebaseDatabase.getInstance().reference.child("users")
+    override fun addChecklistElement(elementID: String, checklistElement: ChecklistElement): Completable {
+        val ref = FirebaseDatabase.getInstance().reference.child("users")
                 .child(FirebaseAuth.getInstance().currentUser!!.uid)
                 .child("contents")
-                .child(id)
+                .child(elementID)
                 .child("elements")
                 .push()
         return createCompletableFromTask(ref.setValue(checklistElement))
     }
 
-    override fun updateChecklistElement(id: String, checklistElement: ChecklistElement): Completable {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun updateChecklistElement(elementID: String, checklistElement: ChecklistElement): Completable {
+        val ref = FirebaseDatabase.getInstance().reference.child("users")
+                .child(FirebaseAuth.getInstance().currentUser!!.uid)
+                .child("contents")
+                .child(elementID)
+                .child("elements")
+                .child(checklistElement.id)
+        return createCompletableFromTask(ref.setValue(checklistElement))
     }
 
     override fun removeChecklistElement(id: String, checklistElement: ChecklistElement): Completable {

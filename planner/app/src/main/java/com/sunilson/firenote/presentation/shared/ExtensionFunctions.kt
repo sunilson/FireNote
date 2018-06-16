@@ -8,6 +8,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.*
+import org.apache.commons.codec.binary.Hex
+import org.apache.commons.codec.digest.DigestUtils
 import java.util.*
 
 fun DatabaseReference.storeElement(element: Element) : Task<*> {
@@ -72,6 +74,8 @@ fun Context.categories(): List<Category> {
         }
     })
 }
+
+fun String.encodePassword() : String = String(Hex.encodeHex(DigestUtils.sha1(this)))
 
 fun Context.colors(): List<NoteColor> {
     return listOf(

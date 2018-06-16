@@ -9,6 +9,6 @@ interface NotePresenterContract {
 
     interface INoteView : ElementContentPresenterContract.View {
         fun noteTextChanged(text: String)
-        fun finishTextEdit()
+        fun stopEditMode(saveNote: Boolean = true)
     }
 }

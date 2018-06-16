@@ -6,10 +6,10 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.support.v4.content.res.ResourcesCompat
 import android.util.AttributeSet
-import android.widget.EditText
+import android.widget.TextView
 import com.sunilson.firenote.R
 
-class LinedEditText(context: Context, attrs: AttributeSet) : EditText(context, attrs) {
+class LinedTextView(context: Context, attrs: AttributeSet) : TextView(context, attrs) {
 
     private val paint: Paint = Paint()
     private val rect: Rect = Rect()

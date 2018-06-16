@@ -3,7 +3,9 @@ package com.sunilson.firenote.presentation.elements.checklist
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.ChecklistElement
@@ -11,8 +13,12 @@ import com.sunilson.firenote.presentation.shared.base.adapters.BaseRecyclerAdapt
 import com.sunilson.firenote.presentation.shared.di.scopes.FragmentScope
 import javax.inject.Inject
 
-@FragmentScope
-class ChecklistRecyclerAdapter @Inject constructor(context: Context)
+class ChecklistRecyclerAdapter constructor(
+        context: Context,
+        private val onClickListener: View.OnClickListener,
+        private val onLongClickListener: View.OnLongClickListener,
+        private val onSwipeListener: (String, String?) -> Unit,
+        private val recyclerView: RecyclerView)
     : BaseRecyclerAdapter<ChecklistElement>(context) {
 
     override fun toString(): String {
@@ -28,15 +34,6 @@ class ChecklistRecyclerAdapter @Inject constructor(context: Context)
         return result
     }
 
-    fun remove(checklistElement: ChecklistElement) {
-        var removedIndex = -1
-        _data = _data.filterIndexed { index, value ->
-            if(checklistElement.id == value.id) removedIndex = index
-            checklistElement.id != value.id
-        }.toMutableList()
-        if(removedIndex >= 0) notifyItemRemoved(removedIndex)
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding: ViewDataBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
@@ -45,8 +42,19 @@ class ChecklistRecyclerAdapter @Inject constructor(context: Context)
                 false
         )
 
-        //binding.root.setOnClickListener(onClickListener)
-        //binding.root.setOnLongClickListener(onLongClickListener)
+        binding.root.setOnClickListener(onClickListener)
+        binding.root.setOnLongClickListener(onLongClickListener)
+
         return ViewHolder(binding)
+    }
+}
+
+@FragmentScope
+class ChecklistRecyclerAdapterFactory @Inject constructor(private val context: Context) {
+    fun create(onClickListener: View.OnClickListener,
+               onLongClickListener: View.OnLongClickListener,
+               onSwipeListener: (String, String?) -> Unit,
+               recyclerView: RecyclerView): ChecklistRecyclerAdapter {
+        return ChecklistRecyclerAdapter(context, onClickListener, onLongClickListener, onSwipeListener, recyclerView)
     }
 }

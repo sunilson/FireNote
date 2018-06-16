@@ -1,5 +1,6 @@
 package com.sunilson.firenote.presentation.elements.note
 
+import com.sunilson.firenote.R
 import com.sunilson.firenote.data.IFirebaseRepository
 import com.sunilson.firenote.presentation.shared.base.BasePresenter
 import com.sunilson.firenote.presentation.shared.di.scopes.FragmentScope
@@ -11,8 +12,8 @@ class NotePresenter @Inject constructor(private val eventRepository: IFirebaseRe
 
     override fun onStop() {
         super.onStop()
-        view.finishTextEdit()
         disposable.dispose()
+        view.stopEditMode()
     }
 
     override fun onCreate() {
@@ -20,7 +21,13 @@ class NotePresenter @Inject constructor(private val eventRepository: IFirebaseRe
     }
 
     override fun storeNoteText(text: String) {
-        if(view.element != null) eventRepository.storeNoteText(view.element!!.elementID, text)
+        if(view.element != null) {
+            disposable.add(eventRepository.storeNoteText(view.element!!.elementID, text).subscribe({
+                view.showSuccess(view.mContext?.getString(R.string.saved_note))
+            },{
+                view.showError(view.mContext?.getString(R.string.save_note_error))
+            }))
+        }
     }
 
     override fun loadElementData() {

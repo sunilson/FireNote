@@ -9,10 +9,12 @@ import android.view.*
 import android.view.animation.OvershootInterpolator
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.ChecklistElement
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.elements.BaseElementPresenterContract
+import com.sunilson.firenote.presentation.shared.UtilityDialogs
 import com.sunilson.firenote.presentation.shared.base.BaseFragment
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator
 import kotlinx.android.synthetic.main.alertdialog_body_checklist_add.view.*
@@ -27,7 +29,7 @@ class ChecklistFragment : BaseFragment(), ChecklistPresenterContract.View {
     lateinit var checklistPresenter: ChecklistPresenterContract.Presenter
 
     @Inject
-    lateinit var checklistRecyclerAdapter: ChecklistRecyclerAdapter
+    lateinit var checklistRecyclerAdapterFactory: ChecklistRecyclerAdapterFactory
 
     val elementActivity: BaseElementPresenterContract.View?
         get() = activity as? BaseElementPresenterContract.View
@@ -36,6 +38,7 @@ class ChecklistFragment : BaseFragment(), ChecklistPresenterContract.View {
         get() = elementActivity?.element
 
     private lateinit var imm: InputMethodManager
+    private lateinit var checklistRecyclerAdapter: ChecklistRecyclerAdapter
 
     override fun toggleLoading(loading: Boolean, message: String?) {
     }
@@ -43,6 +46,14 @@ class ChecklistFragment : BaseFragment(), ChecklistPresenterContract.View {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         setHasOptionsMenu(true)
         val view = inflater.inflate(R.layout.fragment_checklist, container, false)
+        checklistRecyclerAdapter = checklistRecyclerAdapterFactory.create(View.OnClickListener {
+            val position = view.checkListView.getChildLayoutPosition(it)
+            checklistPresenter.changeChecklistElement(checklistRecyclerAdapter.data[position].apply {
+                this.finished = !this.finished
+            })
+        }, View.OnLongClickListener {
+            true
+        }, { _, _ -> }, view.checkListView)
         view.checkListView.adapter = checklistRecyclerAdapter
         view.checkListView.itemAnimator = ScaleInAnimator(OvershootInterpolator(1f))
         view.checkListView.itemAnimator.addDuration = 300
@@ -65,14 +76,21 @@ class ChecklistFragment : BaseFragment(), ChecklistPresenterContract.View {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-
+            R.id.menu_import -> {
+                UtilityDialogs.showMultiLineTextDialog(
+                        context!!,
+                        getString(R.string.import_from_textfile),
+                        {
+                            Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+                        })
+            }
         }
         return super.onOptionsItemSelected(item)
     }
 
     override fun titleEditToggled(active: Boolean) {}
     override fun checklistElementAdded(checklistElement: ChecklistElement) = checklistRecyclerAdapter.add(checklistElement)
-    override fun checklistElementChanged(checklistElement: ChecklistElement) {}
+    override fun checklistElementChanged(checklistElement: ChecklistElement) = checklistRecyclerAdapter.update(checklistElement)
     override fun checklistElementRemoved(checklistElement: ChecklistElement) = checklistRecyclerAdapter.remove(checklistElement)
 
     private fun openChecklistElementDialog() {
@@ -92,8 +110,12 @@ class ChecklistFragment : BaseFragment(), ChecklistPresenterContract.View {
         alert.setNegativeButton(R.string.cancel_add_dialog) { _, _ -> }
 
         val dialog = alert.create()
-        dialog.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        dialog.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
         dialog.window.attributes.windowAnimations = R.style.dialogAnimation
+
+        dialog.setOnDismissListener {
+            (context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(dialog.window.decorView.windowToken, InputMethodManager.HIDE_IMPLICIT_ONLY)
+        }
 
         content.checklist_add_element_title.setOnEditorActionListener { _, i, keyEvent ->
             if (keyEvent.keyCode == KeyEvent.KEYCODE_ENTER || i == EditorInfo.IME_ACTION_DONE) dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()

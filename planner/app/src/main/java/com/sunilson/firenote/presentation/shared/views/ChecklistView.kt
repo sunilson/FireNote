@@ -24,11 +24,11 @@ class ChecklistView(context: Context) : LinearLayout(context) {
             if(value) {
                 checkList_element_text.paintFlags = checkList_element_text.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 checkList_element_text.setTextColor(ContextCompat.getColor(context, R.color.text_crossed_out))
-                checkList_element_checkBox.isChecked = true
+                checkList_element_checkBox.isChecked = value
             } else {
-                checkList_element_text.paintFlags = checkList_element_text.paintFlags and  Paint.STRIKE_THRU_TEXT_FLAG.inv()
+                checkList_element_text.paintFlags = checkList_element_text.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
                 checkList_element_text.setTextColor(ContextCompat.getColor(context, R.color.primary_text_color))
-                checkList_element_checkBox.isChecked = true
+                checkList_element_checkBox.isChecked = value
             }
         }
 }

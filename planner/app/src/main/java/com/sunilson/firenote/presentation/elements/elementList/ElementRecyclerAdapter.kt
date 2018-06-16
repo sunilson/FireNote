@@ -12,6 +12,7 @@ import com.sunilson.firenote.Interfaces.ItemTouchHelperAdapter
 import com.sunilson.firenote.ItemTouchHelper.SimpleItemTouchHelperCallbackMain
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
+import com.sunilson.firenote.presentation.shared.base.adapters.AdapterElement
 import com.sunilson.firenote.presentation.shared.base.adapters.BaseRecyclerAdapter
 import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
@@ -64,12 +65,20 @@ class ElementRecyclerAdapter constructor(
     }
 
     override fun add(element: Element) {
-        allItems.add(element)
+        val existAllElement = allItems.find { it.elementID == element.elementID }
+        if(existAllElement == null) allItems.add(element)
+        else allItems[allItems.indexOf(existAllElement)] = element
+
         if (localSettingsManager.getCategoryVisibility(element.category.id) != -1 && localSettingsManager.getColorVisibility(element.color) != -1) {
-            _data.add(element)
-            notifyItemInserted(data.indexOf(element))
-            sort(localSettingsManager.getSortingMethod())
-            notifyItemInserted(data.indexOf(element))
+            if(existAllElement == null) {
+                _data.add(element)
+                notifyItemInserted(data.indexOf(element))
+                sort(localSettingsManager.getSortingMethod())
+                notifyItemInserted(data.indexOf(element))
+            } else {
+                _data[_data.indexOf(existAllElement)] = element
+                notifyDataSetChanged()
+            }
         }
     }
 
@@ -84,32 +93,13 @@ class ElementRecyclerAdapter constructor(
         notifyDataSetChanged()
     }
 
-    fun remove(id: String) {
-        allItems = allItems.filter { it.elementID != id }.toMutableList()
-        val iterator = _data.listIterator()
-        for ((index, value) in iterator.withIndex()) {
-            if (value.elementID == id) {
-                iterator.remove()
-                notifyItemRemoved(index)
-            }
-        }
-    }
-
-    fun update(element: Element) {
-        val iterator = _data.listIterator()
-        for ((index, value) in iterator.withIndex()) {
-            if (value.elementID == element.elementID) {
-                iterator.set(element)
-                notifyItemChanged(index)
-            }
-        }
+    override fun remove(element: AdapterElement) {
+        allItems = allItems.filter { it.elementID != element.compareByString }.toMutableList()
+        super.remove(element)
     }
 
     fun sort(sortMethod: String) = _data.sortWith(context.sortingMethods().find { it.name == sortMethod }!!.comparator)
-
-    override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean {
-        return false
-    }
+    override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean = false
 
     override fun onItemDismiss(position: Int) {
         val element = _data[position]

@@ -6,6 +6,7 @@ import android.os.Parcelable
 import com.sunilson.firenote.BR
 import com.sunilson.firenote.R
 import com.sunilson.firenote.presentation.shared.NotifyPropertyChangedDelegate
+import com.sunilson.firenote.presentation.shared.base.adapters.AdapterElement
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 import java.util.*
@@ -19,7 +20,7 @@ open class Element constructor(
         private var _locked: Boolean = false,
         val timeStamp: Long = 0,
         private var _title: String = "New Element",
-        var parent: String? = null) : Parcelable, BaseObservable() {
+        var parent: String? = null) : Parcelable, BaseObservable(), AdapterElement {
 
     @IgnoredOnParcel
     @get:Bindable
@@ -42,4 +43,7 @@ open class Element constructor(
         get() = Date(timeStamp)
 
     fun copy() : Element = Element(elementID, _category, noteType, _color, _locked, timeStamp, _title, parent)
+
+    override val compareByString: String
+        get() = elementID
 }

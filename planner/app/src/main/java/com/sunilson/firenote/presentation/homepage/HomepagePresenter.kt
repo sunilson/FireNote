@@ -18,7 +18,6 @@ class HomepagePresenter @Inject constructor(val firebaseRepository: IFirebaseRep
 
     override fun loadElementData() {
         disposable.dispose()
-        view.clearAdapter()
         disposable.add(firebaseRepository.loadElements(FirebaseAuth.getInstance().currentUser!!).subscribe({
             when (it?.first) {
                 ChangeType.ADDED -> view.elementAdded(it.second)

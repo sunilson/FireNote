@@ -16,6 +16,7 @@ import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.authentication.AuthenticationActivity
 import com.sunilson.firenote.presentation.bin.BinActivity
+import com.sunilson.firenote.presentation.shared.UtilityDialogs
 import com.sunilson.firenote.presentation.dialogs.elementDialog.ElementDialog
 import com.sunilson.firenote.presentation.elements.elementActivity.ElementActivity
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapter
@@ -126,9 +127,18 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
 
         recyclerViewClickListener = View.OnClickListener {
             val element = adapter.data[activity_main_recycler_view.getChildLayoutPosition(it)]
-
             if (element.locked) {
-                //TODO: Mit Callback
+                UtilityDialogs.showMasterPasswordDialog(this, {
+                    if(it) {
+                        val intent = Intent(this, ElementActivity::class.java)
+                        intent.putExtra("elementID", element.elementID)
+                        intent.putExtra("noteType", element.noteType)
+                        intent.putExtra("elementColor", element.color)
+                        startActivity(intent)
+                    } else {
+                        showError(getString(R.string.wrong_password))
+                    }
+                })
             } else {
                 val intent = Intent(this, ElementActivity::class.java)
                 intent.putExtra("elementID", element.elementID)
@@ -209,7 +219,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
     override fun toggleLoading(loading: Boolean, message: String?) { activity_main_swipe_refresh_layout.isRefreshing = loading}
     override fun elementAdded(element: Element) { adapter.add(element) }
     override fun elementChanged(element: Element) { adapter.update(element) }
-    override fun elementRemoved(element: Element) { adapter.remove(element.elementID) }
+    override fun elementRemoved(element: Element) { adapter.remove(element) }
     override fun clearAdapter() = adapter.clear()
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = dispatchingAndroidInjector
 }

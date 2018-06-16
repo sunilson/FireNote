@@ -5,10 +5,10 @@ import android.databinding.ViewDataBinding
 import android.support.v7.widget.RecyclerView
 import com.sunilson.firenote.BR
 
-abstract class BaseRecyclerAdapter<T>(protected val context: Context) : RecyclerView.Adapter<BaseRecyclerAdapter<T>.ViewHolder>() {
+abstract class BaseRecyclerAdapter<T : AdapterElement>(protected val context: Context) : RecyclerView.Adapter<BaseRecyclerAdapter<T>.ViewHolder>() {
 
     protected var _data = mutableListOf<T>()
-    var data : List<T>
+    var data: List<T>
         get() = _data.toList()
         set(value) {
             _data = value.toMutableList()
@@ -23,6 +23,26 @@ abstract class BaseRecyclerAdapter<T>(protected val context: Context) : Recycler
     open fun add(element: T) {
         _data.add(element)
         notifyItemInserted(_data.indexOf(element))
+    }
+
+    open fun remove(element: AdapterElement) {
+        val iterator = _data.listIterator()
+        for ((index, value) in iterator.withIndex()) {
+            if (value.compareByString == element.compareByString) {
+                iterator.remove()
+                notifyItemRemoved(index)
+            }
+        }
+    }
+
+    open fun update(element: AdapterElement) {
+        val iterator = _data.listIterator()
+        for ((index, value) in iterator.withIndex()) {
+            if (value.compareByString == element.compareByString) {
+                iterator.set(element as T)
+                notifyItemChanged(index)
+            }
+        }
     }
 
     override fun getItemCount(): Int = data.size

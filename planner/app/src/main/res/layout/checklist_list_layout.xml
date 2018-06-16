@@ -38,7 +38,9 @@
                 android:paddingLeft="16dp"
                 android:text="@{obj.text}"
                 android:textAppearance="@style/TextAppearance.AppCompat"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:checklistTextStyle="@{obj.finished}"
+                />
 
             <LinearLayout
                 style="@style/element_List_element"

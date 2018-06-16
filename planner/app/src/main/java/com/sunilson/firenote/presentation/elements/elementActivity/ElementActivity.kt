@@ -132,8 +132,8 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View, HasSu
     }
 
     override fun toggleTitleEdit(active: Boolean) {
+        if(editMode == active) return
         editMode = active
-
         if (editMode) {
             title_edittext.ellipsize = null
             title_edittext.isFocusableInTouchMode = true
@@ -155,6 +155,7 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View, HasSu
             imm.hideSoftInputFromWindow(title_edittext.windowToken, 0)
             element!!.title = title_edittext.text.toString()
             presenter.updateElement(element!!)
+            (supportFragmentManager.fragments[0] as ElementContentPresenterContract.View).titleEditToggled(false)
         }
     }
 
