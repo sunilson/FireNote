@@ -12,7 +12,7 @@
             <v-card>
                 <v-card-title class="headline">Element is locked</v-card-title>
                 <div style="padding-left: 16px; padding-right: 16px">
-                    <v-text-field label="Element password" type="password" autofocus v-model="password" @keyup.enter="openElement()"></v-text-field>
+                    <v-text-field label="Element password" type="password" autofocus v-model="password" @keyup.enter="openLockedElement()"></v-text-field>
                 </div>
                 <v-card-actions>
                     <v-spacer></v-spacer>

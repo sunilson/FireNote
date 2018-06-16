@@ -103,10 +103,14 @@ export default {
 
   changeMasterPassword: function (newPassword, oldPassword) {
     return fb.database().ref(`users/${fb.auth().currentUser.uid}/settings/masterPassword`).once("value").then(pw => {
-      if (pw == hashPassword(oldPassword)) {
+      if (pw.val() == hashPassword(oldPassword)) {
         return fb.database().ref(`users/${fb.auth().currentUser.uid}/settings/masterPassword`).set(hashPassword(newPassword))
       } else throw new Error("Wrong password!")
     })
+  },
+
+  deleteUserAccount: function () {
+    return fb.auth().currentUser.delete()
   },
 
   deleteElement: function (id, parent, element) {

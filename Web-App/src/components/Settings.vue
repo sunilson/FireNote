@@ -20,7 +20,7 @@
                 </v-list>
                 <v-divider></v-divider>
                 <v-list two-line>
-                    <v-list-tile v-for="item in items" :key="item.title" avatar>
+                    <v-list-tile v-for="item in items" :key="item.title" avatar @click="item.action()">
                         <v-list-tile-avatar>
                             <v-icon :class="[item.iconClass]">{{ item.icon }}</v-icon>
                         </v-list-tile-avatar>
@@ -33,27 +33,77 @@
               </v-flex>
           </v-layout>
       </v-container>
+      <v-dialog v-model="passwordDialog" max-width="290">
+            <v-card>
+                <v-card-title class="headline">Set master password</v-card-title>
+                <div style="padding-left: 16px; padding-right: 16px">
+                    <v-text-field label="Current password" 
+                    type="password"
+                    autofocus v-model="currentPassword"
+                    @keyup.enter="changeMasterPassword()"></v-text-field>
+                    <v-text-field label="Repeat current password" 
+                    type="password"
+                     v-model="currentPasswordAgain"
+                    @keyup.enter="changeMasterPassword()"></v-text-field>
+                    <v-text-field label="New password" 
+                    type="password"
+                     v-model="newPassword"
+                    @keyup.enter="changeMasterpassword()"></v-text-field>
+                </div>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="green darken-1" flat="flat" @click.native="passwordDialog = false">Cancel</v-btn>
+                    <v-btn color="green darken-1" flat="flat" @click.native="changeMasterpassword()">Save</v-btn>
+                </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-dialog v-model="deleteAccountDialog" max-width="290">
+          <v-card>
+            <v-card-title class="headline">Delete account</v-card-title>
+            <v-card-text>Do you really want to delete your account?</v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="red darken-1" flat @click.native="deleteAccountDialog = false">Cancel</v-btn>
+              <v-btn color="green darken-1" flat @click.native="deleteAccount()">Agree</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
     </v-content>
 </template>
 
 <script>
 import firebase from "../services/firebase.js";
+import { EventBus } from "../services/EventBus.js";
 
 export default {
   data() {
     return {
+      passwordDialog: false,
+      deleteAccountDialog: false,
+      currentPassword: "",
+      currentPasswordAgain: "",
+      newPassword: "",
       items: [
         {
           icon: "lock",
           iconClass: "grey lighten-1 white--text",
           title: "Master Password",
-          subtitle: "The password used for locking your notes"
+          subtitle: "The password used for locking your notes",
+          action: () => {
+            this.currentPassword = "";
+            this.currentPasswordAgain = "";
+            this.newPassword = "";
+            this.passwordDialog = true;
+          }
         },
         {
           icon: "delete",
           iconClass: "grey lighten-1 white--text",
           title: "Delete user account",
-          subtitle: "Permanently delete your user account and all contents"
+          subtitle: "Permanently delete your user account and all contents",
+          action: () => {
+            this.deleteAccountDialog = true;
+          }
         },
         {
           icon: "person",
@@ -84,6 +134,36 @@ export default {
       ],
       fb: firebase.fb
     };
+  },
+  methods: {
+    deleteAccount() {
+      firebase
+        .deleteUserAccount()
+        .then(() => {})
+        .catch(err =>
+          EventBus.$emit("showSnackbar", "Could not delete account!")
+        );
+    },
+    changeMasterpassword() {
+      if (
+        this.currentPassword.length > 0 &&
+        this.newPassword.length > 0 &&
+        this.currentPassword == this.currentPasswordAgain
+      ) {
+        firebase
+          .changeMasterPassword(this.newPassword, this.currentPassword)
+          .then(() => {
+            this.passwordDialog = false;
+            EventBus.$emit("showSnackbar", "Changed password!");
+          })
+          .catch(err => {
+            console.log(err);
+            EventBus.$emit("showSnackbar", "Could not change your password!");
+          });
+      } else {
+        EventBus.$emit("showSnackbar", "Passwords are empty or don't match!");
+      }
+    }
   }
 };
 </script>

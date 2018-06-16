@@ -99,6 +99,4 @@ exports.handleUserCreation = functions.auth.user().onCreate((user) => {
     return Promise.all(promises)
 });
 
-exports.handleUserDeletion = functions.auth.user().onDelete((user, context) => {
-    //TODO
-})
+exports.handleUserDeletion = functions.auth.user().onDelete((user, context) => admin.database().ref(`users/${user.uid}`).remove())
