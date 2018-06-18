@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.sunilson.firenote.Interfaces.ItemTouchHelperAdapter
-import com.sunilson.firenote.ItemTouchHelper.SimpleItemTouchHelperCallbackMain
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.shared.base.adapters.AdapterElement
@@ -30,6 +29,7 @@ class ElementRecyclerAdapter constructor(
     private var allItems = mutableListOf<Element>()
 
     init {
+        //TODO Use Dagger
         ItemTouchHelper(SimpleItemTouchHelperCallbackMain(this)).attachToRecyclerView(recyclerView)
     }
 

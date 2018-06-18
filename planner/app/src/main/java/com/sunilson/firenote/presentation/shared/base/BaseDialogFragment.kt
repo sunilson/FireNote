@@ -8,7 +8,6 @@ import android.support.v4.app.DialogFragment
 import android.view.View
 import com.sunilson.firenote.R
 import com.sunilson.firenote.presentation.elements.elementActivity.ElementActivity
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.alertdialog_custom_title.view.*
 
 abstract class BaseDialogFragment : DialogFragment(), IBaseView {
@@ -22,12 +21,8 @@ abstract class BaseDialogFragment : DialogFragment(), IBaseView {
         builder = AlertDialog.Builder(activity)
         titleView = activity!!.layoutInflater.inflate(R.layout.alertdialog_custom_title, null)
         if (activity is ElementActivity) titleView.dialog_title_container.setBackgroundColor((activity as ElementActivity).element!!.color)
+        builder.setCustomTitle(titleView)
         return super.onCreateDialog(savedInstanceState)
-    }
-
-    override fun onAttach(context: Context?) {
-        AndroidSupportInjection.inject(this)
-        super.onAttach(context)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

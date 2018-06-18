@@ -14,5 +14,6 @@ interface ChecklistPresenterContract {
         fun addChecklistElement(checklistElement: ChecklistElement)
         fun removeChecklistElement(checklistElement: ChecklistElement)
         fun changeChecklistElement(checklistElement: ChecklistElement)
+        fun refreshChecklistElements()
     }
 }

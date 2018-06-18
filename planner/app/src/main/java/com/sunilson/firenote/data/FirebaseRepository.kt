@@ -160,7 +160,13 @@ class FirebaseRepository @Inject constructor() : IFirebaseRepository {
     }
 
     override fun removeChecklistElement(id: String, checklistElement: ChecklistElement): Completable {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val ref = FirebaseDatabase.getInstance().reference.child("users")
+                .child(FirebaseAuth.getInstance().currentUser!!.uid)
+                .child("contents")
+                .child(id)
+                .child("elements")
+                .child(checklistElement.id)
+        return createCompletableFromTask(ref.removeValue())
     }
 
     override fun loadElements(user: FirebaseUser): Flowable<Pair<ChangeType, Element>?> {

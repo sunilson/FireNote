@@ -14,10 +14,16 @@ class ChecklistPresenter @Inject constructor(val view : ChecklistPresenterContra
     }
 
     override fun removeChecklistElement(checklistElement: ChecklistElement) {
+        repository.removeChecklistElement(view.element!!.elementID, checklistElement)
     }
 
     override fun changeChecklistElement(checklistElement: ChecklistElement) {
         repository.updateChecklistElement(view.element!!.elementID, checklistElement)
+    }
+
+    override fun refreshChecklistElements() {
+        disposable.dispose()
+        loadElementData()
     }
 
     override fun loadElementData() {

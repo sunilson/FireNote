@@ -14,7 +14,7 @@ import android.view.inputmethod.InputMethodManager
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.databinding.BaseElementActivityBinding
-import com.sunilson.firenote.presentation.dialogs.elementDialog.ElementDialog
+import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.ElementDialog
 import com.sunilson.firenote.presentation.elements.BaseElementPresenterContract
 import com.sunilson.firenote.presentation.elements.checklist.ChecklistFragment
 import com.sunilson.firenote.presentation.elements.note.NoteFragment

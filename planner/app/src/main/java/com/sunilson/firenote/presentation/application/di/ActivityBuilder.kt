@@ -8,6 +8,8 @@ import com.sunilson.firenote.presentation.elements.elementActivity.di.ElementFra
 import com.sunilson.firenote.presentation.elements.elementActivity.di.ElementModule
 import com.sunilson.firenote.presentation.homepage.MainActivity
 import com.sunilson.firenote.presentation.homepage.di.HomepageModule
+import com.sunilson.firenote.presentation.settings.SettingsActivity
+import com.sunilson.firenote.presentation.settings.di.SettingsActivityModule
 import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
 import com.sunilson.firenote.presentation.shared.di.scopes.DialogFragmentScope
 import com.sunilson.firenote.presentation.visibilityDialog.VisibilityDialog
@@ -35,6 +37,10 @@ abstract class ActivityBuilder {
     @DialogFragmentScope
     abstract fun ccontributeVisibilityDialogFragment(): VisibilityDialog
 
+    @ContributesAndroidInjector(modules = [SettingsActivityModule::class])
+    @ActivityScope
+    abstract fun contributeSettingsActivity(): SettingsActivity
+
     /*
     @ContributesAndroidInjector(modules = [ElementDialogModule::class])
     @DialogFragmentScope
@@ -47,8 +53,6 @@ abstract class ActivityBuilder {
     @ActivityScope
     abstract fun contributeBinActivity(): BinActivity
 
-    @ContributesAndroidInjector(modules = [])
-    @ActivityScope
-    abstract fun contributeSettingsActivity(): SettingsActivity
+
     */
 }

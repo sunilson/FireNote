@@ -1,7 +1,9 @@
 package com.sunilson.firenote.presentation.elements.note
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -13,6 +15,9 @@ import com.sunilson.firenote.presentation.shared.singletons.ConnectivityManager
 import kotlinx.android.synthetic.main.base_element_activity.*
 import kotlinx.android.synthetic.main.fragment_note.*
 import javax.inject.Inject
+
+
+
 
 
 
@@ -38,7 +43,7 @@ class NoteFragment : BaseFragment(), NotePresenterContract.INoteView {
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
         imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
-        activity?.fab?.setOnClickListener { if(editMode) stopEditMode() else startEditMode() }
+        activity?.fab?.setOnClickListener { if (editMode) stopEditMode() else startEditMode() }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -71,13 +76,29 @@ class NoteFragment : BaseFragment(), NotePresenterContract.INoteView {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-
+            R.id.menu_share -> {
+                val shareBody = notepad.text.toString().trim()
+                val sharingIntent = Intent(android.content.Intent.ACTION_SEND)
+                sharingIntent.type = "text/plain"
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, element?.title)
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody)
+                startActivity(Intent.createChooser(sharingIntent, ""))
+            }
+            R.id.menu_reminder -> {
+                val shareBody = "${getString(R.string.element_note)}\"${element?.title}\"${getString(R.string.from_app)}: \n${notepad.text.toString().trim()}"
+                val calIntent = Intent(Intent.ACTION_INSERT)
+                calIntent.data = CalendarContract.Events.CONTENT_URI
+                calIntent.type = "vnd.android.cursor.item/event"
+                calIntent.putExtra(CalendarContract.Events.TITLE, element?.title + " - " + getString(R.string.app_name))
+                calIntent.putExtra(CalendarContract.Events.DESCRIPTION, shareBody)
+                startActivityForResult(calIntent, 123)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
 
     fun startEditMode() {
-        if(editMode) return
+        if (editMode) return
         elementActivity?.toggleTitleEdit(true)
         imm.showSoftInput(notepad, InputMethodManager.SHOW_FORCED)
         activity?.fab?.visibility = View.GONE
@@ -98,7 +119,7 @@ class NoteFragment : BaseFragment(), NotePresenterContract.INoteView {
     }
 
     override fun stopEditMode(saveNote: Boolean) {
-        if(!editMode) return
+        if (!editMode) return
         elementActivity?.toggleTitleEdit(false)
         activity?.fab?.visibility = View.VISIBLE
         imm.hideSoftInputFromWindow(notepad.windowToken, 0)
@@ -106,7 +127,7 @@ class NoteFragment : BaseFragment(), NotePresenterContract.INoteView {
         notepad_disabled.visibility = View.VISIBLE
         notepad.clearFocus()
         notepad.visibility = View.INVISIBLE
-        if(saveNote) {
+        if (saveNote) {
             if (!connectivityManager.isConnected()) Toast.makeText(activity, R.string.edit_no_connection, Toast.LENGTH_LONG).show()
             notePresenter.storeNoteText(notepad.text.toString())
             notepad_disabled.text = notepad.text.toString()
@@ -114,13 +135,15 @@ class NoteFragment : BaseFragment(), NotePresenterContract.INoteView {
     }
 
     override fun titleEditToggled(active: Boolean) {
-        if(active) startEditMode()
+        if (active) startEditMode()
         else stopEditMode()
     }
+
     override fun noteTextChanged(text: String) {
         notepad.setText(text)
         notepad_disabled.text = text
     }
+
     override fun toggleLoading(loading: Boolean, message: String?) {}
     override fun canLeave(): Boolean {
         if (editMode) {

@@ -1,8 +1,8 @@
 package com.sunilson.firenote.presentation.elements.elementActivity.di
 
-import com.sunilson.firenote.presentation.dialogs.elementDialog.ElementDialog
-import com.sunilson.firenote.presentation.dialogs.elementDialog.di.AbstractElementDialogModule
-import com.sunilson.firenote.presentation.dialogs.elementDialog.di.ElementDialogModule
+import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.ElementDialog
+import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.di.AbstractElementDialogModule
+import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.di.ElementDialogModule
 import com.sunilson.firenote.presentation.elements.checklist.ChecklistFragment
 import com.sunilson.firenote.presentation.elements.checklist.di.ChecklistModule
 import com.sunilson.firenote.presentation.elements.note.NoteFragment

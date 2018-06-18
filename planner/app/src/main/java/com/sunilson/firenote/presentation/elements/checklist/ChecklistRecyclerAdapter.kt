@@ -4,9 +4,11 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.sunilson.firenote.Interfaces.ItemTouchHelperAdapter
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.ChecklistElement
 import com.sunilson.firenote.presentation.shared.base.adapters.BaseRecyclerAdapter
@@ -17,9 +19,14 @@ class ChecklistRecyclerAdapter constructor(
         context: Context,
         private val onClickListener: View.OnClickListener,
         private val onLongClickListener: View.OnLongClickListener,
-        private val onSwipeListener: (String, String?) -> Unit,
+        private val onSwipeListener: (ChecklistElement) -> Unit,
         private val recyclerView: RecyclerView)
-    : BaseRecyclerAdapter<ChecklistElement>(context) {
+    : BaseRecyclerAdapter<ChecklistElement>(context), ItemTouchHelperAdapter {
+
+    init {
+        //TODO Use Dagger
+        ItemTouchHelper(SimpleItemTouchHelperCallbackChecklist(this)).attachToRecyclerView(recyclerView)
+    }
 
     override fun toString(): String {
         var result = ""
@@ -47,13 +54,19 @@ class ChecklistRecyclerAdapter constructor(
 
         return ViewHolder(binding)
     }
+
+    override fun onItemMove(fromPosition: Int, toPosition: Int): Boolean = false
+    override fun onItemDismiss(position: Int) {
+        onSwipeListener(data[position])
+        remove(data[position])
+    }
 }
 
 @FragmentScope
 class ChecklistRecyclerAdapterFactory @Inject constructor(private val context: Context) {
     fun create(onClickListener: View.OnClickListener,
                onLongClickListener: View.OnLongClickListener,
-               onSwipeListener: (String, String?) -> Unit,
+               onSwipeListener: (ChecklistElement) -> Unit,
                recyclerView: RecyclerView): ChecklistRecyclerAdapter {
         return ChecklistRecyclerAdapter(context, onClickListener, onLongClickListener, onSwipeListener, recyclerView)
     }

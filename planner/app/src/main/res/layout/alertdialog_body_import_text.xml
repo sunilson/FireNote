@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
     <com.sunilson.firenote.presentation.elements.note.views.LinedEditText
-        android:id="@+id/dialog_edit_text"
+        android:id="@+id/import_dialog_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/tint_white"

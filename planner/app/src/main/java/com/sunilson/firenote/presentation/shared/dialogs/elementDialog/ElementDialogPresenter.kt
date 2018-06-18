@@ -1,4 +1,4 @@
-package com.sunilson.firenote.presentation.dialogs.elementDialog
+package com.sunilson.firenote.presentation.shared.dialogs.elementDialog
 
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.IFirebaseRepository

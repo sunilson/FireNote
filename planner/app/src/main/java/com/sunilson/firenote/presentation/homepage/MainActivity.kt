@@ -16,8 +16,6 @@ import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.authentication.AuthenticationActivity
 import com.sunilson.firenote.presentation.bin.BinActivity
-import com.sunilson.firenote.presentation.shared.UtilityDialogs
-import com.sunilson.firenote.presentation.dialogs.elementDialog.ElementDialog
 import com.sunilson.firenote.presentation.elements.elementActivity.ElementActivity
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapter
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapterFactory
@@ -25,6 +23,9 @@ import com.sunilson.firenote.presentation.homepage.adapters.SortingListArrayAdap
 import com.sunilson.firenote.presentation.homepage.adapters.SortingListArrayAdapterFactory
 import com.sunilson.firenote.presentation.settings.SettingsActivity
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
+import com.sunilson.firenote.presentation.shared.dialogs.MasterPasswordDialog
+import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.ElementDialog
+import com.sunilson.firenote.presentation.shared.dialogs.interfaces.DialogListener
 import com.sunilson.firenote.presentation.shared.interfaces.HasElementList
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import com.sunilson.firenote.presentation.visibilityDialog.VisibilityDialog
@@ -128,17 +129,21 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
         recyclerViewClickListener = View.OnClickListener {
             val element = adapter.data[activity_main_recycler_view.getChildLayoutPosition(it)]
             if (element.locked) {
-                UtilityDialogs.showMasterPasswordDialog(this, {
-                    if(it) {
-                        val intent = Intent(this, ElementActivity::class.java)
-                        intent.putExtra("elementID", element.elementID)
-                        intent.putExtra("noteType", element.noteType)
-                        intent.putExtra("elementColor", element.color)
-                        startActivity(intent)
-                    } else {
-                        showError(getString(R.string.wrong_password))
+                val dialog = MasterPasswordDialog.newInstance()
+                dialog.listener = object : DialogListener<Boolean> {
+                    override fun onResult(result: Boolean?) {
+                        if(result != null && result) {
+                            val intent = Intent(this@MainActivity, ElementActivity::class.java)
+                            intent.putExtra("elementID", element.elementID)
+                            intent.putExtra("noteType", element.noteType)
+                            intent.putExtra("elementColor", element.color)
+                            startActivity(intent)
+                        } else {
+                            showError(getString(R.string.wrong_password))
+                        }
                     }
-                })
+                }
+                dialog.show(supportFragmentManager, "dialog")
             } else {
                 val intent = Intent(this, ElementActivity::class.java)
                 intent.putExtra("elementID", element.elementID)
@@ -157,6 +162,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
         }
 
         activity_main_swipe_refresh_layout.setOnRefreshListener {
+            adapter.clear()
             presenter.loadElementData()
             activity_main_swipe_refresh_layout.isRefreshing = false
         }

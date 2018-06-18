@@ -1,9 +1,9 @@
 package com.sunilson.firenote.presentation.homepage.di
 
 import android.content.Context
-import com.sunilson.firenote.presentation.dialogs.elementDialog.ElementDialog
-import com.sunilson.firenote.presentation.dialogs.elementDialog.di.AbstractElementDialogModule
-import com.sunilson.firenote.presentation.dialogs.elementDialog.di.ElementDialogModule
+import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.ElementDialog
+import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.di.AbstractElementDialogModule
+import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.di.ElementDialogModule
 import com.sunilson.firenote.presentation.homepage.HomepagePresenter
 import com.sunilson.firenote.presentation.homepage.HomepagePresenterContract
 import com.sunilson.firenote.presentation.homepage.MainActivity

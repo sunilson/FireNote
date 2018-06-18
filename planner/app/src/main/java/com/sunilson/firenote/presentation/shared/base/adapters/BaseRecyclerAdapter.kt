@@ -40,7 +40,8 @@ abstract class BaseRecyclerAdapter<T : AdapterElement>(protected val context: Co
         for ((index, value) in iterator.withIndex()) {
             if (value.compareByString == element.compareByString) {
                 iterator.set(element as T)
-                notifyItemChanged(index)
+                //notifyItemChanged(index)
+                notifyDataSetChanged()
             }
         }
     }

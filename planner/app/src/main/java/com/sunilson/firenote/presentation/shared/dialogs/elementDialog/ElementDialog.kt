@@ -1,4 +1,4 @@
-package com.sunilson.firenote.presentation.dialogs.elementDialog
+package com.sunilson.firenote.presentation.shared.dialogs.elementDialog
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -19,6 +19,7 @@ import com.sunilson.firenote.presentation.shared.base.BaseDialogFragment
 import com.sunilson.firenote.presentation.shared.colors
 import com.sunilson.firenote.presentation.shared.singletons.ConnectivityManager
 import com.sunilson.firenote.presentation.shared.views.ColorElementView
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.alertdialog_body_add_element.view.*
 import kotlinx.android.synthetic.main.alertdialog_custom_title.view.*
 import javax.inject.Inject
@@ -96,7 +97,6 @@ class ElementDialog : BaseDialogFragment(), ElementDialogPresenterContract.View 
             if (!hasFocus) imm.hideSoftInputFromWindow(v.windowToken, 0)
         }
 
-        builder.setCustomTitle(titleView)
         builder.setView(v)
         builder.setPositiveButton(getString(R.string.confirm_add_dialog), { _, _ -> })
         builder.setNegativeButton(getString(R.string.cancel_add_dialog), { _, _ -> dismiss() })
@@ -116,6 +116,11 @@ class ElementDialog : BaseDialogFragment(), ElementDialogPresenterContract.View 
             if(!editMode) presenter.addElement(element)
             else presenter.updateElement(element)
         }
+    }
+
+    override fun onAttach(context: Context?) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
     }
 
     override fun showSuccess(message: String?) {

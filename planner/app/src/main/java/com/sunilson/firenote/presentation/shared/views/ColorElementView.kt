@@ -10,13 +10,14 @@ import android.widget.LinearLayout
 import com.sunilson.firenote.R
 import kotlinx.android.synthetic.main.color_list_layout.view.*
 
-class ColorElementView(context: Context) : LinearLayout(context), Checkable {
+class ColorElementView(context: Context, negate: Boolean = false) : LinearLayout(context), Checkable {
 
     private var checked = false
 
     init {
         val inflater = LayoutInflater.from(context)
         inflater.inflate(R.layout.color_list_layout, this, true)
+        if(negate) color_list_icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_cancel_white_24dp))
     }
 
     override fun isChecked(): Boolean = checked

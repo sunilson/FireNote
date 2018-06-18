@@ -1,8 +1,8 @@
-package com.sunilson.firenote.presentation.dialogs.elementDialog.di
+package com.sunilson.firenote.presentation.shared.dialogs.elementDialog.di
 
-import com.sunilson.firenote.presentation.dialogs.elementDialog.ElementDialog
-import com.sunilson.firenote.presentation.dialogs.elementDialog.ElementDialogPresenter
-import com.sunilson.firenote.presentation.dialogs.elementDialog.ElementDialogPresenterContract
+import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.ElementDialog
+import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.ElementDialogPresenter
+import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.ElementDialogPresenterContract
 import com.sunilson.firenote.presentation.shared.di.scopes.DialogFragmentScope
 import dagger.Binds
 import dagger.Module

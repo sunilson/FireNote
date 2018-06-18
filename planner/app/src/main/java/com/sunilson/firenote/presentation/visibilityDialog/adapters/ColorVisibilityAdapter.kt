@@ -24,7 +24,7 @@ class ColorVisibilityAdapter(context: Context, val localSettingsManager: LocalSe
         var row = convertView as ColorElementView?
 
         val elementHolder = if (row == null) {
-            row = ColorElementView(context)
+            row = ColorElementView(context, true)
             val tempHolder = ElementHolder(row.findViewById(R.id.color_list_icon))
             row.tag = tempHolder
             tempHolder

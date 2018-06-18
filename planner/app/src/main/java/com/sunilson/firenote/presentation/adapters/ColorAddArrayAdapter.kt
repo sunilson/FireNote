@@ -42,7 +42,7 @@ class ColorAddArrayAdapter(context: Context) : BaseArrayAdapter<NoteColor>(conte
         for ((index, value) in data.withIndex()) {
             if (value.color == color) position = index
         }
-        setCheckedPosition(position)
+        if(position >= 0) setCheckedPosition(position)
     }
 
     fun setCheckedPosition(position: Int) {

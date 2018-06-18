@@ -1,4 +1,4 @@
-package com.sunilson.firenote.ItemTouchHelper
+package com.sunilson.firenote.presentation.elements.checklist
 
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper

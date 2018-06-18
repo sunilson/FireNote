@@ -12,6 +12,7 @@ import com.sunilson.firenote.presentation.shared.base.BaseDialogFragment
 import com.sunilson.firenote.presentation.visibilityDialog.adapters.VisibilityPagerDapter
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
@@ -48,6 +49,11 @@ class VisibilityDialog : BaseDialogFragment(), HasSupportFragmentInjector {
         val tabLayout = content.findViewById<TabLayout>(R.id.sliding_tabs)
         tabLayout.setupWithViewPager(vpPager)
         return content
+    }
+
+    override fun onAttach(context: Context?) {
+        AndroidSupportInjection.inject(this)
+        super.onAttach(context)
     }
 
     override fun toggleLoading(loading: Boolean, message: String?) {}

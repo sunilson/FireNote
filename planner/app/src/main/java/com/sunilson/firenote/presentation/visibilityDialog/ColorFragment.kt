@@ -36,10 +36,10 @@ class ColorFragment : BaseFragment() {
         }
 
         view.checkAll.setOnClickListener {
-            colorVisibilityAdapter.toggleAll(true)
+            colorVisibilityAdapter.toggleAll(false)
         }
         view.uncheckAll.setOnClickListener {
-            colorVisibilityAdapter.toggleAll(false)
+            colorVisibilityAdapter.toggleAll(true)
         }
 
         return view

@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.sax.Element
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
-import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.View
-import com.sunilson.firenote.ItemTouchHelper.SimpleItemTouchHelperCallbackMain
 import com.sunilson.firenote.R
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
 import kotlinx.android.synthetic.main.content_bin.*

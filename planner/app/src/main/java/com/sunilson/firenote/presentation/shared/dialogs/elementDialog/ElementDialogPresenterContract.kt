@@ -1,4 +1,4 @@
-package com.sunilson.firenote.presentation.dialogs.elementDialog
+package com.sunilson.firenote.presentation.shared.dialogs.elementDialog
 
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.shared.base.IBaseView

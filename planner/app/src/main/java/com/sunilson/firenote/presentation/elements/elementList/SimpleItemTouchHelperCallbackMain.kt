@@ -1,9 +1,8 @@
-package com.sunilson.firenote.ItemTouchHelper
+package com.sunilson.firenote.presentation.elements.elementList
 
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import com.sunilson.firenote.Interfaces.ItemTouchHelperAdapter
-import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapter
 
 class SimpleItemTouchHelperCallbackMain (val adapter: ItemTouchHelperAdapter) : ItemTouchHelper.Callback() {
 
