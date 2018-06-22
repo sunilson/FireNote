@@ -1,7 +1,7 @@
 package com.sunilson.firenote.presentation.elements.elementActivity
 
 import com.sunilson.firenote.R
-import com.sunilson.firenote.data.IFirebaseRepository
+import com.sunilson.firenote.data.IRepository
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.elements.BaseElementPresenterContract
 import com.sunilson.firenote.presentation.shared.base.BasePresenter
@@ -9,7 +9,7 @@ import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
 import javax.inject.Inject
 
 @ActivityScope
-class ElementPresenter @Inject constructor(private val eventRepository: IFirebaseRepository, private val view: BaseElementPresenterContract.View)
+class ElementPresenter @Inject constructor(private val eventRepository: IRepository, private val view: BaseElementPresenterContract.View)
     : BaseElementPresenterContract.Presenter, BasePresenter(view) {
 
     override fun loadElementData(elementID: String, parent: String?) {

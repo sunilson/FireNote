@@ -81,6 +81,6 @@ class AuthenticationActivity : BaseActivity(), CanNavigateFragments, Authenticat
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent )
     {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == googleSignInRequestCode) presenter.handleSOcialSignIn(data)
+        if (requestCode == googleSignInRequestCode) presenter.handleSocialSignIn(data)
     }
 }

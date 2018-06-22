@@ -18,7 +18,7 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
 
-interface IFirebaseRepository {
+interface IRepository {
     fun loadElements(user: FirebaseUser): Flowable<Pair<ChangeType, Element>?>
     fun loadElement(id: String, parent: String? = null): Flowable<Element?>
     fun lockElement(id: String, locked: Boolean, parent: String? = null): Completable
@@ -38,7 +38,7 @@ interface IFirebaseRepository {
 }
 
 @Singleton
-class FirebaseRepository @Inject constructor() : IFirebaseRepository {
+class FirebaseRepository @Inject constructor() : IRepository {
 
     override fun storeNoteText(id: String, text: String) : Completable {
         return createCompletableFromTask( FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid)

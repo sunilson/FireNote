@@ -28,7 +28,7 @@
     <string name="category_finances">Finanzen</string>
     <string name="category_events">Veranstaltungen</string>
     <string name="category_business">Geschäftlich</string>
-    <string name="cancel_add_dialog">Abbrechen</string>
+    <string name="cancel">Abbrechen</string>
     <string name="bin">Papierkorb</string>
     <string name="clear_bin_title">Papierkorb leeren</string>
     <string name="confirm_add_dialog">Fertig</string>

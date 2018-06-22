@@ -23,7 +23,7 @@ class ImportTextDialog : BaseDialogFragmentSimpleText(), DialogWithResult<String
         builder.setView(content)
 
         builder.setPositiveButton(R.string.confirm_add_dialog) { _, _ -> listener?.onResult(content.import_dialog_edittext.text.toString()) }
-        builder.setNegativeButton(R.string.cancel_add_dialog) { _, _ -> listener?.onResult(null) }
+        builder.setNegativeButton(R.string.cancel) { _, _ -> listener?.onResult(null) }
 
         val dialog = builder.create()
 

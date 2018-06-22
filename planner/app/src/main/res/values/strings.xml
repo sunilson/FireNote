@@ -36,7 +36,7 @@
     <string name="add_checklist_item_title">Add new Element</string>
     <string name="edit_checklist_item_title">Edit Checklist Element</string>
     <string name="confirm_add_dialog">Done</string>
-    <string name="cancel_add_dialog">Cancel</string>
+    <string name="cancel">Cancel</string>
     <string name="edit_checklist_title">Edit Checklist</string>
     <string name="title_activity_edit_checklist">Edit Checklist</string>
     <string name="delete_checklist_title">Delete Checklist</string>
@@ -192,5 +192,9 @@
     <string name="element_removed">Element was removed!</string>
     <string name="saved_note">Saved note!</string>
     <string name="save_note_error">Could not save note!</string>
+    <string name="error_change_master_password">Could not change master password!</string>
+    <string name="logged_in">Logged in!</string>
+    <string name="email_empty">Email can\'t be empty!</string>
+    <string name="password_empty">Password can\'t be empty!</string>
 
 </resources>

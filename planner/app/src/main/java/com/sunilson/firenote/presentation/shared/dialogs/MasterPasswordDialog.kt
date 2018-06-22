@@ -51,7 +51,7 @@ class MasterPasswordDialog : BaseDialogFragmentSimpleText(), DialogWithResult<Bo
                         }
                     })
         }
-        builder.setNegativeButton(R.string.cancel_add_dialog) { _, _ -> listener?.onResult(null) }
+        builder.setNegativeButton(R.string.cancel) { _, _ -> listener?.onResult(null) }
         val dialog = builder.create()
 
         content.password_dialog_password.requestFocus()

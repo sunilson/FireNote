@@ -12,7 +12,7 @@ interface AuthenticationPresenterContract {
     interface Presenter {
         fun signIn(email: String, password: String)
         fun startSocialSignIn()
-        fun handleSOcialSignIn(data: Intent)
+        fun handleSocialSignIn(data: Intent)
         fun register(email: String, password: String, repeatedPassword: String)
         fun resetPassword(email: String)
     }

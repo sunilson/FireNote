@@ -7,8 +7,9 @@ import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
+import com.sunilson.firenote.presentation.shared.dialogs.authenticationDialog.AuthenticationDialog
+import com.sunilson.firenote.presentation.shared.dialogs.ChangeMasterPasswordDialog
 import kotlinx.android.synthetic.main.activity_settings.*
-import kotlinx.android.synthetic.main.content_settings.*
 
 class SettingsActivity : BaseActivity(), View.OnClickListener {
 
@@ -19,7 +20,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         //Init click listeners
         about.setOnClickListener(this)
@@ -35,9 +36,6 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun aboutDialog() {}
-    private fun changePasswordDialog() {}
-
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if(item?.itemId == android.R.id.home){
             finish()
@@ -48,7 +46,14 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        when (v?.id) { }
+        when (v?.id) {
+            R.id.master_password -> {
+                ChangeMasterPasswordDialog.newInstance().show(supportFragmentManager, "dialog")
+            }
+            R.id.change_password -> {
+                AuthenticationDialog.newInstance().show(supportFragmentManager, "dialog")
+            }
+        }
     }
 
     override fun toggleLoading(loading: Boolean, message: String?) {}

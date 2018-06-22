@@ -1,6 +1,5 @@
 package com.sunilson.firenote.presentation.authentication.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -42,8 +41,12 @@ class LoginFragment : BaseFragment(), View.OnClickListener {
     }
 
     companion object {
-        fun newInstance() : LoginFragment {
-            return LoginFragment()
+        fun newInstance(reAuthenticate: Boolean = false) : LoginFragment {
+            val bundle = Bundle()
+            bundle.putBoolean("reAuthenticate", reAuthenticate)
+            val fragment = LoginFragment()
+            fragment.arguments = bundle
+            return fragment
         }
     }
 }

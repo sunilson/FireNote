@@ -30,7 +30,7 @@
 //import com.google.android.gms.tasks.Task;
 //import com.google.firebase.auth.AuthCredential;
 //import com.google.firebase.auth.EmailAuthProvider;
-//import com.google.firebase.auth.FirebaseAuth;
+//import com.google.firebase.auth.FirebaseAuthService;
 //import com.google.firebase.auth.FirebaseUser;
 //import com.google.firebase.auth.GoogleAuthProvider;
 //import com.google.firebase.database.ChildEventListener;
@@ -57,11 +57,11 @@
 //public abstract class BaseActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 //
 //    private FirebaseUser user;
-//    protected FirebaseAuth mAuth;
+//    protected FirebaseAuthService mAuth;
 //    protected boolean connected;
 //    protected DatabaseReference mSettingsReference, mConnectedRef;
 //    protected ValueEventListener mConnectedRefListener;
-//    private FirebaseAuth.AuthStateListener mAuthListener;
+//    private FirebaseAuthService.AuthStateListener mAuthListener;
 //    protected ChildEventListener mSettingsListener;
 //    private SharedPreferences prefs;
 //    protected LayoutInflater inflater;
@@ -89,7 +89,7 @@
 //        inflater = getLayoutInflater();
 //
 //        //Initialize the Auth system and the Listener, which detects changes to the user state
-//        mAuth = FirebaseAuth.getInstance();
+//        mAuth = FirebaseAuthService.getInstance();
 //        initializeAuthListener();
 //
 //        if (mAuth.getCurrentUser() != null) {
@@ -277,9 +277,9 @@
 //     * Initializing the Auth Listener for all Activities. Go to start if not logged in or verified
 //     */
 //    private void initializeAuthListener() {
-//        mAuthListener = new FirebaseAuth.AuthStateListener() {
+//        mAuthListener = new FirebaseAuthService.AuthStateListener() {
 //            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//            public void onAuthStateChanged(@NonNull FirebaseAuthService firebaseAuth) {
 //                user = firebaseAuth.getCurrentUser();
 //                if (user != null) {
 //                    // User is signed in

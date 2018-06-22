@@ -25,7 +25,7 @@ class ChecklistElementDialog : BaseDialogFragmentSimpleText(), DialogWithResult<
         builder.setView(content)
 
         builder.setPositiveButton(R.string.confirm_add_dialog) { _, _ -> listener?.onResult(content.checklist_add_element_title.text.toString()) }
-        builder.setNegativeButton(R.string.cancel_add_dialog) { _, _ -> listener?.onResult(null) }
+        builder.setNegativeButton(R.string.cancel) { _, _ -> listener?.onResult(null) }
 
         val dialog = builder.create()
 
