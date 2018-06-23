@@ -157,6 +157,7 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
             val element = adapter.data[activity_main_recycler_view.getChildLayoutPosition(it)]
             if (element.locked) {
             } else {
+               ElementDialog.newInstance("bla", element.elementID, element).show(supportFragmentManager, "dialog")
             }
             true
         }

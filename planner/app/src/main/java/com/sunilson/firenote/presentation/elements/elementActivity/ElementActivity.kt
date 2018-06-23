@@ -14,11 +14,11 @@ import android.view.inputmethod.InputMethodManager
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.databinding.BaseElementActivityBinding
-import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.ElementDialog
 import com.sunilson.firenote.presentation.elements.BaseElementPresenterContract
 import com.sunilson.firenote.presentation.elements.checklist.ChecklistFragment
 import com.sunilson.firenote.presentation.elements.note.NoteFragment
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
+import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.ElementDialog
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -160,21 +160,9 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View, HasSu
     }
 
     override fun elementChanged(element: Element) {
-
         _element = element
         element.parent = parent
         binding.element = _element
-
-        /*if (_element == null) {
-            _element = element
-            element.parent = parent
-            binding.element = _element
-        } else {
-            this.element!!.color = element.color
-            this.element!!.title = element.title
-            this.element!!.locked = element.locked
-        }*/
-
         checkLockStatus()
         setStatusBarColors()
     }

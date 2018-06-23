@@ -82,6 +82,17 @@ class ElementRecyclerAdapter constructor(
         }
     }
 
+    override fun update(element: AdapterElement) {
+        val iterator = allItems.listIterator()
+        for ((_, value) in iterator.withIndex()) {
+            if (value.compareByString == element.compareByString) {
+                iterator.set(element as Element)
+            }
+        }
+
+        super.update(element)
+    }
+
     fun checkOrderAndVisibility() {
         _data.clear()
         allItems.forEach {
