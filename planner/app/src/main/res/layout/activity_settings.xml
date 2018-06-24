@@ -55,7 +55,6 @@
                         style="@style/settingsTextview"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="@string/change_password"
                         android:textSize="16sp" />
                 </LinearLayout>
 
@@ -94,12 +93,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/change_password"
                 style="@style/settingsLinearMasterLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
-                    android:id="@+id/change_password"
                     style="@style/settingsElementsHolder"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">

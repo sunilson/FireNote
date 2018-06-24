@@ -2,18 +2,16 @@ package com.sunilson.firenote.presentation.application
 
 import android.app.Activity
 import android.app.Application
+import android.app.Service
 import android.content.BroadcastReceiver
 import android.support.v4.app.Fragment
 import com.google.firebase.database.FirebaseDatabase
 import com.sunilson.firenote.presentation.application.di.DaggerApplicationComponent
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
-import dagger.android.HasBroadcastReceiverInjector
+import dagger.android.*
 import dagger.android.support.HasSupportFragmentInjector
 import javax.inject.Inject
 
-class BaseApplication : Application(), HasActivityInjector, HasSupportFragmentInjector, HasBroadcastReceiverInjector {
+class BaseApplication : Application(), HasActivityInjector, HasSupportFragmentInjector, HasBroadcastReceiverInjector, HasServiceInjector {
 
     @Inject
     lateinit var dispatchingFragmentInjector: DispatchingAndroidInjector<Fragment>
@@ -23,6 +21,9 @@ class BaseApplication : Application(), HasActivityInjector, HasSupportFragmentIn
 
     @Inject
     lateinit var dispatchingBroadcastInjector: DispatchingAndroidInjector<BroadcastReceiver>
+
+    @Inject
+    lateinit var dispatchingServiceInjector: DispatchingAndroidInjector<Service>
 
     override fun onCreate() {
         super.onCreate()
@@ -35,4 +36,5 @@ class BaseApplication : Application(), HasActivityInjector, HasSupportFragmentIn
     override fun activityInjector(): AndroidInjector<Activity> = dispatchingActivityInjector
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = dispatchingFragmentInjector
     override fun broadcastReceiverInjector(): AndroidInjector<BroadcastReceiver> = dispatchingBroadcastInjector
+    override fun serviceInjector(): AndroidInjector<Service> = dispatchingServiceInjector
 }

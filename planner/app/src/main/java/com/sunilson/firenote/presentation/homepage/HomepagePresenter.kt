@@ -18,7 +18,7 @@ class HomepagePresenter @Inject constructor(val repository: IRepository, val vie
 
     override fun loadElementData() {
         disposable.dispose()
-        disposable.add(repository.loadElements(FirebaseAuth.getInstance().currentUser!!).subscribe({
+        disposable.add(repository.loadElements(FirebaseAuth.getInstance().currentUser!!.uid).subscribe({
             when (it?.first) {
                 ChangeType.ADDED -> view.elementAdded(it.second)
                 ChangeType.REMOVED -> view.elementRemoved(it.second)
@@ -30,7 +30,7 @@ class HomepagePresenter @Inject constructor(val repository: IRepository, val vie
     }
 
     override fun deleteElement(id: String) {
-        disposable.add(repository.deleteElement(id).subscribe {
+        disposable.add(repository.deleteElement(FirebaseAuth.getInstance().currentUser!!.uid, id).subscribe {
             view.showSuccess(view.mContext?.getString(R.string.element_removed))
         })
     }

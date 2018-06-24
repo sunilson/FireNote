@@ -6,7 +6,9 @@
     <ListView
         android:id="@+id/widget_listview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        >
 
     </ListView>
     <LinearLayout
@@ -15,19 +17,19 @@
         android:orientation="horizontal"
         >
         <ImageButton
-            android:id="@+id/widget_button"
+            android:id="@+id/widget_button_checklist"
             android:src="@drawable/ic_done_all_black_24dp"
             android:text="Klick mich"
             style="@style/widget_add_button"
             />
         <ImageButton
-            android:id="@+id/widget_button2"
+            android:id="@+id/widget_button_note"
             android:src="@drawable/ic_note_black_24dp"
             android:text="Klick mich"
             style="@style/widget_add_button"
             />
         <ImageButton
-            android:id="@+id/widget_button3"
+            android:id="@+id/widget_button_bundle"
             android:src="@drawable/ic_list_black_24dp"
             android:text="Klick mich"
             style="@style/widget_add_button"

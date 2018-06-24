@@ -1,5 +1,6 @@
 package com.sunilson.firenote.presentation.elements.elementActivity
 
+import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.IRepository
 import com.sunilson.firenote.data.models.Element
@@ -13,18 +14,18 @@ class ElementPresenter @Inject constructor(private val eventRepository: IReposit
     : BaseElementPresenterContract.Presenter, BasePresenter(view) {
 
     override fun loadElementData(elementID: String, parent: String?) {
-        disposable.add(eventRepository.loadElement(elementID, parent).subscribe({
+        disposable.add(eventRepository.loadElement(FirebaseAuth.getInstance().currentUser!!.uid, elementID, parent).subscribe({
             if (it != null) view.elementChanged(it)
             else view.elementRemoved()
         }, { view.elementRemoved() }))
     }
 
     override fun updateElement(element: Element) {
-        eventRepository.updateElement(element)
+        eventRepository.updateElement(FirebaseAuth.getInstance().currentUser!!.uid, element)
     }
 
     override fun lockElement(locked: Boolean) {
-        disposable.add(eventRepository.lockElement(view.element!!.elementID, locked, view.element!!.parent).subscribe({}, {
+        disposable.add(eventRepository.lockElement(FirebaseAuth.getInstance().currentUser!!.uid, view.element!!.elementID, locked, view.element!!.parent).subscribe({}, {
             view.showError(view.mContext?.getString(R.string.set_master_password))
         }))
     }

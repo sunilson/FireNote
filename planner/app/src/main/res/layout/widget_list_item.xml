@@ -1,11 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_list_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-    <TextView
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/elementList_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hallo"
-        />
+        android:foreground="?attr/selectableItemBackground"
+        android:minHeight="70dp">
+
+        <LinearLayout
+            android:id="@+id/elementList_icon_holder"
+            android:layout_width="35dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/elementList_icon"
+                style="@style/element_List_element"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center"
+                android:tint="@color/tint_white" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/element_list_text_padding_left">
+
+            <TextView
+                android:id="@+id/elementList_title"
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_marginTop="6dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:gravity="bottom"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textColor="@color/primary_text_color"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/elementList_category"
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif"
+                android:gravity="top"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:textColor="@color/text_crossed_out"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/elementLList_lock"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/element_lock_icon_dark" />
+
+        <TextView
+            android:id="@+id/elementList_date"
+            style="@style/element_List_TextView"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="8dp"
+            android:fontFamily="sans-serif"
+            android:gravity="center_vertical|end"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@color/main_background_color" />
+
 </LinearLayout>

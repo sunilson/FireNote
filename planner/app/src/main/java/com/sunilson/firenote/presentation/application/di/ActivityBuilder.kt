@@ -12,6 +12,9 @@ import com.sunilson.firenote.presentation.settings.SettingsActivity
 import com.sunilson.firenote.presentation.settings.di.SettingsActivityModule
 import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
 import com.sunilson.firenote.presentation.shared.di.scopes.DialogFragmentScope
+import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.ElementDialog
+import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.di.AbstractElementDialogModule
+import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.di.ElementDialogModule
 import com.sunilson.firenote.presentation.visibilityDialog.VisibilityDialog
 import com.sunilson.firenote.presentation.visibilityDialog.di.VisibilityDialogModule
 import dagger.Module
@@ -32,14 +35,17 @@ abstract class ActivityBuilder {
     @ActivityScope
     abstract fun contributeElementActivity(): ElementActivity
 
+    @ContributesAndroidInjector(modules = [SettingsActivityModule::class])
+    @ActivityScope
+    abstract fun contributeSettingsActivity(): SettingsActivity
 
     @ContributesAndroidInjector(modules = [VisibilityDialogModule::class])
     @DialogFragmentScope
     abstract fun ccontributeVisibilityDialogFragment(): VisibilityDialog
 
-    @ContributesAndroidInjector(modules = [SettingsActivityModule::class])
-    @ActivityScope
-    abstract fun contributeSettingsActivity(): SettingsActivity
+    @DialogFragmentScope
+    @ContributesAndroidInjector(modules = [AbstractElementDialogModule::class, ElementDialogModule::class])
+    abstract fun contributeAddElementFragment(): ElementDialog
 
     /*
     @ContributesAndroidInjector(modules = [ElementDialogModule::class])

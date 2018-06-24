@@ -1,5 +1,6 @@
 package com.sunilson.firenote.presentation.elements.checklist
 
+import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.data.IRepository
 import com.sunilson.firenote.data.models.ChangeType
 import com.sunilson.firenote.data.models.ChecklistElement
@@ -10,15 +11,15 @@ class ChecklistPresenter @Inject constructor(val view : ChecklistPresenterContra
     : BasePresenter(view), ChecklistPresenterContract.Presenter{
 
     override fun addChecklistElement(checklistElement: ChecklistElement) {
-        repository.addChecklistElement(view.element!!.elementID, checklistElement)
+        repository.addChecklistElement(FirebaseAuth.getInstance().currentUser!!.uid, view.element!!.elementID, checklistElement)
     }
 
     override fun removeChecklistElement(checklistElement: ChecklistElement) {
-        repository.removeChecklistElement(view.element!!.elementID, checklistElement)
+        repository.removeChecklistElement(FirebaseAuth.getInstance().currentUser!!.uid, view.element!!.elementID, checklistElement)
     }
 
     override fun changeChecklistElement(checklistElement: ChecklistElement) {
-        repository.updateChecklistElement(view.element!!.elementID, checklistElement)
+        repository.updateChecklistElement(FirebaseAuth.getInstance().currentUser!!.uid, view.element!!.elementID, checklistElement)
     }
 
     override fun refreshChecklistElements() {
@@ -27,7 +28,7 @@ class ChecklistPresenter @Inject constructor(val view : ChecklistPresenterContra
     }
 
     override fun loadElementData() {
-        disposable.add(repository.loadChecklistElements(view.element!!.elementID).subscribe {
+        disposable.add(repository.loadChecklistElements(FirebaseAuth.getInstance().currentUser!!.uid, view.element!!.elementID).subscribe {
             when(it.first) {
                 ChangeType.ADDED -> view.checklistElementAdded(it.second)
                 ChangeType.CHANGED -> view.checklistElementChanged(it.second)

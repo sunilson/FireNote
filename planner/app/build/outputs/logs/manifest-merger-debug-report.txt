@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:2:1-76:12
-INJECTED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:2:1-76:12
-INJECTED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:2:1-76:12
-INJECTED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:2:1-76:12
+ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:2:1-80:12
+INJECTED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:2:1-80:12
+INJECTED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:2:1-80:12
+INJECTED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:2:1-80:12
 MERGED from [com.android.databinding:adapters:3.2.0-alpha13] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\adapters-3.2.0-alpha13.aar\3ced3255f5e08e9d9e8ca5582c53e778\AndroidManifest.xml:17:1-24:12
 MERGED from [com.android.databinding:library:3.2.0-alpha13] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\library-3.2.0-alpha13.aar\ab6f541849896a278664a0aedaf9b5f3\AndroidManifest.xml:17:1-24:12
 MERGED from [android.arch.navigation:navigation-fragment-ktx:1.0.0-alpha01] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\navigation-fragment-ktx-1.0.0-alpha01.aar\144d1b2e2dc13a2c3c0e8aca35133f90\AndroidManifest.xml:17:1-22:12
@@ -62,20 +62,20 @@ MERGED from [android.arch.lifecycle:livedata-core:1.1.0] C:\Users\linus\.gradle\
 MERGED from [android.arch.core:runtime:1.1.0] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\641d8dedd864a3815778388ba58b165e\AndroidManifest.xml:17:1-22:12
 MERGED from [com.google.android.gms:play-services-measurement-base:15.0.2] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\play-services-measurement-base-15.0.2.aar\8aa872123150ee67cfdc0f80374a46ee\AndroidManifest.xml:17:1-24:12
 MERGED from [android.arch.lifecycle:viewmodel:1.1.0] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\viewmodel-1.1.0.aar\0c0d5f79ed3eb067be4559ac8e309a5d\AndroidManifest.xml:17:1-22:12
-INJECTED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:2:1-76:12
-INJECTED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:2:1-76:12
-INJECTED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:2:1-76:12
+INJECTED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:2:1-80:12
+INJECTED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:2:1-80:12
+INJECTED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:2:1-80:12
 	package
 		ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:3:5-36
 		INJECTED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml
 		INJECTED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:2:1-76:12
+		ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:2:1-80:12
 		INJECTED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml
 	android:versionCode
 		INJECTED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:2:1-76:12
+		ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:2:1-80:12
 		INJECTED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:2:11-69
@@ -104,7 +104,7 @@ MERGED from [com.google.firebase:firebase-iid:15.1.0] C:\Users\linus\.gradle\cac
 	android:name
 		ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:6:22-76
 application
-ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:8:5-74:19
+ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:8:5-78:19
 MERGED from [com.google.firebase:firebase-messaging:15.0.2] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\firebase-messaging-15.0.2.aar\339a0b525bbd2dcaef53da79c62de950\AndroidManifest.xml:22:5-35:19
 MERGED from [com.google.firebase:firebase-messaging:15.0.2] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\firebase-messaging-15.0.2.aar\339a0b525bbd2dcaef53da79c62de950\AndroidManifest.xml:22:5-35:19
 MERGED from [com.google.firebase:firebase-core:15.0.2] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\firebase-core-15.0.2.aar\837e58bd307962263dfc26a554e31026\AndroidManifest.xml:7:5-20
@@ -243,18 +243,24 @@ ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\Android
 		ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:60:17-52
 	android:name
 		ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:59:24-65
+service#com.sunilson.firenote.presentation.widget.WidgetRemoteViewsService
+ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:63:9-64:72
+	android:permission
+		ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:64:13-69
+	android:name
+		ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:63:18-78
 meta-data#com.google.firebase.messaging.default_notification_icon
-ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:65:9-67:49
+ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:69:9-71:49
 	android:resource
-		ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:67:13-46
+		ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:71:13-46
 	android:name
-		ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:66:13-83
+		ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:70:13-83
 meta-data#com.google.firebase.messaging.default_notification_color
-ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:70:9-72:53
+ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:74:9-76:53
 	android:resource
-		ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:72:13-50
+		ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:76:13-50
 	android:name
-		ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:71:13-84
+		ADDED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml:75:13-84
 uses-sdk
 INJECTED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Users\linus\Documents\GitHub\FireNote\planner\app\src\main\AndroidManifest.xml

@@ -9,4 +9,7 @@ abstract class WidgetModule {
     @ContributesAndroidInjector
     abstract fun contributeFirenoteWidget() : FirenoteWidgetProvider
 
+    @ContributesAndroidInjector
+    abstract fun contributeFirenoteWidgetRemoteService() : WidgetRemoteViewsService
+
 }

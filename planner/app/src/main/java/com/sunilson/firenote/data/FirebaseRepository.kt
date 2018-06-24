@@ -1,13 +1,13 @@
 package com.sunilson.firenote.data
 
+import android.util.Log
 import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.sunilson.firenote.data.models.ChangeType
 import com.sunilson.firenote.data.models.ChecklistElement
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.data.models.FirebaseElement
+import com.sunilson.firenote.presentation.shared.parseFirebaseElement
 import com.sunilson.firenote.presentation.shared.storeElement
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
@@ -19,61 +19,74 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 interface IRepository {
-    fun loadElements(user: FirebaseUser): Flowable<Pair<ChangeType, Element>?>
-    fun loadElement(id: String, parent: String? = null): Flowable<Element?>
-    fun lockElement(id: String, locked: Boolean, parent: String? = null): Completable
-    fun loadNoteContent(id: String): Flowable<String>
-    fun loadBundleElements(): Flowable<List<Pair<ChangeType, Element>>>
+    fun loadElements(userId: String): Flowable<Pair<ChangeType, Element>?>
+    fun loadAllElements(userId: String): Single<List<Element>>
+    fun loadElement(userId: String, id: String, parent: String? = null): Flowable<Element?>
+    fun lockElement(userId: String, id: String, locked: Boolean, parent: String? = null): Completable
+    fun loadNoteContent(userId: String, id: String): Flowable<String>
+    fun loadBundleElements(userId: String): Flowable<List<Pair<ChangeType, Element>>>
 
-    fun loadChecklistElements(id: String): Flowable<Pair<ChangeType, ChecklistElement>>
-    fun addChecklistElement(elementID: String, checklistElement: ChecklistElement): Completable
-    fun updateChecklistElement(elementID: String, checklistElement: ChecklistElement): Completable
-    fun removeChecklistElement(elementID: String, checklistElement: ChecklistElement): Completable
+    fun loadChecklistElements(userId: String, id: String): Flowable<Pair<ChangeType, ChecklistElement>>
+    fun addChecklistElement(userId: String, elementID: String, checklistElement: ChecklistElement): Completable
+    fun updateChecklistElement(userId: String, elementID: String, checklistElement: ChecklistElement): Completable
+    fun removeChecklistElement(userId: String, elementID: String, checklistElement: ChecklistElement): Completable
 
-    fun storeNoteText(id: String, text: String) : Completable
-    fun storeElement(element: Element): Completable
-    fun deleteElement(id: String, parent: String? = null): Completable
-    fun restoreElement(id: String, parent: String? = null): Completable
-    fun updateElement(element: Element): Completable
+    fun storeNoteText(userId: String, id: String, text: String): Completable
+    fun storeElement(userId: String, element: Element): Completable
+    fun deleteElement(userId: String, id: String, parent: String? = null): Completable
+    fun restoreElement(userId: String, id: String, parent: String? = null): Completable
+    fun updateElement(userId: String, element: Element): Completable
 }
 
 @Singleton
 class FirebaseRepository @Inject constructor() : IRepository {
 
-    override fun storeNoteText(id: String, text: String) : Completable {
-        return createCompletableFromTask( FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid)
+    override fun storeNoteText(userId: String, id: String, text: String): Completable {
+        return createCompletableFromTask(FirebaseDatabase.getInstance().reference.child("users").child(userId)
                 .child("contents")
                 .child(id)
                 .child("text")
                 .setValue(text))
     }
 
-    override fun loadElement(id: String, parent: String?): Flowable<Element?> {
-        var ref = FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("elements")
+    override fun loadElement(userId: String, id: String, parent: String?): Flowable<Element?> {
+        var ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("elements")
         ref = if (parent != null) ref.child("bundles").child(parent).child(id)
         else ref.child("main").child(id)
 
-        return createFlowableValueFromQuery(ref, { snapshot ->
+        return createFlowableValueFromQuery(ref) { snapshot ->
             val firebaseElement = snapshot?.getValue(FirebaseElement::class.java)
             firebaseElement?.elementID = snapshot!!.key
             firebaseElement?.parseElement()
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun loadNoteContent(id: String): Flowable<String> {
-        val ref = FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("contents").child(id).child("text")
-        return createFlowableValueFromQuery(ref, { dataSnapshot ->
+    override fun loadAllElements(userId: String): Single<List<Element>> {
+        val ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("elements").child("main")
+        return createSingleFromQuery(ref) {
+            val result = mutableListOf<Element>()
+            it?.children?.forEach {
+                result.add(it.parseFirebaseElement().parseElement())
+            }
+            Log.d("Linus", result.toString())
+            result
+        }
+    }
+
+    override fun loadNoteContent(userId: String, id: String): Flowable<String> {
+        val ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("contents").child(id).child("text")
+        return createFlowableValueFromQuery(ref) { dataSnapshot ->
             dataSnapshot?.getValue(String::class.java) ?: ""
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun lockElement(id: String, locked: Boolean, parent: String?): Completable {
+    override fun lockElement(userId: String, id: String, locked: Boolean, parent: String?): Completable {
 
         return Completable.create { emitter ->
             FirebaseDatabase.getInstance()
                     .reference
                     .child("users")
-                    .child(FirebaseAuth.getInstance().currentUser!!.uid)
+                    .child(userId)
                     .child("settings")
                     .child("masterPassword")
                     .addListenerForSingleValueEvent(object : ValueEventListener {
@@ -81,7 +94,7 @@ class FirebaseRepository @Inject constructor() : IRepository {
                         override fun onDataChange(p0: DataSnapshot?) {
                             if (p0 == null) emitter.onError(Error())
                             else {
-                                var ref = FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("elements")
+                                var ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("elements")
                                 ref = if (parent != null) ref.child("bundles").child(parent).child(id)
                                 else ref.child("main").child(id)
                                 ref.child("locked").setValue(locked).addOnSuccessListener {
@@ -95,53 +108,53 @@ class FirebaseRepository @Inject constructor() : IRepository {
         }
     }
 
-    override fun storeElement(element: Element): Completable {
-        var ref = FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("elements")
+    override fun storeElement(userId: String, element: Element): Completable {
+        var ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("elements")
         ref = if (element.parent != null) ref.child("bundles").child(element.parent)
         else ref.child("main")
         return createCompletableFromTask(ref.push().storeElement(element))
     }
 
-    override fun deleteElement(id: String, parent: String?): Completable {
-        var ref = FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("elements")
+    override fun deleteElement(userId: String, id: String, parent: String?): Completable {
+        var ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("elements")
         ref = if (parent != null) ref.child("bundles").child(parent).child(id)
         else ref.child("main").child(id)
         return createCompletableFromTask(ref.removeValue())
     }
 
-    override fun restoreElement(id: String, parent: String?): Completable {
+    override fun restoreElement(userId: String, id: String, parent: String?): Completable {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun updateElement(element: Element): Completable {
-        var ref = FirebaseDatabase.getInstance().reference.child("users").child(FirebaseAuth.getInstance().currentUser!!.uid).child("elements")
+    override fun updateElement(userId: String, element: Element): Completable {
+        var ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("elements")
         ref = if (element.parent != null) ref.child("bundles").child(element.parent).child(element.elementID)
         else ref.child("main").child(element.elementID)
         return createCompletableFromTask(ref.storeElement(element))
     }
 
-    override fun loadBundleElements(): Flowable<List<Pair<ChangeType, Element>>> {
+    override fun loadBundleElements(userId: String): Flowable<List<Pair<ChangeType, Element>>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 
-    override fun loadChecklistElements(id: String): Flowable<Pair<ChangeType, ChecklistElement>> {
+    override fun loadChecklistElements(userId: String, id: String): Flowable<Pair<ChangeType, ChecklistElement>> {
         var ref = FirebaseDatabase.getInstance().reference.child("users")
-                .child(FirebaseAuth.getInstance().currentUser!!.uid)
+                .child(userId)
                 .child("contents")
                 .child(id)
                 .child("elements")
 
-        return createFlowableFromQuery(ref, { dataSnapshot, changeType ->
+        return createFlowableFromQuery(ref) { dataSnapshot, changeType ->
             val result = dataSnapshot?.getValue(ChecklistElement::class.java)
             result?.id = dataSnapshot?.key
             Pair(changeType, result!!)
-        })
+        }
     }
 
-    override fun addChecklistElement(elementID: String, checklistElement: ChecklistElement): Completable {
+    override fun addChecklistElement(userId: String, elementID: String, checklistElement: ChecklistElement): Completable {
         val ref = FirebaseDatabase.getInstance().reference.child("users")
-                .child(FirebaseAuth.getInstance().currentUser!!.uid)
+                .child(userId)
                 .child("contents")
                 .child(elementID)
                 .child("elements")
@@ -149,9 +162,9 @@ class FirebaseRepository @Inject constructor() : IRepository {
         return createCompletableFromTask(ref.setValue(checklistElement))
     }
 
-    override fun updateChecklistElement(elementID: String, checklistElement: ChecklistElement): Completable {
+    override fun updateChecklistElement(userId: String, elementID: String, checklistElement: ChecklistElement): Completable {
         val ref = FirebaseDatabase.getInstance().reference.child("users")
-                .child(FirebaseAuth.getInstance().currentUser!!.uid)
+                .child(userId)
                 .child("contents")
                 .child(elementID)
                 .child("elements")
@@ -159,9 +172,9 @@ class FirebaseRepository @Inject constructor() : IRepository {
         return createCompletableFromTask(ref.setValue(checklistElement))
     }
 
-    override fun removeChecklistElement(id: String, checklistElement: ChecklistElement): Completable {
+    override fun removeChecklistElement(userId: String, id: String, checklistElement: ChecklistElement): Completable {
         val ref = FirebaseDatabase.getInstance().reference.child("users")
-                .child(FirebaseAuth.getInstance().currentUser!!.uid)
+                .child(userId)
                 .child("contents")
                 .child(id)
                 .child("elements")
@@ -169,14 +182,18 @@ class FirebaseRepository @Inject constructor() : IRepository {
         return createCompletableFromTask(ref.removeValue())
     }
 
-    override fun loadElements(user: FirebaseUser): Flowable<Pair<ChangeType, Element>?> {
-        return createFlowableFromQuery(FirebaseDatabase.getInstance().reference.child("users").child(user.uid).child("elements").child("main"), { snapshot, changeType ->
+    override fun loadElements(userId: String): Flowable<Pair<ChangeType, Element>?> {
+        return createFlowableFromQuery(FirebaseDatabase.getInstance().reference
+                .child("users")
+                .child(userId)
+                .child("elements")
+                .child("main")) { snapshot, changeType ->
             return@createFlowableFromQuery if (snapshot != null) {
                 val tempEvent = snapshot.getValue(FirebaseElement::class.java)!!.parseElement()
                 tempEvent.elementID = snapshot.key
                 Pair(changeType, tempEvent)
             } else null
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
     companion object {

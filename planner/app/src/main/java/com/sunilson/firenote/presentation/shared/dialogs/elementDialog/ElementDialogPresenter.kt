@@ -1,5 +1,6 @@
 package com.sunilson.firenote.presentation.shared.dialogs.elementDialog
 
+import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.IRepository
 import com.sunilson.firenote.data.models.Element
@@ -15,7 +16,7 @@ class ElementDialogPresenter @Inject constructor(
 
     override fun addElement(element: Element) {
         if (validateElement(element)) {
-            disposable.add(repository.storeElement(element).subscribe({
+            disposable.add(repository.storeElement(FirebaseAuth.getInstance().currentUser!!.uid, element).subscribe({
                 view.showSuccess(view.mContext?.getString(R.string.element_added))
             }, { view.showError(it.message) }))
         } else {
@@ -25,14 +26,14 @@ class ElementDialogPresenter @Inject constructor(
 
     override fun updateElement(element: Element) {
         if (validateElement(element)) {
-            disposable.add(repository.updateElement(element).subscribe({
+            disposable.add(repository.updateElement(FirebaseAuth.getInstance().currentUser!!.uid, element).subscribe({
                 view.showSuccess(view.mContext?.getString(R.string.element_added))
             }, { view.showError(it.message) }))
         } else view.showError("Validation failed")
     }
 
     override fun deleteElement(element: Element) {
-        disposable.add(repository.deleteElement(element.elementID, element.parent).subscribe({
+        disposable.add(repository.deleteElement(FirebaseAuth.getInstance().currentUser!!.uid, element.elementID, element.parent).subscribe({
             view.showSuccess(view.mContext?.getString(R.string.element_removed))
         }, {
             view.showError(it.message)

@@ -2,16 +2,24 @@ package com.sunilson.firenote.presentation.settings
 
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.view.MenuItem
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
-import com.sunilson.firenote.presentation.shared.dialogs.authenticationDialog.AuthenticationDialog
 import com.sunilson.firenote.presentation.shared.dialogs.ChangeMasterPasswordDialog
+import com.sunilson.firenote.presentation.shared.dialogs.authenticationDialog.AuthenticationDialog
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.support.HasSupportFragmentInjector
 import kotlinx.android.synthetic.main.activity_settings.*
+import javax.inject.Inject
 
-class SettingsActivity : BaseActivity(), View.OnClickListener {
+class SettingsActivity : BaseActivity(), View.OnClickListener, HasSupportFragmentInjector {
+
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
     override val mContext: Context
         get() = this
@@ -57,5 +65,5 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun toggleLoading(loading: Boolean, message: String?) {}
-
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> = dispatchingAndroidInjector
 }

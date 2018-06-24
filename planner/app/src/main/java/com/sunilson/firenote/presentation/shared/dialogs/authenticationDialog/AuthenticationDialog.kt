@@ -57,8 +57,8 @@ class AuthenticationDialog : BaseDialogFragment() {
     }
 
     override fun onAttach(context: Context?) {
-        super.onAttach(context)
         AndroidSupportInjection.inject(this)
+        super.onAttach(context)
     }
 
     override fun onDestroy() {

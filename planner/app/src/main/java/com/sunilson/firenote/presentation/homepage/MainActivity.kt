@@ -3,9 +3,9 @@ package com.sunilson.firenote.presentation.homepage
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
+import android.app.DialogFragment
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
@@ -28,20 +28,17 @@ import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.ElementDi
 import com.sunilson.firenote.presentation.shared.dialogs.interfaces.DialogListener
 import com.sunilson.firenote.presentation.shared.interfaces.HasElementList
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
+import com.sunilson.firenote.presentation.shared.typeBundle
+import com.sunilson.firenote.presentation.shared.typeChecklist
+import com.sunilson.firenote.presentation.shared.typeNote
 import com.sunilson.firenote.presentation.visibilityDialog.VisibilityDialog
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.support.HasSupportFragmentInjector
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.sorting_list_layout.*
 import javax.inject.Inject
 
 
-class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresenterContract.IHomepageView, HasElementList, View.OnClickListener {
-
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, HasElementList, View.OnClickListener {
 
     @Inject
     lateinit var presenter: HomepagePresenterContract.IHomepagePresenter
@@ -92,6 +89,22 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
         //Set sorting text
         if (localSettingsManager.getSortingMethod() != null) activity_main_sorting_bar_title.text = getString(R.string.current_sorthing_method) + " " + localSettingsManager.getSortingMethod()
         else activity_main_sorting_bar_title.text = getString(R.string.current_sorthing_method) + " " + getString(R.string.sort_ascending_name)
+    }
+
+    override fun onNewIntent(newIntent: Intent?) {
+        super.onNewIntent(intent)
+        when (newIntent?.getStringExtra("noteType")) {
+            typeNote, typeChecklist, typeBundle -> {
+                supportFragmentManager.fragments.forEach {
+                    if(it is DialogFragment) it.dismissAllowingStateLoss()
+                }
+                ElementDialog.
+                        newInstance(
+                                getString(R.string.add_Element_Title),
+                                newIntent!!.getStringExtra("noteType"))
+                        .show(supportFragmentManager, "dialog")
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -205,15 +218,15 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.fab_add_note -> {
-                ElementDialog.newInstance(getString(R.string.add_Element_Title), "note").show(supportFragmentManager, "dialog")
+                ElementDialog.newInstance(getString(R.string.add_Element_Title), typeNote).show(supportFragmentManager, "dialog")
                 fab.collapse()
             }
             R.id.fab_add_checklist -> {
-                ElementDialog.newInstance(getString(R.string.add_Element_Title), "checklist").show(supportFragmentManager, "dialog")
+                ElementDialog.newInstance(getString(R.string.add_Element_Title), typeChecklist).show(supportFragmentManager, "dialog")
                 fab.collapse()
             }
             R.id.fab_add_bundle -> {
-                ElementDialog.newInstance(getString(R.string.add_Element_Title), "bundle").show(supportFragmentManager, "dialog")
+                ElementDialog.newInstance(getString(R.string.add_Element_Title), typeChecklist).show(supportFragmentManager, "dialog")
                 fab.collapse()
             }
             R.id.activity_main_sorting_bar -> toggleSorting()
@@ -228,5 +241,4 @@ class MainActivity : BaseActivity(), HasSupportFragmentInjector, HomepagePresent
     override fun elementChanged(element: Element) { adapter.update(element) }
     override fun elementRemoved(element: Element) { adapter.remove(element) }
     override fun clearAdapter() = adapter.clear()
-    override fun supportFragmentInjector(): AndroidInjector<Fragment> = dispatchingAndroidInjector
 }
