@@ -30,6 +30,7 @@
                         </v-list-tile-content>
                     </v-list-tile>
                 </v-list>
+                <login v-if="showReauth" :reauth="true" @reauth="reauth($event)"></login>
               </v-flex>
           </v-layout>
       </v-container>
@@ -74,10 +75,12 @@
 <script>
 import firebase from "../services/firebase.js";
 import { EventBus } from "../services/EventBus.js";
+import Login from "./authentication/Login.vue"; 
 
 export default {
   data() {
     return {
+      showReauth: false,
       passwordDialog: false,
       deleteAccountDialog: false,
       currentPassword: "",
@@ -102,14 +105,17 @@ export default {
           title: "Delete user account",
           subtitle: "Permanently delete your user account and all contents",
           action: () => {
-            this.deleteAccountDialog = true;
+            this.showReauth = true
           }
         },
         {
           icon: "person",
           iconClass: "grey lighten-1 white--text",
           title: "Reset password",
-          subtitle: "Change the password used to login"
+          subtitle: "Change the password used to login",
+          action: () => {
+            this.showReauth = true
+          }
         },
         {
           icon: "info",
@@ -135,7 +141,13 @@ export default {
       fb: firebase.fb
     };
   },
+  components: {
+    login: Login
+  },
   methods: {
+    reauth(data) {
+      if(data["error"]) alert("error")
+    },
     deleteAccount() {
       firebase
         .deleteUserAccount()

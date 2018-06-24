@@ -2,6 +2,7 @@
     <v-container fluid fill-height>
         <v-layout row>
             <v-flex xs12 sm6 offset-sm3 class="note">
+            {{color}}
                 <transition name="fade-transition" >
                     <textarea v-if="content.text && editMode" v-model="content.text" class="noteText"></textarea>
                     <textarea v-else-if="!content.text && editMode" v-model="emptyContent" class="noteText"></textarea>
@@ -10,7 +11,7 @@
                     <p v-if="content.text && !editMode" v-html="lineBreak(content.text)" class="noteText"></p>
                     <p v-else-if="!content.text && !editMode" v-html="lineBreak(emptyContent)" class="noteText"></p>
                 </transition>
-                <v-btn color="pink" dark fixed bottom right fab style="display: flex" @click="toggleEdit()">
+                <v-btn color="pink" :class="[color]" dark fixed bottom right fab style="display: flex" @click="toggleEdit()">
                     <v-icon v-if="editMode">check</v-icon>
                     <v-icon v-else>edit</v-icon>
                 </v-btn>

@@ -19,6 +19,7 @@ import firebase from "../../services/firebase.js"
 import {EventBus} from "../../services/EventBus.js"
 
 export default {
+  props: ["reauth"],
   name: "Login",
   data: function() {
     return {
@@ -30,10 +31,22 @@ export default {
   methods: {
     login() {
       this.loggingIn = true
-      firebase.fb.auth().signInWithEmailAndPassword(this.username, this.password).catch(error => {
+      if(this.reauth) {
+        firebase.fb.auth().currentUser.reauthenticateAndRetrieveDataWithCredential(firebase.fb.auth.EmailAuthProvider.credential(this.username, this.password)).then(() => {
           this.loggingIn = false
-          if(error) EventBus.$emit("showSnackbar", "Error occured during login!")
-      })
+          this.$emit("reauth", {})
+        }).catch(err => {
+          this.loggingIn = false
+          this.$emit("reauth", {
+            error: err
+          })
+        })
+      } else {
+        firebase.fb.auth().signInWithEmailAndPassword(this.username, this.password).catch(error => {
+            this.loggingIn = false
+            if(error) EventBus.$emit("showSnackbar", "Error occured during login!")
+        })
+      }
     }
   }
 }

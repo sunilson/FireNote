@@ -22,7 +22,7 @@
             </v-card>
           </v-dialog>
         <v-speed-dial fixed bottom right v-model="fab">
-            <v-btn slot="activator" v-model="fab" color="fabColor" dark fab>
+            <v-btn slot="activator" v-model="fab" dark fab :class="[color]">
                 <v-icon>add</v-icon>
                 <v-icon>close</v-icon>
             </v-btn>

@@ -34,9 +34,9 @@
             </v-list>
           </v-menu>
         </v-toolbar>
-        <note v-if="element.noteType == 'note'" :id="$route.params.id" :parent="$route.params.parent" ref="noteComponent"></note>
-        <checklist v-else-if="element.noteType == 'checklist'" :id="$route.params.id" :parent="$route.params.parent" ref="checklistComponent"></checklist>
-        <bundle v-else-if="element.noteType == 'bundle'" :id="$route.params.id" ref="bundleComponent"></bundle>
+        <note v-if="element.noteType == 'note'" :id="$route.params.id" :parent="$route.params.parent" :color="backgroundColor" ref="noteComponent"></note>
+        <checklist v-else-if="element.noteType == 'checklist'" :id="$route.params.id" :parent="$route.params.parent" :color="backgroundColor" ref="checklistComponent"></checklist>
+        <bundle v-else-if="element.noteType == 'bundle'" :id="$route.params.id" :color="backgroundColor" ref="bundleComponent"></bundle>
         <v-dialog v-model="dialog" max-width="290">
           <v-card>
             <v-card-title class="headline">Delete Element</v-card-title>

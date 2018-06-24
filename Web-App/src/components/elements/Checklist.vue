@@ -6,7 +6,7 @@
                     <checklist-element v-for="(item, index) in content" :key="index" :element="item" @checked="checkElement($event)">
                     </checklist-element>
                 </transition-group>
-                <v-btn color="pink" dark fixed bottom right fab style="display: flex" @click="addElementDialog = !addElementDialog">
+                <v-btn color="pink" :class="[color]" dark fixed bottom right fab style="display: flex" @click="addElementDialog = !addElementDialog">
                     <v-icon>add</v-icon>
                 </v-btn>
                 <v-dialog v-model="addElementDialog" max-width="290">
