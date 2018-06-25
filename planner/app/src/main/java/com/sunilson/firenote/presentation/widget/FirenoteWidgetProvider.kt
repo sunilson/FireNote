@@ -28,19 +28,27 @@ class FirenoteWidgetProvider @Inject constructor() : AppWidgetProvider() {
 
     override fun onUpdate(context: Context?, appWidgetManager: AppWidgetManager?, appWidgetIds: IntArray?) {
         appWidgetIds?.forEach {
+            val views = RemoteViews(context?.packageName, R.layout.widget_layout)
+
+            val clickIntent = Intent(context, MainActivity::class.java)
+            val pendingClickIntent = PendingIntent.getActivity(context, 0, clickIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+            views.setPendingIntentTemplate(R.id.widget_listview, pendingClickIntent)
+
             val noteIntent = Intent(context, MainActivity::class.java)
+            noteIntent.action = Intent.ACTION_CREATE_DOCUMENT
             noteIntent.putExtra("noteType", typeNote)
-            val pendingNoteIntent = PendingIntent.getActivity(context, 0, noteIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+            val pendingNoteIntent = PendingIntent.getActivity(context, 1, noteIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
             val checklistIntent = Intent(context, MainActivity::class.java)
+            checklistIntent.action = Intent.ACTION_CREATE_DOCUMENT
             checklistIntent.putExtra("noteType", typeChecklist)
-            val pendingChecklistIntent = PendingIntent.getActivity(context, 0, checklistIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+            val pendingChecklistIntent = PendingIntent.getActivity(context, 2, checklistIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
             val bundleIntent = Intent(context, MainActivity::class.java)
+            bundleIntent.action = Intent.ACTION_CREATE_DOCUMENT
             bundleIntent.putExtra("noteType", typeBundle)
-            val pendingBundleIntent = PendingIntent.getActivity(context, 0, bundleIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+            val pendingBundleIntent = PendingIntent.getActivity(context, 3, bundleIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-            val views = RemoteViews(context?.packageName, R.layout.widget_layout)
             views.setOnClickPendingIntent(R.id.widget_button_checklist, pendingChecklistIntent)
             views.setOnClickPendingIntent(R.id.widget_button_bundle, pendingBundleIntent)
             views.setOnClickPendingIntent(R.id.widget_button_note, pendingNoteIntent)

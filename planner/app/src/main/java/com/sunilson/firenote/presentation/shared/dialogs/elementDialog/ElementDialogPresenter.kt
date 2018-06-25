@@ -18,6 +18,7 @@ class ElementDialogPresenter @Inject constructor(
         if (validateElement(element)) {
             disposable.add(repository.storeElement(FirebaseAuth.getInstance().currentUser!!.uid, element).subscribe({
                 view.showSuccess(view.mContext?.getString(R.string.element_added))
+                updateWidget()
             }, { view.showError(it.message) }))
         } else {
             view.showError("Validation failed")
@@ -28,6 +29,7 @@ class ElementDialogPresenter @Inject constructor(
         if (validateElement(element)) {
             disposable.add(repository.updateElement(FirebaseAuth.getInstance().currentUser!!.uid, element).subscribe({
                 view.showSuccess(view.mContext?.getString(R.string.element_added))
+                updateWidget()
             }, { view.showError(it.message) }))
         } else view.showError("Validation failed")
     }
@@ -35,6 +37,7 @@ class ElementDialogPresenter @Inject constructor(
     override fun deleteElement(element: Element) {
         disposable.add(repository.deleteElement(FirebaseAuth.getInstance().currentUser!!.uid, element.elementID, element.parent).subscribe({
             view.showSuccess(view.mContext?.getString(R.string.element_removed))
+            updateWidget()
         }, {
             view.showError(it.message)
         }))

@@ -98,8 +98,8 @@ class ElementDialog : BaseDialogFragment(), ElementDialogPresenterContract.View 
         }
 
         builder.setView(v)
-        builder.setPositiveButton(getString(R.string.confirm_add_dialog), { _, _ -> })
-        builder.setNegativeButton(getString(R.string.cancel), { _, _ -> dismiss() })
+        builder.setPositiveButton(getString(R.string.confirm_add_dialog)) { _, _ -> }
+        builder.setNegativeButton(getString(R.string.cancel)) { _, _ -> dismiss() }
 
         if (!connectivityManager.isConnected()) Toast.makeText(activity, R.string.edit_no_connection, Toast.LENGTH_LONG).show()
 

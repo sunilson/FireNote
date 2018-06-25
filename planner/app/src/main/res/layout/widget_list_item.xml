@@ -8,25 +8,30 @@
     android:orientation="vertical">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/elementList_content"
+        android:id="@+id/widget_elementList_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:foreground="?attr/selectableItemBackground"
-        android:minHeight="70dp">
+        android:minHeight="70dp"
+        android:background="@color/colorPrimaryDark"
+        >
 
         <LinearLayout
-            android:id="@+id/elementList_icon_holder"
+            android:id="@+id/widget_elementList_icon_holder"
             android:layout_width="35dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/white_text_color"
+            >
 
             <ImageView
-                android:id="@+id/elementList_icon"
+                android:id="@+id/widget_elementList_icon"
                 style="@style/element_List_element"
                 android:layout_width="match_parent"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:gravity="center"
-                android:tint="@color/tint_white" />
+                android:tint="@color/tint_white"
+
+                />
 
         </LinearLayout>
 
@@ -65,10 +70,11 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/elementLList_lock"
+            android:id="@+id/widget_elementList_lock"
             android:layout_width="30dp"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
+            android:visibility="invisible"
             android:src="@drawable/element_lock_icon_dark" />
 
         <TextView

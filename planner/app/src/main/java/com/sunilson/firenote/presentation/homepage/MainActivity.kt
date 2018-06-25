@@ -3,7 +3,6 @@ package com.sunilson.firenote.presentation.homepage
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
-import android.app.DialogFragment
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -89,22 +88,13 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Ha
         //Set sorting text
         if (localSettingsManager.getSortingMethod() != null) activity_main_sorting_bar_title.text = getString(R.string.current_sorthing_method) + " " + localSettingsManager.getSortingMethod()
         else activity_main_sorting_bar_title.text = getString(R.string.current_sorthing_method) + " " + getString(R.string.sort_ascending_name)
+
+        handleIntent(intent)
     }
 
     override fun onNewIntent(newIntent: Intent?) {
         super.onNewIntent(intent)
-        when (newIntent?.getStringExtra("noteType")) {
-            typeNote, typeChecklist, typeBundle -> {
-                supportFragmentManager.fragments.forEach {
-                    if(it is DialogFragment) it.dismissAllowingStateLoss()
-                }
-                ElementDialog.
-                        newInstance(
-                                getString(R.string.add_Element_Title),
-                                newIntent!!.getStringExtra("noteType"))
-                        .show(supportFragmentManager, "dialog")
-            }
-        }
+        if (newIntent != null) handleIntent(newIntent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -141,36 +131,14 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Ha
 
         recyclerViewClickListener = View.OnClickListener {
             val element = adapter.data[activity_main_recycler_view.getChildLayoutPosition(it)]
-            if (element.locked) {
-                val dialog = MasterPasswordDialog.newInstance()
-                dialog.listener = object : DialogListener<Boolean> {
-                    override fun onResult(result: Boolean?) {
-                        if(result != null && result) {
-                            val intent = Intent(this@MainActivity, ElementActivity::class.java)
-                            intent.putExtra("elementID", element.elementID)
-                            intent.putExtra("noteType", element.noteType)
-                            intent.putExtra("elementColor", element.color)
-                            startActivity(intent)
-                        } else {
-                            showError(getString(R.string.wrong_password))
-                        }
-                    }
-                }
-                dialog.show(supportFragmentManager, "dialog")
-            } else {
-                val intent = Intent(this, ElementActivity::class.java)
-                intent.putExtra("elementID", element.elementID)
-                intent.putExtra("noteType", element.noteType)
-                intent.putExtra("elementColor", element.color)
-                startActivity(intent)
-            }
+            openElement(element)
         }
 
         recyclerViewLongClickListener = View.OnLongClickListener {
             val element = adapter.data[activity_main_recycler_view.getChildLayoutPosition(it)]
             if (element.locked) {
             } else {
-               ElementDialog.newInstance("bla", element.elementID, element).show(supportFragmentManager, "dialog")
+                ElementDialog.newInstance("bla", element.elementID, element).show(supportFragmentManager, "dialog")
             }
             true
         }
@@ -215,6 +183,53 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Ha
         slideAnimator.start()
     }
 
+    private fun handleIntent(intent: Intent) {
+        if (intent.action == Intent.ACTION_CREATE_DOCUMENT) {
+            when (intent.getStringExtra("noteType")) {
+                typeNote, typeChecklist, typeBundle -> {
+                    supportFragmentManager.fragments.forEach {
+                        if (it is android.support.v4.app.DialogFragment) {
+                            it.dismissAllowingStateLoss()
+                        }
+                    }
+                    ElementDialog.newInstance(
+                            getString(R.string.add_Element_Title),
+                            intent.getStringExtra("noteType"))
+                            .show(supportFragmentManager, "dialog")
+                }
+            }
+        } else if (intent.action == Intent.ACTION_VIEW && intent.getStringExtra("openElement") != null) {
+            val element = adapter.getElement(intent.getStringExtra("openElement"))
+            if (element != null) openElement(element)
+        }
+    }
+
+    private fun openElement(element: Element) {
+        if (element.locked) {
+            val dialog = MasterPasswordDialog.newInstance()
+            dialog.listener = object : DialogListener<Boolean> {
+                override fun onResult(result: Boolean?) {
+                    if (result != null && result) {
+                        val intent = Intent(this@MainActivity, ElementActivity::class.java)
+                        intent.putExtra("elementID", element.elementID)
+                        intent.putExtra("noteType", element.noteType)
+                        intent.putExtra("elementColor", element.color)
+                        startActivity(intent)
+                    } else {
+                        showError(getString(R.string.wrong_password))
+                    }
+                }
+            }
+            dialog.show(supportFragmentManager, "dialog")
+        } else {
+            val intent = Intent(this, ElementActivity::class.java)
+            intent.putExtra("elementID", element.elementID)
+            intent.putExtra("noteType", element.noteType)
+            intent.putExtra("elementColor", element.color)
+            startActivity(intent)
+        }
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.fab_add_note -> {
@@ -232,13 +247,27 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Ha
             R.id.activity_main_sorting_bar -> toggleSorting()
         }
     }
+
     override fun loggedOut() {
         startActivity(Intent(this, AuthenticationActivity::class.java))
         finish()
     }
-    override fun toggleLoading(loading: Boolean, message: String?) { activity_main_swipe_refresh_layout.isRefreshing = loading}
-    override fun elementAdded(element: Element) { adapter.add(element) }
-    override fun elementChanged(element: Element) { adapter.update(element) }
-    override fun elementRemoved(element: Element) { adapter.remove(element) }
+
+    override fun toggleLoading(loading: Boolean, message: String?) {
+        activity_main_swipe_refresh_layout.isRefreshing = loading
+    }
+
+    override fun elementAdded(element: Element) {
+        adapter.add(element)
+    }
+
+    override fun elementChanged(element: Element) {
+        adapter.update(element)
+    }
+
+    override fun elementRemoved(element: Element) {
+        adapter.remove(element)
+    }
+
     override fun clearAdapter() = adapter.clear()
 }

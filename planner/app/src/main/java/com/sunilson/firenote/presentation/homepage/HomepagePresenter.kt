@@ -19,6 +19,7 @@ class HomepagePresenter @Inject constructor(val repository: IRepository, val vie
     override fun loadElementData() {
         disposable.dispose()
         disposable.add(repository.loadElements(FirebaseAuth.getInstance().currentUser!!.uid).subscribe({
+            updateWidget()
             when (it?.first) {
                 ChangeType.ADDED -> view.elementAdded(it.second)
                 ChangeType.REMOVED -> view.elementRemoved(it.second)
