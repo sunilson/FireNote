@@ -22,16 +22,18 @@ class WidgetRemoteFactory(val context: Context, val repository: IRepository, val
     private var data = mutableListOf<Element>()
 
     override fun onCreate() {
-        disposable.add(repository.loadAllElements(FirebaseAuth.getInstance().currentUser!!.uid).subscribe { list ->
-            data.clear()
-            list.forEach { data.add(it) }
-            AppWidgetManager
-                    .getInstance(context)
-                    .notifyAppWidgetViewDataChanged(
-                            intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
-                                    AppWidgetManager.INVALID_APPWIDGET_ID),
-                            R.id.widget_listview)
-        })
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            disposable.add(repository.loadAllElements(FirebaseAuth.getInstance().currentUser!!.uid).subscribe { list ->
+                data.clear()
+                list.forEach { data.add(it) }
+                AppWidgetManager
+                        .getInstance(context)
+                        .notifyAppWidgetViewDataChanged(
+                                intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
+                                        AppWidgetManager.INVALID_APPWIDGET_ID),
+                                R.id.widget_listview)
+            })
+        }
     }
 
     override fun onDestroy() {
@@ -45,9 +47,11 @@ class WidgetRemoteFactory(val context: Context, val repository: IRepository, val
     override fun getItemId(p0: Int): Long = p0.toLong()
 
     override fun onDataSetChanged() {
-        val elements = repository.loadAllElements(FirebaseAuth.getInstance().currentUser!!.uid).blockingGet()
-        data.clear()
-        elements.forEach { data.add(it) }
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            val elements = repository.loadAllElements(FirebaseAuth.getInstance().currentUser!!.uid).blockingGet()
+            data.clear()
+            elements.forEach { data.add(it) }
+        }
     }
 
     override fun hasStableIds(): Boolean = true

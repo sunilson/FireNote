@@ -1,4 +1,4 @@
-package com.sunilson.firenote.presentation.visibilityDialog
+package com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog
 
 import android.app.Dialog
 import android.content.Context
@@ -9,7 +9,7 @@ import android.support.v4.view.ViewPager
 import android.view.*
 import com.sunilson.firenote.R
 import com.sunilson.firenote.presentation.shared.base.BaseDialogFragment
-import com.sunilson.firenote.presentation.visibilityDialog.adapters.VisibilityPagerDapter
+import com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog.adapters.VisibilityPagerDapter
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.AndroidSupportInjection

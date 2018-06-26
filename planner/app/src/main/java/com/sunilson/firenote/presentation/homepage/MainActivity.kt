@@ -30,7 +30,7 @@ import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import com.sunilson.firenote.presentation.shared.typeBundle
 import com.sunilson.firenote.presentation.shared.typeChecklist
 import com.sunilson.firenote.presentation.shared.typeNote
-import com.sunilson.firenote.presentation.visibilityDialog.VisibilityDialog
+import com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog.VisibilityDialog
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.sorting_list_layout.*

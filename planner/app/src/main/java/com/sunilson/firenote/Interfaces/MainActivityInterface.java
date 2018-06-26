@@ -1,7 +1,7 @@
 //package com.sunilson.firenote.Interfaces;
 //
 //import com.google.firebase.database.DatabaseReference;
-//import com.sunilson.firenote.presentation.visibilityDialog.adapters.CategoryVisibilityAdapter;
+//import com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog.adapters.CategoryVisibilityAdapter;
 //
 ///**
 // * @author Linus Weiss

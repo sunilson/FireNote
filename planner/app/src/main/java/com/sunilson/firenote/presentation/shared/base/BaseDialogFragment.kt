@@ -8,6 +8,7 @@ import android.support.v4.app.DialogFragment
 import android.view.View
 import com.sunilson.firenote.R
 import com.sunilson.firenote.presentation.elements.elementActivity.ElementActivity
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.alertdialog_custom_title.view.*
 
 abstract class BaseDialogFragment : DialogFragment(), IBaseView {
@@ -16,6 +17,7 @@ abstract class BaseDialogFragment : DialogFragment(), IBaseView {
         get() = context
     protected lateinit var titleView: View
     protected lateinit var builder: AlertDialog.Builder
+    protected val disposable = CompositeDisposable()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         builder = AlertDialog.Builder(activity)
@@ -28,5 +30,10 @@ abstract class BaseDialogFragment : DialogFragment(), IBaseView {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if(dialog.window != null) dialog.window.attributes.windowAnimations = R.style.dialogAnimation
+    }
+
+    override fun onDestroy() {
+        disposable.dispose()
+        super.onDestroy()
     }
 }

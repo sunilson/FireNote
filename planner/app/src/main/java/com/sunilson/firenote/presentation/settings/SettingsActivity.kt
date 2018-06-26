@@ -8,8 +8,10 @@ import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
+import com.sunilson.firenote.presentation.shared.dialogs.ChangeLoginPasswordDialog
 import com.sunilson.firenote.presentation.shared.dialogs.ChangeMasterPasswordDialog
 import com.sunilson.firenote.presentation.shared.dialogs.authenticationDialog.AuthenticationDialog
+import com.sunilson.firenote.presentation.shared.dialogs.interfaces.DialogListener
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -20,6 +22,8 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, HasSupportFragmen
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+
+    private var authDialog: AuthenticationDialog? = null
 
     override val mContext: Context
         get() = this
@@ -45,7 +49,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, HasSupportFragmen
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if(item?.itemId == android.R.id.home){
+        if (item?.itemId == android.R.id.home) {
             finish()
             return true
         }
@@ -59,7 +63,13 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, HasSupportFragmen
                 ChangeMasterPasswordDialog.newInstance().show(supportFragmentManager, "dialog")
             }
             R.id.change_password -> {
-                AuthenticationDialog.newInstance().show(supportFragmentManager, "dialog")
+                authDialog = AuthenticationDialog.newInstance()
+                authDialog?.listener = object : DialogListener<Boolean> {
+                    override fun onResult(result: Boolean?) {
+                        if(result != null && result) ChangeLoginPasswordDialog.newInstance().show(supportFragmentManager, "dialog")
+                    }
+                }
+                authDialog!!.show(supportFragmentManager, "dialog")
             }
         }
     }

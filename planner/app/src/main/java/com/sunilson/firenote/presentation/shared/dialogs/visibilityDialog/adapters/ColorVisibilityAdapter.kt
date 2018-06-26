@@ -1,4 +1,4 @@
-package com.sunilson.firenote.presentation.visibilityDialog.adapters
+package com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog.adapters
 
 import android.content.Context
 import android.view.View

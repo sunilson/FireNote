@@ -1,8 +1,8 @@
-package com.sunilson.firenote.presentation.visibilityDialog.di
+package com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog.di
 
 import com.sunilson.firenote.presentation.shared.di.scopes.FragmentScope
-import com.sunilson.firenote.presentation.visibilityDialog.CategoryFragment
-import com.sunilson.firenote.presentation.visibilityDialog.ColorFragment
+import com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog.CategoryFragment
+import com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog.ColorFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

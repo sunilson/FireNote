@@ -1,4 +1,4 @@
-package com.sunilson.firenote.presentation.visibilityDialog
+package com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,8 +8,8 @@ import com.sunilson.firenote.R
 import com.sunilson.firenote.presentation.shared.base.BaseFragment
 import com.sunilson.firenote.presentation.shared.interfaces.HasElementList
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
-import com.sunilson.firenote.presentation.visibilityDialog.adapters.CategoryVisibilityAdapter
-import com.sunilson.firenote.presentation.visibilityDialog.adapters.CategoryVisibilityView
+import com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog.adapters.CategoryVisibilityAdapter
+import com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog.adapters.CategoryVisibilityView
 import kotlinx.android.synthetic.main.fragment_category.view.*
 import javax.inject.Inject
 

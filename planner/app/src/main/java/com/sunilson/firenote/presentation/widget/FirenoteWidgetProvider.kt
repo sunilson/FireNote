@@ -6,7 +6,9 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.view.View
 import android.widget.RemoteViews
+import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
 import com.sunilson.firenote.presentation.homepage.MainActivity
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
@@ -57,6 +59,20 @@ class FirenoteWidgetProvider @Inject constructor() : AppWidgetProvider() {
             svcIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, it)
             svcIntent.data = Uri.parse(svcIntent.toUri(Intent.URI_INTENT_SCHEME))
             views.setRemoteAdapter(R.id.widget_listview, svcIntent)
+
+            if (FirebaseAuth.getInstance().currentUser == null) {
+                views.setViewVisibility(R.id.widget_button_checklist, View.GONE)
+                views.setViewVisibility(R.id.widget_button_note, View.GONE)
+                views.setViewVisibility(R.id.widget_button_bundle, View.GONE)
+                views.setViewVisibility(R.id.widget_listview, View.GONE)
+                views.setViewVisibility(R.id.widget_call_login, View.VISIBLE)
+            } else {
+                views.setViewVisibility(R.id.widget_button_checklist, View.VISIBLE)
+                views.setViewVisibility(R.id.widget_button_note, View.VISIBLE)
+                views.setViewVisibility(R.id.widget_button_bundle, View.VISIBLE)
+                views.setViewVisibility(R.id.widget_listview, View.VISIBLE)
+                views.setViewVisibility(R.id.widget_call_login, View.GONE)
+            }
 
             appWidgetManager?.notifyAppWidgetViewDataChanged(it, R.id.widget_listview)
             appWidgetManager?.updateAppWidget(it, views)

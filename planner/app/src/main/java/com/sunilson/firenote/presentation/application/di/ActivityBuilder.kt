@@ -15,8 +15,8 @@ import com.sunilson.firenote.presentation.shared.di.scopes.DialogFragmentScope
 import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.ElementDialog
 import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.di.AbstractElementDialogModule
 import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.di.ElementDialogModule
-import com.sunilson.firenote.presentation.visibilityDialog.VisibilityDialog
-import com.sunilson.firenote.presentation.visibilityDialog.di.VisibilityDialogModule
+import com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog.VisibilityDialog
+import com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog.di.VisibilityDialogModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

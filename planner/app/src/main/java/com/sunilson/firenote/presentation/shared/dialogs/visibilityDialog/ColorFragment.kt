@@ -1,4 +1,4 @@
-package com.sunilson.firenote.presentation.visibilityDialog
+package com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import com.sunilson.firenote.presentation.shared.base.BaseFragment
 import com.sunilson.firenote.presentation.shared.interfaces.HasElementList
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import com.sunilson.firenote.presentation.shared.views.ColorElementView
-import com.sunilson.firenote.presentation.visibilityDialog.adapters.ColorVisibilityAdapter
+import com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog.adapters.ColorVisibilityAdapter
 import kotlinx.android.synthetic.main.fragment_color.view.*
 import javax.inject.Inject
 

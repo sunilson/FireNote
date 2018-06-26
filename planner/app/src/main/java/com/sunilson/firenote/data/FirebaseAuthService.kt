@@ -3,6 +3,7 @@ package com.sunilson.firenote.data
 import android.app.Activity
 import android.app.Application
 import android.content.Intent
+import android.support.v4.app.Fragment
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -22,8 +23,9 @@ import javax.inject.Singleton
 
 interface IAuthentication {
     fun emailSignIn(email: String, password: String, reAuth: Boolean = false): Completable
-    fun startGoogleSignIn(activity: Activity)
+    fun startGoogleSignIn(activity: Activity? = null, fragment: Fragment? = null)
     fun handleGoogleSignIn(intent: Intent, reAuth: Boolean = false): Completable
+    fun changePassword(password: String, repeatedPassword: String) : Completable
     fun passwordReset(email: String): Completable
     fun register(email: String, password: String, repeatedPassword: String): Completable
 }
@@ -55,13 +57,19 @@ class FirebaseAuthService @Inject constructor(val context: Application) : IAuthe
         }
     }
 
+    override fun changePassword(password: String, repeatedPassword: String): Completable {
+        if(password.isEmpty() || password != repeatedPassword) return Completable.error(IllegalArgumentException(context.getString(R.string.password_not_equal_empty)))
+        return createCompletableFromTask(FirebaseAuth.getInstance().currentUser!!.updatePassword(password))
+    }
+
     override fun passwordReset(email: String): Completable {
         if (email.isEmpty()) return Completable.error(IllegalArgumentException(context.getString(R.string.email_empty)))
         return createCompletableFromTask(FirebaseAuth.getInstance().sendPasswordResetEmail(email))
     }
 
-    override fun startGoogleSignIn(activity: Activity) {
-        activity.startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient), googleSignInRequestCode)
+    override fun startGoogleSignIn(activity: Activity?, fragment: Fragment?) {
+        if(activity != null) activity.startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient), googleSignInRequestCode)
+        else if(fragment != null) fragment.startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient), googleSignInRequestCode)
     }
 
     override fun handleGoogleSignIn(intent: Intent, reAuth: Boolean): Completable {
@@ -69,7 +77,8 @@ class FirebaseAuthService @Inject constructor(val context: Application) : IAuthe
         return try {
             val account = task.getResult(ApiException::class.java)
             val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-            createCompletableFromTask(FirebaseAuth.getInstance().signInWithCredential(credential))
+            return if (reAuth) createCompletableFromTask(FirebaseAuth.getInstance().currentUser!!.reauthenticate(credential))
+            else createCompletableFromTask(FirebaseAuth.getInstance().signInWithCredential(credential))
         } catch (e: ApiException) {
             Completable.error(IllegalArgumentException())
         }

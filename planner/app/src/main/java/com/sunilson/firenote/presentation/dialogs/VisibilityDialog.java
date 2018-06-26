@@ -14,7 +14,7 @@
 //import android.view.WindowManager;
 //
 //import com.sunilson.firenote.R;
-//import com.sunilson.firenote.presentation.visibilityDialog.adapters.VisibilityPagerDapter;
+//import com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog.adapters.VisibilityPagerDapter;
 //import com.sunilson.firenote.presentation.shared.base.BaseDialogFragment;
 //
 ///**

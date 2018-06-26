@@ -19,6 +19,7 @@ class AuthenticationPresenter @Inject constructor(val view: AuthenticationPresen
     : AuthenticationPresenterContract.Presenter, BasePresenter(view), GoogleApiClient.OnConnectionFailedListener {
 
     private val authListener = FirebaseAuth.AuthStateListener {
+        updateWidget()
         if (it.currentUser != null) {
             if(it.currentUser?.isEmailVerified == false) {
                 FirebaseAuth.getInstance().currentUser?.sendEmailVerification()
