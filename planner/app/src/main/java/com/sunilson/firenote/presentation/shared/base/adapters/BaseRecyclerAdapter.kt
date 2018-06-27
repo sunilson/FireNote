@@ -37,7 +37,7 @@ abstract class BaseRecyclerAdapter<T : AdapterElement>(protected val context: Co
 
     open fun update(element: AdapterElement) {
         val iterator = _data.listIterator()
-        for ((index, value) in iterator.withIndex()) {
+        for ((_, value) in iterator.withIndex()) {
             if (value.compareByString == element.compareByString) {
                 iterator.set(element as T)
                 //notifyItemChanged(index)

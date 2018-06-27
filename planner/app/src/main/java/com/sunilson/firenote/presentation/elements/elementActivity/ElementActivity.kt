@@ -104,7 +104,7 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View, HasSu
                 presenter.lockElement(!_element!!.locked)
             }
             R.id.menu_settings -> {
-                if(element != null) ElementDialog.newInstance("bla", element!!.elementID, element).show(supportFragmentManager, "dialog")
+                if(element != null) ElementDialog.newInstance(getString(R.string.edit_element_title), element!!.elementID, element).show(supportFragmentManager, "dialog")
             }
         }
 

@@ -4,13 +4,13 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.OvershootInterpolator
-import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.authentication.AuthenticationActivity
@@ -25,12 +25,12 @@ import com.sunilson.firenote.presentation.shared.base.BaseActivity
 import com.sunilson.firenote.presentation.shared.dialogs.MasterPasswordDialog
 import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.ElementDialog
 import com.sunilson.firenote.presentation.shared.dialogs.interfaces.DialogListener
+import com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog.VisibilityDialog
 import com.sunilson.firenote.presentation.shared.interfaces.HasElementList
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import com.sunilson.firenote.presentation.shared.typeBundle
 import com.sunilson.firenote.presentation.shared.typeChecklist
 import com.sunilson.firenote.presentation.shared.typeNote
-import com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog.VisibilityDialog
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.sorting_list_layout.*
@@ -114,11 +114,12 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Ha
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.action_logOut -> FirebaseAuth.getInstance().signOut()
+            R.id.action_logOut -> presenter.signOut()
             R.id.main_element_sort -> toggleSorting()
             R.id.main_element_visibility -> VisibilityDialog.newInstance().show(supportFragmentManager, "dialog")
             R.id.action_bin -> startActivity(Intent(this, BinActivity::class.java))
             R.id.action_settings -> startActivity(Intent(this, SettingsActivity::class.java))
+            R.id.action_web -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com")))
         }
         return super.onOptionsItemSelected(item)
     }
@@ -138,7 +139,7 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Ha
             val element = adapter.data[activity_main_recycler_view.getChildLayoutPosition(it)]
             if (element.locked) {
             } else {
-                ElementDialog.newInstance("bla", element.elementID, element).show(supportFragmentManager, "dialog")
+                ElementDialog.newInstance(getString(R.string.edit_element_title), element.elementID, element).show(supportFragmentManager, "dialog")
             }
             true
         }

@@ -11,7 +11,7 @@
         android:id="@+id/widget_elementList_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="70dp"
+        android:minHeight="60dp"
         android:background="@color/colorPrimaryDark"
         >
 

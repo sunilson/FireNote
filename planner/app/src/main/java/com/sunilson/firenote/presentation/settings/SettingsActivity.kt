@@ -7,9 +7,11 @@ import android.view.MenuItem
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
+import com.sunilson.firenote.data.IAuthentication
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
 import com.sunilson.firenote.presentation.shared.dialogs.ChangeLoginPasswordDialog
 import com.sunilson.firenote.presentation.shared.dialogs.ChangeMasterPasswordDialog
+import com.sunilson.firenote.presentation.shared.dialogs.ConfirmDialog
 import com.sunilson.firenote.presentation.shared.dialogs.authenticationDialog.AuthenticationDialog
 import com.sunilson.firenote.presentation.shared.dialogs.interfaces.DialogListener
 import dagger.android.AndroidInjector
@@ -22,6 +24,9 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, HasSupportFragmen
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+
+    @Inject
+    lateinit var authService: IAuthentication
 
     private var authDialog: AuthenticationDialog? = null
 
@@ -43,7 +48,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, HasSupportFragmen
 
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
-            username.setText(getString(R.string.logged_in_as) + " \"" + user.email + "\"")
+            username.text = getString(R.string.logged_in_as) + " \"" + user.email + "\""
             //Init presenter
         }
     }
@@ -66,10 +71,33 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, HasSupportFragmen
                 authDialog = AuthenticationDialog.newInstance()
                 authDialog?.listener = object : DialogListener<Boolean> {
                     override fun onResult(result: Boolean?) {
-                        if(result != null && result) ChangeLoginPasswordDialog.newInstance().show(supportFragmentManager, "dialog")
+                        if (result != null && result) ChangeLoginPasswordDialog.newInstance().show(supportFragmentManager, "dialog")
                     }
                 }
                 authDialog!!.show(supportFragmentManager, "dialog")
+            }
+            R.id.delete_account -> {
+                authDialog = AuthenticationDialog.newInstance()
+                authDialog?.listener = object : DialogListener<Boolean> {
+                    override fun onResult(result: Boolean?) {
+                        if (result != null && result) {
+                            val confirmDialog = ConfirmDialog.newInstance(getString(R.string.delete_account), getString(R.string.confirm_delete_account))
+                            confirmDialog.listener = object : DialogListener<Boolean> {
+                                override fun onResult(result: Boolean?) {
+                                    if (result != null && result) {
+                                        showSuccess(getString(R.string.account_deleted))
+                                        authService.signOut()
+                                    }
+                                }
+                            }
+                            confirmDialog.show(supportFragmentManager, "dialog")
+                        }
+                    }
+                }
+                authDialog!!.show(supportFragmentManager, "dialog")
+            }
+            R.id.about -> {
+                ConfirmDialog.newInstance(getString(R.string.about_title), getString(R.string.about), false).show(supportFragmentManager, "dialog")
             }
         }
     }

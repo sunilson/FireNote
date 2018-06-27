@@ -28,6 +28,7 @@ interface IAuthentication {
     fun changePassword(password: String, repeatedPassword: String) : Completable
     fun passwordReset(email: String): Completable
     fun register(email: String, password: String, repeatedPassword: String): Completable
+    fun signOut()
 }
 
 @Singleton
@@ -82,6 +83,10 @@ class FirebaseAuthService @Inject constructor(val context: Application) : IAuthe
         } catch (e: ApiException) {
             Completable.error(IllegalArgumentException())
         }
+    }
+
+    override fun signOut() {
+        FirebaseAuth.getInstance().signOut()
     }
 
     override fun register(email: String, password: String, repeatedPassword: String): Completable {
