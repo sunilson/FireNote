@@ -1,14 +1,11 @@
 package com.sunilson.firenote.presentation.homepage
 
-import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.elements.elementActivity.ElementContentPresenterContract
 import com.sunilson.firenote.presentation.shared.base.IBaseView
+import com.sunilson.firenote.presentation.shared.interfaces.HasElementList
 
 interface HomepagePresenterContract {
-    interface IHomepageView : IBaseView {
-        fun elementAdded(element: Element)
-        fun elementRemoved(element: Element)
-        fun elementChanged(element: Element)
+    interface IHomepageView : IBaseView, HasElementList {
         fun clearAdapter()
         fun loggedOut()
     }

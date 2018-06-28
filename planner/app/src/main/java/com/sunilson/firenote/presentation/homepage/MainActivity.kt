@@ -6,6 +6,7 @@ import android.animation.ValueAnimator
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
@@ -26,7 +27,6 @@ import com.sunilson.firenote.presentation.shared.dialogs.MasterPasswordDialog
 import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.ElementDialog
 import com.sunilson.firenote.presentation.shared.dialogs.interfaces.DialogListener
 import com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog.VisibilityDialog
-import com.sunilson.firenote.presentation.shared.interfaces.HasElementList
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import com.sunilson.firenote.presentation.shared.typeBundle
 import com.sunilson.firenote.presentation.shared.typeChecklist
@@ -37,7 +37,9 @@ import kotlinx.android.synthetic.main.sorting_list_layout.*
 import javax.inject.Inject
 
 
-class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, HasElementList, View.OnClickListener {
+
+
+class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, View.OnClickListener {
 
     @Inject
     lateinit var presenter: HomepagePresenterContract.IHomepagePresenter
@@ -128,6 +130,7 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Ha
         fab_add_note.setOnClickListener(this)
         fab_add_checklist.setOnClickListener(this)
         fab_add_bundle.setOnClickListener(this)
+        fab_add_gallery.setOnClickListener(this)
         activity_main_sorting_bar.setOnClickListener(this)
 
         recyclerViewClickListener = View.OnClickListener {
@@ -242,8 +245,14 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Ha
                 fab.collapse()
             }
             R.id.fab_add_bundle -> {
-                ElementDialog.newInstance(getString(R.string.add_Element_Title), typeChecklist).show(supportFragmentManager, "dialog")
+                ElementDialog.newInstance(getString(R.string.add_Element_Title), typeBundle).show(supportFragmentManager, "dialog")
                 fab.collapse()
+            }
+            R.id.fab_add_gallery -> {
+                val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                if (takePictureIntent.resolveActivity(packageManager) != null) {
+                    startActivityForResult(takePictureIntent, 1)
+                }
             }
             R.id.activity_main_sorting_bar -> toggleSorting()
         }
@@ -256,18 +265,6 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Ha
 
     override fun toggleLoading(loading: Boolean, message: String?) {
         activity_main_swipe_refresh_layout.isRefreshing = loading
-    }
-
-    override fun elementAdded(element: Element) {
-        adapter.add(element)
-    }
-
-    override fun elementChanged(element: Element) {
-        adapter.update(element)
-    }
-
-    override fun elementRemoved(element: Element) {
-        adapter.remove(element)
     }
 
     override fun clearAdapter() = adapter.clear()

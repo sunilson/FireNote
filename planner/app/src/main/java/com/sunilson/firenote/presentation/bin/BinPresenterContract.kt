@@ -1,16 +1,15 @@
 package com.sunilson.firenote.presentation.bin
 
-import android.sax.Element
+import com.sunilson.firenote.presentation.elements.elementActivity.ElementContentPresenterContract
 import com.sunilson.firenote.presentation.shared.base.IBaseView
+import com.sunilson.firenote.presentation.shared.interfaces.HasElementList
 
 interface BinPresenterContract {
-    interface View : IBaseView {
-        fun elementAdded(element: Element)
-        fun elementChanged(element: Element)
-        fun elementRemoved(element: Element)
+    interface View : IBaseView, HasElementList {
     }
 
-    interface Presenter {
-        fun loadData()
+    interface Presenter : ElementContentPresenterContract.Presenter {
+        fun restoreElement(id: String)
+        fun clearElements()
     }
 }
