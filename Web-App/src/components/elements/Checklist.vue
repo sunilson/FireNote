@@ -27,54 +27,65 @@
     </v-container>
 </template>
 <script>
-import firebase from "../../services/firebase.js"
+import firebase from "../../services/firebase.js";
 import ChecklistElement from "../ChecklistElement.vue";
-import BaseElementContent from "./BaseElementContent"
-import {EventBus} from "../../services/EventBus.js"
+import BaseElementContent from "./BaseElementContent";
+import { EventBus } from "../../services/EventBus.js";
 
 export default {
-    props: ["parent"],
-    extends: BaseElementContent,
-    data() { 
-        return {
-            addElementDialog: false,
-            elementText: "",
-            content: []
-        }
+  props: ["parent"],
+  extends: BaseElementContent,
+  data() {
+    return {
+      addElementDialog: false,
+      elementText: "",
+      content: []
+    };
+  },
+  mounted() {
+    EventBus.$on("clearChecklist", () => {
+      if (this.content) {
+        firebase.deleteChecklistElements(
+          this.content.filter(item => item.finished),
+          this.id,
+          this.parent
+        );
+      }
+    });
+  },
+  firebase() {
+    return {
+      content: firebase.getChecklistContentRef(this.id)
+    };
+  },
+  methods: {
+    addElement() {
+      firebase.addChecklistElement(this.elementText, this.id, this.parent);
+      this.elementText = "";
+      this.addElementDialog = false;
     },
-    mounted() {
-        EventBus.$on('clearChecklist', () => {
-            firebase.deleteChecklistElements(this.content.filter(item => item.finished), this.id, this.parent)
-        });
+    lineBreak(value) {
+      if (!value) return "";
+      return value.replace(/(?:\r\n|\r|\n)/g, "<br/>");
     },
-    firebase() {
-        return {
-            content: firebase.getChecklistContentRef(this.id)
-        }
-    },
-    methods: {
-        addElement() {
-            firebase.addChecklistElement(this.elementText, this.id, this.parent)
-            this.elementText = ""
-            this.addElementDialog = false
-        },
-        lineBreak (value) {
-            if(!value) return ""
-            return value.replace(/(?:\r\n|\r|\n)/g, '<br/>')
-        },
-        checkElement(event) {
-            console.log(event)
-            firebase.checkChecklistElement(event.value, this.id, this.parent, event.id)
-        }
-    },
-    components: {
-        checklistElement: ChecklistElement
+    checkElement(event) {
+      console.log(event);
+      firebase.checkChecklistElement(
+        event.value,
+        this.id,
+        this.parent,
+        event.id
+      );
     }
-}
+  },
+  components: {
+    checklistElement: ChecklistElement
+  }
+};
 </script>
 <style>
-    .container.fill-height {
-        font-size: 16px;
-        display: block !important;
-    }
+.container.fill-height {
+  font-size: 16px;
+  display: block !important;
+}
 </style>

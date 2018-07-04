@@ -1,52 +1,52 @@
 <template>
     <v-content>
       <v-toolbar app fixed :class="[backgroundColor]">
-        <v-btn icon @click="$router.go(-1)">
+        <v-btn icon @click="goBack()">
               <v-icon :class="{whiteColor: color != null}">arrow_back</v-icon>
         </v-btn>
         <v-toolbar-title :class="{whiteColor: color != null}">Settings</v-toolbar-title>
         <v-spacer></v-spacer>
       </v-toolbar>
-      <v-container fluid>
-          <v-layout row>
-              <v-flex xs12>
+      <v-container fluid fill-height>
+          <transition name="slide-x-transition" mode="out-in">
+            <v-layout row  v-if="!showReauth" key="settings">
+                <v-flex sm6 offset-sm3 xs12>
+                    <v-list two-line>
+                      <v-list-tile avatar>
+                          <v-list-tile-content>
+                          <v-list-tile-title>Logged in as</v-list-tile-title>
+                          <v-list-tile-sub-title>{{fb.auth().currentUser.email}}</v-list-tile-sub-title>
+                          </v-list-tile-content>
+                      </v-list-tile>
+                  </v-list>
+                  <v-divider></v-divider>
                   <v-list two-line>
-                    <v-list-tile avatar>
-                        <v-list-tile-content>
-                        <v-list-tile-title>Logged in as</v-list-tile-title>
-                        <v-list-tile-sub-title>{{fb.auth().currentUser.email}}</v-list-tile-sub-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
-                </v-list>
-                <v-divider></v-divider>
-                <v-list two-line>
-                    <v-list-tile v-for="item in items" :key="item.title" avatar @click="item.action()">
-                        <v-list-tile-avatar>
-                            <v-icon :class="[item.iconClass]">{{ item.icon }}</v-icon>
-                        </v-list-tile-avatar>
-                        <v-list-tile-content>
-                            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-                            <v-list-tile-sub-title>{{ item.subtitle }}</v-list-tile-sub-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
-                </v-list>
-                <login v-if="showReauth" :reauth="true" @reauth="reauth($event)"></login>
-              </v-flex>
-          </v-layout>
+                      <v-list-tile v-for="item in items" :key="item.title" avatar @click="item.action()">
+                          <v-list-tile-avatar>
+                              <v-icon :class="[item.iconClass]">{{ item.icon }}</v-icon>
+                          </v-list-tile-avatar>
+                          <v-list-tile-content>
+                              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                              <v-list-tile-sub-title>{{ item.subtitle }}</v-list-tile-sub-title>
+                          </v-list-tile-content>
+                      </v-list-tile>
+                  </v-list>
+                </v-flex>
+            </v-layout>
+            <v-layout v-else justify-center align-center key="login">
+              <login :reauth="true" @reauth="reauth($event)"></login>
+            </v-layout>
+          </transition>
       </v-container>
-      <v-dialog v-model="passwordDialog" max-width="290">
+      <v-dialog v-model="resetPasswordDialog" max-width="400">
             <v-card>
                 <v-card-title class="headline">Set master password</v-card-title>
                 <div style="padding-left: 16px; padding-right: 16px">
-                    <v-text-field label="Current password" 
-                    type="password"
-                    autofocus v-model="currentPassword"
-                    @keyup.enter="changeMasterPassword()"></v-text-field>
-                    <v-text-field label="Repeat current password" 
-                    type="password"
-                     v-model="currentPasswordAgain"
-                    @keyup.enter="changeMasterPassword()"></v-text-field>
                     <v-text-field label="New password" 
+                    type="password"
+                     v-model="newPassword"
+                    @keyup.enter="changeMasterpassword()"></v-text-field>
+                    <v-text-field label="Repeat New password" 
                     type="password"
                      v-model="newPassword"
                     @keyup.enter="changeMasterpassword()"></v-text-field>
@@ -58,34 +58,71 @@
                 </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-dialog v-model="deleteAccountDialog" max-width="290">
-          <v-card>
-            <v-card-title class="headline">Delete account</v-card-title>
-            <v-card-text>Do you really want to delete your account?</v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="red darken-1" flat @click.native="deleteAccountDialog = false">Cancel</v-btn>
-              <v-btn color="green darken-1" flat @click.native="deleteAccount()">Agree</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+      <v-dialog v-model="masterPasswordDialog" max-width="400">
+            <v-card>
+                <v-card-title class="headline">Set master password</v-card-title>
+                <div style="padding-left: 16px; padding-right: 16px">
+                    <v-text-field label="Current password" 
+                    type="password"
+                    autofocus v-model="currentMasterPassword"
+                    @keyup.enter="changeMasterPassword()"></v-text-field>
+                    <v-text-field label="Repeat current password" 
+                    type="password"
+                     v-model="currentMasterPasswordAgain"
+                    @keyup.enter="changeMasterPassword()"></v-text-field>
+                    <v-text-field label="New password" 
+                    type="password"
+                     v-model="newMasterPassword"
+                    @keyup.enter="changeMasterpassword()"></v-text-field>
+                </div>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="green darken-1" flat="flat" @click.native="masterPasswordDialog = false">Cancel</v-btn>
+                    <v-btn color="green darken-1" flat="flat" @click.native="changeMasterpassword()">Save</v-btn>
+                </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-dialog v-model="deleteAccountDialog" max-width="400">
+            <v-card>
+              <v-card-title class="headline">Delete account</v-card-title>
+              <v-card-text>Do you really want to delete your account?</v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="red darken-1" flat @click.native="deleteAccountDialog = false">Cancel</v-btn>
+                <v-btn color="green darken-1" flat @click.native="deleteAccount()">Agree</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-dialog v-model="infoDialog" max-width="400">
+            <v-card>
+              <v-card-title class="headline">About FireNote</v-card-title>
+              <v-card-text>Created as a semester project for FH Hagenberg in Austria. If you have feedback or a bug report  for us, please contact support@firenote.at</v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="darken-1" flat @click.native="infoDialog = false">Close</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
     </v-content>
 </template>
 
 <script>
 import firebase from "../services/firebase.js";
 import { EventBus } from "../services/EventBus.js";
-import Login from "./authentication/Login.vue"; 
+import Login from "./authentication/Login.vue";
 
 export default {
   data() {
     return {
       showReauth: false,
-      passwordDialog: false,
+      masterPasswordDialog: false,
       deleteAccountDialog: false,
-      currentPassword: "",
-      currentPasswordAgain: "",
-      newPassword: "",
+      infoDialog: false,
+      deletingAccount: false,
+      resettingPassword: false,
+      currentMasterPassword: "",
+      currentMasterPasswordAgain: "",
+      newMasterPassword: "",
       items: [
         {
           icon: "lock",
@@ -93,10 +130,10 @@ export default {
           title: "Master Password",
           subtitle: "The password used for locking your notes",
           action: () => {
-            this.currentPassword = "";
-            this.currentPasswordAgain = "";
-            this.newPassword = "";
-            this.passwordDialog = true;
+            this.currentMasterPassword = "";
+            this.currentMasterPasswordAgain = "";
+            this.newMasterPassword = "";
+            this.masterPasswordDialog = true;
           }
         },
         {
@@ -105,7 +142,8 @@ export default {
           title: "Delete user account",
           subtitle: "Permanently delete your user account and all contents",
           action: () => {
-            this.showReauth = true
+            this.showReauth = true;
+            this.deletingAccount = true;
           }
         },
         {
@@ -114,28 +152,18 @@ export default {
           title: "Reset password",
           subtitle: "Change the password used to login",
           action: () => {
-            this.showReauth = true
+            this.showReauth = true;
+            this.resettingPassword = true;
           }
         },
         {
           icon: "info",
           iconClass: "grey lighten-1 white--text",
           title: "About FireNote",
-          subtitle: "Jan 28, 2014"
-        }
-      ],
-      items2: [
-        {
-          icon: "assignment",
-          iconClass: "blue white--text",
-          title: "Vacation itinerary",
-          subtitle: "Jan 20, 2014"
-        },
-        {
-          icon: "call_to_action",
-          iconClass: "amber white--text",
-          title: "Kitchen remodel",
-          subtitle: "Jan 10, 2014"
+          subtitle: "Learn more about FireNote",
+          action: () => {
+            this.infoDialog = true;
+          }
         }
       ],
       fb: firebase.fb
@@ -145,8 +173,24 @@ export default {
     login: Login
   },
   methods: {
+    goBack() {
+      if (this.showReauth) {
+        this.showReauth = false;
+      } else {
+        this.$router.go(-1);
+      }
+    },
     reauth(data) {
-      if(data["error"]) alert("error")
+      if (data["error"]) alert("error");
+      else {
+        this.showReauth = false;
+        if (this.deletingAccount) {
+          this.deleteAccountDialog = true;
+          this.deletingAccount = false;
+        } else if (this.resettingPassword) {
+          this.resettingPassword = false;
+        }
+      }
     },
     deleteAccount() {
       firebase
@@ -158,14 +202,17 @@ export default {
     },
     changeMasterpassword() {
       if (
-        this.currentPassword.length > 0 &&
-        this.newPassword.length > 0 &&
-        this.currentPassword == this.currentPasswordAgain
+        this.currentMasterPassword.length > 0 &&
+        this.newMasterPassword.length > 0 &&
+        this.currentMasterPassword == this.currentMasterPasswordAgain
       ) {
         firebase
-          .changeMasterPassword(this.newPassword, this.currentPassword)
+          .changeMasterPassword(
+            this.newMasterPassword,
+            this.currentMasterPassword
+          )
           .then(() => {
-            this.passwordDialog = false;
+            this.masterPasswordDialog = false;
             EventBus.$emit("showSnackbar", "Changed password!");
           })
           .catch(err => {
@@ -179,3 +226,14 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0;
+}
+</style>
+

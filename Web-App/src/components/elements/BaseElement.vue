@@ -134,11 +134,11 @@ export default {
 </script>
 
 <style scoped>
-.btn.btn--icon {
+.v-btn.v-btn--icon {
   color: white;
 }
 
-.toolbar__title {
+.v-toolbar__title {
   color: white;
 }
 </style>

@@ -1,13 +1,14 @@
 <template>
     <v-dialog v-model="show" max-width="400">
         <v-card>
-            <v-card-title class="headline">Neues Element erstellen</v-card-title>
+            <v-card-title class="headline" v-if="!elementID">Neues Element erstellen</v-card-title>
+            <v-card-title class="headline" v-if="elementID">Element bearbeiten</v-card-title>
             <div class="px-3">
                 <v-text-field name="input-1" label="Element Titel wählen" type="text" v-model="title"></v-text-field>
                 <v-select :items="categories" v-model="category" item-text="name" item-value="id" label="Kategorie wählen"></v-select >
                 <v-select :items="colors" v-model="color" item-value="id" label="Farbe wählen" class="colorList">
                     <template slot="selection" slot-scope="data">
-                        <div :class="[data.item.value]" style="width: 100%; height: 100%; margin-top: 10px"></div>
+                        <div :class="[data.item.value]" style="width: 100%; height: 40px; margin-top: 10px"></div>
                     </template>
                     <template slot="item" slot-scope="data">
                         <div :class="[data.item.value]" style="width: 100%; height: 100%"></div>
@@ -38,8 +39,7 @@ export default {
       category: "general",
       color: -769226,
       categories: Constants.CATEGORIES,
-      colors: Constants.COLORS,
-      parent: null
+      colors: Constants.COLORS
     };
   },
   mounted() {
@@ -108,6 +108,10 @@ export default {
 <style>
 .colorList .icon {
   display: none !important;
+}
+
+.colorList .v-input__append-inner {
+  display: none;
 }
 
 .colorList .input-group__details:after {

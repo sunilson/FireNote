@@ -109,20 +109,20 @@ export default {
 </style>
 
 <style>
-.toolbar .toolbar__content > .btn:first-child,
-.toolbar .toolbar__extension > .btn:first-child {
+.v-toolbar .v-toolbar__content > .btn:first-child,
+.v-toolbar .v-toolbar__extension > .btn:first-child {
   margin-left: 8px !important;
 }
-.toolbar__title {
+.v-toolbar__title {
   margin-left: 8px !important;
 }
-.speed-dial__list {
+.v-speed-dial__list {
   padding-bottom: 10px;
 }
-.list {
+.v-list {
   background: #fafafa !important;
 }
-.icon {
+.v-icon {
   display: flex !important;
 }
 .fabColor {

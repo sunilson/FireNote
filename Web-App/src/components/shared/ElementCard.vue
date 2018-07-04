@@ -55,7 +55,7 @@ export default {
   align-items: center;
 }
 
-.icon {
+.v-icon {
   color: white;
 }
 
