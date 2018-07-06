@@ -3,6 +3,8 @@ package com.sunilson.firenote.presentation.application.di
 import com.sunilson.firenote.presentation.authentication.AuthenticationActivity
 import com.sunilson.firenote.presentation.authentication.di.AuthModule
 import com.sunilson.firenote.presentation.authentication.di.FragmentBuilder
+import com.sunilson.firenote.presentation.bin.BinActivity
+import com.sunilson.firenote.presentation.bin.di.BinModule
 import com.sunilson.firenote.presentation.elements.elementActivity.ElementActivity
 import com.sunilson.firenote.presentation.elements.elementActivity.di.ElementFragmentBuilder
 import com.sunilson.firenote.presentation.elements.elementActivity.di.ElementModule
@@ -47,18 +49,14 @@ abstract class ActivityBuilder {
     @ContributesAndroidInjector(modules = [AbstractElementDialogModule::class, ElementDialogModule::class])
     abstract fun contributeAddElementFragment(): ElementDialog
 
+    @ContributesAndroidInjector(modules = [BinModule::class])
+    @ActivityScope
+    abstract fun contributeBinActivity(): BinActivity
+
     /*
     @ContributesAndroidInjector(modules = [ElementDialogModule::class])
     @DialogFragmentScope
     abstract fun contributeAddElementFragment(): ElementDialog
     */
 
-    /*
-
-    @ContributesAndroidInjector(modules = [])
-    @ActivityScope
-    abstract fun contributeBinActivity(): BinActivity
-
-
-    */
 }

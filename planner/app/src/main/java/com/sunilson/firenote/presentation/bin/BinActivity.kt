@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.OvershootInterpolator
 import com.sunilson.firenote.R
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapter
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapterFactory
@@ -14,6 +15,7 @@ import com.sunilson.firenote.presentation.shared.base.BaseActivity
 import com.sunilson.firenote.presentation.shared.dialogs.ConfirmDialog
 import com.sunilson.firenote.presentation.shared.dialogs.interfaces.DialogListener
 import com.sunilson.firenote.presentation.shared.interfaces.HasElementList
+import jp.wasabeef.recyclerview.animators.ScaleInAnimator
 import kotlinx.android.synthetic.main.activity_bin.*
 import javax.inject.Inject
 
@@ -25,8 +27,8 @@ class BinActivity : BaseActivity(), BinPresenterContract.View, HasElementList {
     @Inject
     lateinit var elementRecyclerAdapterFactory: ElementRecyclerAdapterFactory
 
-    private lateinit var elementID: String
-    private lateinit var elementName: String
+    private var elementID: String? = null
+    private var elementName: String? = null
     override lateinit var adapter: ElementRecyclerAdapter
 
     override val mContext: Context
@@ -43,13 +45,15 @@ class BinActivity : BaseActivity(), BinPresenterContract.View, HasElementList {
 
         //Initialize list
         binList.setHasFixedSize(true)
+        binList.itemAnimator = ScaleInAnimator(OvershootInterpolator(1f))
+        binList.itemAnimator.addDuration = 300
         binList.layoutManager = LinearLayoutManager(this)
-        adapter = elementRecyclerAdapterFactory.create(View.OnClickListener { _ ->
-            val dialog = ConfirmDialog.newInstance("", "")
+        adapter = elementRecyclerAdapterFactory.create(View.OnClickListener { view ->
+            val dialog = ConfirmDialog.newInstance(getString(R.string.restore_element), getString(R.string.restore_element_question))
             dialog.listener = object: DialogListener<Boolean> {
                 override fun onResult(result: Boolean?) {
                     if(result == true) {
-
+                        binPresenter.restoreElement(adapter.data[binList.getChildLayoutPosition(view)].elementID)
                     }
                 }
             }
@@ -65,12 +69,15 @@ class BinActivity : BaseActivity(), BinPresenterContract.View, HasElementList {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId) {
+            android.R.id.home -> {
+                finish()
+            }
             R.id.bin_delete_all -> {
-                val dialog = ConfirmDialog.newInstance("", "")
+                val dialog = ConfirmDialog.newInstance(getString(R.string.clear_bin_title), getString(R.string.clear_bin_question))
                 dialog.listener = object: DialogListener<Boolean> {
                     override fun onResult(result: Boolean?) {
                         if(result == true) {
-
+                            binPresenter.clearElements()
                         }
                     }
                 }

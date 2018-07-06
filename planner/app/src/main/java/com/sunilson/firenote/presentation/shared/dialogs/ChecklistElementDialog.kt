@@ -31,7 +31,7 @@ class ChecklistElementDialog : BaseDialogFragmentSimpleText(), DialogWithResult<
 
         content.checklist_add_element_title.requestFocus()
         content.checklist_add_element_title.setOnEditorActionListener { _, i, keyEvent ->
-            if (keyEvent.keyCode == KeyEvent.KEYCODE_ENTER || i == EditorInfo.IME_ACTION_DONE) {
+            if (keyEvent != null && keyEvent.keyCode == KeyEvent.KEYCODE_ENTER || i == EditorInfo.IME_ACTION_DONE) {
                 dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
             }
             false

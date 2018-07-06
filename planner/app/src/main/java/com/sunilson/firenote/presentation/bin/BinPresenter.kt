@@ -1,6 +1,7 @@
 package com.sunilson.firenote.presentation.bin
 
 import com.google.firebase.auth.FirebaseAuth
+import com.sunilson.firenote.R
 import com.sunilson.firenote.data.IRepository
 import com.sunilson.firenote.data.models.ChangeType
 import com.sunilson.firenote.presentation.shared.base.BasePresenter
@@ -12,7 +13,7 @@ class BinPresenter @Inject constructor(private val view: BinPresenterContract.Vi
 
     override fun loadElementData() {
         disposable.dispose()
-        disposable.add(repository.loadElements(FirebaseAuth.getInstance().currentUser!!.uid).subscribe({
+        disposable.add(repository.loadBinElements(FirebaseAuth.getInstance().currentUser!!.uid).subscribe({
             updateWidget()
             when (it?.first) {
                 ChangeType.ADDED -> view.elementAdded(it.second)
@@ -32,12 +33,19 @@ class BinPresenter @Inject constructor(private val view: BinPresenterContract.Vi
         if (FirebaseAuth.getInstance().currentUser != null) loadElementData()
     }
 
-    override fun clearElements() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun clearElements(parent: String?) {
+        disposable.add(repository.clearBin(FirebaseAuth.getInstance().currentUser!!.uid, parent).subscribe({
+            view.showSuccess(view.mContext?.getString(R.string.cleared_elements))
+        }, {
+            view.showError(it.message)
+        }))
     }
 
-    override fun restoreElement(id: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun restoreElement(id: String, parent: String?) {
+        disposable.add(repository.restoreElement(FirebaseAuth.getInstance().currentUser!!.uid, id).subscribe({
+            view.showSuccess(view.mContext?.getString(R.string.element_restored))
+        }, {
+            view.showError(it.message)
+        }))
     }
-
 }

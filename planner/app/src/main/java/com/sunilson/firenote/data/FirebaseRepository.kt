@@ -20,6 +20,7 @@ import javax.inject.Singleton
 
 interface IRepository {
     fun loadElements(userId: String): Flowable<Pair<ChangeType, Element>?>
+    fun loadBinElements(userId: String, elementID: String? = null): Flowable<Pair<ChangeType, Element>?>
     fun loadAllElements(userId: String): Single<List<Element>>
     fun loadElement(userId: String, id: String, parent: String? = null): Flowable<Element?>
     fun lockElement(userId: String, id: String, locked: Boolean, parent: String? = null): Completable
@@ -35,6 +36,7 @@ interface IRepository {
     fun storeElement(userId: String, element: Element): Completable
     fun deleteElement(userId: String, id: String, parent: String? = null): Completable
     fun restoreElement(userId: String, id: String, parent: String? = null): Completable
+    fun clearBin(userId: String, parent: String? = null): Completable
     fun updateElement(userId: String, element: Element): Completable
 }
 
@@ -71,6 +73,20 @@ class FirebaseRepository @Inject constructor() : IRepository {
             Log.d("Linus", result.toString())
             result
         }
+    }
+
+    override fun loadBinElements(userId: String, elementID: String?): Flowable<Pair<ChangeType, Element>?> {
+        var ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("bin")
+        ref = if (elementID != null) ref.child("bundles").child(elementID)
+        else ref.child("main")
+
+        return createFlowableFromQuery(ref) { snapshot, changeType ->
+            return@createFlowableFromQuery if (snapshot != null) {
+                val tempEvent = snapshot.getValue(FirebaseElement::class.java)!!.parseElement()
+                tempEvent.elementID = snapshot.key
+                Pair(changeType, tempEvent)
+            } else null
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun loadNoteContent(userId: String, id: String): Flowable<String> {
@@ -123,7 +139,39 @@ class FirebaseRepository @Inject constructor() : IRepository {
     }
 
     override fun restoreElement(userId: String, id: String, parent: String?): Completable {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        var ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("bin")
+        ref = if (parent != null) ref.child("bundles").child(parent).child(id)
+        else ref.child("main").child(id)
+
+        return Completable.create { emitter ->
+            ref.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError?) {
+                    if (p0 != null) emitter.onError(p0.toException())
+                    else emitter.onError(Exception())
+                }
+
+                override fun onDataChange(p0: DataSnapshot?) {
+                    if (p0 != null) {
+                        val tempEvent = p0.parseFirebaseElement()
+                        ref.removeValue().addOnFailureListener { emitter.onError(it) }.addOnSuccessListener {
+                            var newRef = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("elements")
+                            newRef = if (parent != null) newRef.child("bundles").child(parent).child(id)
+                            else newRef.child("main").child(id)
+                            newRef.setValue(tempEvent).addOnFailureListener { emitter.onError(it) }.addOnSuccessListener {
+                                emitter.onComplete()
+                            }
+                        }
+                    } else emitter.onError(Exception())
+                }
+            })
+        }
+    }
+
+    override fun clearBin(userId: String, parent: String?): Completable {
+        var ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("bin")
+        ref = if (parent != null) ref.child("bundles").child(parent)
+        else ref.child("main")
+        return createCompletableFromTask(ref.removeValue())
     }
 
     override fun updateElement(userId: String, element: Element): Completable {

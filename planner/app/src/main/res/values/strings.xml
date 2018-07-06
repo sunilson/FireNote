@@ -199,5 +199,6 @@
     <string name="password_empty">Password can\'t be empty!</string>
     <string name="please_log_in">Please log in</string>
     <string name="web_version">Web version</string>
+    <string name="cleared_elements">Cleared Elements!</string>
 
 </resources>

@@ -119,7 +119,10 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Vi
             R.id.action_logOut -> presenter.signOut()
             R.id.main_element_sort -> toggleSorting()
             R.id.main_element_visibility -> VisibilityDialog.newInstance().show(supportFragmentManager, "dialog")
-            R.id.action_bin -> startActivity(Intent(this, BinActivity::class.java))
+            R.id.action_bin -> {
+                val intent = Intent(this, BinActivity::class.java)
+                startActivity(intent)
+            }
             R.id.action_settings -> startActivity(Intent(this, SettingsActivity::class.java))
             R.id.action_web -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com")))
         }

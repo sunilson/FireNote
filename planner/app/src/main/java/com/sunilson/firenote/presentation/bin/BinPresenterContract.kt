@@ -9,7 +9,7 @@ interface BinPresenterContract {
     }
 
     interface Presenter : ElementContentPresenterContract.Presenter {
-        fun restoreElement(id: String)
-        fun clearElements()
+        fun restoreElement(id: String, parent: String? = null)
+        fun clearElements(parent: String? = null)
     }
 }
