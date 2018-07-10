@@ -36,6 +36,11 @@ fun fabBackgroundColor(view: FloatingActionButton, color: Int?) {
     if (color != null) view.backgroundTintList = ColorStateList.valueOf(color)
 }
 
+@BindingAdapter("android:multiFabBackgroundColor")
+fun multiFabBackgroundColor(view: com.getbase.floatingactionbutton.FloatingActionsMenu, color: Int?) {
+    if(color != null) view.setBackgroundColor(color)
+}
+
 @BindingAdapter("android:noteTypeIcon")
 fun noteTypeIcon(view: ImageView, noteType: String?) {
     when (noteType) {

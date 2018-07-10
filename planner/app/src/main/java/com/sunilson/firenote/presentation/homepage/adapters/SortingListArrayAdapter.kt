@@ -14,7 +14,8 @@ import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import com.sunilson.firenote.presentation.shared.sortingMethods
 import javax.inject.Inject
 
-class SortingListArrayAdapter constructor(context: Context,
+@ActivityScope
+class SortingListArrayAdapter @Inject constructor(context: Context,
                                           val localSettingsManager: LocalSettingsManager)
     : BaseArrayAdapter<SortingMethod>(context, 0) {
 
@@ -43,11 +44,3 @@ class SortingListArrayAdapter constructor(context: Context,
 
     class ViewHolder(val textView: TextView, val icon: ImageView)
 }
-
-@ActivityScope
-class SortingListArrayAdapterFactory @Inject constructor(val localSettingsManager: LocalSettingsManager) {
-    fun create(context: Context): SortingListArrayAdapter {
-        return SortingListArrayAdapter(context, localSettingsManager)
-    }
-}
-

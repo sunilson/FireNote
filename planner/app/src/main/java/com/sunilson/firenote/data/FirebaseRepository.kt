@@ -19,13 +19,12 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 interface IRepository {
-    fun loadElements(userId: String): Flowable<Pair<ChangeType, Element>?>
+    fun loadElements(userId: String, elementID: String? = null): Flowable<Pair<ChangeType, Element>?>
     fun loadBinElements(userId: String, elementID: String? = null): Flowable<Pair<ChangeType, Element>?>
     fun loadAllElements(userId: String): Single<List<Element>>
     fun loadElement(userId: String, id: String, parent: String? = null): Flowable<Element?>
     fun lockElement(userId: String, id: String, locked: Boolean, parent: String? = null): Completable
     fun loadNoteContent(userId: String, id: String): Flowable<String>
-    fun loadBundleElements(userId: String): Flowable<List<Pair<ChangeType, Element>>>
 
     fun loadChecklistElements(userId: String, id: String): Flowable<Pair<ChangeType, ChecklistElement>>
     fun addChecklistElement(userId: String, elementID: String, checklistElement: ChecklistElement): Completable
@@ -171,6 +170,7 @@ class FirebaseRepository @Inject constructor() : IRepository {
         var ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("bin")
         ref = if (parent != null) ref.child("bundles").child(parent)
         else ref.child("main")
+        //TODO Contents löschen
         return createCompletableFromTask(ref.removeValue())
     }
 
@@ -180,11 +180,6 @@ class FirebaseRepository @Inject constructor() : IRepository {
         else ref.child("main").child(element.elementID)
         return createCompletableFromTask(ref.storeElement(element))
     }
-
-    override fun loadBundleElements(userId: String): Flowable<List<Pair<ChangeType, Element>>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
 
     override fun loadChecklistElements(userId: String, id: String): Flowable<Pair<ChangeType, ChecklistElement>> {
         var ref = FirebaseDatabase.getInstance().reference.child("users")
@@ -230,12 +225,15 @@ class FirebaseRepository @Inject constructor() : IRepository {
         return createCompletableFromTask(ref.removeValue())
     }
 
-    override fun loadElements(userId: String): Flowable<Pair<ChangeType, Element>?> {
-        return createFlowableFromQuery(FirebaseDatabase.getInstance().reference
+    override fun loadElements(userId: String, elementID: String?): Flowable<Pair<ChangeType, Element>?> {
+        var ref = FirebaseDatabase.getInstance().reference
                 .child("users")
                 .child(userId)
                 .child("elements")
-                .child("main")) { snapshot, changeType ->
+        ref = if(elementID == null) ref.child("main")
+        else ref.child("bundles").child(elementID)
+
+        return createFlowableFromQuery(ref) { snapshot, changeType ->
             return@createFlowableFromQuery if (snapshot != null) {
                 val tempEvent = snapshot.getValue(FirebaseElement::class.java)!!.parseElement()
                 tempEvent.elementID = snapshot.key

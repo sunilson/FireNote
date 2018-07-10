@@ -10,17 +10,6 @@ import javax.inject.Inject
 class ChecklistPresenter @Inject constructor(val view : ChecklistPresenterContract.View, private val repository: IRepository)
     : BasePresenter(view), ChecklistPresenterContract.Presenter{
 
-    override fun addChecklistElement(checklistElement: ChecklistElement) {
-        repository.addChecklistElement(FirebaseAuth.getInstance().currentUser!!.uid, view.element!!.elementID, checklistElement)
-    }
-
-    override fun removeChecklistElement(checklistElement: ChecklistElement) {
-        repository.removeChecklistElement(FirebaseAuth.getInstance().currentUser!!.uid, view.element!!.elementID, checklistElement)
-    }
-
-    override fun changeChecklistElement(checklistElement: ChecklistElement) {
-        repository.updateChecklistElement(FirebaseAuth.getInstance().currentUser!!.uid, view.element!!.elementID, checklistElement)
-    }
 
     override fun refreshChecklistElements() {
         disposable.dispose()
@@ -45,5 +34,17 @@ class ChecklistPresenter @Inject constructor(val view : ChecklistPresenterContra
     override fun onStop() {
         super.onStop()
         disposable.dispose()
+    }
+
+    override fun addChecklistElement(checklistElement: ChecklistElement) {
+        repository.addChecklistElement(FirebaseAuth.getInstance().currentUser!!.uid, view.element!!.elementID, checklistElement)
+    }
+
+    override fun removeChecklistElement(checklistElement: ChecklistElement) {
+        repository.removeChecklistElement(FirebaseAuth.getInstance().currentUser!!.uid, view.element!!.elementID, checklistElement)
+    }
+
+    override fun changeChecklistElement(checklistElement: ChecklistElement) {
+        repository.updateChecklistElement(FirebaseAuth.getInstance().currentUser!!.uid, view.element!!.elementID, checklistElement)
     }
 }

@@ -9,7 +9,6 @@ import android.view.animation.OvershootInterpolator
 import android.view.inputmethod.InputMethodManager
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.ChecklistElement
-import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.elements.BaseElementPresenterContract
 import com.sunilson.firenote.presentation.shared.base.BaseFragment
 import com.sunilson.firenote.presentation.shared.dialogs.ChecklistElementDialog
@@ -28,11 +27,8 @@ class ChecklistFragment : BaseFragment(), ChecklistPresenterContract.View {
     @Inject
     lateinit var checklistRecyclerAdapterFactory: ChecklistRecyclerAdapterFactory
 
-    val elementActivity: BaseElementPresenterContract.View?
+    override val elementActivity: BaseElementPresenterContract.View?
         get() = activity as? BaseElementPresenterContract.View
-
-    override val element: Element?
-        get() = elementActivity?.element
 
     private lateinit var imm: InputMethodManager
     private lateinit var checklistRecyclerAdapter: ChecklistRecyclerAdapter

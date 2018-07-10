@@ -18,7 +18,7 @@ open class Element constructor(
         val noteType: String = "note",
         private var _color: Int = R.color.note_color_1,
         private var _locked: Boolean = false,
-        val timeStamp: Long = 0,
+        val timeStamp: Long = Date().time,
         private var _title: String = "New Element",
         var parent: String? = null) : Parcelable, BaseObservable(), AdapterElement {
 

@@ -1,8 +1,5 @@
 package com.sunilson.firenote.presentation.homepage
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.ValueAnimator
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -20,7 +17,6 @@ import com.sunilson.firenote.presentation.elements.elementActivity.ElementActivi
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapter
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapterFactory
 import com.sunilson.firenote.presentation.homepage.adapters.SortingListArrayAdapter
-import com.sunilson.firenote.presentation.homepage.adapters.SortingListArrayAdapterFactory
 import com.sunilson.firenote.presentation.settings.SettingsActivity
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
 import com.sunilson.firenote.presentation.shared.dialogs.MasterPasswordDialog
@@ -33,10 +29,7 @@ import com.sunilson.firenote.presentation.shared.typeChecklist
 import com.sunilson.firenote.presentation.shared.typeNote
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.sorting_list_layout.*
 import javax.inject.Inject
-
-
 
 
 class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, View.OnClickListener {
@@ -51,12 +44,11 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Vi
     lateinit var elementRecyclerAdapterFactory: ElementRecyclerAdapterFactory
 
     @Inject
-    lateinit var sortListingArrayAdapterFactory: SortingListArrayAdapterFactory
+    lateinit var sortListingArrayAdapter: SortingListArrayAdapter
 
     //Click listeners
     private lateinit var recyclerViewClickListener: View.OnClickListener
     private lateinit var recyclerViewLongClickListener: View.OnLongClickListener
-    private lateinit var sortingListArrayAdapter: SortingListArrayAdapter
 
     override val mContext = this
 
@@ -81,15 +73,11 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Vi
         activity_main_recycler_view.itemAnimator.addDuration = 300
         activity_main_recycler_view.layoutManager = layoutManager
 
-        //Initialize sorting list
-        sortingListArrayAdapter = sortListingArrayAdapterFactory.create(this)
-        sorting_methods_list.adapter = sortingListArrayAdapter
-        sorting_methods_list.divider = null
-        sorting_methods_list.dividerHeight = 0
-
-        //Set sorting text
-        if (localSettingsManager.getSortingMethod() != null) activity_main_sorting_bar_title.text = getString(R.string.current_sorthing_method) + " " + localSettingsManager.getSortingMethod()
-        else activity_main_sorting_bar_title.text = getString(R.string.current_sorthing_method) + " " + getString(R.string.sort_ascending_name)
+        sorting_bar.sortingListArrayAdapter = sortListingArrayAdapter
+        sorting_bar.localSettingsManager = localSettingsManager
+        sorting_bar.sortingMethodChangedListener = {
+            adapter.checkOrderAndVisibility()
+        }
 
         handleIntent(intent)
     }
@@ -117,7 +105,7 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Vi
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.action_logOut -> presenter.signOut()
-            R.id.main_element_sort -> toggleSorting()
+            R.id.main_element_sort -> sorting_bar.toggle()
             R.id.main_element_visibility -> VisibilityDialog.newInstance().show(supportFragmentManager, "dialog")
             R.id.action_bin -> {
                 val intent = Intent(this, BinActivity::class.java)
@@ -134,7 +122,6 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Vi
         fab_add_checklist.setOnClickListener(this)
         fab_add_bundle.setOnClickListener(this)
         fab_add_gallery.setOnClickListener(this)
-        activity_main_sorting_bar.setOnClickListener(this)
 
         recyclerViewClickListener = View.OnClickListener {
             val element = adapter.data[activity_main_recycler_view.getChildLayoutPosition(it)]
@@ -155,39 +142,6 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Vi
             presenter.loadElementData()
             activity_main_swipe_refresh_layout.isRefreshing = false
         }
-
-        sorting_methods_list.setOnItemClickListener { _, _, position, _ ->
-            toggleSorting()
-            localSettingsManager.setSortingMethod(sortingListArrayAdapter.getItem(position).name)
-            activity_main_sorting_bar_title.text = getString(R.string.sort_by, sortingListArrayAdapter.getItem(position).name)
-            adapter.checkOrderAndVisibility()
-        }
-    }
-
-    private fun toggleSorting() {
-        val collapsed = activity_main_sorting_bar.layoutParams.height == resources.getDimensionPixelSize(R.dimen.sorting_layout_collapsed)
-
-        val height = if (collapsed) resources.getDimensionPixelSize(R.dimen.sorting_layout_expanded)
-        else resources.getDimensionPixelSize(R.dimen.sorting_layout_collapsed)
-
-        val slideAnimator = ValueAnimator.ofInt(activity_main_sorting_bar.height, height).setDuration(200)
-        slideAnimator.addUpdateListener {
-            val value = it.animatedValue as Int
-            val layoutparams = activity_main_sorting_bar.layoutParams
-            layoutparams.height = value
-            activity_main_sorting_bar.layoutParams = layoutparams
-        }
-        slideAnimator.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator?) {
-                if (collapsed) sorting_methods_list.visibility = View.VISIBLE
-                else activity_main_sorting_bar_title.visibility = View.VISIBLE
-            }
-        })
-
-        if (collapsed) activity_main_sorting_bar_title.visibility = View.GONE
-        else sorting_methods_list.visibility = View.GONE
-
-        slideAnimator.start()
     }
 
     private fun handleIntent(intent: Intent) {
@@ -240,16 +194,13 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Vi
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.fab_add_note -> {
-                ElementDialog.newInstance(getString(R.string.add_Element_Title), typeNote).show(supportFragmentManager, "dialog")
-                fab.collapse()
+                openElementDialog(typeNote)
             }
             R.id.fab_add_checklist -> {
-                ElementDialog.newInstance(getString(R.string.add_Element_Title), typeChecklist).show(supportFragmentManager, "dialog")
-                fab.collapse()
+                openElementDialog(typeChecklist)
             }
             R.id.fab_add_bundle -> {
-                ElementDialog.newInstance(getString(R.string.add_Element_Title), typeBundle).show(supportFragmentManager, "dialog")
-                fab.collapse()
+                openElementDialog(typeBundle)
             }
             R.id.fab_add_gallery -> {
                 val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -257,8 +208,12 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Vi
                     startActivityForResult(takePictureIntent, 1)
                 }
             }
-            R.id.activity_main_sorting_bar -> toggleSorting()
         }
+    }
+
+    private fun openElementDialog(elementType: String) {
+        ElementDialog.newInstance(getString(R.string.add_Element_Title), elementType).show(supportFragmentManager, "dialog")
+        fab.collapse()
     }
 
     override fun loggedOut() {

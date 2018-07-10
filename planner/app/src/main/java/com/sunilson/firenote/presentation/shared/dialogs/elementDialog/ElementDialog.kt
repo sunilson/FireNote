@@ -55,6 +55,7 @@ class ElementDialog : BaseDialogFragment(), ElementDialogPresenterContract.View 
             v.add_element_title.setText(element.title)
             editMode = true
         } else element = Element("", Category("", ""), elementType)
+        element.parent = arguments?.getString("parent")
 
         context!!.colors().forEach { colorAdapter.add(it) }
         imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -138,11 +139,12 @@ class ElementDialog : BaseDialogFragment(), ElementDialogPresenterContract.View 
     override fun toggleLoading(loading: Boolean, message: String?) {}
 
     companion object {
-        fun newInstance(title: String, elementType: String, element: Element? = null): ElementDialog {
+        fun newInstance(title: String, elementType: String, element: Element? = null, parent: String? = null): ElementDialog {
             val dialog = ElementDialog()
             val args = Bundle()
             args.putString("title", title)
             args.putString("elementType", elementType)
+            if(parent != null) args.putString("parent", parent)
             if(element != null) args.putParcelable("element", element)
             dialog.arguments = args
             return dialog

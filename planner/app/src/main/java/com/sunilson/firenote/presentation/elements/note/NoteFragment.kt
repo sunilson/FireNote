@@ -8,7 +8,6 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.sunilson.firenote.R
-import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.elements.BaseElementPresenterContract
 import com.sunilson.firenote.presentation.shared.base.BaseFragment
 import com.sunilson.firenote.presentation.shared.singletons.ConnectivityManager
@@ -32,11 +31,8 @@ class NoteFragment : BaseFragment(), NotePresenterContract.INoteView {
     private lateinit var imm: InputMethodManager
     private var editMode = false
 
-    val elementActivity: BaseElementPresenterContract.View?
+    override val elementActivity: BaseElementPresenterContract.View?
         get() = activity as? BaseElementPresenterContract.View
-
-    override val element: Element?
-        get() = elementActivity?.element
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)

@@ -65,7 +65,12 @@
         android:paddingTop="@dimen/element_list_vertical_margin"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <include layout="@layout/sorting_list_layout" />
+        <com.sunilson.firenote.presentation.shared.views.SortingBarView
+            android:id="@+id/sorting_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title=" "
+            />
 
         <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/activity_main_swipe_refresh_layout"
