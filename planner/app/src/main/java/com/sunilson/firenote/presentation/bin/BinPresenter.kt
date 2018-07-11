@@ -13,7 +13,7 @@ class BinPresenter @Inject constructor(private val view: BinPresenterContract.Vi
 
     override fun loadElementData() {
         disposable.dispose()
-        disposable.add(repository.loadBinElements(FirebaseAuth.getInstance().currentUser!!.uid).subscribe({
+        disposable.add(repository.loadBinElements(FirebaseAuth.getInstance().currentUser!!.uid, view.parent).subscribe({
             updateWidget()
             when (it?.first) {
                 ChangeType.ADDED -> view.elementAdded(it.second)
@@ -33,17 +33,25 @@ class BinPresenter @Inject constructor(private val view: BinPresenterContract.Vi
         if (FirebaseAuth.getInstance().currentUser != null) loadElementData()
     }
 
-    override fun clearElements(parent: String?) {
-        disposable.add(repository.clearBin(FirebaseAuth.getInstance().currentUser!!.uid, parent).subscribe({
+    override fun clearElements() {
+        disposable.add(repository.clearBin(FirebaseAuth.getInstance().currentUser!!.uid, view.parent).subscribe({
             view.showSuccess(view.mContext?.getString(R.string.cleared_elements))
         }, {
             view.showError(it.message)
         }))
     }
 
-    override fun restoreElement(id: String, parent: String?) {
-        disposable.add(repository.restoreElement(FirebaseAuth.getInstance().currentUser!!.uid, id).subscribe({
+    override fun restoreElement(id: String) {
+        disposable.add(repository.restoreElement(FirebaseAuth.getInstance().currentUser!!.uid,id,  view.parent).subscribe({
             view.showSuccess(view.mContext?.getString(R.string.element_restored))
+        }, {
+            view.showError(it.message)
+        }))
+    }
+
+    override fun deleteElement(id: String) {
+        disposable.add(repository.deleteBinElement(FirebaseAuth.getInstance().currentUser!!.uid, id, view.parent).subscribe({
+            view.showSuccess(view.mContext?.getString(R.string.element_removed))
         }, {
             view.showError(it.message)
         }))

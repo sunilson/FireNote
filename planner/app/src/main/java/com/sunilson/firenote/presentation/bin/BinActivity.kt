@@ -2,6 +2,8 @@ package com.sunilson.firenote.presentation.bin
 
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
+import android.support.v7.app.ActionBar
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
 import android.view.Menu
@@ -9,9 +11,12 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.OvershootInterpolator
 import com.sunilson.firenote.R
+import com.sunilson.firenote.R.id.binList
+import com.sunilson.firenote.R.id.toolbar
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapter
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapterFactory
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
+import com.sunilson.firenote.presentation.shared.changeStatusBarColor
 import com.sunilson.firenote.presentation.shared.dialogs.ConfirmDialog
 import com.sunilson.firenote.presentation.shared.dialogs.interfaces.DialogListener
 import com.sunilson.firenote.presentation.shared.interfaces.HasElementList
@@ -27,9 +32,10 @@ class BinActivity : BaseActivity(), BinPresenterContract.View, HasElementList {
     @Inject
     lateinit var elementRecyclerAdapterFactory: ElementRecyclerAdapterFactory
 
-    private var elementID: String? = null
     private var elementName: String? = null
+    private var elementColor: Int? = null
     override lateinit var adapter: ElementRecyclerAdapter
+    override var parent: String? = null
 
     override val mContext: Context
         get() = this
@@ -40,8 +46,22 @@ class BinActivity : BaseActivity(), BinPresenterContract.View, HasElementList {
         setSupportActionBar(findViewById<View>(R.id.toolbar) as Toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        elementID = intent.getStringExtra("elementID")
+        parent = intent.getStringExtra("elementID")
         elementName = intent.getStringExtra("elementName")
+        elementColor = intent.getIntExtra("elementColor", -1)
+
+        elementColor?.let {
+            if(it != -1) {
+                window.changeStatusBarColor(elementColor as Int)
+                toolbar.setBackgroundColor(elementColor as Int)
+                toolbar.setTitleTextColor(resources.getColor(R.color.white_text_color))
+                val backButton = ContextCompat.getDrawable(this, R.drawable.abc_ic_ab_back_material)
+                backButton?.setTint(resources.getColor(R.color.white_text_color))
+                (supportActionBar as ActionBar).setHomeAsUpIndicator(backButton)
+            }
+        }
+
+        if(elementName != null) title = elementName + " " + getString(R.string.bin)
 
         //Initialize list
         binList.setHasFixedSize(true)
@@ -58,12 +78,21 @@ class BinActivity : BaseActivity(), BinPresenterContract.View, HasElementList {
                 }
             }
             dialog.show(supportFragmentManager, "dialog")
-        }, View.OnLongClickListener { _ ->  true}, { _, _ -> }, binList)
+        }, View.OnLongClickListener { _ ->  true}, { id, _ ->
+            binPresenter.deleteElement(id)
+        }, binList)
         binList.adapter = adapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_bin, menu)
+
+        if(elementColor != null && elementColor != -1) {
+            val drawable = menu?.findItem(R.id.bin_delete_all)?.icon
+            drawable?.setTint(resources.getColor(R.color.white_text_color))
+            menu?.findItem(R.id.bin_delete_all)?.icon = drawable
+        }
+
         return true
     }
 

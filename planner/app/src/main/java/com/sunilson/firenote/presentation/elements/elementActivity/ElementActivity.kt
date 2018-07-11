@@ -2,13 +2,14 @@ package com.sunilson.firenote.presentation.elements.elementActivity
 
 import android.content.Context
 import android.databinding.DataBindingUtil
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.text.TextUtils
-import android.view.*
+import android.view.KeyEvent
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import com.sunilson.firenote.R
@@ -19,6 +20,7 @@ import com.sunilson.firenote.presentation.elements.bundle.BundleFragment
 import com.sunilson.firenote.presentation.elements.checklist.ChecklistFragment
 import com.sunilson.firenote.presentation.elements.note.NoteFragment
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
+import com.sunilson.firenote.presentation.shared.changeStatusBarColor
 import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.ElementDialog
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import dagger.android.AndroidInjector
@@ -103,7 +105,7 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View, HasSu
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> {
-                if ((supportFragmentManager.fragments[0] as ElementContentPresenterContract.View).canLeave()) finish()
+                if ((supportFragmentManager.fragments[0] as ElementContentPresenterContract.View).canLeave()) this.finish()
             }
             R.id.menu_lock -> {
                 presenter.lockElement(!_element!!.locked)
@@ -121,19 +123,6 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View, HasSu
         lockButton = menu?.findItem(R.id.menu_lock)
         lockButton?.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_open_white_24dp)
         return super.onCreateOptionsMenu(menu)
-    }
-
-    private fun setStatusBarColors() {
-        //Darken notification bar color and set it to status bar. Only works in Lollipop and above
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            val hsv = FloatArray(3)
-            Color.colorToHSV(element!!.color, hsv)
-            hsv[2] *= 0.6f
-
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.statusBarColor = Color.HSVToColor(hsv)
-        }
     }
 
     override fun toggleTitleEdit(active: Boolean) {
@@ -169,7 +158,7 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View, HasSu
         element.parent = parent
         binding.element = _element
         checkLockStatus()
-        setStatusBarColors()
+        window.changeStatusBarColor(element.color)
     }
 
     private fun checkLockStatus() {

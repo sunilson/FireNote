@@ -126,14 +126,6 @@
                 app:fab_icon="@drawable/ic_done_all_white_24dp"
                 app:fab_title="@string/element_checklist" />
 
-            <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_add_bundle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:fab_colorNormal="@color/note_color_1"
-                app:fab_colorPressed="@color/note_color_1"
-                app:fab_icon="@drawable/ic_list_white_24dp"
-                app:fab_title="@string/element_bundle" />
         </com.getbase.floatingactionbutton.FloatingActionsMenu>
     </android.support.design.widget.CoordinatorLayout>
 </layout>

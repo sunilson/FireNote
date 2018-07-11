@@ -36,6 +36,7 @@ interface IRepository {
     fun deleteElement(userId: String, id: String, parent: String? = null): Completable
     fun restoreElement(userId: String, id: String, parent: String? = null): Completable
     fun clearBin(userId: String, parent: String? = null): Completable
+    fun deleteBinElement(userId: String, elementID: String, parent: String? = null): Completable
     fun updateElement(userId: String, element: Element): Completable
 }
 
@@ -174,6 +175,14 @@ class FirebaseRepository @Inject constructor() : IRepository {
         return createCompletableFromTask(ref.removeValue())
     }
 
+    override fun deleteBinElement(userId: String, elementID: String, parent: String?): Completable {
+        var ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("bin")
+        ref = if (parent != null) ref.child("bundles").child(parent).child(elementID)
+        else ref.child("main").child(elementID)
+        //TODO Contents löschen
+        return createCompletableFromTask(ref.removeValue())
+    }
+
     override fun updateElement(userId: String, element: Element): Completable {
         var ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("elements")
         ref = if (element.parent != null) ref.child("bundles").child(element.parent).child(element.elementID)
@@ -230,13 +239,14 @@ class FirebaseRepository @Inject constructor() : IRepository {
                 .child("users")
                 .child(userId)
                 .child("elements")
-        ref = if(elementID == null) ref.child("main")
+        ref = if (elementID == null) ref.child("main")
         else ref.child("bundles").child(elementID)
 
         return createFlowableFromQuery(ref) { snapshot, changeType ->
             return@createFlowableFromQuery if (snapshot != null) {
                 val tempEvent = snapshot.getValue(FirebaseElement::class.java)!!.parseElement()
                 tempEvent.elementID = snapshot.key
+                if (elementID != null) tempEvent.parent = elementID
                 Pair(changeType, tempEvent)
             } else null
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())

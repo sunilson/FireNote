@@ -6,10 +6,12 @@ import com.sunilson.firenote.presentation.shared.interfaces.HasElementList
 
 interface BinPresenterContract {
     interface View : IBaseView, HasElementList {
+        var parent: String?
     }
 
     interface Presenter : ElementContentPresenterContract.Presenter {
-        fun restoreElement(id: String, parent: String? = null)
-        fun clearElements(parent: String? = null)
+        fun restoreElement(id: String)
+        fun clearElements()
+        fun deleteElement(id: String)
     }
 }

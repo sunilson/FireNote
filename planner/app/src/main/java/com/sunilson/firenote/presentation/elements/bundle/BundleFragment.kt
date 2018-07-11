@@ -1,11 +1,13 @@
 package com.sunilson.firenote.presentation.elements.bundle
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import android.view.animation.OvershootInterpolator
 import com.sunilson.firenote.R
+import com.sunilson.firenote.presentation.bin.BinActivity
 import com.sunilson.firenote.presentation.elements.BaseElementPresenterContract
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapter
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapterFactory
@@ -14,7 +16,6 @@ import com.sunilson.firenote.presentation.shared.base.BaseFragment
 import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.ElementDialog
 import com.sunilson.firenote.presentation.shared.interfaces.HasElementList
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
-import com.sunilson.firenote.presentation.shared.typeBundle
 import com.sunilson.firenote.presentation.shared.typeChecklist
 import com.sunilson.firenote.presentation.shared.typeNote
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator
@@ -49,7 +50,16 @@ class BundleFragment : BaseFragment(), BundlePresenterContract.View, HasElementL
         view.bundleList.itemAnimator = ScaleInAnimator(OvershootInterpolator(1f))
         view.bundleList.itemAnimator.addDuration = 300
         view.bundleList.layoutManager = LinearLayoutManager(context)
-        adapter = elementRecyclerAdapterFactory.create(View.OnClickListener { view -> }, View.OnLongClickListener { _ -> true }, { id, _ ->
+        adapter = elementRecyclerAdapterFactory.create(View.OnClickListener {
+            openElement(adapter.data[view.bundleList.getChildLayoutPosition(it)], activity!!)
+        }, View.OnLongClickListener {
+            val element = adapter.data[view.bundleList.getChildLayoutPosition(it)]
+            if (element.locked) {
+            } else {
+                ElementDialog.newInstance(getString(R.string.edit_element_title), element.elementID, element).show(fragmentManager, "dialog")
+            }
+            true
+        }, { id, _ ->
             bundlePresenter.deleteBundleElement(id)
         }, view.bundleList)
         view.bundleList.adapter = adapter
@@ -69,7 +79,6 @@ class BundleFragment : BaseFragment(), BundlePresenterContract.View, HasElementL
             }, 200)
         }
         */
-
         return view
     }
 
@@ -77,7 +86,6 @@ class BundleFragment : BaseFragment(), BundlePresenterContract.View, HasElementL
         super.onAttach(context)
         activity?.fab_add_note?.setOnClickListener { openElementDialog(typeNote) }
         activity?.fab_add_checklist?.setOnClickListener { openElementDialog(typeChecklist) }
-        activity?.fab_add_bundle?.setOnClickListener { openElementDialog(typeBundle) }
     }
 
     private fun openElementDialog(elementType: String) {
@@ -92,6 +100,13 @@ class BundleFragment : BaseFragment(), BundlePresenterContract.View, HasElementL
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
+            R.id.bundle_menu_bin -> {
+                val intent = Intent(activity, BinActivity::class.java)
+                intent.putExtra("elementID", element?.elementID)
+                intent.putExtra("elementName", element?.title)
+                intent.putExtra("elementColor", element?.color)
+                startActivity(intent)
+            }
         }
         return super.onOptionsItemSelected(item)
     }

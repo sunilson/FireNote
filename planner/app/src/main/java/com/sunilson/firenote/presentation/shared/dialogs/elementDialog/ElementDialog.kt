@@ -55,7 +55,10 @@ class ElementDialog : BaseDialogFragment(), ElementDialogPresenterContract.View 
             v.add_element_title.setText(element.title)
             editMode = true
         } else element = Element("", Category("", ""), elementType)
-        element.parent = arguments?.getString("parent")
+
+        arguments?.getString("parent")?.let {
+            if(it.isNotEmpty()) element.parent = it
+        }
 
         context!!.colors().forEach { colorAdapter.add(it) }
         imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

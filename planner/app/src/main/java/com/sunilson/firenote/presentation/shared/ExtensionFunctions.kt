@@ -1,7 +1,11 @@
 package com.sunilson.firenote.presentation.shared
 
 import android.content.Context
+import android.graphics.Color
+import android.os.Build
 import android.support.v4.content.ContextCompat
+import android.view.Window
+import android.view.WindowManager
 import android.widget.Toast
 import com.google.android.gms.tasks.Task
 import com.google.firebase.database.DataSnapshot
@@ -12,7 +16,20 @@ import org.apache.commons.codec.binary.Hex
 import org.apache.commons.codec.digest.DigestUtils
 import java.util.*
 
-fun DatabaseReference.storeElement(element: Element) : Task<*> {
+fun Window.changeStatusBarColor(color: Int) {
+    //Darken notification bar color and set it to status bar. Only works in Lollipop and above
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        val hsv = FloatArray(3)
+        Color.colorToHSV(color, hsv)
+        hsv[2] *= 0.6f
+
+        this.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        this.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        this.statusBarColor = Color.HSVToColor(hsv)
+    }
+}
+
+fun DatabaseReference.storeElement(element: Element): Task<*> {
     return this.setValue(FirebaseElement(
             element.elementID,
             element.category.name,
@@ -29,7 +46,7 @@ fun Context.showToast(message: String? = "No message given!", duration: Int = To
     Toast.makeText(this, message, duration).show()
 }
 
-fun DataSnapshot.parseFirebaseElement() : FirebaseElement {
+fun DataSnapshot.parseFirebaseElement(): FirebaseElement {
     return FirebaseElement(
             this.key,
             this.child("categoryName").value as String,
@@ -75,7 +92,7 @@ fun Context.categories(): List<Category> {
     })
 }
 
-fun String.encodePassword() : String = String(Hex.encodeHex(DigestUtils.sha1(this)))
+fun String.encodePassword(): String = String(Hex.encodeHex(DigestUtils.sha1(this)))
 
 fun Context.colors(): List<NoteColor> {
     return listOf(

@@ -10,18 +10,14 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.OvershootInterpolator
 import com.sunilson.firenote.R
-import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.authentication.AuthenticationActivity
 import com.sunilson.firenote.presentation.bin.BinActivity
-import com.sunilson.firenote.presentation.elements.elementActivity.ElementActivity
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapter
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapterFactory
 import com.sunilson.firenote.presentation.homepage.adapters.SortingListArrayAdapter
 import com.sunilson.firenote.presentation.settings.SettingsActivity
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
-import com.sunilson.firenote.presentation.shared.dialogs.MasterPasswordDialog
 import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.ElementDialog
-import com.sunilson.firenote.presentation.shared.dialogs.interfaces.DialogListener
 import com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog.VisibilityDialog
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import com.sunilson.firenote.presentation.shared.typeBundle
@@ -125,7 +121,7 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Vi
 
         recyclerViewClickListener = View.OnClickListener {
             val element = adapter.data[activity_main_recycler_view.getChildLayoutPosition(it)]
-            openElement(element)
+            openElement(element, this)
         }
 
         recyclerViewLongClickListener = View.OnLongClickListener {
@@ -161,33 +157,7 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Vi
             }
         } else if (intent.action == Intent.ACTION_VIEW && intent.getStringExtra("openElement") != null) {
             val element = adapter.getElement(intent.getStringExtra("openElement"))
-            if (element != null) openElement(element)
-        }
-    }
-
-    private fun openElement(element: Element) {
-        if (element.locked) {
-            val dialog = MasterPasswordDialog.newInstance()
-            dialog.listener = object : DialogListener<Boolean> {
-                override fun onResult(result: Boolean?) {
-                    if (result != null && result) {
-                        val intent = Intent(this@MainActivity, ElementActivity::class.java)
-                        intent.putExtra("elementID", element.elementID)
-                        intent.putExtra("noteType", element.noteType)
-                        intent.putExtra("elementColor", element.color)
-                        startActivity(intent)
-                    } else {
-                        showError(getString(R.string.wrong_password))
-                    }
-                }
-            }
-            dialog.show(supportFragmentManager, "dialog")
-        } else {
-            val intent = Intent(this, ElementActivity::class.java)
-            intent.putExtra("elementID", element.elementID)
-            intent.putExtra("noteType", element.noteType)
-            intent.putExtra("elementColor", element.color)
-            startActivity(intent)
+            if (element != null) openElement(element, this)
         }
     }
 
