@@ -3,7 +3,6 @@ package com.sunilson.firenote.presentation.shared.dialogs
 import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
 import com.sunilson.firenote.R
@@ -29,7 +28,7 @@ class ImportTextDialog : BaseDialogFragmentSimpleText(), DialogWithResult<String
 
         content.import_dialog_edittext.requestFocus()
         content.import_dialog_edittext.setOnEditorActionListener { _, i, keyEvent ->
-            if (keyEvent.keyCode == KeyEvent.KEYCODE_ENTER || i == EditorInfo.IME_ACTION_DONE) {
+            if (i == EditorInfo.IME_ACTION_DONE) {
                 dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
             }
             false

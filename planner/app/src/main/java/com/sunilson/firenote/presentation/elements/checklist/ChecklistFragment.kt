@@ -1,8 +1,10 @@
 package com.sunilson.firenote.presentation.elements.checklist
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.provider.CalendarContract
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import android.view.animation.OvershootInterpolator
@@ -12,12 +14,17 @@ import com.sunilson.firenote.data.models.ChecklistElement
 import com.sunilson.firenote.presentation.elements.BaseElementPresenterContract
 import com.sunilson.firenote.presentation.shared.base.BaseFragment
 import com.sunilson.firenote.presentation.shared.dialogs.ChecklistElementDialog
+import com.sunilson.firenote.presentation.shared.dialogs.ConfirmDialog
 import com.sunilson.firenote.presentation.shared.dialogs.ImportTextDialog
 import com.sunilson.firenote.presentation.shared.dialogs.interfaces.DialogListener
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator
 import kotlinx.android.synthetic.main.base_element_activity.*
 import kotlinx.android.synthetic.main.fragment_checklist.view.*
 import javax.inject.Inject
+
+
+
+
 
 class ChecklistFragment : BaseFragment(), ChecklistPresenterContract.View {
 
@@ -82,17 +89,50 @@ class ChecklistFragment : BaseFragment(), ChecklistPresenterContract.View {
                 dialog.listener = object : DialogListener<String> {
                     override fun onResult(result: String?) {
                         result?.lines()?.forEach { line ->
-                            val element = ChecklistElement(text = line.substring(1).trim())
-                            when {
-                                line[0] == '☒' -> element.finished = true
-                                line[0] == '☐' -> element.finished = false
-                                else -> element.finished = false
+                            if(line.isNotEmpty()) {
+                                val element = ChecklistElement(text = line.substring(1).trim())
+                                when {
+                                    line[0] == '☒' -> element.finished = true
+                                    line[0] == '☐' -> element.finished = false
+                                    else -> element.finished = false
+                                }
+                                checklistPresenter.addChecklistElement(element)
                             }
-                            checklistPresenter.addChecklistElement(element)
                         }
                     }
                 }
                 dialog.show(childFragmentManager, "dialog")
+            }
+            R.id.clean_checklist -> {
+                val dialogFragment = ConfirmDialog.newInstance(getString(R.string.remove_checked_items_title), getString(R.string.remove_checked_items))
+                dialogFragment.listener = object: DialogListener<Boolean> {
+                    override fun onResult(result: Boolean?) {
+                        checklistRecyclerAdapter.data.forEach {
+                            if(it.finished) checklistPresenter.removeChecklistElement(it)
+                        }
+                    }
+                }
+                dialogFragment.show(fragmentManager, "dialog")
+            }
+            R.id.menu_reminder -> {
+                val shareBody = "${getString(R.string.element_checklist)} \"${element?.title}\" ${getString(R.string.from_app)}: \n $checklistRecyclerAdapter"
+                val calIntent = Intent(Intent.ACTION_INSERT)
+                calIntent.data = CalendarContract.Events.CONTENT_URI
+                calIntent.type = "vnd.android.cursor.item/event"
+                calIntent.putExtra(CalendarContract.Events.TITLE, element?.title + " - " + getString(R.string.app_name))
+                calIntent.putExtra(CalendarContract.Events.DESCRIPTION, shareBody)
+                startActivityForResult(calIntent, 123)
+            }
+            R.id.check_checklist -> {
+                checklistRecyclerAdapter.checkAll()
+            }
+            R.id.menu_share -> {
+                val shareBody = checklistRecyclerAdapter.toString()
+                val sharingIntent = Intent(android.content.Intent.ACTION_SEND)
+                sharingIntent.type = "text/plain"
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, element?.title)
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody)
+                startActivity(Intent.createChooser(sharingIntent, ""))
             }
         }
         return super.onOptionsItemSelected(item)
@@ -102,6 +142,10 @@ class ChecklistFragment : BaseFragment(), ChecklistPresenterContract.View {
     override fun checklistElementAdded(checklistElement: ChecklistElement) = checklistRecyclerAdapter.add(checklistElement)
     override fun checklistElementChanged(checklistElement: ChecklistElement) {
         Handler().postDelayed({ checklistRecyclerAdapter.update(checklistElement) }, 200)
+    }
+
+    override fun clearAdapter() {
+        checklistRecyclerAdapter.clear()
     }
 
     override fun checklistElementRemoved(checklistElement: ChecklistElement) = checklistRecyclerAdapter.remove(checklistElement)

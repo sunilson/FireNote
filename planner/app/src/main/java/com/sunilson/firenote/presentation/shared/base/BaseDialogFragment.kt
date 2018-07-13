@@ -32,6 +32,7 @@ abstract class BaseDialogFragment : DialogFragment(), IBaseView {
         if(dialog.window != null) dialog.window.attributes.windowAnimations = R.style.dialogAnimation
     }
 
+
     override fun onDestroy() {
         disposable.dispose()
         super.onDestroy()

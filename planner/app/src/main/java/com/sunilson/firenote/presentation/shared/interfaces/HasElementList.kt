@@ -39,6 +39,7 @@ interface HasElementList {
             intent.putExtra("elementID", element.elementID)
             intent.putExtra("noteType", element.noteType)
             intent.putExtra("elementColor", element.color)
+            if(element.parent != null) intent.putExtra("parentID", element.parent)
             activity.startActivity(intent)
         }
     }

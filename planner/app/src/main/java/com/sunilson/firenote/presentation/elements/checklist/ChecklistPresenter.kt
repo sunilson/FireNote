@@ -33,6 +33,7 @@ class ChecklistPresenter @Inject constructor(val view : ChecklistPresenterContra
 
     override fun onStop() {
         super.onStop()
+        view.clearAdapter()
         disposable.dispose()
     }
 

@@ -8,6 +8,7 @@ interface ChecklistPresenterContract {
         fun checklistElementAdded(checklistElement: ChecklistElement)
         fun checklistElementChanged(checklistElement: ChecklistElement)
         fun checklistElementRemoved(checklistElement: ChecklistElement)
+        fun clearAdapter()
     }
 
     interface Presenter : ElementContentPresenterContract.Presenter {

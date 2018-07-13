@@ -60,6 +60,14 @@ class ChecklistRecyclerAdapter constructor(
         onSwipeListener(data[position])
         remove(data[position])
     }
+
+    fun checkAll() {
+        data.forEach {
+            it.finished = true
+        }
+
+        notifyDataSetChanged()
+    }
 }
 
 @FragmentScope
