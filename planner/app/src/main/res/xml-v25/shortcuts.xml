@@ -1,0 +1,63 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_done_all_black_24dp"
+        android:shortcutDisabledMessage="@string/checklist_disabled_message1"
+        android:shortcutId="createChecklist"
+        android:shortcutLongLabel="@string/checklist_shortcut_long_label1"
+        android:shortcutShortLabel="@string/checklist_shortcut_short_label1">
+        <intent
+            android:action="android.intent.action.CREATE_DOCUMENT"
+            android:targetClass="com.sunilson.firenote.presentation.homepage.MainActivity"
+            android:targetPackage="com.sunilson.firenote">
+            <extra
+                android:name="noteType"
+                android:value="checklist" />
+        </intent>
+        <!-- If your shortcut is associated with multiple intents, include them
+             here. The last intent in the list determines what the user sees when
+             they launch this shortcut. -->
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_list_black_24dp"
+        android:shortcutDisabledMessage="@string/bundle_disabled_message1"
+        android:shortcutId="createBundle"
+        android:shortcutLongLabel="@string/bundle_shortcut_long_label1"
+        android:shortcutShortLabel="@string/bundle_shortcut_short_label1">
+        <intent
+            android:action="android.intent.action.CREATE_DOCUMENT"
+            android:targetClass="com.sunilson.firenote.presentation.homepage.MainActivity"
+            android:targetPackage="com.sunilson.firenote">
+            <extra
+                android:name="noteType"
+                android:value="bundle" />
+        </intent>
+        <!-- If your shortcut is associated with multiple intents, include them
+             here. The last intent in the list determines what the user sees when
+             they launch this shortcut. -->
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/ic_note_black_24dp"
+        android:shortcutDisabledMessage="@string/note_disabled_message1"
+        android:shortcutId="createNote"
+        android:shortcutLongLabel="@string/note_shortcut_long_label1"
+        android:shortcutShortLabel="@string/note_shortcut_short_label1">
+        <intent
+            android:action="android.intent.action.CREATE_DOCUMENT"
+            android:targetClass="com.sunilson.firenote.presentation.homepage.MainActivity"
+            android:targetPackage="com.sunilson.firenote">
+            <extra
+                android:name="noteType"
+                android:value="note" />
+        </intent>
+        <!-- If your shortcut is associated with multiple intents, include them
+             here. The last intent in the list determines what the user sees when
+             they launch this shortcut. -->
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+    <!-- Specify more shortcuts here. -->
+</shortcuts>

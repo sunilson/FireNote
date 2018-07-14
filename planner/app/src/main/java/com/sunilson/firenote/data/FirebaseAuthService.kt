@@ -87,6 +87,7 @@ class FirebaseAuthService @Inject constructor(val context: Application) : IAuthe
 
     override fun signOut() {
         FirebaseAuth.getInstance().signOut()
+        if(mGoogleApiClient.isConnected) Auth.GoogleSignInApi.signOut(mGoogleApiClient)
     }
 
     override fun register(email: String, password: String, repeatedPassword: String): Completable {

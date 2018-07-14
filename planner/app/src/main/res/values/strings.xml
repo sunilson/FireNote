@@ -201,4 +201,17 @@
     <string name="web_version">Web version</string>
     <string name="cleared_elements">Cleared Elements!</string>
 
+    <string name="checklist_shortcut_short_label1">Create Checklist</string>
+    <string name="checklist_shortcut_long_label1">Create new Checklist</string>
+    <string name="checklist_disabled_message1">Create Checklist</string>
+
+    <string name="note_shortcut_short_label1">Create Note</string>
+    <string name="note_shortcut_long_label1">Create new Note</string>
+    <string name="note_disabled_message1">Create Note</string>
+
+    <string name="bundle_shortcut_short_label1">Create Bundle</string>
+    <string name="bundle_shortcut_long_label1">Create new Bundle</string>
+    <string name="bundle_disabled_message1">Create Bundle</string>
+    <string name="element_updated">Element updated</string>
+
 </resources>

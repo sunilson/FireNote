@@ -28,7 +28,7 @@ class ElementDialogPresenter @Inject constructor(
     override fun updateElement(element: Element) {
         if (validateElement(element)) {
             disposable.add(repository.updateElement(FirebaseAuth.getInstance().currentUser!!.uid, element).subscribe({
-                view.showSuccess(view.mContext?.getString(R.string.element_added))
+                view.showSuccess(view.mContext?.getString(R.string.element_updated))
                 updateWidget()
             }, { view.showError(it.message) }))
         } else view.showError("Validation failed")
