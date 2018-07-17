@@ -82,6 +82,26 @@
                 </v-card-actions>
             </v-card>
           </v-dialog>
+      <v-dialog v-model="loginPasswordDialog" max-width="400">
+            <v-card>
+                <v-card-title class="headline">Set login password</v-card-title>
+                <div style="padding-left: 16px; padding-right: 16px">
+                    <v-text-field label="New login password" 
+                    type="password"
+                    autofocus 
+                    v-model="newLoginPassword"></v-text-field>
+                    <v-text-field label="Repeat new login password" 
+                    type="password"
+                    v-model="newLoginPasswordAgain"
+                    @keyup.enter="changeLoginPassword()"></v-text-field>
+                </div>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="green darken-1" flat="flat" @click.native="loginPasswordDialog = false">Cancel</v-btn>
+                    <v-btn color="green darken-1" flat="flat" @click.native="changeLoginPassword()">Change</v-btn>
+                </v-card-actions>
+            </v-card>
+          </v-dialog>
           <v-dialog v-model="deleteAccountDialog" max-width="400">
             <v-card>
               <v-card-title class="headline">Delete account</v-card-title>
@@ -120,9 +140,12 @@ export default {
       infoDialog: false,
       deletingAccount: false,
       resettingPassword: false,
+      loginPasswordDialog: false,
       currentMasterPassword: "",
       currentMasterPasswordAgain: "",
       newMasterPassword: "",
+      newLoginPassword: "",
+      newLoginPasswordAgain: "",
       items: [
         {
           icon: "lock",
@@ -188,14 +211,21 @@ export default {
           this.deleteAccountDialog = true;
           this.deletingAccount = false;
         } else if (this.resettingPassword) {
+          this.newLoginPassword = "";
+          this.newLoginPasswordAgain = "";
           this.resettingPassword = false;
+          this.loginPasswordDialog = true;
         }
       }
     },
     deleteAccount() {
       firebase
         .deleteUserAccount()
-        .then(() => {})
+        .then(() => {
+          this.deleteAccountDialog = false;
+          EventBus.$emit("showSnackbar", "Deleted your account!");
+          firebase.fb.auth().signOut();
+        })
         .catch(err =>
           EventBus.$emit("showSnackbar", "Could not delete account!")
         );
@@ -217,6 +247,24 @@ export default {
           })
           .catch(err => {
             console.log(err);
+            EventBus.$emit("showSnackbar", "Could not change your password!");
+          });
+      } else {
+        EventBus.$emit("showSnackbar", "Passwords are empty or don't match!");
+      }
+    },
+    changeLoginPassword() {
+      if (
+        this.newLoginPassword.length > 0 &&
+        this.newLoginPassword == this.newLoginPasswordAgain
+      ) {
+        firebase
+          .changeLoginPassword(this.newLoginPassword)
+          .then(() => {
+            this.loginPasswordDialog = false;
+            EventBus.$emit("showSnackbar", "Changed password!");
+          })
+          .catch(err => {
             EventBus.$emit("showSnackbar", "Could not change your password!");
           });
       } else {

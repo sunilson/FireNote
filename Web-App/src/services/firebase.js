@@ -113,6 +113,10 @@ export default {
     return fb.auth().currentUser.delete()
   },
 
+  changeLoginPassword: function (password) {
+    return fb.auth().currentUser.updatePassword(password)
+  },
+
   deleteElement: function (id, parent, element) {
     return fb.database().ref(`users/${fb.auth().currentUser.uid}/elements/${parent ? "bundles/" + parent : "main"}/${id}`).remove()
   },
