@@ -29,12 +29,11 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:paddingRight="5dp"
                     android:layout_gravity="center_vertical"
+                    android:paddingRight="5dp"
                     android:src="@drawable/fire" />
 
                 <TextView
-                    android:gravity="center_vertical"
                     android:id="@+id/title"
                     style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                     android:layout_width="0px"
@@ -42,6 +41,7 @@
                     android:layout_weight="3"
                     android:background="@android:color/transparent"
                     android:ellipsize="end"
+                    android:gravity="center_vertical"
                     android:maxLines="1"
                     android:paddingLeft="5dp"
                     android:singleLine="true"
@@ -56,9 +56,9 @@
         android:id="@+id/content_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
         android:clipToPadding="false"
         android:orientation="vertical"
-        android:animateLayoutChanges="true"
         android:paddingBottom="@dimen/element_list_vertical_margin"
         android:paddingLeft="@dimen/element_list_horizontal_margin"
         android:paddingRight="@dimen/element_list_horizontal_margin"
@@ -69,13 +69,13 @@
             android:id="@+id/sorting_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title=" "
-            />
+            app:title=" " />
 
         <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/activity_main_swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/activity_main_recycler_view"
                 android:layout_width="match_parent"
@@ -93,8 +93,8 @@
         android:layout_gravity="bottom|right"
         android:layout_margin="10dp"
         app:fab_addButtonColorNormal="@color/colorAccent"
-        app:fab_colorNormal="@color/colorAccent"
         app:fab_addButtonColorPressed="@color/colorAccent"
+        app:fab_colorNormal="@color/colorAccent"
         app:fab_icon="@drawable/ic_add_white_24dp"
         app:fab_labelStyle="@style/menu_labels_style"
         app:fab_labelsPosition="left">

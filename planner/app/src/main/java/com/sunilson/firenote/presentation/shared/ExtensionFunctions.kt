@@ -3,6 +3,8 @@ package com.sunilson.firenote.presentation.shared
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
+import android.support.design.widget.CoordinatorLayout
+import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.view.Window
 import android.view.WindowManager
@@ -44,6 +46,16 @@ fun DatabaseReference.storeElement(element: Element): Task<*> {
 
 fun Context.showToast(message: String? = "No message given!", duration: Int = Toast.LENGTH_LONG) {
     Toast.makeText(this, message, duration).show()
+}
+
+fun CoordinatorLayout.showSnackbar(message: String = "", button: Boolean = false, actionMessage: String = "", actionCallback: () -> Unit = {}) {
+    val snackbar = Snackbar.make(this, message, Snackbar.LENGTH_LONG)
+    if (button) {
+        snackbar.setAction(actionMessage) {
+            actionCallback()
+        }
+    }
+    snackbar.show()
 }
 
 fun DataSnapshot.parseFirebaseElement(): FirebaseElement {

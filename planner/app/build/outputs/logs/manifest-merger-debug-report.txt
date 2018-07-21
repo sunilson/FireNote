@@ -46,6 +46,7 @@ MERGED from [com.android.support:support-v4:27.1.1] C:\Users\linus\.gradle\cache
 MERGED from [com.android.support:animated-vector-drawable:27.1.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.1.1.aar\c420a4da88fa88b33f8563e1e6447c06\AndroidManifest.xml:17:1-22:12
 MERGED from [com.android.support:support-vector-drawable:27.1.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.1.1.aar\4e546a714fca5044d419e34919f47c84\AndroidManifest.xml:17:1-22:12
 MERGED from [com.getbase:floatingactionbutton:1.10.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\floatingactionbutton-1.10.1.aar\cf1427b81a2e6d257fcbe467d52916f4\AndroidManifest.xml:2:1-14:12
+MERGED from [com.android.support.constraint:constraint-layout:1.1.2] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.1.2.aar\5cce0175a839529ab9b7de9f247f396b\AndroidManifest.xml:2:1-11:12
 MERGED from [android.arch.navigation:navigation-fragment:1.0.0-alpha01] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\navigation-fragment-1.0.0-alpha01.aar\24c896f0b2beeae542ea6fc3381d5e30\AndroidManifest.xml:17:1-22:12
 MERGED from [com.android.support:support-fragment:27.1.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\support-fragment-27.1.1.aar\e3f0ef9a35f74bd4188672ee00b91305\AndroidManifest.xml:17:1-22:12
 MERGED from [com.android.support:support-core-ui:27.1.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.1.1.aar\718b3410c0b5fc34ef67e6418c110bb4\AndroidManifest.xml:17:1-22:12
@@ -147,6 +148,8 @@ MERGED from [com.google.android.gms:play-services-basement:15.0.1] C:\Users\linu
 MERGED from [com.google.android.gms:play-services-basement:15.0.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\play-services-basement-15.0.1.aar\9259f0e95ab19e254918d6ce4f2e18fe\AndroidManifest.xml:22:5-26:19
 MERGED from [com.getbase:floatingactionbutton:1.10.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\floatingactionbutton-1.10.1.aar\cf1427b81a2e6d257fcbe467d52916f4\AndroidManifest.xml:12:5-20
 MERGED from [com.getbase:floatingactionbutton:1.10.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\floatingactionbutton-1.10.1.aar\cf1427b81a2e6d257fcbe467d52916f4\AndroidManifest.xml:12:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.1.2] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.1.2.aar\5cce0175a839529ab9b7de9f247f396b\AndroidManifest.xml:9:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.1.2] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.1.2.aar\5cce0175a839529ab9b7de9f247f396b\AndroidManifest.xml:9:5-20
 MERGED from [com.google.android.gms:play-services-measurement-base:15.0.2] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\play-services-measurement-base-15.0.2.aar\8aa872123150ee67cfdc0f80374a46ee\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.gms:play-services-measurement-base:15.0.2] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\play-services-measurement-base-15.0.2.aar\8aa872123150ee67cfdc0f80374a46ee\AndroidManifest.xml:22:5-20
 	android:supportsRtl
@@ -361,6 +364,8 @@ MERGED from [com.android.support:support-vector-drawable:27.1.1] C:\Users\linus\
 MERGED from [com.android.support:support-vector-drawable:27.1.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.1.1.aar\4e546a714fca5044d419e34919f47c84\AndroidManifest.xml:20:5-44
 MERGED from [com.getbase:floatingactionbutton:1.10.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\floatingactionbutton-1.10.1.aar\cf1427b81a2e6d257fcbe467d52916f4\AndroidManifest.xml:8:5-10:41
 MERGED from [com.getbase:floatingactionbutton:1.10.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\floatingactionbutton-1.10.1.aar\cf1427b81a2e6d257fcbe467d52916f4\AndroidManifest.xml:8:5-10:41
+MERGED from [com.android.support.constraint:constraint-layout:1.1.2] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.1.2.aar\5cce0175a839529ab9b7de9f247f396b\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support.constraint:constraint-layout:1.1.2] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.1.2.aar\5cce0175a839529ab9b7de9f247f396b\AndroidManifest.xml:5:5-7:41
 MERGED from [android.arch.navigation:navigation-fragment:1.0.0-alpha01] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\navigation-fragment-1.0.0-alpha01.aar\24c896f0b2beeae542ea6fc3381d5e30\AndroidManifest.xml:20:5-44
 MERGED from [android.arch.navigation:navigation-fragment:1.0.0-alpha01] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\navigation-fragment-1.0.0-alpha01.aar\24c896f0b2beeae542ea6fc3381d5e30\AndroidManifest.xml:20:5-44
 MERGED from [com.android.support:support-fragment:27.1.1] C:\Users\linus\.gradle\caches\transforms-1\files-1.1\support-fragment-27.1.1.aar\e3f0ef9a35f74bd4188672ee00b91305\AndroidManifest.xml:20:5-44

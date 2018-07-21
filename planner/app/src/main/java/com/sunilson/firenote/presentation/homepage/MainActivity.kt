@@ -3,6 +3,7 @@ package com.sunilson.firenote.presentation.homepage
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
@@ -19,6 +20,7 @@ import com.sunilson.firenote.presentation.settings.SettingsActivity
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
 import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.ElementDialog
 import com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog.VisibilityDialog
+import com.sunilson.firenote.presentation.shared.showSnackbar
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import com.sunilson.firenote.presentation.shared.typeBundle
 import com.sunilson.firenote.presentation.shared.typeChecklist
@@ -63,6 +65,11 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Vi
         activity_main_recycler_view.setHasFixedSize(true)
         adapter = elementRecyclerAdapterFactory.create(recyclerViewClickListener, recyclerViewLongClickListener, { id, _ ->
             presenter.deleteElement(id)
+            Handler().postDelayed({
+                activity_main.showSnackbar(getString(R.string.moved_to_bin), true, getString(R.string.undo)) {
+                    presenter.restoreElement(id)
+                }
+            }, 1500)
         }, activity_main_recycler_view)
         activity_main_recycler_view.adapter = adapter
         activity_main_recycler_view.itemAnimator = ScaleInAnimator(OvershootInterpolator(1f))

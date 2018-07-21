@@ -27,6 +27,11 @@ class ElementRecyclerAdapter constructor(
         val localSettingsManager: LocalSettingsManager) : BaseRecyclerAdapter<Element>(context), ItemTouchHelperAdapter {
 
     private var allItems = mutableListOf<Element>()
+    var swipeable: Boolean = true
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     init {
         //TODO Use Dagger
@@ -44,10 +49,12 @@ class ElementRecyclerAdapter constructor(
         binding.root.setOnClickListener(onClickListener)
         binding.root.setOnLongClickListener(onLongClickListener)
 
-        return if(viewType == 0) ViewHolder(binding) else ViewHolder(binding, true)
+        return if (viewType == 0) ViewHolder(binding) else ViewHolder(binding, true)
     }
 
     override fun getItemViewType(position: Int): Int {
+        if (!swipeable) return 0
+
         val element = _data[position]
         return if (element.locked) 0
         else 1
@@ -66,13 +73,12 @@ class ElementRecyclerAdapter constructor(
 
     override fun add(element: Element) {
         val existAllElement = allItems.find { it.elementID == element.elementID }
-        if(existAllElement == null) allItems.add(element)
+        if (existAllElement == null) allItems.add(element)
         else allItems[allItems.indexOf(existAllElement)] = element
 
         if (localSettingsManager.getCategoryVisibility(element.category.id) != -1 && localSettingsManager.getColorVisibility(element.color) != -1) {
-            if(existAllElement == null) {
+            if (existAllElement == null) {
                 _data.add(element)
-                notifyItemInserted(data.indexOf(element))
                 sort(localSettingsManager.getSortingMethod())
                 notifyItemInserted(data.indexOf(element))
             } else {

@@ -8,5 +8,6 @@ interface BundlePresenterContract {
 
     interface  Presenter: ElementContentPresenterContract.Presenter {
         fun deleteBundleElement(id: String)
+        fun restoreBundleElement(id: String)
     }
 }

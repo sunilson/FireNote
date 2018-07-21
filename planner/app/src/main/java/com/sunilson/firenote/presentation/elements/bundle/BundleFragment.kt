@@ -3,6 +3,7 @@ package com.sunilson.firenote.presentation.elements.bundle
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import android.view.animation.OvershootInterpolator
@@ -15,6 +16,7 @@ import com.sunilson.firenote.presentation.homepage.adapters.SortingListArrayAdap
 import com.sunilson.firenote.presentation.shared.base.BaseFragment
 import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.ElementDialog
 import com.sunilson.firenote.presentation.shared.interfaces.HasElementList
+import com.sunilson.firenote.presentation.shared.showSnackbar
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
 import com.sunilson.firenote.presentation.shared.typeChecklist
 import com.sunilson.firenote.presentation.shared.typeNote
@@ -61,6 +63,11 @@ class BundleFragment : BaseFragment(), BundlePresenterContract.View, HasElementL
             true
         }, { id, _ ->
             bundlePresenter.deleteBundleElement(id)
+            Handler().postDelayed({
+                activity?.base_element_activity_container?.showSnackbar(getString(R.string.moved_to_bin), true, getString(R.string.undo)) {
+                    bundlePresenter.restoreBundleElement(id)
+                }
+            }, 1500)
         }, view.bundleList)
         view.bundleList.adapter = adapter
 

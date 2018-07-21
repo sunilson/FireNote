@@ -11,8 +11,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.OvershootInterpolator
 import com.sunilson.firenote.R
-import com.sunilson.firenote.R.id.binList
-import com.sunilson.firenote.R.id.toolbar
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapter
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapterFactory
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
@@ -51,7 +49,7 @@ class BinActivity : BaseActivity(), BinPresenterContract.View, HasElementList {
         elementColor = intent.getIntExtra("elementColor", -1)
 
         elementColor?.let {
-            if(it != -1) {
+            if (it != -1) {
                 window.changeStatusBarColor(elementColor as Int)
                 toolbar.setBackgroundColor(elementColor as Int)
                 toolbar.setTitleTextColor(resources.getColor(R.color.white_text_color))
@@ -61,7 +59,7 @@ class BinActivity : BaseActivity(), BinPresenterContract.View, HasElementList {
             }
         }
 
-        if(elementName != null) title = elementName + " " + getString(R.string.bin)
+        if (elementName != null) title = elementName + " " + getString(R.string.bin)
 
         //Initialize list
         binList.setHasFixedSize(true)
@@ -70,24 +68,25 @@ class BinActivity : BaseActivity(), BinPresenterContract.View, HasElementList {
         binList.layoutManager = LinearLayoutManager(this)
         adapter = elementRecyclerAdapterFactory.create(View.OnClickListener { view ->
             val dialog = ConfirmDialog.newInstance(getString(R.string.restore_element), getString(R.string.restore_element_question))
-            dialog.listener = object: DialogListener<Boolean> {
+            dialog.listener = object : DialogListener<Boolean> {
                 override fun onResult(result: Boolean?) {
-                    if(result == true) {
+                    if (result == true) {
                         binPresenter.restoreElement(adapter.data[binList.getChildLayoutPosition(view)].elementID)
                     }
                 }
             }
             dialog.show(supportFragmentManager, "dialog")
-        }, View.OnLongClickListener { _ ->  true}, { id, _ ->
+        }, View.OnLongClickListener { _ -> true }, { id, _ ->
             binPresenter.deleteElement(id)
         }, binList)
+        adapter.swipeable = false
         binList.adapter = adapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_bin, menu)
 
-        if(elementColor != null && elementColor != -1) {
+        if (elementColor != null && elementColor != -1) {
             val drawable = menu?.findItem(R.id.bin_delete_all)?.icon
             drawable?.setTint(resources.getColor(R.color.white_text_color))
             menu?.findItem(R.id.bin_delete_all)?.icon = drawable
@@ -97,15 +96,15 @@ class BinActivity : BaseActivity(), BinPresenterContract.View, HasElementList {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId) {
+        when (item?.itemId) {
             android.R.id.home -> {
                 finish()
             }
             R.id.bin_delete_all -> {
                 val dialog = ConfirmDialog.newInstance(getString(R.string.clear_bin_title), getString(R.string.clear_bin_question))
-                dialog.listener = object: DialogListener<Boolean> {
+                dialog.listener = object : DialogListener<Boolean> {
                     override fun onResult(result: Boolean?) {
-                        if(result == true) {
+                        if (result == true) {
                             binPresenter.clearElements()
                         }
                     }

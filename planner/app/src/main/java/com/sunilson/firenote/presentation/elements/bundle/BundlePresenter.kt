@@ -1,6 +1,7 @@
 package com.sunilson.firenote.presentation.elements.bundle
 
 import com.google.firebase.auth.FirebaseAuth
+import com.sunilson.firenote.R
 import com.sunilson.firenote.data.IRepository
 import com.sunilson.firenote.data.models.ChangeType
 import com.sunilson.firenote.presentation.shared.base.BasePresenter
@@ -23,6 +24,14 @@ class BundlePresenter @Inject constructor(
 
     override fun deleteBundleElement(id: String) {
         disposable.add(repository.deleteElement(FirebaseAuth.getInstance().currentUser!!.uid, id, view.element?.elementID).subscribe())
+    }
+
+    override fun restoreBundleElement(id: String) {
+        disposable.add(repository.restoreElement(FirebaseAuth.getInstance().currentUser!!.uid, id, view.element?.elementID).subscribe({
+            view.showSuccess(view.mContext?.getString(R.string.element_restored))
+        }, {
+            view.showError(view.mContext?.getString(R.string.restore_error))
+        }))
     }
 
     override fun loadElementData() {

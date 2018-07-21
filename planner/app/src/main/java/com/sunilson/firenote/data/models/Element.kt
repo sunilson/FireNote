@@ -4,7 +4,6 @@ import android.databinding.BaseObservable
 import android.databinding.Bindable
 import android.os.Parcelable
 import com.sunilson.firenote.BR
-import com.sunilson.firenote.R
 import com.sunilson.firenote.presentation.shared.NotifyPropertyChangedDelegate
 import com.sunilson.firenote.presentation.shared.base.adapters.AdapterElement
 import kotlinx.android.parcel.IgnoredOnParcel
@@ -16,11 +15,13 @@ open class Element constructor(
         var elementID: String = "",
         private var _category: Category = Category("", ""),
         val noteType: String = "note",
-        private var _color: Int = R.color.note_color_1,
+        private var _color: Int = -769226,
         private var _locked: Boolean = false,
         val timeStamp: Long = Date().time,
         private var _title: String = "New Element",
-        var parent: String? = null) : Parcelable, BaseObservable(), AdapterElement {
+        var parent: String? = null,
+        var deleted: Boolean = false
+) : Parcelable, BaseObservable(), AdapterElement {
 
     @IgnoredOnParcel
     @get:Bindable
@@ -42,7 +43,10 @@ open class Element constructor(
     val creationDate: Date
         get() = Date(timeStamp)
 
-    fun copy() : Element = Element(elementID, _category, noteType, _color, _locked, timeStamp, _title, parent)
+    fun showLock(): Boolean = locked && !deleted
+    fun showRestoreIcon(): Boolean = deleted
+
+    fun copy(): Element = Element(elementID, _category, noteType, _color, _locked, timeStamp, _title, parent)
 
     override val compareByString: String
         get() = elementID

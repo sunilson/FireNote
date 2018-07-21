@@ -25,7 +25,6 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:id="@+id/binList_icon" />
-
         </LinearLayout>
 
 

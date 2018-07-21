@@ -84,6 +84,7 @@ class FirebaseRepository @Inject constructor() : IRepository {
             return@createFlowableFromQuery if (snapshot != null) {
                 val tempEvent = snapshot.getValue(FirebaseElement::class.java)!!.parseElement()
                 tempEvent.elementID = snapshot.key
+                tempEvent.deleted = true
                 Pair(changeType, tempEvent)
             } else null
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
@@ -151,7 +152,7 @@ class FirebaseRepository @Inject constructor() : IRepository {
                 }
 
                 override fun onDataChange(p0: DataSnapshot?) {
-                    if (p0 != null) {
+                    if (p0 != null && p0.child("noteType").value != null) {
                         val tempEvent = p0.parseFirebaseElement()
                         ref.removeValue().addOnFailureListener { emitter.onError(it) }.addOnSuccessListener {
                             var newRef = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("elements")
@@ -168,19 +169,51 @@ class FirebaseRepository @Inject constructor() : IRepository {
     }
 
     override fun clearBin(userId: String, parent: String?): Completable {
-        var ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("bin")
-        ref = if (parent != null) ref.child("bundles").child(parent)
-        else ref.child("main")
-        //TODO Contents löschen
-        return createCompletableFromTask(ref.removeValue())
+        return Completable.create { emitter ->
+            var ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("bin")
+            ref = if (parent != null) ref.child("bundles").child(parent)
+            else ref.child("main")
+
+            ref.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError?) {
+                    emitter.onError(Exception())
+                }
+
+                override fun onDataChange(p0: DataSnapshot?) {
+                    val ids = mutableListOf<String>()
+                    p0?.children?.forEach { ids.add(it.key) }
+                    ref.removeValue().addOnSuccessListener {
+                        ids.forEach { id ->
+                            val contentRef = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("contents").child(id)
+                            contentRef.removeValue()
+                        }
+                        emitter.onComplete()
+                    }.addOnFailureListener {
+                        emitter.onError(it)
+                    }
+                }
+            })
+
+        }
     }
 
     override fun deleteBinElement(userId: String, elementID: String, parent: String?): Completable {
-        var ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("bin")
-        ref = if (parent != null) ref.child("bundles").child(parent).child(elementID)
-        else ref.child("main").child(elementID)
-        //TODO Contents löschen
-        return createCompletableFromTask(ref.removeValue())
+        return Completable.create { emitter ->
+            var ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("bin")
+            ref = if (parent != null) ref.child("bundles").child(parent).child(elementID)
+            else ref.child("main").child(elementID)
+
+            ref.removeValue().addOnSuccessListener {
+                val contentRef = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("contents").child(elementID)
+                contentRef.removeValue().addOnSuccessListener {
+                    emitter.onComplete()
+                }.addOnFailureListener {
+                    emitter.onError(it)
+                }
+            }.addOnFailureListener {
+                emitter.onError(it)
+            }
+        }
     }
 
     override fun updateElement(userId: String, element: Element): Completable {

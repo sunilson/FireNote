@@ -12,6 +12,7 @@ interface HomepagePresenterContract {
 
     interface IHomepagePresenter : ElementContentPresenterContract.Presenter{
         fun deleteElement(id: String)
+        fun restoreElement(id: String)
         fun signOut()
     }
 }
