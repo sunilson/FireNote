@@ -38,11 +38,13 @@ class HomepagePresenter @Inject constructor(val repository: IRepository, val vie
     }
 
     override fun restoreElement(id: String) {
-        disposable.add(repository.restoreElement(FirebaseAuth.getInstance().currentUser!!.uid, id).subscribe( {
-            view.showSuccess(view.mContext?.getString(R.string.element_restored))
-        }, {
-            view.showError(view.mContext?.getString(R.string.restore_error))
-        }))
+        disposable.add(repository.elementWasDeleted(FirebaseAuth.getInstance().currentUser!!.uid, id).doOnComplete {
+            disposable.add(repository.restoreElement(FirebaseAuth.getInstance().currentUser!!.uid, id).subscribe({
+                view.showSuccess(view.mContext?.getString(R.string.element_restored))
+            }, {
+                view.showError(view.mContext?.getString(R.string.restore_error))
+            }))
+        }.subscribe())
     }
 
     override fun signOut() {

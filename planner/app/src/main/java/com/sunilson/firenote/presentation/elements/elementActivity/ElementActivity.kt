@@ -1,6 +1,7 @@
 package com.sunilson.firenote.presentation.elements.elementActivity
 
 import android.content.Context
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -19,6 +20,7 @@ import com.sunilson.firenote.presentation.elements.BaseElementPresenterContract
 import com.sunilson.firenote.presentation.elements.bundle.BundleFragment
 import com.sunilson.firenote.presentation.elements.checklist.ChecklistFragment
 import com.sunilson.firenote.presentation.elements.note.NoteFragment
+import com.sunilson.firenote.presentation.shared.ELEMENT_REMOVED_RESULT
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
 import com.sunilson.firenote.presentation.shared.changeStatusBarColor
 import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.ElementDialog
@@ -111,7 +113,7 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View, HasSu
                 presenter.lockElement(!_element!!.locked)
             }
             R.id.menu_settings -> {
-                if(element != null) ElementDialog.newInstance(getString(R.string.edit_element_title), element!!.elementID, element).show(supportFragmentManager, "dialog")
+                if (element != null) ElementDialog.newInstance(getString(R.string.edit_element_title), element!!.elementID, element).show(supportFragmentManager, "dialog")
             }
         }
 
@@ -126,7 +128,7 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View, HasSu
     }
 
     override fun toggleTitleEdit(active: Boolean) {
-        if(editMode == active) return
+        if (editMode == active) return
         editMode = active
         if (editMode) {
             title_edittext.ellipsize = null
@@ -166,7 +168,14 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View, HasSu
         else lockButton?.icon = ContextCompat.getDrawable(this, R.drawable.ic_lock_open_white_24dp)
     }
 
-    override fun elementRemoved() = finish()
+    override fun elementRemoved() {
+        val intent = Intent()
+        intent.putExtra("elementID", elementID)
+        setResult(ELEMENT_REMOVED_RESULT, intent)
+        finish()
+    }
+
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = dispatchingAndroidInjector
     override fun toggleLoading(loading: Boolean, message: String?) {}
 }
+

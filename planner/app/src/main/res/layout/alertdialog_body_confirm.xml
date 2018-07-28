@@ -16,5 +16,8 @@
         android:textColor="@color/primary_text_color"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         />
 </android.support.constraint.ConstraintLayout>

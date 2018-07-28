@@ -27,11 +27,13 @@ class BundlePresenter @Inject constructor(
     }
 
     override fun restoreBundleElement(id: String) {
-        disposable.add(repository.restoreElement(FirebaseAuth.getInstance().currentUser!!.uid, id, view.element?.elementID).subscribe({
-            view.showSuccess(view.mContext?.getString(R.string.element_restored))
-        }, {
-            view.showError(view.mContext?.getString(R.string.restore_error))
-        }))
+        disposable.add(repository.elementWasDeleted(FirebaseAuth.getInstance().currentUser!!.uid, id, view.element?.elementID).doOnComplete {
+            disposable.add(repository.restoreElement(FirebaseAuth.getInstance().currentUser!!.uid, id, view.element?.elementID).subscribe({
+                view.showSuccess(view.mContext?.getString(R.string.element_restored))
+            }, {
+                view.showError(view.mContext?.getString(R.string.restore_error))
+            }))
+        }.subscribe())
     }
 
     override fun loadElementData() {

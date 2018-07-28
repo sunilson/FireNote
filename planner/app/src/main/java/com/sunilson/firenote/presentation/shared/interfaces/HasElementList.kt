@@ -6,6 +6,7 @@ import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.elements.elementActivity.ElementActivity
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapter
+import com.sunilson.firenote.presentation.shared.ELEMENT_ACTIVITY_REQUEST
 import com.sunilson.firenote.presentation.shared.base.IBaseView
 import com.sunilson.firenote.presentation.shared.dialogs.MasterPasswordDialog
 import com.sunilson.firenote.presentation.shared.dialogs.interfaces.DialogListener
@@ -27,7 +28,7 @@ interface HasElementList {
                         intent.putExtra("noteType", element.noteType)
                         intent.putExtra("elementColor", element.color)
                         if(element.parent != null) intent.putExtra("parentID", element.parent)
-                        activity.startActivity(intent)
+                        activity.startActivityForResult(intent, ELEMENT_ACTIVITY_REQUEST)
                     } else {
                         if(activity is IBaseView) activity.showError(activity.getString(R.string.wrong_password))
                     }
@@ -40,7 +41,7 @@ interface HasElementList {
             intent.putExtra("noteType", element.noteType)
             intent.putExtra("elementColor", element.color)
             if(element.parent != null) intent.putExtra("parentID", element.parent)
-            activity.startActivity(intent)
+            activity.startActivityForResult(intent, ELEMENT_ACTIVITY_REQUEST)
         }
     }
 }

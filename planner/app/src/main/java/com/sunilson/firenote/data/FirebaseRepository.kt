@@ -38,6 +38,7 @@ interface IRepository {
     fun clearBin(userId: String, parent: String? = null): Completable
     fun deleteBinElement(userId: String, elementID: String, parent: String? = null): Completable
     fun updateElement(userId: String, element: Element): Completable
+    fun elementWasDeleted(userId: String, id: String, parent: String? = null): Completable
 }
 
 @Singleton
@@ -139,6 +140,27 @@ class FirebaseRepository @Inject constructor() : IRepository {
         return createCompletableFromTask(ref.removeValue())
     }
 
+    override fun elementWasDeleted(userId: String, id: String, parent: String?): Completable {
+        var ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("bin")
+        ref = if (parent != null) ref.child("bundles").child(parent).child(id)
+        else ref.child("main").child(id)
+
+        return Completable.create { emitter ->
+            val listener = ref.addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError?) {
+                    if (p0 != null) emitter.onError(p0.toException())
+                    else emitter.onError(Exception())
+                }
+
+                override fun onDataChange(p0: DataSnapshot?) {
+                    if (p0 != null && p0.value != null && p0.child("noteType").value != null) emitter.onComplete()
+                }
+            })
+
+            emitter.setCancellable { ref.removeEventListener(listener) }
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+    }
+
     override fun restoreElement(userId: String, id: String, parent: String?): Completable {
         var ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("bin")
         ref = if (parent != null) ref.child("bundles").child(parent).child(id)
@@ -165,7 +187,7 @@ class FirebaseRepository @Inject constructor() : IRepository {
                     } else emitter.onError(Exception())
                 }
             })
-        }
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun clearBin(userId: String, parent: String?): Completable {

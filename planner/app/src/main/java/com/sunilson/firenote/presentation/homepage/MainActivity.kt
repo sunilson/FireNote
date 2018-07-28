@@ -3,28 +3,26 @@ package com.sunilson.firenote.presentation.homepage
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.provider.MediaStore
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.OvershootInterpolator
+import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
+import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.authentication.AuthenticationActivity
 import com.sunilson.firenote.presentation.bin.BinActivity
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapter
 import com.sunilson.firenote.presentation.elements.elementList.ElementRecyclerAdapterFactory
 import com.sunilson.firenote.presentation.homepage.adapters.SortingListArrayAdapter
 import com.sunilson.firenote.presentation.settings.SettingsActivity
+import com.sunilson.firenote.presentation.shared.*
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
 import com.sunilson.firenote.presentation.shared.dialogs.elementDialog.ElementDialog
 import com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog.VisibilityDialog
-import com.sunilson.firenote.presentation.shared.showSnackbar
 import com.sunilson.firenote.presentation.shared.singletons.LocalSettingsManager
-import com.sunilson.firenote.presentation.shared.typeBundle
-import com.sunilson.firenote.presentation.shared.typeChecklist
-import com.sunilson.firenote.presentation.shared.typeNote
 import jp.wasabeef.recyclerview.animators.ScaleInAnimator
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -60,16 +58,13 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Vi
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
+        if (FirebaseAuth.getInstance().currentUser != null) localSettingsManager.showAnnouncementDialog(supportFragmentManager)
+
         //Initialize Recyclerview
         initClickListeners()
         activity_main_recycler_view.setHasFixedSize(true)
         adapter = elementRecyclerAdapterFactory.create(recyclerViewClickListener, recyclerViewLongClickListener, { id, _ ->
             presenter.deleteElement(id)
-            Handler().postDelayed({
-                activity_main.showSnackbar(getString(R.string.moved_to_bin), true, getString(R.string.undo)) {
-                    presenter.restoreElement(id)
-                }
-            }, 1500)
         }, activity_main_recycler_view)
         activity_main_recycler_view.adapter = adapter
         activity_main_recycler_view.itemAnimator = ScaleInAnimator(OvershootInterpolator(1f))
@@ -166,6 +161,26 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Vi
             val element = adapter.getElement(intent.getStringExtra("openElement"))
             if (element != null) openElement(element, this)
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            ELEMENT_ACTIVITY_REQUEST -> {
+                if (resultCode == ELEMENT_REMOVED_RESULT) {
+                    val id = data?.getStringExtra("elementID")
+                    if (id != null) {
+                        elementRemoved(Element(elementID = id))
+                    }
+                }
+            }
+        }
+    }
+
+    override fun elementRemoved(element: Element) {
+        activity_main.showSnackbar(getString(R.string.moved_to_bin), true, getString(R.string.undo)) {
+            presenter.restoreElement(element.elementID)
+        }
+        super.elementRemoved(element)
     }
 
     override fun onClick(v: View?) {

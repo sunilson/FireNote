@@ -2,6 +2,8 @@ package com.sunilson.firenote.presentation.shared.dialogs
 
 import android.app.Dialog
 import android.os.Bundle
+import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import com.sunilson.firenote.R
 import com.sunilson.firenote.presentation.shared.base.BaseDialogFragment
@@ -23,20 +25,21 @@ class ConfirmDialog : BaseDialogFragment(), DialogWithResult<Boolean> {
         builder.setPositiveButton(R.string.confirm_add_dialog) { _, _ ->
             listener?.onResult(true)
         }
-        if(arguments?.getBoolean("showNegative") != null && arguments!!.getBoolean("showNegative")) {
+        if (arguments?.getBoolean("showNegative") != null && arguments!!.getBoolean("showNegative")) {
             builder.setNegativeButton(R.string.cancel) { _, _ ->
                 listener?.onResult(false)
             }
         }
 
-        content.dialog_confirm_text.text = arguments?.getString("text")
+        content.dialog_confirm_text.text = Html.fromHtml(arguments?.getString("text"))
+        content.dialog_confirm_text.movementMethod = LinkMovementMethod.getInstance()
         return builder.create()
     }
 
     override fun toggleLoading(loading: Boolean, message: String?) {}
 
     companion object {
-        fun newInstance(title: String, text: String, showNegativeButton: Boolean = true) : ConfirmDialog {
+        fun newInstance(title: String, text: String, showNegativeButton: Boolean = true): ConfirmDialog {
             val bundle = Bundle()
             bundle.putString("title", title)
             bundle.putString("text", text)

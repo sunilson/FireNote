@@ -214,5 +214,7 @@
     <string name="bundle_disabled_message1">Create Bundle</string>
     <string name="element_updated">Element updated</string>
     <string name="restore_error">Could not restore Element</string>
+    <string name="current_announcement"><![CDATA[* Firenote now offers a <b>widget</b> that can display your notes directly on your home screen. <br><br> * There is now a <b>web version</b> of Firenote available. Just visit <a href="https://www.google.com">google.com</a> to find out more <br><br> * <b>UI improvements</b> have been made to make your workflow in Firenote faster]]></string>
+    <string name="current_announcement_title">New features</string>
 
 </resources>
