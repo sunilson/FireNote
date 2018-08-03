@@ -3,6 +3,7 @@ package com.sunilson.firenote.data
 import android.app.Activity
 import android.app.Application
 import android.content.Intent
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -25,7 +26,7 @@ interface IAuthentication {
     fun emailSignIn(email: String, password: String, reAuth: Boolean = false): Completable
     fun startGoogleSignIn(activity: Activity? = null, fragment: Fragment? = null)
     fun handleGoogleSignIn(intent: Intent, reAuth: Boolean = false): Completable
-    fun changePassword(password: String, repeatedPassword: String) : Completable
+    fun changePassword(password: String, repeatedPassword: String): Completable
     fun passwordReset(email: String): Completable
     fun register(email: String, password: String, repeatedPassword: String): Completable
     fun signOut()
@@ -59,7 +60,7 @@ class FirebaseAuthService @Inject constructor(val context: Application) : IAuthe
     }
 
     override fun changePassword(password: String, repeatedPassword: String): Completable {
-        if(password.isEmpty() || password != repeatedPassword) return Completable.error(IllegalArgumentException(context.getString(R.string.password_not_equal_empty)))
+        if (password.isEmpty() || password != repeatedPassword) return Completable.error(IllegalArgumentException(context.getString(R.string.password_not_equal_empty)))
         return createCompletableFromTask(FirebaseAuth.getInstance().currentUser!!.updatePassword(password))
     }
 
@@ -69,8 +70,8 @@ class FirebaseAuthService @Inject constructor(val context: Application) : IAuthe
     }
 
     override fun startGoogleSignIn(activity: Activity?, fragment: Fragment?) {
-        if(activity != null) activity.startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient), googleSignInRequestCode)
-        else if(fragment != null) fragment.startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient), googleSignInRequestCode)
+        if (activity != null) activity.startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient), googleSignInRequestCode)
+        else if (fragment != null) fragment.startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient), googleSignInRequestCode)
     }
 
     override fun handleGoogleSignIn(intent: Intent, reAuth: Boolean): Completable {
@@ -87,7 +88,14 @@ class FirebaseAuthService @Inject constructor(val context: Application) : IAuthe
 
     override fun signOut() {
         FirebaseAuth.getInstance().signOut()
-        if(mGoogleApiClient.isConnected) Auth.GoogleSignInApi.signOut(mGoogleApiClient)
+        mGoogleApiClient.connect()
+        mGoogleApiClient.registerConnectionCallbacks(object : GoogleApiClient.ConnectionCallbacks {
+            override fun onConnected(p0: Bundle?) {
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient)
+            }
+
+            override fun onConnectionSuspended(p0: Int) {}
+        })
     }
 
     override fun register(email: String, password: String, repeatedPassword: String): Completable {

@@ -1,7 +1,7 @@
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_done_all_black_24dp"
+        android:icon="@drawable/ic_done_all_white_24dp"
         android:shortcutDisabledMessage="@string/checklist_disabled_message1"
         android:shortcutId="createChecklist"
         android:shortcutLongLabel="@string/checklist_shortcut_long_label1"
@@ -21,7 +21,7 @@
     </shortcut>
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_list_black_24dp"
+        android:icon="@drawable/ic_list_white_24dp"
         android:shortcutDisabledMessage="@string/bundle_disabled_message1"
         android:shortcutId="createBundle"
         android:shortcutLongLabel="@string/bundle_shortcut_long_label1"
@@ -41,7 +41,7 @@
     </shortcut>
     <shortcut
         android:enabled="true"
-        android:icon="@drawable/ic_note_black_24dp"
+        android:icon="@drawable/ic_note_white_24dp"
         android:shortcutDisabledMessage="@string/note_disabled_message1"
         android:shortcutId="createNote"
         android:shortcutLongLabel="@string/note_shortcut_long_label1"
