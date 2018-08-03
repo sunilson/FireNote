@@ -48,7 +48,7 @@
     <string name="error_register_user_already_exists">Registrierung fehlgeschlagen! Benutzer existiert bereits.</string>
     <string name="google_sign_in">Einloggen mit Google</string>
     <string name="enter_password">Passwort eingeben</string>
-    <string name="error_password_match">Passwörter stimmen nicht überein!</string>
+    <string name="error_password_match">Passwörter stimmen nicht überein oder sind leer!</string>
     <string name="password_changed">Passwort geändert</string>
     <string name="reauth_title">Bitte einloggen</string>
     <string name="register_button">Registrieren</string>

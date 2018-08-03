@@ -26,7 +26,7 @@ class ElementPresenter @Inject constructor(private val eventRepository: IReposit
 
     override fun lockElement(locked: Boolean) {
         disposable.add(eventRepository.lockElement(FirebaseAuth.getInstance().currentUser!!.uid, view.element!!.elementID, locked, view.element!!.parent).subscribe({}, {
-            view.showError(view.mContext?.getString(R.string.set_master_password))
+            view.showError(view.mContext?.getString(R.string.master_password_not_set))
         }))
     }
 

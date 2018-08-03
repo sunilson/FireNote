@@ -119,7 +119,6 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Vi
         fab_add_note.setOnClickListener(this)
         fab_add_checklist.setOnClickListener(this)
         fab_add_bundle.setOnClickListener(this)
-        fab_add_gallery.setOnClickListener(this)
 
         recyclerViewClickListener = View.OnClickListener {
             val element = adapter.data[activity_main_recycler_view.getChildLayoutPosition(it)]

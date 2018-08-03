@@ -13,7 +13,7 @@
     <string name="error_register_user_already_exists">Register failed! User already exists</string>
     <string name="error_register_invalid_email">Register failed! Invalid E-Mail address</string>
     <string name="error_register_password_weak">Password is too weak!</string>
-    <string name="error_password_match">Passwords don\'t match!</string>
+    <string name="error_password_match">Passwords don\'t match or are empty!</string>
     <string name="enter_password">Enter password</string>
     <string name="enter_master_password">Enter your master password</string>
     <string name="enter_email">Enter E-Mail address</string>

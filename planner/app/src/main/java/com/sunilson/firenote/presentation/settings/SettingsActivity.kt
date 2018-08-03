@@ -8,12 +8,14 @@ import android.view.View
 import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.IAuthentication
+import com.sunilson.firenote.data.IRepository
 import com.sunilson.firenote.presentation.shared.base.BaseActivity
 import com.sunilson.firenote.presentation.shared.dialogs.ChangeLoginPasswordDialog
 import com.sunilson.firenote.presentation.shared.dialogs.ChangeMasterPasswordDialog
 import com.sunilson.firenote.presentation.shared.dialogs.ConfirmDialog
 import com.sunilson.firenote.presentation.shared.dialogs.authenticationDialog.AuthenticationDialog
 import com.sunilson.firenote.presentation.shared.dialogs.interfaces.DialogListener
+import com.sunilson.firenote.presentation.shared.showToast
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -27,6 +29,9 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, HasSupportFragmen
 
     @Inject
     lateinit var authService: IAuthentication
+
+    @Inject
+    lateinit var repository: IRepository
 
     private var authDialog: AuthenticationDialog? = null
 
@@ -65,7 +70,11 @@ class SettingsActivity : BaseActivity(), View.OnClickListener, HasSupportFragmen
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.master_password -> {
-                ChangeMasterPasswordDialog.newInstance().show(supportFragmentManager, "dialog")
+                repository.checkMasterPasswordSet(FirebaseAuth.getInstance().currentUser!!.uid).subscribe({
+                    ChangeMasterPasswordDialog.newInstance(it).show(supportFragmentManager, "dialog")
+                }, {
+                    showToast(getString(R.string.error_change_master_password))
+                })
             }
             R.id.change_password -> {
                 authDialog = AuthenticationDialog.newInstance()

@@ -39,6 +39,8 @@ interface IRepository {
     fun deleteBinElement(userId: String, elementID: String, parent: String? = null): Completable
     fun updateElement(userId: String, element: Element): Completable
     fun elementWasDeleted(userId: String, id: String, parent: String? = null): Completable
+
+    fun checkMasterPasswordSet(userId: String): Single<Boolean>
 }
 
 @Singleton
@@ -110,7 +112,7 @@ class FirebaseRepository @Inject constructor() : IRepository {
                     .addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onCancelled(p0: DatabaseError?) {}
                         override fun onDataChange(p0: DataSnapshot?) {
-                            if (p0 == null) emitter.onError(Error())
+                            if (p0 == null || p0.value == null) emitter.onError(Error())
                             else {
                                 var ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("elements")
                                 ref = if (parent != null) ref.child("bundles").child(parent).child(id)
@@ -304,6 +306,28 @@ class FirebaseRepository @Inject constructor() : IRepository {
                 if (elementID != null) tempEvent.parent = elementID
                 Pair(changeType, tempEvent)
             } else null
+        }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun checkMasterPasswordSet(userId: String): Single<Boolean> {
+        return Single.create<Boolean> {
+            FirebaseDatabase
+                    .getInstance()
+                    .reference
+                    .child("users")
+                    .child(userId)
+                    .child("settings")
+                    .child("masterPassword")
+                    .addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onCancelled(p0: DatabaseError?) {
+                            it.onError(Exception())
+                        }
+
+                        override fun onDataChange(p0: DataSnapshot?) {
+                            if (p0 == null || p0.value == null) it.onSuccess(false)
+                            else it.onSuccess(true)
+                        }
+                    })
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 

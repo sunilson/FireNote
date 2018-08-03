@@ -25,6 +25,11 @@ class ChangeMasterPasswordDialog : BaseDialogFragment() {
 
         titleView.dialog_title.text = context?.getString(R.string.set_master_password)
         content = LayoutInflater.from(context).inflate(R.layout.alertdialog_body_master_password, null)
+
+        if (!arguments!!.getBoolean("firstTime")) {
+            content.master_password_old.visibility = View.GONE
+        }
+
         builder.setView(content)
 
         builder.setPositiveButton(R.string.confirm_add_dialog) { _, _ -> }
@@ -40,15 +45,18 @@ class ChangeMasterPasswordDialog : BaseDialogFragment() {
         super.onStart()
         val d = dialog as AlertDialog
         d.getButton(Dialog.BUTTON_POSITIVE).setOnClickListener {
-            if (content.master_password_new.text.toString() == content.master_password_new2.text.toString()) {
+            val newPassword = content.master_password_new.text.toString()
+            val newPassword2 = content.master_password_new2.text.toString()
+            val oldPassword = content.master_password_old.text.toString()
+            if (newPassword.isNotEmpty() && newPassword == newPassword2) {
                 val ref = FirebaseDatabase.getInstance()
                         .getReference("users/${FirebaseAuth.getInstance().currentUser?.uid}/settings/masterPassword")
                 ref.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onCancelled(p0: DatabaseError?) = showError(context?.getString(R.string.old_password_error))
+                    override fun onCancelled(p0: DatabaseError?) = showError(context?.getString(R.string.error_change_master_password))
                     override fun onDataChange(p0: DataSnapshot?) {
                         val password = p0?.getValue(String::class.java)
-                        if (password == content.master_password_old.text.toString().encodePassword()) {
-                            ref.setValue(content.master_password_new.text.toString().encodePassword())
+                        if (content.master_password_old.visibility == View.GONE || password == oldPassword.encodePassword()) {
+                            ref.setValue(newPassword.encodePassword())
                                     .addOnSuccessListener {
                                         showSuccess(getString(R.string.password_changed))
                                         dismiss()
@@ -64,6 +72,12 @@ class ChangeMasterPasswordDialog : BaseDialogFragment() {
     override fun toggleLoading(loading: Boolean, message: String?) {}
 
     companion object {
-        fun newInstance(): ChangeMasterPasswordDialog = ChangeMasterPasswordDialog()
+        fun newInstance(firstTime: Boolean = false): ChangeMasterPasswordDialog {
+            val dialog = ChangeMasterPasswordDialog()
+            val bundle = Bundle()
+            bundle.putBoolean("firstTime", firstTime)
+            dialog.arguments = bundle
+            return dialog
+        }
     }
 }
