@@ -93,7 +93,7 @@ export default {
 
   lockElement: function (value, id, parent) {
     fb.database().ref(`users/${fb.auth().currentUser.uid}/settings/masterPassword`).once("value").then(pw => {
-      if (pw) {
+      if (pw.val()) {
         fb.database().ref(`users/${fb.auth().currentUser.uid}/elements/${(parent) ? "bundles" : "main"}/${(parent) ? parent + "/"  : ""}${id}/locked`).set(value)
       } else {
         EventBus.$emit("showSnackbar", "No master password set!")
@@ -103,9 +103,18 @@ export default {
 
   changeMasterPassword: function (newPassword, oldPassword) {
     return fb.database().ref(`users/${fb.auth().currentUser.uid}/settings/masterPassword`).once("value").then(pw => {
-      if (pw.val() == hashPassword(oldPassword)) {
+      if (!oldPassword || pw.val() == hashPassword(oldPassword)) {
         return fb.database().ref(`users/${fb.auth().currentUser.uid}/settings/masterPassword`).set(hashPassword(newPassword))
       } else throw new Error("Wrong password!")
+    })
+  },
+
+  checkMasterPassword: function () {
+    return new Promise((resolve, reject) => {
+      fb.database().ref(`users/${fb.auth().currentUser.uid}/settings/masterPassword`).once("value").then(pw => {
+        if (pw.val()) resolve()
+        else reject()
+      })
     })
   },
 

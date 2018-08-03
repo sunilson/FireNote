@@ -38,23 +38,23 @@
             </v-layout>
           </transition>
       </v-container>
-      <v-dialog v-model="resetPasswordDialog" max-width="400">
+      <v-dialog v-model="resetMasterPasswordDialog" max-width="400">
             <v-card>
                 <v-card-title class="headline">Set master password</v-card-title>
                 <div style="padding-left: 16px; padding-right: 16px">
                     <v-text-field label="New password" 
                     type="password"
-                     v-model="newPassword"
-                    @keyup.enter="changeMasterpassword()"></v-text-field>
+                     v-model="newMasterPassword"
+                    @keyup.enter="resetMasterPassword()"></v-text-field>
                     <v-text-field label="Repeat New password" 
                     type="password"
-                     v-model="newPassword"
-                    @keyup.enter="changeMasterpassword()"></v-text-field>
+                     v-model="newMasterPasswordAgain"
+                    @keyup.enter="resetMasterPassword()"></v-text-field>
                 </div>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="green darken-1" flat="flat" @click.native="passwordDialog = false">Cancel</v-btn>
-                    <v-btn color="green darken-1" flat="flat" @click.native="changeMasterpassword()">Save</v-btn>
+                    <v-btn color="green darken-1" flat="flat" @click.native="resetMasterPasswordDialog = false">Cancel</v-btn>
+                    <v-btn color="green darken-1" flat="flat" @click.native="resetMasterPassword()">Save</v-btn>
                 </v-card-actions>
             </v-card>
           </v-dialog>
@@ -66,13 +66,13 @@
                     type="password"
                     autofocus v-model="currentMasterPassword"
                     @keyup.enter="changeMasterPassword()"></v-text-field>
-                    <v-text-field label="Repeat current password" 
-                    type="password"
-                     v-model="currentMasterPasswordAgain"
-                    @keyup.enter="changeMasterPassword()"></v-text-field>
                     <v-text-field label="New password" 
                     type="password"
                      v-model="newMasterPassword"
+                    @keyup.enter="changeMasterPassword()"></v-text-field>
+                    <v-text-field label="Repeat new password" 
+                    type="password"
+                     v-model="newMasterPasswordAgain"
                     @keyup.enter="changeMasterpassword()"></v-text-field>
                 </div>
                 <v-card-actions>
@@ -140,10 +140,11 @@ export default {
       infoDialog: false,
       deletingAccount: false,
       resettingPassword: false,
+      resetMasterPasswordDialog: false,
       loginPasswordDialog: false,
       currentMasterPassword: "",
-      currentMasterPasswordAgain: "",
       newMasterPassword: "",
+      newMasterPasswordAgain: "",
       newLoginPassword: "",
       newLoginPasswordAgain: "",
       items: [
@@ -154,9 +155,16 @@ export default {
           subtitle: "The password used for locking your notes",
           action: () => {
             this.currentMasterPassword = "";
-            this.currentMasterPasswordAgain = "";
+            this.newMasterPasswordAgain = "";
             this.newMasterPassword = "";
-            this.masterPasswordDialog = true;
+            firebase
+              .checkMasterPassword()
+              .then(() => {
+                this.masterPasswordDialog = true;
+              })
+              .catch(() => {
+                this.resetMasterPasswordDialog = true;
+              });
           }
         },
         {
@@ -230,11 +238,30 @@ export default {
           EventBus.$emit("showSnackbar", "Could not delete account!")
         );
     },
+    resetMasterPassword() {
+      if (
+        this.newMasterPassword.length > 0 &&
+        this.newMasterPassword == this.newMasterPasswordAgain
+      ) {
+        firebase
+          .changeMasterPassword(this.newMasterPassword)
+          .then(() => {
+            this.resetMasterPasswordDialog = false;
+            EventBus.$emit("showSnackbar", "Changed password!");
+          })
+          .catch(err => {
+            console.log(err);
+            EventBus.$emit("showSnackbar", "Could not change your password!");
+          });
+      } else {
+        EventBus.$emit("showSnackbar", "Passwords are empty or don't match!");
+      }
+    },
     changeMasterpassword() {
       if (
         this.currentMasterPassword.length > 0 &&
         this.newMasterPassword.length > 0 &&
-        this.currentMasterPassword == this.currentMasterPasswordAgain
+        this.newMasterPassword == this.newMasterPasswordAgain
       ) {
         firebase
           .changeMasterPassword(

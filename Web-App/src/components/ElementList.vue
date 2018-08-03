@@ -32,7 +32,7 @@
                 </div>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="green darken-1" flat="flat" @click.native="show = false">Cancel</v-btn>
+                    <v-btn color="green darken-1" flat="flat" @click.native="passwordDialog = false">Cancel</v-btn>
                     <v-btn color="green darken-1" flat="flat" @click.native="openLockedElement()">Open</v-btn>
                 </v-card-actions>
             </v-card>
