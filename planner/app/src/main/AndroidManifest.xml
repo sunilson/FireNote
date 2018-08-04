@@ -40,7 +40,6 @@
         <activity
             android:name="com.sunilson.firenote.presentation.elements.elementActivity.ElementActivity"
             android:label="@string/app_name"
-            android:parentActivityName="com.sunilson.firenote.presentation.homepage.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden" />

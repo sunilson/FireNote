@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import android.view.animation.OvershootInterpolator
@@ -53,7 +54,7 @@ class BundleFragment : BaseFragment(), BundlePresenterContract.View, HasElementL
         view.bundleList.itemAnimator.addDuration = 300
         view.bundleList.layoutManager = LinearLayoutManager(context)
         adapter = elementRecyclerAdapterFactory.create(View.OnClickListener {
-            openElement(adapter.data[view.bundleList.getChildLayoutPosition(it)], activity!!)
+            openElement(adapter.data[view.bundleList.getChildLayoutPosition(it)], activity as FragmentActivity)
         }, View.OnLongClickListener {
             val element = adapter.data[view.bundleList.getChildLayoutPosition(it)]
             if (element.locked) {
@@ -77,15 +78,13 @@ class BundleFragment : BaseFragment(), BundlePresenterContract.View, HasElementL
             adapter.checkOrderAndVisibility()
         }
 
-        /*
-        view.swipeContainerChecklist.setOnRefreshListener {
-            checklistRecyclerAdapter.clear()
-            checklistPresenter.refreshChecklistElements()
-            Handler().postDelayed({
-                view.swipeContainerChecklist.isRefreshing = false
-            }, 200)
+        view.swipeContainerBundle.setOnRefreshListener {
+            bundlePresenter.loadElementData()
+            adapter.clear()
+            bundlePresenter.loadElementData()
+            view.swipeContainerBundle.isRefreshing = false
         }
-        */
+
         return view
     }
 

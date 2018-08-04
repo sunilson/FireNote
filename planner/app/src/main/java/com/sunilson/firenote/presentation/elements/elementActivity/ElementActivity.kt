@@ -107,7 +107,7 @@ class ElementActivity : BaseActivity(), BaseElementPresenterContract.View, HasSu
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> {
-                if ((supportFragmentManager.fragments[0] as ElementContentPresenterContract.View).canLeave()) this.finish()
+                if ((supportFragmentManager.fragments[0] as ElementContentPresenterContract.View).canLeave()) finish()
             }
             R.id.menu_lock -> {
                 presenter.lockElement(!_element!!.locked)
