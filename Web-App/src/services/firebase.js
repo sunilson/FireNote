@@ -1,4 +1,7 @@
-import fb from "firebase"
+import fb from "firebase/app"
+import 'firebase/auth'
+import 'firebase/database'
+
 import config from "../config"
 import {
   EventBus
@@ -80,7 +83,6 @@ export default {
   },
 
   getBinRef: function (parent) {
-    console.log(`users/${fb.auth().currentUser.uid}/bin/${(parent) ? "bundles/" + parent : "main"}`)
     return fb.database().ref(`users/${fb.auth().currentUser.uid}/bin/${(parent) ? "bundles/" + parent : "main"}`)
   },
 
@@ -145,7 +147,6 @@ export default {
   clearBin: function (parent, elements) {
     const ids = elements.map(element => element[".key"])
     ids.forEach(element => {
-      console.log("DELETE", element)
       fb.database().ref(`users/${fb.auth().currentUser.uid}/bin/${parent ? "bundles/" + parent : "main"}/${element}`).remove().then(() => {
         fb.database().ref(`users/${fb.auth().currentUser.uid}/contents/${element}`).remove()
       })

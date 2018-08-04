@@ -7,8 +7,8 @@ const admin = require('firebase-admin');
 admin.initializeApp();
 
 exports.handleElementDeletion = functions.database.ref("users/{uid}/elements/main/{elementId}").onDelete((snapshot, context) => {
-    return admin.database().ref(`users/${context.params.uid}`).once("value").then(snapshot => {
-        if (snapshot && snapshot.val()) {
+    return admin.database().ref(`users/${context.params.uid}`).once("value").then(userSnapshot => {
+        if (userSnapshot && userSnapshot.val()) {
             return admin.database()
                 .ref(`users/${context.params.uid}/bin/main/${context.params.elementId}`)
                 .set(snapshot.val())
@@ -19,8 +19,8 @@ exports.handleElementDeletion = functions.database.ref("users/{uid}/elements/mai
 });
 
 exports.handleBundleElementDeletion = functions.database.ref("users/{uid}/elements/bundles/{parentId}/{elementId}").onDelete((snapshot, context) => {
-    return admin.database().ref(`users/${context.params.uid}`).once("value").then(snapshot => {
-        if (snapshot && snapshot.val()) {
+    return admin.database().ref(`users/${context.params.uid}`).once("value").then(userSnapshot => {
+        if (userSnapshot && userSnapshot.val()) {
             return admin.database()
                 .ref(`users/${context.params.uid}/bin/bundles/${context.params.parentId}/${context.params.elementId}`)
                 .set(snapshot.val())
