@@ -15,17 +15,19 @@ import com.sunilson.firenote.presentation.shared.di.scopes.ActivityScope
 import javax.inject.Inject
 
 @ActivityScope
-class AuthenticationPresenter @Inject constructor(val view: AuthenticationPresenterContract.View, private val authService : IAuthentication)
+class AuthenticationPresenter @Inject constructor(val view: AuthenticationPresenterContract.View, private val authService: IAuthentication)
     : AuthenticationPresenterContract.Presenter, BasePresenter(view), GoogleApiClient.OnConnectionFailedListener {
 
     private val authListener = FirebaseAuth.AuthStateListener {
         updateWidget()
         if (it.currentUser != null) {
-            if(it.currentUser?.isEmailVerified == false) {
+            if (it.currentUser?.isEmailVerified == false) {
                 FirebaseAuth.getInstance().currentUser?.sendEmailVerification()
                 view.showSuccess(view.mContext!!.getString(R.string.register_success))
+                authService.signOut()
+            } else {
+                view.loggedIn()
             }
-            view.loggedIn()
         }
     }
 
@@ -42,10 +44,11 @@ class AuthenticationPresenter @Inject constructor(val view: AuthenticationPresen
     override fun signIn(email: String, password: String) {
         view.toggleLoading(true)
         disposable.add(authService.emailSignIn(email, password).subscribe({
-            view.showSuccess(view.mContext!!.getString(R.string.logged_in))
+            view.toggleLoading(false)
+            //view.showSuccess(view.mContext!!.getString(R.string.logged_in))
         }, {
             view.toggleLoading(false)
-            if(it is IllegalArgumentException) view.showError(it.message)
+            if (it is IllegalArgumentException) view.showError(it.message)
             else view.showError("Sign in Failed!")
         }))
     }
@@ -56,7 +59,7 @@ class AuthenticationPresenter @Inject constructor(val view: AuthenticationPresen
     }
 
     override fun handleSocialSignIn(data: Intent) {
-        disposable.add(authService.handleGoogleSignIn(data).subscribe( {
+        disposable.add(authService.handleGoogleSignIn(data).subscribe({
             view.showSuccess(view.mContext!!.getString(R.string.logged_in))
         }, {
             view.toggleLoading(false)
@@ -84,7 +87,7 @@ class AuthenticationPresenter @Inject constructor(val view: AuthenticationPresen
             view.showSuccess(view.mContext!!.getString(R.string.reset_success))
         }, {
             view.toggleLoading(false)
-            if(it is IllegalArgumentException) view.showError(it.message)
+            if (it is IllegalArgumentException) view.showError(it.message)
             else view.showError(view.mContext!!.getString(R.string.reset_failed))
         }))
     }

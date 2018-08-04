@@ -102,7 +102,7 @@
     <string name="send_mail">Send mail!</string>
     <string name="reset_failed">Reset unsuccessful. Please check E-Mail and internet connection!</string>
     <string name="reset_success">Reset mail sent! Please check your inbox</string>
-    <string name="register_success">Registration successful! Please check your inbox for the activation link.</string>
+    <string name="register_success">Please check your inbox for the activation link.</string>
     <string name="sort_category_name">Category Name</string>
     <string name="title_activity_category">Category</string>
     <string name="category_general">General</string>
