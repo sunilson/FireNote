@@ -110,7 +110,7 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Vi
                 startActivity(intent)
             }
             R.id.action_settings -> startActivity(Intent(this, SettingsActivity::class.java))
-            R.id.action_web -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com")))
+            R.id.action_web -> startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://firenote.surge.sh")))
         }
         return super.onOptionsItemSelected(item)
     }

@@ -5,6 +5,11 @@ apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs"
 
 android {
+
+    lintOptions {
+        checkReleaseBuilds false
+    }
+
     dataBinding {
         enabled = true
     }
@@ -19,13 +24,13 @@ android {
             storePassword '43567afdaa'
         }
     }
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.sunilson.firenote"
         minSdkVersion 21
-        targetSdkVersion 27
-        versionCode 3
-        versionName "1.1"
+        targetSdkVersion 28
+        versionCode 4
+        versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
