@@ -1,7 +1,5 @@
 # FireNote
 
-<h2>Refactor currently in progress (Branches <strong>Refactor</strong> and <strong>Web-App</strong>) --> Java to Kotlin and Code refactor/cleanup, implementing Dagger, MVP, etc., adding a Widget, switching to ConstraintLayout, Website to Vue App with more features</h1>
-
 FireNote is an easy-to-use Android App for creating Notes and Checklists. Everything is stored in the cloud and is synced to all your devices in realtime. FireNote also offers additional features, like adding entries to your calendar or sharing your elements. The user interface is really intuitive and is perfect for your everyday needs. 
 
 FireNote is available for Android in German and English and can also be found on the Web via the domain <a href="https://www.firenote.at">www.firenote.at</a>. To use the App, a registration is necessary.
@@ -27,6 +25,8 @@ FireNote is available for Android in German and English and can also be found on
 *	checklists offer text import – in this way, you can copy and paste huge ingredients lists, format them and insert each point as checklist element by three simple clicks
 *	checklists offer a clean-up-function – every element which is marked as done can be deleted by one simple click 
 *	tutorial is provided if you log in for the first time 
+* widget for your homescreen
+* web-app
 
 ## Screenshots
 
