@@ -23,6 +23,7 @@ abstract class BaseDialogFragmentSimpleText : BaseDialogFragment() {
 
     override fun onDismiss(dialog: DialogInterface?) {
         imm.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
         super.onDismiss(dialog)
     }
 }
