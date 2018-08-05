@@ -1,96 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:id="@+id/container"
-    >
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <data>
+
+        <variable
+            name="obj"
+            type="com.sunilson.firenote.data.models.Element" />
+
+        <import type="java.util.Date" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="70dp"
-        android:id="@+id/elementList_content"
-        android:foreground="?attr/selectableItemBackground"
-        android:background="@color/defaultElementColor"
-        >
+        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="35dp"
-            android:layout_height="match_parent"
-            android:background="@color/note_color_1"
-            android:id="@+id/elementList_icon_holder">
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/elementList_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:foreground="?attr/selectableItemBackground"
+            android:minHeight="70dp"
+            android:transparentColor="@{obj.color}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                style="@style/element_List_element"
-                android:layout_width="match_parent"
-                android:gravity="center"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:id="@+id/elementList_icon"
-                android:tint="@color/tint_white"
-                />
+            <LinearLayout
+                android:id="@+id/elementList_icon_holder"
+                android:layout_width="35dp"
+                android:layout_height="0dp"
+                android:background="@{obj.color}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/elementList_title"
+                app:layout_constraintTop_toTopOf="parent">
 
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0px"
-            android:layout_height="match_parent"
-            android:layout_weight="6"
-            android:paddingLeft="@dimen/element_list_text_padding_left"
-            android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/elementList_icon"
+                    style="@style/element_List_element"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:gravity="center"
+                    android:noteTypeIcon="@{obj.noteType}"
+                    android:tint="@color/tint_white" />
+
+            </LinearLayout>
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0px"
-                android:layout_weight="1"
-                android:maxLines="1"
-                android:ellipsize="end"
-                android:gravity="bottom"
-                android:layout_marginTop="6dp"
                 android:id="@+id/elementList_title"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="6dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:gravity="bottom"
+                android:maxLines="1"
+                android:paddingLeft="@dimen/element_list_text_padding_left"
+                android:text="@{obj.title}"
                 android:textAppearance="@style/TextAppearance.AppCompat"
                 android:textColor="@color/primary_text_color"
-                android:fontFamily="sans-serif"
                 android:textSize="18sp"
-                android:text="bla" />
+                app:layout_constraintBottom_toTopOf="@id/elementList_category"
+                app:layout_constraintLeft_toRightOf="@id/elementList_icon_holder"
+                app:layout_constraintRight_toLeftOf="@id/elementLList_lock"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0px"
+                android:id="@+id/elementList_category"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:layout_weight="1"
+                android:fontFamily="sans-serif"
                 android:gravity="top"
                 android:maxLines="1"
-                android:id="@+id/elementList_category"
+                android:paddingLeft="@dimen/element_list_text_padding_left"
+                android:text="@{obj.category.name}"
                 android:textAppearance="@style/TextAppearance.AppCompat"
-                android:fontFamily="sans-serif"
+                android:textColor="@color/text_crossed_out"
                 android:textSize="12sp"
-                android:text="bla"
-                android:textColor="@color/text_crossed_out" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/elementList_icon_holder"
+                app:layout_constraintRight_toLeftOf="@id/elementLList_lock"
+                app:layout_constraintTop_toBottomOf="@id/elementList_title" />
 
-        </LinearLayout>
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="8dp"
-            android:id="@+id/elementLList_lock"
-            android:visibility="invisible"
-            android:src="@drawable/element_lock_icon_dark"
-            />
-        <TextView
-            style="@style/element_List_TextView"
-            android:layout_width="wrap_content"
-            android:gravity="center_vertical|right"
-            android:textSize="14sp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="16dp"
-            android:id="@+id/elementList_date"
-            android:fontFamily="sans-serif" />
+            <ImageView
+                android:id="@+id/elementLList_lock"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:src="@drawable/element_lock_icon_dark"
+                android:visibility="@{obj.showLock() ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/elementList_title"
+                app:layout_constraintRight_toLeftOf="@id/elementList_restore_icon"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/elementList_restore_icon"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_restore_black_24dp"
+                android:visibility="@{obj.showRestoreIcon() ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/elementLList_lock"
+                app:layout_constraintRight_toLeftOf="@id/elementList_date"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:background="@color/main_background_color" />
+            <TextView
+                android:id="@+id/elementList_date"
+                style="@style/element_List_TextView"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="8dp"
+                android:fontFamily="sans-serif"
+                android:formatDate="@{obj.timeStamp}"
+                android:gravity="center_vertical|end"
+                android:textSize="14sp"
+                android:visibility="@{obj.showRestoreIcon() ? View.GONE : View.VISIBLE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/elementList_restore_icon"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
+        </android.support.constraint.ConstraintLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@color/main_background_color"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/elementList_content" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

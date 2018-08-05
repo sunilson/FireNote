@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.sunilson.firenote.activities.BinActivity"
+    tools:context="com.sunilson.firenote.presentation.bin.BinActivity"
     android:id="@+id/activity_bin"
     >
 
@@ -23,6 +23,28 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_bin" />
+    <RelativeLayout
+        android:id="@+id/content_bin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/element_list_vertical_margin"
+        android:paddingLeft="@dimen/element_list_horizontal_margin"
+        android:paddingRight="@dimen/element_list_horizontal_margin"
+        android:paddingTop="@dimen/element_list_vertical_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+       >
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/binList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:divider="@null"
+            android:dividerHeight="0px"
+            />
+
+    </RelativeLayout>
+
 
 </android.support.design.widget.CoordinatorLayout>

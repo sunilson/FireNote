@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/content_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.sunilson.firenote.presentation.elements.note.views.LinedTextView
+            android:id="@+id/notepad_disabled"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textIsSelectable="true"
+            android:background="@color/defaultElementColor"
+            android:gravity="top|start"
+            android:hint="@string/note_hint"
+            android:textColor="@color/primary_text_color"
+            android:textSize="24sp"
+            android:paddingBottom="@dimen/notePad_padding_vertical"
+            android:paddingLeft="@dimen/notePad_padding_horizontal"
+            android:paddingRight="@dimen/notePad_padding_horizontal"
+            android:paddingTop="@dimen/notePad_padding_vertical"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:autoLink="web|email"
+            android:linksClickable="true"
+            android:textCursorDrawable="@drawable/notepad_cursor"
+            />
+
+        <com.sunilson.firenote.presentation.elements.note.views.LinedEditText
+            android:id="@+id/notepad"
+            android:visibility="invisible"
+            android:textColor="@color/primary_text_color"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/defaultElementColor"
+            android:gravity="top|start"
+            android:hint="@string/note_hint"
+            android:inputType="textMultiLine"
+            android:paddingBottom="@dimen/notePad_padding_vertical"
+            android:paddingLeft="@dimen/notePad_padding_horizontal"
+            android:paddingRight="@dimen/notePad_padding_horizontal"
+            android:paddingTop="@dimen/notePad_padding_vertical"
+            android:textCursorDrawable="@drawable/notepad_cursor"
+            android:textSize="24sp" />
+    </RelativeLayout>
+</ScrollView>

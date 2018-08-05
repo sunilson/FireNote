@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.sunilson.firenote.activities.NoteActivity">
+    tools:context=".presentation.elements.note.NoteActivity">
     <item
         android:title="Delete all"
         android:id="@+id/bin_delete_all"

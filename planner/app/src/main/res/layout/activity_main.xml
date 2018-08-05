@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.sunilson.firenote.activities.MainActivity">
+    tools:context="com.sunilson.firenote.presentation.homepage.MainActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -29,12 +29,11 @@
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:paddingRight="5dp"
                     android:layout_gravity="center_vertical"
+                    android:paddingRight="5dp"
                     android:src="@drawable/fire" />
 
                 <TextView
-                    android:gravity="center_vertical"
                     android:id="@+id/title"
                     style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                     android:layout_width="0px"
@@ -42,6 +41,7 @@
                     android:layout_weight="3"
                     android:background="@android:color/transparent"
                     android:ellipsize="end"
+                    android:gravity="center_vertical"
                     android:maxLines="1"
                     android:paddingLeft="5dp"
                     android:singleLine="true"
@@ -50,16 +50,92 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/content_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/element_list_vertical_margin"
+        android:paddingLeft="@dimen/element_list_horizontal_margin"
+        android:paddingRight="@dimen/element_list_horizontal_margin"
+        android:paddingTop="@dimen/element_list_vertical_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <android.support.design.widget.FloatingActionButton
+        <com.sunilson.firenote.presentation.shared.views.SortingBarView
+            android:id="@+id/sorting_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title=" " />
+
+        <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/activity_main_swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/activity_main_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@null"
+                android:dividerHeight="0px"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:tint="@color/tint_white"
-        app:backgroundTint="@color/colorFloatingMain"
-        app:srcCompat="@drawable/ic_add_white_24dp" />
+        android:layout_gravity="bottom|right"
+        android:layout_margin="10dp"
+        app:fab_addButtonColorNormal="@color/colorAccent"
+        app:fab_addButtonColorPressed="@color/colorAccent"
+        app:fab_colorNormal="@color/colorAccent"
+        app:fab_icon="@drawable/ic_add_white_24dp"
+        app:fab_labelStyle="@style/menu_labels_style"
+        app:fab_labelsPosition="left">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/note_color_1"
+            app:fab_colorPressed="@color/note_color_1"
+            app:fab_icon="@drawable/ic_note_white_24dp"
+            app:fab_title="@string/element_note" />
+
+        <!--
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_gallery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/note_color_1"
+            app:fab_colorPressed="@color/note_color_1"
+            app:fab_icon="@drawable/ic_photo_camera_black_24dp"
+            app:fab_title="@string/element_note" />
+
+-->
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_checklist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/note_color_1"
+            app:fab_colorPressed="@color/note_color_1"
+            app:fab_icon="@drawable/ic_done_all_white_24dp"
+            app:fab_title="@string/element_checklist" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_add_bundle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/note_color_1"
+            app:fab_colorPressed="@color/note_color_1"
+            app:fab_icon="@drawable/ic_list_white_24dp"
+            app:fab_title="@string/element_bundle" />
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -1,17 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<LinearLayout
     android:id="@+id/dialog_title_container"
-    android:layout_height="wrap_content" android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
     android:background="@color/colorAccent"
     android:paddingTop="@dimen/dialog_margin_vertically"
     android:paddingBottom="@dimen/dialog_margin_vertically"
     android:paddingLeft="@dimen/dialog_margin_horizontal">
     <TextView
-        android:text="TextView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:id="@+id/dialog_title"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
         style="@style/dialog_title_textview"
+        android:text="Textview"
         android:textAppearance="@style/TextAppearance.AppCompat" />
+    <ImageView
+        android:id="@+id/dialog_title_action"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_delete_white_24dp"
+        />
 </LinearLayout>

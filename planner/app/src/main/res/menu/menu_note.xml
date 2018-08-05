@@ -2,20 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.sunilson.firenote.activities.NoteActivity">
-    <item
-        android:title="Note Settings"
-        android:id="@+id/menu_settings"
-        android:icon="@drawable/checklist_menu_settings_icon"
-        app:showAsAction="ifRoom"
-        android:orderInCategory="100"
-        />
-    <item
-        android:id="@+id/menu_lock"
-        android:title="@string/lock"
-        android:orderInCategory="200"
-        android:icon="@drawable/element_lock_icon"
-        app:showAsAction="ifRoom" />
+    tools:context=".presentation.elements.note.NoteActivity">
+
     <item
         android:id="@+id/menu_reminder"
         android:title="@string/add_reminder"

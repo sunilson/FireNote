@@ -13,7 +13,7 @@
     <string name="error_register_user_already_exists">Register failed! User already exists</string>
     <string name="error_register_invalid_email">Register failed! Invalid E-Mail address</string>
     <string name="error_register_password_weak">Password is too weak!</string>
-    <string name="error_password_match">Passwords don\'t match!</string>
+    <string name="error_password_match">Passwords don\'t match or are empty!</string>
     <string name="enter_password">Enter password</string>
     <string name="enter_master_password">Enter your master password</string>
     <string name="enter_email">Enter E-Mail address</string>
@@ -22,11 +22,12 @@
     <string name="login_button">Login</string>
     <string name="title_activity_checklist">Checklist</string>
     <string name="element_note">Note</string>
+    <string name="element_gallery">Gallery</string>
     <string name="from_app">from FireNote</string>
     <string name="element_checklist">Checklist</string>
     <string name="menu_log_out">Log out</string>
     <string name="menu_sort">Sort elements</string>
-    <string name="sort_by">Sort by</string>
+    <string name="sort_by">Sort by %1$s</string>
     <string name="sort_ascending_date">Date Ascending</string>
     <string name="sort_descending_date">Date Descending</string>
     <string name="sort_ascending_name">Name Ascending</string>
@@ -36,7 +37,7 @@
     <string name="add_checklist_item_title">Add new Element</string>
     <string name="edit_checklist_item_title">Edit Checklist Element</string>
     <string name="confirm_add_dialog">Done</string>
-    <string name="cancel_add_dialog">Cancel</string>
+    <string name="cancel">Cancel</string>
     <string name="edit_checklist_title">Edit Checklist</string>
     <string name="title_activity_edit_checklist">Edit Checklist</string>
     <string name="delete_checklist_title">Delete Checklist</string>
@@ -101,7 +102,7 @@
     <string name="send_mail">Send mail!</string>
     <string name="reset_failed">Reset unsuccessful. Please check E-Mail and internet connection!</string>
     <string name="reset_success">Reset mail sent! Please check your inbox</string>
-    <string name="register_success">Registration successful! Please check your inbox for the activation link.</string>
+    <string name="register_success">Please check your inbox for the activation link.</string>
     <string name="sort_category_name">Category Name</string>
     <string name="title_activity_category">Category</string>
     <string name="category_general">General</string>
@@ -185,5 +186,35 @@
     <string name="tutorial_bundle_element">You can create as many elements in a bundle as you like</string>
     <string name="welcome_to_bundle">This is a Bundle!</string>
     <string name="tutorial_add_bundle_element">A Bundle is a container for Notes and Checklists. Click here to add a new Bundle element!</string>
+    <string name="login_field_error">One or more fields is not filled</string>
+    <string name="login_error">Error occured</string>
+    <string name="register_error">One ore more fields not correct</string>
+    <string name="element_added">Element wurde hinzugefügt</string>
+    <string name="element_removed">Element was removed!</string>
+    <string name="saved_note">Saved note!</string>
+    <string name="save_note_error">Could not save note!</string>
+    <string name="error_change_master_password">Could not change master password!</string>
+    <string name="logged_in">Logged in!</string>
+    <string name="email_empty">Email can\'t be empty!</string>
+    <string name="password_empty">Password can\'t be empty!</string>
+    <string name="please_log_in">Please log in</string>
+    <string name="web_version">Web version</string>
+    <string name="cleared_elements">Cleared Elements!</string>
+
+    <string name="checklist_shortcut_short_label1">Create Checklist</string>
+    <string name="checklist_shortcut_long_label1">Create new Checklist</string>
+    <string name="checklist_disabled_message1">Create Checklist</string>
+
+    <string name="note_shortcut_short_label1">Create Note</string>
+    <string name="note_shortcut_long_label1">Create new Note</string>
+    <string name="note_disabled_message1">Create Note</string>
+
+    <string name="bundle_shortcut_short_label1">Create Bundle</string>
+    <string name="bundle_shortcut_long_label1">Create new Bundle</string>
+    <string name="bundle_disabled_message1">Create Bundle</string>
+    <string name="element_updated">Element updated</string>
+    <string name="restore_error">Could not restore Element</string>
+    <string name="current_announcement"><![CDATA[* Firenote now offers a <b>widget</b> that can display your notes directly on your home screen. <br><br> * There is now a <b>web version</b> of Firenote available. Just visit <a href="https://www.google.com">google.com</a> to find out more <br><br> * <b>UI improvements</b> have been made to make your workflow in Firenote faster]]></string>
+    <string name="current_announcement_title">New features</string>
 
 </resources>

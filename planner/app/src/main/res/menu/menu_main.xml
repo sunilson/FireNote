@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.sunilson.firenote.activities.MainActivity">
+    tools:context="com.sunilson.firenote.presentation.homepage.MainActivity">
     <item
         android:id="@+id/main_element_sort"
         android:icon="@drawable/main_menu_sort_icon"
@@ -19,7 +19,7 @@
         />
     <item
         android:id="@+id/action_logOut"
-        android:orderInCategory="500"
+        android:orderInCategory="600"
         android:title="@string/menu_log_out"
         app:showAsAction="never" />
     <item
@@ -31,10 +31,18 @@
         />
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="400"
+        android:orderInCategory="500"
         app:showAsAction="ifRoom"
         android:title="@string/action_settings"
         android:icon="@drawable/main_menu_settings_icon"
+        />
+    <item
+        android:id="@+id/action_web"
+        android:orderInCategory="400"
+        app:showAsAction="ifRoom"
+        android:title="@string/web_version"
+        android:icon="@drawable/ic_web_black_24dp"
+        android:iconTint="@color/title_icon_color"
         />
 
 </menu>

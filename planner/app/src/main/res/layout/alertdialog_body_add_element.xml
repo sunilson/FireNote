@@ -27,6 +27,9 @@
         android:imeOptions="actionDone"
         android:inputType="textPersonName"
         android:theme="@style/dialog_edittext"
+        android:focusedByDefault="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:maxLines="1"
         android:textSize="18sp" />
 

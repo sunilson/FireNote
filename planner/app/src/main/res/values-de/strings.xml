@@ -28,7 +28,7 @@
     <string name="category_finances">Finanzen</string>
     <string name="category_events">Veranstaltungen</string>
     <string name="category_business">Geschäftlich</string>
-    <string name="cancel_add_dialog">Abbrechen</string>
+    <string name="cancel">Abbrechen</string>
     <string name="bin">Papierkorb</string>
     <string name="clear_bin_title">Papierkorb leeren</string>
     <string name="confirm_add_dialog">Fertig</string>
@@ -48,7 +48,7 @@
     <string name="error_register_user_already_exists">Registrierung fehlgeschlagen! Benutzer existiert bereits.</string>
     <string name="google_sign_in">Einloggen mit Google</string>
     <string name="enter_password">Passwort eingeben</string>
-    <string name="error_password_match">Passwörter stimmen nicht überein!</string>
+    <string name="error_password_match">Passwörter stimmen nicht überein oder sind leer!</string>
     <string name="password_changed">Passwort geändert</string>
     <string name="reauth_title">Bitte einloggen</string>
     <string name="register_button">Registrieren</string>
@@ -88,7 +88,7 @@
     <string name="share">Teilen</string>
     <string name="sort_ascending_date">Datum aufsteigend</string>
     <string name="sort_ascending_name">Name aufsteigend</string>
-    <string name="sort_by">Sortieren nach</string>
+    <string name="sort_by">Sortieren nach %1$s</string>
     <string name="sort_category_name">Kategorie Name</string>
     <string name="sort_descending_date">Datum absteigend</string>
     <string name="sort_descending_name">Name absteigend</string>
@@ -186,4 +186,32 @@
     <string name="welcome_to_checklist">Dies ist eine Checkliste!</string>
     <string name="welcome_to_firenote">Willkommen bei FireNote!</string>
     <string name="welcome_to_note">Dies ist eine Notiz!</string>
+    <string name="element_removed">Element wurde gelöscht!</string>
+    <string name="saved_note">Notiz gespeichert</string>
+    <string name="cleared_elements">Elemente gelöscht</string>
+    <string name="checklist_disabled_message1">Checkliste erstellen</string>
+    <string name="note_shortcut_short_label1">Notiz erstellen</string>
+    <string name="note_shortcut_long_label1">Neue Notiz erstellen</string>
+    <string name="note_disabled_message1">Notiz erstellen</string>
+    <string name="bundle_shortcut_short_label1">Sammlung erstellen</string>
+    <string name="bundle_shortcut_long_label1">Neue Sammlung erstellen</string>
+    <string name="bundle_disabled_message1">Sammlung erstellen</string>
+    <string name="element_updated">Element aktualisiert</string>
+    <string name="restore_error">Konnte Element nicht wiederherstellen</string>
+    <string name="current_announcement"><![CDATA[* Firenote bietet jetzt ein <b>Widget</b> das deine Notizen auf dem Home-Screen anzeigen kann. <br><br> * Es gibt jetzt eine <b>Web App</b>  von Firenote. Besuche dafür <a href="https://firenote.surge.sh">firenote.surge.sh</a><br><br> * <b>UI Verbesserungen</b> wurden implementiert um den Workflow zu optimieren]]></string>
+    <string name="email_empty">Email darf nicht leer sein!</string>
+    <string name="logged_in">Eingeloggt!</string>
+    <string name="error_change_master_password">Konte Master Passwort nicht ändern</string>
+    <string name="save_note_error">Konnte Notiz nicht speichern</string>
+    <string name="please_log_in">Bitte einloggen</string>
+    <string name="web_version">Web-App</string>
+    <string name="checklist_shortcut_short_label1">Checkliste erstellen</string>
+    <string name="checklist_shortcut_long_label1">Neue Checkliste erstellen</string>
+    <string name="password_empty">Passwort darf nicht leer sein!</string>
+    <string name="element_added">Element wurde hinzugefügt</string>
+    <string name="login_error">Ein Fehler ist aufgetreten</string>
+    <string name="register_error">Ein oder mehr Felder sind nicht korrekt</string>
+    <string name="login_field_error">Ein oder mehr Felder sind nicht ausgefüllt</string>
+    <string name="current_announcement_title">Neue Features</string>
+    <string name="element_gallery">Gallerie</string>
 </resources>

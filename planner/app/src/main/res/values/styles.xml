@@ -149,4 +149,16 @@
         <item name="android:textColor">@color/white_text_color_sub</item>
     </style>
 
+    <style name="menu_labels_style">
+        <item name="android:background">@drawable/fab_label_background</item>
+        <item name="android:textColor">@color/tint_white</item>
+    </style>
+
+    <style name="widget_add_button">
+        <item name="android:layout_width">0px</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:backgroundTint">@color/note_color_1</item>
+        <item name="android:tint">@color/white_text_color</item>
+    </style>
 </resources>

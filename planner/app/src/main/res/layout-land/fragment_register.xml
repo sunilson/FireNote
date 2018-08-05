@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/tint_white"
+    android:fillViewport="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/content_register"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:background="@color/main_background_color"
+        android:clipToPadding="false"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/login_activity_horizontal_margin"
+        android:paddingRight="@dimen/login_activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="com.sunilson.firenote.presentation.authentication.LoginActivity"
+        tools:showIn="@layout/fragment_login">
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="0px"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:paddingBottom="15dp"
+            android:text="@string/register_title"
+            android:textColor="@color/title_text_color"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/registerEmail"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/login_edit_text_land_height"
+            android:background="@drawable/login_edit_text"
+            android:drawableLeft="@drawable/email_login"
+            android:ems="10"
+            android:hint="@string/enter_email"
+            android:inputType="textEmailAddress|textAutoCorrect|textAutoComplete"
+            android:nextFocusDown="@+id/registerPassword"
+            android:nextFocusForward="@+id/registerPassword"
+            android:nextFocusLeft="@+id/registerEmail"
+            android:nextFocusRight="@+id/registerPassword"
+            android:nextFocusUp="@+id/registerEmail"
+            android:theme="@style/loginEditTextLand" />
+
+        <EditText
+            android:id="@+id/registerPassword"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/login_edit_text_land_height"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/login_edit_text"
+            android:drawableLeft="@drawable/lock_login"
+            android:ems="10"
+            android:fontFamily="sans-serif"
+            android:hint="@string/enter_password"
+            android:inputType="textPassword"
+            android:nextFocusDown="@+id/registerPasswordAgain"
+            android:nextFocusForward="@+id/registerPasswordAgain"
+            android:nextFocusLeft="@+id/registerEmail"
+            android:nextFocusRight="@+id/registerPasswordAgain"
+            android:nextFocusUp="@+id/registerEmail"
+            android:theme="@style/loginEditTextLand" />
+
+        <EditText
+            android:id="@+id/registerPasswordAgain"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/login_edit_text_land_height"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/login_edit_text"
+            android:drawableLeft="@drawable/lock_login"
+            android:ems="10"
+            android:fontFamily="sans-serif"
+            android:hint="@string/repeat_password"
+            android:inputType="textPassword"
+            android:theme="@style/loginEditTextLand" />
+
+        <Button
+            android:id="@+id/registerSubmitButton"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/login_button_drawable"
+            android:foreground="?selectableItemBackground"
+            android:text="@string/register_button"
+            android:textColor="@color/tint_white"
+            android:textSize="12sp"
+            />
+
+        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+            android:id="@+id/fragment_register_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:indeterminate="true"
+            app:mpb_progressStyle="horizontal"
+            android:visibility="gone"
+            style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal" />
+
+    </LinearLayout>
+</ScrollView>

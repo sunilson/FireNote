@@ -1,0 +1,30 @@
+<LinearLayout
+    android:id="@+id/sorting_bar_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/sorting_layout_collapsed"
+    android:layout_marginBottom="@dimen/element_list_vertical_margin"
+    android:background="@color/colorPrimary"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:animateLayoutChanges="true"
+    android:orientation="vertical"
+    android:gravity="center"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/sorting_bar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:textColor="@color/title_text_color" />
+
+    <ListView
+        android:id="@+id/sorting_methods_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:visibility="gone">
+    </ListView>
+</LinearLayout>

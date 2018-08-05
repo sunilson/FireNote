@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:minHeight="50dp"
+    android:gravity="center"
+    android:background="?selectableItemBackground"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <ImageView
+        android:id="@+id/sorting_list_row_icon"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginRight="15dp"
+        android:tint="@color/primary_text_color"
+        android:src="@drawable/ic_date_range_black_24dp"
+        />
+    <TextView
+        android:id="@+id/sorting_list_row_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sortieren nach Datum absteigend"
+        />
+
+</LinearLayout>
