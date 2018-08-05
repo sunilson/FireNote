@@ -107,16 +107,7 @@
                 app:fab_colorPressed="@color/note_color_1"
                 app:fab_icon="@drawable/ic_note_white_24dp"
                 app:fab_title="@string/element_note" />
-
-            <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_add_gallery"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:fab_colorNormal="@color/note_color_1"
-                app:fab_colorPressed="@color/note_color_1"
-                app:fab_icon="@drawable/ic_photo_camera_black_24dp"
-                app:fab_title="@string/element_note" />
-
+            
             <com.getbase.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_add_checklist"
                 android:layout_width="wrap_content"
