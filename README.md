@@ -4,8 +4,6 @@ FireNote is an easy-to-use Android App for creating Notes and Checklists. Everyt
 
 FireNote is available for Android in German and English and can also be found on the Web via the domain <a href="https://firenote.surge.sh/">https://firenote.surge.sh/</a>. To use the App, a registration is necessary.
 
-<strong>Not available at the moment because of privacy policy error</strong>
-
 <a href='https://play.google.com/store/apps/details?id=com.sunilson.firenote&hl=en&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width="150" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
 
 ## Features
