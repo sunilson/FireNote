@@ -1,0 +1,12 @@
+{
+  "name": "FireNote",
+  "short_name": "FireNote",
+  "theme_color": "#eeeeee",
+  "background_color": "#EEEEEE",
+  "display": "standalone",
+  "orientation": "portrait",
+  "Scope": "/",
+  "start_url": "/",
+  "icons": null,
+  "splash_pages": null
+}
