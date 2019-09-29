@@ -1,6 +1,6 @@
 package com.sunilson.firenote.presentation.shared
 
-import android.databinding.BaseObservable
+import androidx.databinding.BaseObservable
 import io.reactivex.disposables.CompositeDisposable
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty

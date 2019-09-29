@@ -52,9 +52,9 @@ class ChangeMasterPasswordDialog : BaseDialogFragment() {
                 val ref = FirebaseDatabase.getInstance()
                         .getReference("users/${FirebaseAuth.getInstance().currentUser?.uid}/settings/masterPassword")
                 ref.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onCancelled(p0: DatabaseError?) = showError(context?.getString(R.string.error_change_master_password))
-                    override fun onDataChange(p0: DataSnapshot?) {
-                        val password = p0?.getValue(String::class.java)
+                    override fun onCancelled(p0: DatabaseError) = showError(context?.getString(R.string.error_change_master_password))
+                    override fun onDataChange(p0: DataSnapshot) {
+                        val password = p0.getValue(String::class.java)
                         if (content.master_password_old.visibility == View.GONE || password == oldPassword.encodePassword()) {
                             ref.setValue(newPassword.encodePassword())
                                     .addOnSuccessListener {

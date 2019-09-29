@@ -2,7 +2,7 @@ package com.sunilson.firenote.presentation.shared.views
 
 import android.content.Context
 import android.graphics.Paint
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout

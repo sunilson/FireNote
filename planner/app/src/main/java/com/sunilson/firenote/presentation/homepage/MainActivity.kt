@@ -4,11 +4,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.OvershootInterpolator
+import androidx.fragment.app.DialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
@@ -56,7 +57,7 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Vi
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         if (FirebaseAuth.getInstance().currentUser != null) localSettingsManager.showAnnouncementDialog(supportFragmentManager)
 
@@ -68,7 +69,7 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Vi
         }, activity_main_recycler_view)
         activity_main_recycler_view.adapter = adapter
         activity_main_recycler_view.itemAnimator = ScaleInAnimator(OvershootInterpolator(1f))
-        activity_main_recycler_view.itemAnimator.addDuration = 300
+        activity_main_recycler_view.itemAnimator?.addDuration = 300
         activity_main_recycler_view.layoutManager = layoutManager
 
         sorting_bar.sortingListArrayAdapter = sortListingArrayAdapter
@@ -146,7 +147,7 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Vi
             when (intent.getStringExtra("noteType")) {
                 typeNote, typeChecklist, typeBundle -> {
                     supportFragmentManager.fragments.forEach {
-                        if (it is android.support.v4.app.DialogFragment) {
+                        if (it is DialogFragment) {
                             it.dismissAllowingStateLoss()
                         }
                     }
@@ -163,6 +164,7 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Vi
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             ELEMENT_ACTIVITY_REQUEST -> {
                 if (resultCode == ELEMENT_REMOVED_RESULT) {
@@ -193,12 +195,15 @@ class MainActivity : BaseActivity(), HomepagePresenterContract.IHomepageView, Vi
             R.id.fab_add_bundle -> {
                 openElementDialog(typeBundle)
             }
+            /*
             R.id.fab_add_gallery -> {
                 val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
                 if (takePictureIntent.resolveActivity(packageManager) != null) {
                     startActivityForResult(takePictureIntent, 1)
                 }
             }
+
+             */
         }
     }
 

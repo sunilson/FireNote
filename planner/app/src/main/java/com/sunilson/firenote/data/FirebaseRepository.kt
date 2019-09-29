@@ -60,8 +60,8 @@ class FirebaseRepository @Inject constructor() : IRepository {
         else ref.child("main").child(id)
 
         return createFlowableValueFromQuery(ref) { snapshot ->
-            val firebaseElement = snapshot?.getValue(FirebaseElement::class.java)
-            firebaseElement?.elementID = snapshot!!.key
+            val firebaseElement = snapshot.getValue(FirebaseElement::class.java)
+            firebaseElement?.elementID = snapshot.key!!
             firebaseElement?.parseElement()
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
@@ -70,7 +70,7 @@ class FirebaseRepository @Inject constructor() : IRepository {
         val ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("elements").child("main")
         return createSingleFromQuery(ref) {
             val result = mutableListOf<Element>()
-            it?.children?.forEach {
+            it.children.forEach {
                 result.add(it.parseFirebaseElement().parseElement())
             }
             Log.d("Linus", result.toString())
@@ -84,19 +84,17 @@ class FirebaseRepository @Inject constructor() : IRepository {
         else ref.child("main")
 
         return createFlowableFromQuery(ref) { snapshot, changeType ->
-            return@createFlowableFromQuery if (snapshot != null) {
-                val tempEvent = snapshot.getValue(FirebaseElement::class.java)!!.parseElement()
-                tempEvent.elementID = snapshot.key
-                tempEvent.deleted = true
-                Pair(changeType, tempEvent)
-            } else null
+            val tempEvent = snapshot.getValue(FirebaseElement::class.java)!!.parseElement()
+            tempEvent.elementID = snapshot.key!!
+            tempEvent.deleted = true
+            return@createFlowableFromQuery Pair(changeType, tempEvent)
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun loadNoteContent(userId: String, id: String): Flowable<String> {
         val ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("contents").child(id).child("text")
         return createFlowableValueFromQuery(ref) { dataSnapshot ->
-            dataSnapshot?.getValue(String::class.java) ?: ""
+            dataSnapshot.getValue(String::class.java) ?: ""
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
@@ -110,9 +108,9 @@ class FirebaseRepository @Inject constructor() : IRepository {
                     .child("settings")
                     .child("masterPassword")
                     .addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onCancelled(p0: DatabaseError?) {}
-                        override fun onDataChange(p0: DataSnapshot?) {
-                            if (p0 == null || p0.value == null) emitter.onError(Error())
+                        override fun onCancelled(p0: DatabaseError) {}
+                        override fun onDataChange(p0: DataSnapshot) {
+                            if (p0.value == null) emitter.onError(Error())
                             else {
                                 var ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("elements")
                                 ref = if (parent != null) ref.child("bundles").child(parent).child(id)
@@ -130,7 +128,7 @@ class FirebaseRepository @Inject constructor() : IRepository {
 
     override fun storeElement(userId: String, element: Element): Completable {
         var ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("elements")
-        ref = if (element.parent != null) ref.child("bundles").child(element.parent)
+        ref = if (element.parent != null) ref.child("bundles").child(element.parent!!)
         else ref.child("main")
         return createCompletableFromTask(ref.push().storeElement(element))
     }
@@ -149,13 +147,12 @@ class FirebaseRepository @Inject constructor() : IRepository {
 
         return Completable.create { emitter ->
             val listener = ref.addValueEventListener(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError?) {
-                    if (p0 != null) emitter.onError(p0.toException())
-                    else emitter.onError(Exception())
+                override fun onCancelled(p0: DatabaseError) {
+                    emitter.onError(p0.toException())
                 }
 
-                override fun onDataChange(p0: DataSnapshot?) {
-                    if (p0 != null && p0.value != null && p0.child("noteType").value != null) emitter.onComplete()
+                override fun onDataChange(p0: DataSnapshot) {
+                    if (p0.value != null && p0.child("noteType").value != null) emitter.onComplete()
                 }
             })
 
@@ -170,13 +167,12 @@ class FirebaseRepository @Inject constructor() : IRepository {
 
         return Completable.create { emitter ->
             ref.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError?) {
-                    if (p0 != null) emitter.onError(p0.toException())
-                    else emitter.onError(Exception())
+                override fun onCancelled(p0: DatabaseError) {
+                    emitter.onError(p0.toException())
                 }
 
-                override fun onDataChange(p0: DataSnapshot?) {
-                    if (p0 != null && p0.child("noteType").value != null) {
+                override fun onDataChange(p0: DataSnapshot) {
+                    if (p0.child("noteType").value != null) {
                         val tempEvent = p0.parseFirebaseElement()
                         ref.removeValue().addOnFailureListener { emitter.onError(it) }.addOnSuccessListener {
                             var newRef = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("elements")
@@ -199,13 +195,13 @@ class FirebaseRepository @Inject constructor() : IRepository {
             else ref.child("main")
 
             ref.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError?) {
+                override fun onCancelled(p0: DatabaseError) {
                     emitter.onError(Exception())
                 }
 
-                override fun onDataChange(p0: DataSnapshot?) {
+                override fun onDataChange(p0: DataSnapshot) {
                     val ids = mutableListOf<String>()
-                    p0?.children?.forEach { ids.add(it.key) }
+                    p0.children.forEach { ids.add(it.key!!) }
                     ref.removeValue().addOnSuccessListener {
                         ids.forEach { id ->
                             val contentRef = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("contents").child(id)
@@ -242,22 +238,22 @@ class FirebaseRepository @Inject constructor() : IRepository {
 
     override fun updateElement(userId: String, element: Element): Completable {
         var ref = FirebaseDatabase.getInstance().reference.child("users").child(userId).child("elements")
-        ref = if (element.parent != null) ref.child("bundles").child(element.parent).child(element.elementID)
+        ref = if (element.parent != null) ref.child("bundles").child(element.parent!!).child(element.elementID)
         else ref.child("main").child(element.elementID)
         return createCompletableFromTask(ref.storeElement(element))
     }
 
     override fun loadChecklistElements(userId: String, id: String): Flowable<Pair<ChangeType, ChecklistElement>> {
-        var ref = FirebaseDatabase.getInstance().reference.child("users")
+        val ref = FirebaseDatabase.getInstance().reference.child("users")
                 .child(userId)
                 .child("contents")
                 .child(id)
                 .child("elements")
 
         return createFlowableFromQuery(ref) { dataSnapshot, changeType ->
-            val result = dataSnapshot?.getValue(ChecklistElement::class.java)
-            result?.id = dataSnapshot?.key
-            Pair(changeType, result!!)
+            val result = dataSnapshot.getValue(ChecklistElement::class.java)!!
+            result.id = dataSnapshot.key
+            Pair(changeType, result)
         }
     }
 
@@ -277,17 +273,17 @@ class FirebaseRepository @Inject constructor() : IRepository {
                 .child("contents")
                 .child(elementID)
                 .child("elements")
-                .child(checklistElement.id)
+                .child(checklistElement.id!!)
         return createCompletableFromTask(ref.setValue(checklistElement))
     }
 
-    override fun removeChecklistElement(userId: String, id: String, checklistElement: ChecklistElement): Completable {
+    override fun removeChecklistElement(userId: String, elementID: String, checklistElement: ChecklistElement): Completable {
         val ref = FirebaseDatabase.getInstance().reference.child("users")
                 .child(userId)
                 .child("contents")
-                .child(id)
+                .child(elementID)
                 .child("elements")
-                .child(checklistElement.id)
+                .child(checklistElement.id!!)
         return createCompletableFromTask(ref.removeValue())
     }
 
@@ -300,12 +296,10 @@ class FirebaseRepository @Inject constructor() : IRepository {
         else ref.child("bundles").child(elementID)
 
         return createFlowableFromQuery(ref) { snapshot, changeType ->
-            return@createFlowableFromQuery if (snapshot != null) {
-                val tempEvent = snapshot.getValue(FirebaseElement::class.java)!!.parseElement()
-                tempEvent.elementID = snapshot.key
-                if (elementID != null) tempEvent.parent = elementID
-                Pair(changeType, tempEvent)
-            } else null
+            val tempEvent = snapshot.getValue(FirebaseElement::class.java)!!.parseElement()
+            tempEvent.elementID = snapshot.key!!
+            if (elementID != null) tempEvent.parent = elementID
+            return@createFlowableFromQuery Pair(changeType, tempEvent)
         }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
     }
 
@@ -319,12 +313,12 @@ class FirebaseRepository @Inject constructor() : IRepository {
                     .child("settings")
                     .child("masterPassword")
                     .addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onCancelled(p0: DatabaseError?) {
+                        override fun onCancelled(p0: DatabaseError) {
                             it.onError(Exception())
                         }
 
-                        override fun onDataChange(p0: DataSnapshot?) {
-                            if (p0 == null || p0.value == null) it.onSuccess(false)
+                        override fun onDataChange(p0: DataSnapshot) {
+                            if (p0.value == null) it.onSuccess(false)
                             else it.onSuccess(true)
                         }
                     })
@@ -340,14 +334,14 @@ class FirebaseRepository @Inject constructor() : IRepository {
             }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
         }
 
-        fun <T> createSingleFromQuery(ref: DatabaseReference, converter: (DataSnapshot?) -> T): Single<T> {
+        fun <T> createSingleFromQuery(ref: DatabaseReference, converter: (DataSnapshot) -> T): Single<T> {
             return Single.create<T> {
                 val listener = object : ValueEventListener {
-                    override fun onCancelled(p0: DatabaseError?) {
+                    override fun onCancelled(p0: DatabaseError) {
                         if (!it.isDisposed) ref.removeEventListener(this)
                     }
 
-                    override fun onDataChange(p0: DataSnapshot?) {
+                    override fun onDataChange(p0: DataSnapshot) {
                         if (!it.isDisposed) ref.removeEventListener(this)
                         it.onSuccess(converter(p0))
                     }
@@ -357,14 +351,14 @@ class FirebaseRepository @Inject constructor() : IRepository {
             }.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
         }
 
-        fun <T> createFlowableFromQuery(ref: DatabaseReference, converter: (DataSnapshot?, ChangeType) -> T): Flowable<T> {
+        fun <T> createFlowableFromQuery(ref: DatabaseReference, converter: (DataSnapshot, ChangeType) -> T): Flowable<T> {
             return Flowable.create({ emitter ->
                 val listener = object : ChildEventListener {
-                    override fun onCancelled(p0: DatabaseError?) {}
-                    override fun onChildMoved(p0: DataSnapshot?, p1: String?) {}
-                    override fun onChildChanged(p0: DataSnapshot?, p1: String?) = emitter.onNext(converter(p0, ChangeType.CHANGED))
-                    override fun onChildAdded(p0: DataSnapshot?, p1: String?) = emitter.onNext(converter(p0, ChangeType.ADDED))
-                    override fun onChildRemoved(p0: DataSnapshot?) = emitter.onNext(converter(p0, ChangeType.REMOVED))
+                    override fun onCancelled(p0: DatabaseError) {}
+                    override fun onChildMoved(p0: DataSnapshot, p1: String?) {}
+                    override fun onChildChanged(p0: DataSnapshot, p1: String?) = emitter.onNext(converter(p0, ChangeType.CHANGED))
+                    override fun onChildAdded(p0: DataSnapshot, p1: String?) = emitter.onNext(converter(p0, ChangeType.ADDED))
+                    override fun onChildRemoved(p0: DataSnapshot) = emitter.onNext(converter(p0, ChangeType.REMOVED))
                 }
                 emitter.setCancellable {
                     if (!emitter.isCancelled) ref.removeEventListener(listener)
@@ -373,11 +367,11 @@ class FirebaseRepository @Inject constructor() : IRepository {
             }, BackpressureStrategy.BUFFER)
         }
 
-        fun <T> createFlowableValueFromQuery(ref: DatabaseReference, converter: (DataSnapshot?) -> T): Flowable<T> {
+        fun <T> createFlowableValueFromQuery(ref: DatabaseReference, converter: (DataSnapshot) -> T): Flowable<T> {
             return Flowable.create({ emitter ->
                 val listener = object : ValueEventListener {
-                    override fun onCancelled(p0: DatabaseError?) {}
-                    override fun onDataChange(p0: DataSnapshot?) = emitter.onNext(converter(p0))
+                    override fun onCancelled(p0: DatabaseError) {}
+                    override fun onDataChange(p0: DataSnapshot) = emitter.onNext(converter(p0))
                 }
 
                 emitter.setCancellable {

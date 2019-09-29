@@ -1,5 +1,6 @@
 package com.sunilson.firenote.presentation.homepage
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.IAuthentication
@@ -27,6 +28,7 @@ class HomepagePresenter @Inject constructor(val repository: IRepository, val vie
                 ChangeType.CHANGED -> view.elementChanged(it.second)
             }
         }, {
+            Log.e("HomepagePresenter", it.message, it)
             view.showError(it.message)
         }))
     }
@@ -42,6 +44,7 @@ class HomepagePresenter @Inject constructor(val repository: IRepository, val vie
             disposable.add(repository.restoreElement(FirebaseAuth.getInstance().currentUser!!.uid, id).subscribe({
                 view.showSuccess(view.mContext?.getString(R.string.element_restored))
             }, {
+                Log.e("HomepagePresenter", it.message, it)
                 view.showError(view.mContext?.getString(R.string.restore_error))
             }))
         }.subscribe())

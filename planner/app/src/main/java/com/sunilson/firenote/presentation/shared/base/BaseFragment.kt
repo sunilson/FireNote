@@ -1,7 +1,7 @@
 package com.sunilson.firenote.presentation.shared.base
 
 import android.content.Context
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import dagger.android.support.AndroidSupportInjection
 
 abstract class BaseFragment : Fragment(), IBaseView {
@@ -13,7 +13,7 @@ abstract class BaseFragment : Fragment(), IBaseView {
         (activity as IBaseView).toggleLoading(loading, message)
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }

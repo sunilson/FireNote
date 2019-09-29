@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.provider.CalendarContract
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.*
 import android.view.animation.OvershootInterpolator
 import android.view.inputmethod.InputMethodManager
@@ -56,7 +56,7 @@ class ChecklistFragment : BaseFragment(), ChecklistPresenterContract.View {
         }, { checklistPresenter.removeChecklistElement(it) }, view.checkListView)
         view.checkListView.adapter = checklistRecyclerAdapter
         view.checkListView.itemAnimator = ScaleInAnimator(OvershootInterpolator(1f))
-        view.checkListView.itemAnimator.addDuration = 300
+        view.checkListView.itemAnimator?.addDuration = 300
         view.checkListView.layoutManager = LinearLayoutManager(context)
 
         view.swipeContainerChecklist.setOnRefreshListener {
@@ -70,20 +70,20 @@ class ChecklistFragment : BaseFragment(), ChecklistPresenterContract.View {
         return view
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
         activity?.fab?.setOnClickListener { openChecklistElementDialog() }
         imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_checklist, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_checklist, menu)
         return super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.menu_import -> {
                 val dialog = ImportTextDialog.newInstance()
                 dialog.listener = object : DialogListener<String> {
@@ -112,7 +112,7 @@ class ChecklistFragment : BaseFragment(), ChecklistPresenterContract.View {
                         }
                     }
                 }
-                dialogFragment.show(fragmentManager, "dialog")
+                dialogFragment.show(childFragmentManager, "dialog")
             }
             R.id.menu_reminder -> {
                 val shareBody = "${getString(R.string.element_checklist)} \"${element?.title}\" ${getString(R.string.from_app)}: \n $checklistRecyclerAdapter"

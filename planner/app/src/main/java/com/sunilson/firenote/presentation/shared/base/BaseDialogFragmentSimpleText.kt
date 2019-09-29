@@ -18,10 +18,10 @@ abstract class BaseDialogFragmentSimpleText : BaseDialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        dialog.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
     }
 
-    override fun onDismiss(dialog: DialogInterface?) {
+    override fun onDismiss(dialog: DialogInterface) {
         imm.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
         super.onDismiss(dialog)

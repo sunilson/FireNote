@@ -2,7 +2,7 @@ package com.sunilson.firenote.presentation.settings
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.MenuItem
 import android.view.View
 import com.google.firebase.auth.FirebaseAuth

@@ -2,10 +2,10 @@ package com.sunilson.firenote.presentation.elements.elementActivity
 
 import android.content.Context
 import android.content.Intent
-import android.databinding.DataBindingUtil
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.core.content.ContextCompat
 import android.text.TextUtils
 import android.view.KeyEvent
 import android.view.Menu

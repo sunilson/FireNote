@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import com.sunilson.firenote.R
@@ -55,12 +56,13 @@ class AuthenticationDialog() : BaseDialogFragment(), DialogWithResult<Boolean> {
                 listener?.onResult(true)
                 dismiss()
             }, {
+                Log.e("AuthenticationDialog", it.message, it)
                 showError(it.message)
             }))
         }
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }
@@ -74,12 +76,13 @@ class AuthenticationDialog() : BaseDialogFragment(), DialogWithResult<Boolean> {
                 listener?.onResult(true)
                 dismiss()
             }, {
+                Log.e("AuthenticationDialog", it.message, it)
                 showError(it.message)
             }))
         }
     }
 
-    override fun onDismiss(dialog: DialogInterface?) {
+    override fun onDismiss(dialog: DialogInterface) {
         listener?.onResult(false)
         super.onDismiss(dialog)
     }

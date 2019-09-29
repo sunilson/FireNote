@@ -1,5 +1,6 @@
 package com.sunilson.firenote.presentation.bin
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.IRepository
@@ -21,6 +22,7 @@ class BinPresenter @Inject constructor(private val view: BinPresenterContract.Vi
                 ChangeType.CHANGED -> view.elementChanged(it.second)
             }
         }, {
+            Log.e("BinPresenter", it.message, it)
             view.showError(it.message)
         }))
     }
@@ -37,14 +39,16 @@ class BinPresenter @Inject constructor(private val view: BinPresenterContract.Vi
         disposable.add(repository.clearBin(FirebaseAuth.getInstance().currentUser!!.uid, view.parent).subscribe({
             view.showSuccess(view.mContext?.getString(R.string.cleared_elements))
         }, {
+            Log.e("BinPresenter", it.message, it)
             view.showError(it.message)
         }))
     }
 
     override fun restoreElement(id: String) {
-        disposable.add(repository.restoreElement(FirebaseAuth.getInstance().currentUser!!.uid,id,  view.parent).subscribe({
+        disposable.add(repository.restoreElement(FirebaseAuth.getInstance().currentUser!!.uid, id, view.parent).subscribe({
             view.showSuccess(view.mContext?.getString(R.string.element_restored))
         }, {
+            Log.e("BinPresenter", it.message, it)
             view.showError(it.message)
         }))
     }
@@ -53,6 +57,7 @@ class BinPresenter @Inject constructor(private val view: BinPresenterContract.Vi
         disposable.add(repository.deleteBinElement(FirebaseAuth.getInstance().currentUser!!.uid, id, view.parent).subscribe({
             view.showSuccess(view.mContext?.getString(R.string.element_removed))
         }, {
+            Log.e("BinPresenter", it.message, it)
             view.showError(it.message)
         }))
     }

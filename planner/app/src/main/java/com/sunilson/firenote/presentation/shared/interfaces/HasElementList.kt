@@ -1,7 +1,7 @@
 package com.sunilson.firenote.presentation.shared.interfaces
 
 import android.content.Intent
-import android.support.v4.app.FragmentActivity
+import androidx.fragment.app.FragmentActivity
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.models.Element
 import com.sunilson.firenote.presentation.elements.elementActivity.ElementActivity

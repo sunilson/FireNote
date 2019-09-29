@@ -4,7 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -71,14 +71,14 @@ class FirebaseAuthService @Inject constructor(val context: Application) : IAuthe
 
     override fun startGoogleSignIn(activity: Activity?, fragment: Fragment?) {
         if (activity != null) activity.startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient), googleSignInRequestCode)
-        else if (fragment != null) fragment.startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient), googleSignInRequestCode)
+        else fragment?.startActivityForResult(Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient), googleSignInRequestCode)
     }
 
     override fun handleGoogleSignIn(intent: Intent, reAuth: Boolean): Completable {
         val task = GoogleSignIn.getSignedInAccountFromIntent(intent)
         return try {
             val account = task.getResult(ApiException::class.java)
-            val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+            val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
             return if (reAuth) createCompletableFromTask(FirebaseAuth.getInstance().currentUser!!.reauthenticate(credential))
             else createCompletableFromTask(FirebaseAuth.getInstance().signInWithCredential(credential))
         } catch (e: ApiException) {

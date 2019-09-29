@@ -7,7 +7,6 @@ import com.sunilson.firenote.presentation.shared.di.scopes.DialogFragmentScope
 import dagger.Module
 import dagger.Provides
 
-@DialogFragmentScope
 @Module
 class ElementDialogModule {
 

@@ -2,10 +2,10 @@ package com.sunilson.firenote.presentation.bin
 
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.ActionBar
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.Toolbar
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.ActionBar
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.appcompat.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -64,7 +64,7 @@ class BinActivity : BaseActivity(), BinPresenterContract.View, HasElementList {
         //Initialize list
         binList.setHasFixedSize(true)
         binList.itemAnimator = ScaleInAnimator(OvershootInterpolator(1f))
-        binList.itemAnimator.addDuration = 300
+        binList.itemAnimator?.addDuration = 300
         binList.layoutManager = LinearLayoutManager(this)
         adapter = elementRecyclerAdapterFactory.create(View.OnClickListener { view ->
             val dialog = ConfirmDialog.newInstance(getString(R.string.restore_element), getString(R.string.restore_element_question))

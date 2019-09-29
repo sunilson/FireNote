@@ -6,6 +6,10 @@ const admin = require('firebase-admin');
 
 admin.initializeApp();
 
+exports.handleElementCreation = functions.database.ref("users/{uid}/elements/main/{elementId}").onCreate((snapshot, context) => {
+    console.log("Created", context.params.uid, context.params.elementId)
+});
+
 exports.handleElementDeletion = functions.database.ref("users/{uid}/elements/main/{elementId}").onDelete((snapshot, context) => {
     return admin.database().ref(`users/${context.params.uid}`).once("value").then(userSnapshot => {
         if (userSnapshot && userSnapshot.val()) {
@@ -73,7 +77,7 @@ exports.handleUserCreation = functions.auth.user().onCreate((user) => {
         timeStamp: new Date().getTime()
     }))
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0;i < 3;i++) {
         dref = baseRef.child(`contents`).child(firstChecklist).child("elements").push()
         promises.push(dref.set({
             text: "Example checklist element",

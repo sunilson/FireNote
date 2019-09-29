@@ -1,11 +1,11 @@
 package com.sunilson.firenote.presentation.shared
 
 import android.content.res.ColorStateList
-import android.databinding.BindingAdapter
+import androidx.databinding.BindingAdapter
 import android.graphics.Paint
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.content.ContextCompat
-import android.support.v4.graphics.ColorUtils
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.ColorUtils
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView

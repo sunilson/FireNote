@@ -16,10 +16,6 @@ import kotlinx.android.synthetic.main.fragment_note.*
 import javax.inject.Inject
 
 
-
-
-
-
 class NoteFragment : BaseFragment(), NotePresenterContract.INoteView {
 
     @Inject
@@ -34,7 +30,7 @@ class NoteFragment : BaseFragment(), NotePresenterContract.INoteView {
     override val elementActivity: BaseElementPresenterContract.View?
         get() = activity as? BaseElementPresenterContract.View
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
         imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -65,13 +61,13 @@ class NoteFragment : BaseFragment(), NotePresenterContract.INoteView {
         return view
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_note, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_note, menu)
         return super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.menu_share -> {
                 val shareBody = notepad.text.toString().trim()
                 val sharingIntent = Intent(android.content.Intent.ACTION_SEND)
@@ -97,7 +93,7 @@ class NoteFragment : BaseFragment(), NotePresenterContract.INoteView {
         if (editMode) return
         elementActivity?.toggleTitleEdit(true)
         imm.showSoftInput(notepad, InputMethodManager.SHOW_FORCED)
-        activity?.fab?.visibility = View.GONE
+        activity?.fab?.hide()
         editMode = true
         notepad_disabled.visibility = View.INVISIBLE
         notepad.visibility = View.VISIBLE
@@ -117,7 +113,7 @@ class NoteFragment : BaseFragment(), NotePresenterContract.INoteView {
     override fun stopEditMode(saveNote: Boolean) {
         if (!editMode) return
         elementActivity?.toggleTitleEdit(false)
-        activity?.fab?.visibility = View.VISIBLE
+        activity?.fab?.show()
         imm.hideSoftInputFromWindow(notepad.windowToken, 0)
         editMode = false
         notepad_disabled.visibility = View.VISIBLE

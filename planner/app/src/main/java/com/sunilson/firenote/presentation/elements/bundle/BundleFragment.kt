@@ -4,8 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.support.v4.app.FragmentActivity
-import android.support.v7.widget.LinearLayoutManager
+import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.*
 import android.view.animation.OvershootInterpolator
 import com.sunilson.firenote.R
@@ -51,15 +51,14 @@ class BundleFragment : BaseFragment(), BundlePresenterContract.View, HasElementL
 
         view.bundleList.setHasFixedSize(true)
         view.bundleList.itemAnimator = ScaleInAnimator(OvershootInterpolator(1f))
-        view.bundleList.itemAnimator.addDuration = 300
+        view.bundleList.itemAnimator?.addDuration = 300
         view.bundleList.layoutManager = LinearLayoutManager(context)
         adapter = elementRecyclerAdapterFactory.create(View.OnClickListener {
             openElement(adapter.data[view.bundleList.getChildLayoutPosition(it)], activity as FragmentActivity)
         }, View.OnLongClickListener {
             val element = adapter.data[view.bundleList.getChildLayoutPosition(it)]
-            if (element.locked) {
-            } else {
-                ElementDialog.newInstance(getString(R.string.edit_element_title), element.elementID, element).show(fragmentManager, "dialog")
+            if (!element.locked) {
+                ElementDialog.newInstance(getString(R.string.edit_element_title), element.elementID, element).show(childFragmentManager, "dialog")
             }
             true
         }, { id, _ ->
@@ -88,24 +87,24 @@ class BundleFragment : BaseFragment(), BundlePresenterContract.View, HasElementL
         return view
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         activity?.fab_add_note?.setOnClickListener { openElementDialog(typeNote) }
         activity?.fab_add_checklist?.setOnClickListener { openElementDialog(typeChecklist) }
     }
 
     private fun openElementDialog(elementType: String) {
-        ElementDialog.newInstance(getString(R.string.add_Element_Title), elementType, parent = element!!.elementID).show(fragmentManager, "dialog")
+        ElementDialog.newInstance(getString(R.string.add_Element_Title), elementType, parent = element!!.elementID).show(childFragmentManager, "dialog")
         activity?.fab2?.collapse()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_bundle, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_bundle, menu)
         return super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
             R.id.bundle_menu_bin -> {
                 val intent = Intent(activity, BinActivity::class.java)
                 intent.putExtra("elementID", element?.elementID)

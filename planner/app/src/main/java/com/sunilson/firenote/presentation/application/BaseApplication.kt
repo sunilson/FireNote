@@ -4,7 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.app.Service
 import android.content.BroadcastReceiver
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import com.google.firebase.database.FirebaseDatabase
 import com.sunilson.firenote.presentation.application.di.DaggerApplicationComponent
 import dagger.android.*

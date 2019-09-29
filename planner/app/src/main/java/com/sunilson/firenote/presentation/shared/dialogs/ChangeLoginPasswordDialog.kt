@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import com.sunilson.firenote.R
@@ -45,13 +46,14 @@ class ChangeLoginPasswordDialog : BaseDialogFragment() {
                 showSuccess(context?.getString(R.string.password_changed))
                 dismiss()
             }, {
+                Log.e("ChangeLoginPasswordDialog", it.message, it)
                 if(it is IllegalArgumentException) showError(it.message)
                 else showError("Password could not be changed!")
             }))
         }
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }

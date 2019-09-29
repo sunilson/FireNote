@@ -1,7 +1,7 @@
 package com.sunilson.firenote.data.models
 
-import android.databinding.BaseObservable
-import android.databinding.Bindable
+import androidx.databinding.BaseObservable
+import androidx.databinding.Bindable
 import android.os.Parcelable
 import com.sunilson.firenote.BR
 import com.sunilson.firenote.presentation.shared.NotifyPropertyChangedDelegate

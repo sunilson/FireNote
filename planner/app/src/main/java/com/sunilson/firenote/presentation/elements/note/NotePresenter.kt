@@ -1,5 +1,6 @@
 package com.sunilson.firenote.presentation.elements.note
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.IRepository
@@ -26,6 +27,7 @@ class NotePresenter @Inject constructor(private val eventRepository: IRepository
             disposable.add(eventRepository.storeNoteText(FirebaseAuth.getInstance().currentUser!!.uid, view.element!!.elementID, text).subscribe({
                 view.showSuccess(view.mContext?.getString(R.string.saved_note))
             },{
+                Log.e("NotePresenter", it.message, it)
                 view.showError(view.mContext?.getString(R.string.save_note_error))
             }))
         }

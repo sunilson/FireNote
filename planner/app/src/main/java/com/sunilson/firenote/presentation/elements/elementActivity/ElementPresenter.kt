@@ -1,5 +1,6 @@
 package com.sunilson.firenote.presentation.elements.elementActivity
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.IRepository
@@ -26,6 +27,7 @@ class ElementPresenter @Inject constructor(private val eventRepository: IReposit
 
     override fun lockElement(locked: Boolean) {
         disposable.add(eventRepository.lockElement(FirebaseAuth.getInstance().currentUser!!.uid, view.element!!.elementID, locked, view.element!!.parent).subscribe({}, {
+            Log.e("ElementPresenter", it.message, it)
             view.showError(view.mContext?.getString(R.string.master_password_not_set))
         }))
     }

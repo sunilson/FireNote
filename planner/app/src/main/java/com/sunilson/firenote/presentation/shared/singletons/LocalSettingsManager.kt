@@ -3,6 +3,7 @@ package com.sunilson.firenote.presentation.shared.singletons
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.fragment.app.FragmentManager
 import com.sunilson.firenote.R
 import com.sunilson.firenote.presentation.shared.dialogs.ConfirmDialog
 import com.sunilson.firenote.presentation.shared.sortingMethods
@@ -14,7 +15,8 @@ class LocalSettingsManager @Inject constructor(val context: Application) {
 
     private val sharedPrefs: SharedPreferences = context.getSharedPreferences("prefs", Context.MODE_PRIVATE)
 
-    fun showAnnouncementDialog(fm: android.support.v4.app.FragmentManager) {
+    fun showAnnouncementDialog(fm: FragmentManager) {
+        /*
         val show = sharedPrefs.getBoolean("6", false)
         if (!show) {
             ConfirmDialog.newInstance(context.getString(R.string.current_announcement_title), context.getString(R.string.current_announcement), false).show(fm, "dialog")
@@ -22,6 +24,7 @@ class LocalSettingsManager @Inject constructor(val context: Application) {
             editor.putBoolean("6", true)
             editor.commit()
         }
+         */
     }
 
     fun setCategoryVisiblity(id: String, visibility: Int) {

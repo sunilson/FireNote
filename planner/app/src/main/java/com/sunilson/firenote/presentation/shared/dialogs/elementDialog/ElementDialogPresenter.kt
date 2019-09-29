@@ -1,5 +1,6 @@
 package com.sunilson.firenote.presentation.shared.dialogs.elementDialog
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.IRepository
@@ -19,7 +20,10 @@ class ElementDialogPresenter @Inject constructor(
             disposable.add(repository.storeElement(FirebaseAuth.getInstance().currentUser!!.uid, element).subscribe({
                 view.showSuccess(view.mContext?.getString(R.string.element_added))
                 updateWidget()
-            }, { view.showError(it.message) }))
+            }, {
+                Log.e("ElementDialogPresenter", it.message, it)
+                view.showError(it.message)
+            }))
         } else {
             view.showError("Validation failed")
         }
@@ -30,7 +34,10 @@ class ElementDialogPresenter @Inject constructor(
             disposable.add(repository.updateElement(FirebaseAuth.getInstance().currentUser!!.uid, element).subscribe({
                 view.showSuccess(view.mContext?.getString(R.string.element_updated))
                 updateWidget()
-            }, { view.showError(it.message) }))
+            }, {
+                Log.e("ElementDialogPresenter", it.message, it)
+                view.showError(it.message)
+            }))
         } else view.showError("Validation failed")
     }
 
@@ -39,6 +46,7 @@ class ElementDialogPresenter @Inject constructor(
             view.showSuccess(view.mContext?.getString(R.string.element_removed))
             updateWidget()
         }, {
+            Log.e("ElementDialogPresenter", it.message, it)
             view.showError(it.message)
         }))
     }

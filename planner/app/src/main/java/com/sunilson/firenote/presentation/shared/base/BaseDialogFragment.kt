@@ -4,7 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
+import androidx.fragment.app.DialogFragment
 import android.view.View
 import com.sunilson.firenote.R
 import com.sunilson.firenote.presentation.elements.elementActivity.ElementActivity
@@ -29,7 +29,7 @@ abstract class BaseDialogFragment : DialogFragment(), IBaseView {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        if(dialog.window != null) dialog.window.attributes.windowAnimations = R.style.dialogAnimation
+        dialog?.window?.attributes?.windowAnimations = R.style.dialogAnimation
     }
 
 

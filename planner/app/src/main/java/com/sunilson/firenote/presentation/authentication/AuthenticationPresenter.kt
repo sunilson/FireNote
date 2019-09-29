@@ -2,6 +2,7 @@ package com.sunilson.firenote.presentation.authentication
 
 import android.app.Activity
 import android.content.Intent
+import android.util.Log
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
@@ -72,6 +73,7 @@ class AuthenticationPresenter @Inject constructor(val view: AuthenticationPresen
         disposable.add(authService.register(email, password, repeatedPassword).subscribe({
             view.toggleLoading(false)
         }, {
+            Log.e("AuthenticationDialog", it.message, it)
             when (it) {
                 is FirebaseAuthWeakPasswordException -> view.showError(view.mContext!!.getString(R.string.error_register_password_weak))
                 is FirebaseAuthInvalidCredentialsException -> view.showError(view.mContext!!.getString(R.string.error_register_invalid_email))

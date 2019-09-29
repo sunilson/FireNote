@@ -39,15 +39,13 @@ class MasterPasswordDialog : BaseDialogFragmentSimpleText(), DialogWithResult<Bo
                     .getInstance()
                     .getReference("users/${FirebaseAuth.getInstance().currentUser?.uid}/settings/masterPassword")
                     .addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onCancelled(p0: DatabaseError?) {
+                        override fun onCancelled(p0: DatabaseError) {
                             listener?.onResult(false)
                         }
 
-                        override fun onDataChange(p0: DataSnapshot?) {
-                            if (p0 != null) {
-                                val passwordHash = p0.getValue(String::class.java)
-                                listener?.onResult(passwordHash == content.password_dialog_password.text.toString().encodePassword())
-                            } else listener?.onResult(false)
+                        override fun onDataChange(p0: DataSnapshot) {
+                            val passwordHash = p0.getValue(String::class.java)
+                            listener?.onResult(passwordHash == content.password_dialog_password.text.toString().encodePassword())
                         }
                     })
         }

@@ -109,7 +109,7 @@ class ElementDialog : BaseDialogFragment(), ElementDialogPresenterContract.View 
 
         val dialog = builder.create()
         setDialogLayoutParams(dialog)
-        dialog.window.attributes.windowAnimations = R.style.dialogAnimation
+        dialog.window?.attributes?.windowAnimations = R.style.dialogAnimation
         return dialog
     }
 
@@ -122,7 +122,7 @@ class ElementDialog : BaseDialogFragment(), ElementDialogPresenterContract.View 
         }
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }
@@ -133,10 +133,10 @@ class ElementDialog : BaseDialogFragment(), ElementDialogPresenterContract.View 
     }
 
     private fun setDialogLayoutParams(dialog: Dialog) {
-        val lp = dialog.window!!.attributes
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT
-        lp.height = WindowManager.LayoutParams.MATCH_PARENT
-        dialog.window!!.attributes = lp
+        val lp = dialog.window?.attributes
+        lp?.width = WindowManager.LayoutParams.MATCH_PARENT
+        lp?.height = WindowManager.LayoutParams.MATCH_PARENT
+        dialog.window?.attributes = lp
     }
 
     override fun toggleLoading(loading: Boolean, message: String?) {}

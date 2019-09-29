@@ -1,6 +1,6 @@
 package com.sunilson.firenote.presentation.tutorial
 
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 
 class TutorialFragment : Fragment() {
 

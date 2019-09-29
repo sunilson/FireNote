@@ -3,7 +3,7 @@ package com.sunilson.firenote.presentation.authentication
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import com.sunilson.firenote.R
 import com.sunilson.firenote.presentation.authentication.fragments.StartFragment
 import com.sunilson.firenote.presentation.homepage.MainActivity
@@ -39,9 +39,9 @@ class AuthenticationActivity : BaseActivity(), CanNavigateFragments, Authenticat
     override fun navigateTo(fragment: Fragment, replace: Boolean, addToBackStack: Boolean) {
         var transaction = supportFragmentManager.beginTransaction()
         transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-        transaction = if(replace) transaction.replace(R.id.activity_authentication_framelayout, fragment)
+        transaction = if (replace) transaction.replace(R.id.activity_authentication_framelayout, fragment)
         else transaction.add(R.id.activity_authentication_framelayout, fragment)
-        if(addToBackStack) transaction = transaction.addToBackStack(null)
+        if (addToBackStack) transaction = transaction.addToBackStack(null)
         transaction.commit()
     }
 
@@ -57,30 +57,29 @@ class AuthenticationActivity : BaseActivity(), CanNavigateFragments, Authenticat
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = dispatchingAndroidInjector
 
     override fun onBackPressed() {
-        if(!supportFragmentManager.findFragmentByTag("start").isVisible) super.onBackPressed()
+        if (supportFragmentManager.findFragmentByTag("start")?.isVisible == false) super.onBackPressed()
     }
 
     override fun showSuccess(message: String?) {
         supportFragmentManager.fragments.forEach {
-            if(it.isVisible) (it as IBaseView).showSuccess(message)
+            if (it.isVisible) (it as IBaseView).showSuccess(message)
         }
     }
 
     override fun showError(message: String?) {
         supportFragmentManager.fragments.forEach {
-            if(it.isVisible) (it as IBaseView).showError(message)
+            if (it.isVisible) (it as IBaseView).showError(message)
         }
     }
 
     override fun toggleLoading(loading: Boolean, message: String?) {
         supportFragmentManager.fragments.forEach {
-            if(it.isVisible) (it as IBaseView).toggleLoading(loading, message)
+            if (it.isVisible) (it as IBaseView).toggleLoading(loading, message)
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent )
-    {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == googleSignInRequestCode) presenter.handleSocialSignIn(data)
+        if (requestCode == googleSignInRequestCode) presenter.handleSocialSignIn(data ?: return)
     }
 }

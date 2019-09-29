@@ -1,5 +1,6 @@
 package com.sunilson.firenote.presentation.elements.bundle
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.sunilson.firenote.R
 import com.sunilson.firenote.data.IRepository
@@ -31,6 +32,7 @@ class BundlePresenter @Inject constructor(
             disposable.add(repository.restoreElement(FirebaseAuth.getInstance().currentUser!!.uid, id, view.element?.elementID).subscribe({
                 view.showSuccess(view.mContext?.getString(R.string.element_restored))
             }, {
+                Log.e("BundlePresenter", it.message, it)
                 view.showError(view.mContext?.getString(R.string.restore_error))
             }))
         }.subscribe())
@@ -46,6 +48,7 @@ class BundlePresenter @Inject constructor(
                 ChangeType.CHANGED -> view.elementChanged(it.second)
             }
         }, {
+            Log.e("BundlePresenter", it.message, it)
             view.showError(it.message)
         }))
     }

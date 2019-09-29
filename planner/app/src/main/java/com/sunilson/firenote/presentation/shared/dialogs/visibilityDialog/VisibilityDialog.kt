@@ -3,9 +3,9 @@ package com.sunilson.firenote.presentation.shared.dialogs.visibilityDialog
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.support.design.widget.TabLayout
-import android.support.v4.app.Fragment
-import android.support.v4.view.ViewPager
+import com.google.android.material.tabs.TabLayout
+import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.ViewPager
 import android.view.*
 import com.sunilson.firenote.R
 import com.sunilson.firenote.presentation.shared.base.BaseDialogFragment
@@ -30,15 +30,15 @@ class VisibilityDialog : BaseDialogFragment(), HasSupportFragmentInjector {
 
     override fun onResume() {
         super.onResume()
-        setDimensions(dialog)
+        setDimensions(requireDialog())
     }
 
     private fun setDimensions(dialog: Dialog) {
         val layoutParams = WindowManager.LayoutParams()
-        layoutParams.copyFrom(dialog.window.attributes)
+        layoutParams.copyFrom(dialog.window?.attributes)
         layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
         layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
-        dialog.window.attributes = layoutParams
+        dialog.window?.attributes = layoutParams
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -51,7 +51,7 @@ class VisibilityDialog : BaseDialogFragment(), HasSupportFragmentInjector {
         return content
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         AndroidSupportInjection.inject(this)
         super.onAttach(context)
     }
